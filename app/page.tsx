@@ -5,7 +5,13 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { ArrowRight, Gamepad2, BookOpen, ExternalLink } from "lucide-react";
+import {
+  ArrowRight,
+  Gamepad2,
+  BookOpen,
+  FlaskConical,
+  ExternalLink,
+} from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@/lib/learn/challenges";
@@ -157,14 +163,14 @@ export default function LandingPage() {
             fontWeight={600}
             sx={{ textAlign: "center", mb: 1 }}
           >
-            Two ways to level up
+            Three ways to level up
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ textAlign: "center", mb: 4 }}
           >
-            A pattern quiz and a reference library for TypeScript.
+            A pattern quiz, a reference library, and a type playground.
           </Typography>
 
           <Stack
@@ -184,6 +190,12 @@ export default function LandingPage() {
                 title: "Learn",
                 desc: `${String(challenges.length)} patterns across ${String(CATEGORY_ORDER.length)} categories. Each shows the fragile approach, the resilient one, and why it matters.`,
                 href: "/learn",
+              },
+              {
+                icon: <FlaskConical size={20} />,
+                title: "Playground",
+                desc: "Write TypeScript types and see them fully expanded. Explore utility types, mapped types, conditionals, and more.",
+                href: "/playground",
               },
             ].map((feature) => (
               <NextLink

@@ -63,6 +63,9 @@ export function SiteFooter() {
               <NextLink href="/learn" style={{ textDecoration: "none" }}>
                 <Box sx={linkSx}>Learn</Box>
               </NextLink>
+              <NextLink href="/playground" style={{ textDecoration: "none" }}>
+                <Box sx={linkSx}>Playground</Box>
+              </NextLink>
               <Box
                 component="a"
                 href="https://github.com/saschb2b/cant-type"

@@ -3,6 +3,9 @@ __v0_runtime_loader.js
 __v0_devtools.tsx
 __v0_jsx-dev-runtime.ts
 
+# Generated at build time (see scripts/vendor-typescript.mjs)
+public/workers/typescript.min.js
+
 # Common ignores
 node_modules/
 .next/

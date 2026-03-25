@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
-import { Search, GraduationCap, Gamepad2 } from "lucide-react";
+import { Search, GraduationCap, Gamepad2, FlaskConical } from "lucide-react";
 import { SearchPalette } from "@/components/search-palette";
 import { trackEvent } from "@/lib/analytics";
 
@@ -300,6 +300,36 @@ export function SiteHeader() {
                   }}
                 >
                   Learn
+                </Typography>
+              </NextLink>
+              <NextLink
+                href="/playground"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Tooltip title="Playground">
+                  <IconButton
+                    component="span"
+                    size="small"
+                    sx={{
+                      display: { xs: "flex", sm: "none" },
+                      color: "text.secondary",
+                    }}
+                    aria-label="Playground"
+                  >
+                    <FlaskConical size={18} />
+                  </IconButton>
+                </Tooltip>
+                <Typography
+                  variant="body2"
+                  fontWeight={500}
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                    color: "text.secondary",
+                    "&:hover": { color: "text.primary" },
+                  }}
+                >
+                  Playground
                 </Typography>
               </NextLink>
             </Stack>
