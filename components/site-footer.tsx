@@ -64,7 +64,7 @@ export function SiteFooter() {
                 <Box sx={linkSx}>Learn</Box>
               </NextLink>
               <NextLink href="/playground" style={{ textDecoration: "none" }}>
-                <Box sx={linkSx}>Playground</Box>
+                <Box sx={linkSx}>Sandbox</Box>
               </NextLink>
               <Box
                 component="a"

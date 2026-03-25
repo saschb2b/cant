@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { PlaygroundEditor } from "@/components/playground/playground-editor";
 
 export const metadata: Metadata = {
-  title: "Playground",
+  title: "Sandbox",
   description:
     "Write TypeScript type expressions and see them fully expanded. Explore utility types, mapped types, conditional types, and more.",
 };
@@ -47,7 +47,7 @@ export default function PlaygroundPage() {
       >
         <Stack spacing={1} sx={{ mb: 3 }}>
           <Typography variant="h4" component="h1" fontWeight={700}>
-            Type Playground
+            Type Sandbox
           </Typography>
           <Typography
             variant="body1"

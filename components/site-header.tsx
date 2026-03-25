@@ -243,36 +243,6 @@ export function SiteHeader() {
               </Button>
               <ColorSchemeToggle />
               <NextLink
-                href="/play"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <Tooltip title="Play">
-                  <IconButton
-                    component="span"
-                    size="small"
-                    sx={{
-                      display: { xs: "flex", sm: "none" },
-                      color: "text.secondary",
-                    }}
-                    aria-label="Play"
-                  >
-                    <Gamepad2 size={18} />
-                  </IconButton>
-                </Tooltip>
-                <Typography
-                  variant="body2"
-                  fontWeight={500}
-                  fontFamily="var(--font-geist-mono), monospace"
-                  sx={{
-                    display: { xs: "none", sm: "block" },
-                    color: "text.secondary",
-                    "&:hover": { color: "text.primary" },
-                  }}
-                >
-                  Play
-                </Typography>
-              </NextLink>
-              <NextLink
                 href="/learn"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
@@ -306,7 +276,7 @@ export function SiteHeader() {
                 href="/playground"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <Tooltip title="Playground">
+                <Tooltip title="Sandbox">
                   <IconButton
                     component="span"
                     size="small"
@@ -314,7 +284,7 @@ export function SiteHeader() {
                       display: { xs: "flex", sm: "none" },
                       color: "text.secondary",
                     }}
-                    aria-label="Playground"
+                    aria-label="Sandbox"
                   >
                     <FlaskConical size={18} />
                   </IconButton>
@@ -329,8 +299,38 @@ export function SiteHeader() {
                     "&:hover": { color: "text.primary" },
                   }}
                 >
-                  Playground
+                  Sandbox
                 </Typography>
+              </NextLink>
+              <NextLink href="/play" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  component="span"
+                  startIcon={<Gamepad2 size={14} />}
+                  sx={{
+                    display: { xs: "none", sm: "inline-flex" },
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    fontSize: "0.75rem",
+                    px: 2,
+                    py: 0.5,
+                  }}
+                >
+                  Play
+                </Button>
+                <Tooltip title="Play">
+                  <IconButton
+                    component="span"
+                    size="small"
+                    sx={{
+                      display: { xs: "flex", sm: "none" },
+                      color: "primary.main",
+                    }}
+                    aria-label="Play"
+                  >
+                    <Gamepad2 size={18} />
+                  </IconButton>
+                </Tooltip>
               </NextLink>
             </Stack>
           </Stack>

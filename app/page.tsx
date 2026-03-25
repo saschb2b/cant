@@ -138,7 +138,13 @@ export default function LandingPage() {
               opacity: 0.7,
             }}
           >
-            free &middot; no signup &middot; takes 3 min
+            free &middot; no signup &middot; takes 3 min &middot;{" "}
+            <NextLink
+              href="/playground"
+              style={{ color: "inherit", textDecoration: "underline" }}
+            >
+              or try the sandbox
+            </NextLink>
           </Typography>
         </Box>
       </Container>
@@ -170,7 +176,7 @@ export default function LandingPage() {
             color="text.secondary"
             sx={{ textAlign: "center", mb: 4 }}
           >
-            A pattern quiz, a reference library, and a type playground.
+            A pattern quiz, a reference library, and a type sandbox.
           </Typography>
 
           <Stack
@@ -193,7 +199,7 @@ export default function LandingPage() {
               },
               {
                 icon: <FlaskConical size={20} />,
-                title: "Playground",
+                title: "Sandbox",
                 desc: "Write TypeScript types and see them fully expanded. Explore utility types, mapped types, conditionals, and more.",
                 href: "/playground",
               },
