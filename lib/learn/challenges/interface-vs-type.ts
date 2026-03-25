@@ -6,34 +6,46 @@ export const interfaceVsTypeChallenges: Challenge[] = [
     category: "interface-vs-type",
     difficulty: "easy",
     title: "Interface for object shapes",
-    badCode: `// Type alias for a simple object shape
-type User = {
+    badCode: `type User = {
   name: string;
-  email: string;
+  role: string;
 };
 
-// Works, but misses interface benefits:
-// - No declaration merging
-// - Slightly worse error messages
-// - No extends keyword`,
-    goodCode: `// Interface for object shapes
-interface User {
+// Intersection: silently merges conflicts
+type AdminUser = User & {
+  role: number; // No error here!
+};
+
+// role is 'string & number' which is 'never'
+// You only find out when you try to use it
+const admin: AdminUser = {
+  name: "Alice",
+  role: "admin", // Error: never
+};`,
+    goodCode: `interface User {
   name: string;
-  email: string;
+  role: string;
 }
 
-// Can be extended cleanly
+// Extends: catches conflicts immediately
+// interface AdminUser extends User {
+//   role: number; // Error: not assignable
+// }
+
 interface AdminUser extends User {
   permissions: string[];
 }
 
-// Better error messages reference "User"
-// instead of the anonymous object type`,
+const admin: AdminUser = {
+  name: "Alice",
+  role: "admin", // OK
+  permissions: ["read"],
+};`,
     correctSide: "right",
     explanationCorrect:
-      "Interfaces are the idiomatic choice for object shapes in TypeScript. They support `extends` for clean inheritance, produce clearer error messages that reference the interface name, and can be augmented via declaration merging. For plain object types, prefer `interface`.",
+      "Interfaces are the idiomatic choice for object shapes. They support clean `extends` inheritance (which catches property conflicts at declaration), declaration merging for augmenting third-party types, and produce clearer error messages. Both types and interfaces can be extended, but interfaces make the intent more explicit.",
     explanationWrong:
-      "Type aliases work for object shapes, but they lack `extends` syntax (you need `&` instead) and produce slightly less readable error messages. The TypeScript team recommends interfaces for object types unless you need features specific to type aliases, like unions or mapped types.",
+      "Type aliases work for object shapes and can be extended with `&` intersections. However, intersections silently merge conflicting properties into `never` instead of erroring. Types also cannot be augmented via declaration merging. For plain object shapes, interfaces are the conventional choice.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces",
     sourceLabel: "TypeScript Handbook: Interfaces vs Types",
