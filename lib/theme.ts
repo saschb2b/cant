@@ -8,74 +8,74 @@ const theme = createTheme({
     light: {
       palette: {
         background: {
-          default: "#F5F5F5",
+          default: "#F0F4F8",
           paper: "#FFFFFF",
         },
         primary: {
-          main: "#1A1A1A",
+          main: "#3178C6",
           contrastText: "#FFFFFF",
         },
         secondary: {
-          main: "#F5F5F5",
-          contrastText: "#1A1A1A",
+          main: "#EDF2F7",
+          contrastText: "#1E293B",
         },
         error: {
-          main: "#DC2626",
+          main: "#E05252",
           contrastText: "#FFFFFF",
         },
         warning: {
-          main: "#F59E0B",
+          main: "#E5A63B",
           contrastText: "#FFFFFF",
         },
         success: {
-          main: "#16A34A",
+          main: "#3D9A5F",
           contrastText: "#FFFFFF",
         },
         text: {
-          primary: "#0A0A0A",
-          secondary: "#737373",
+          primary: "#1E293B",
+          secondary: "#64748B",
         },
-        divider: "#E5E5E5",
+        divider: "#D8E2EC",
         action: {
-          hover: "rgba(0,0,0,0.04)",
-          selected: "rgba(0,0,0,0.08)",
+          hover: "rgba(49,120,198,0.06)",
+          selected: "rgba(49,120,198,0.10)",
         },
       },
     },
     dark: {
       palette: {
         background: {
-          default: "#0A0A0A",
-          paper: "#171717",
+          default: "#0F1219",
+          paper: "#181D27",
         },
         primary: {
-          main: "#FAFAFA",
-          contrastText: "#0A0A0A",
+          main: "#6EA8DE",
+          contrastText: "#0F1219",
         },
         secondary: {
-          main: "#262626",
-          contrastText: "#FAFAFA",
+          main: "#1E2535",
+          contrastText: "#E1E8F0",
         },
         error: {
-          main: "#EF4444",
+          main: "#F07070",
           contrastText: "#FFFFFF",
         },
         warning: {
-          main: "#F59E0B",
-          contrastText: "#FFFFFF",
+          main: "#F0B95A",
+          contrastText: "#1E293B",
         },
         success: {
-          main: "#22C55E",
-          contrastText: "#FFFFFF",
+          main: "#5BBB7B",
+          contrastText: "#0F1219",
         },
         text: {
-          primary: "#FAFAFA",
-          secondary: "#A3A3A3",
+          primary: "#E1E8F0",
+          secondary: "#8A9BBB",
         },
-        divider: "#262626",
+        divider: "#262F3F",
         action: {
-          hover: "rgba(255,255,255,0.06)",
-          selected: "rgba(255,255,255,0.12)",
+          hover: "rgba(110,168,222,0.08)",
+          selected: "rgba(110,168,222,0.14)",
         },
       },
     },
@@ -96,6 +96,27 @@ const theme = createTheme({
         ".shiki-dark": { display: "none" },
         ".dark .shiki-light": { display: "none" },
         ".dark .shiki-dark": { display: "block" },
+
+        /* Shiki code decorations: error underline */
+        ".code-error": {
+          textDecoration: "wavy underline #E05252",
+          textDecorationSkipInk: "none",
+          textUnderlineOffset: "3px",
+        },
+        ".dark .code-error": {
+          textDecorationColor: "#F07070",
+        },
+
+        /* Shiki code decorations: OK underline */
+        ".code-ok": {
+          textDecoration: "underline #3D9A5F",
+          textDecorationStyle: "dotted",
+          textDecorationSkipInk: "none",
+          textUnderlineOffset: "3px",
+        },
+        ".dark .code-ok": {
+          textDecorationColor: "#5BBB7B",
+        },
       },
     },
     MuiButton: {

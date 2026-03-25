@@ -10,7 +10,7 @@ export default function AppleIcon() {
         width: 180,
         height: 180,
         borderRadius: 37,
-        background: "#1A1A1A",
+        background: "#3178C6",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -25,7 +25,7 @@ export default function AppleIcon() {
           top: 48,
           width: 104,
           height: 66,
-          border: "4px solid #FAFAFA",
+          border: "4px solid #FFFFFF",
           borderRadius: 8,
         }}
       />
@@ -37,7 +37,7 @@ export default function AppleIcon() {
           top: 114,
           width: 4,
           height: 12,
-          background: "#FAFAFA",
+          background: "#FFFFFF",
           borderRadius: 2,
         }}
       />
@@ -48,7 +48,7 @@ export default function AppleIcon() {
           top: 126,
           width: 36,
           height: 4,
-          background: "#FAFAFA",
+          background: "#FFFFFF",
           borderRadius: 2,
         }}
       />
@@ -60,9 +60,9 @@ export default function AppleIcon() {
           top: 72,
           width: 40,
           height: 56,
-          border: "3.5px solid rgba(250,250,250,0.8)",
+          border: "3.5px solid rgba(255,255,255,0.8)",
           borderRadius: 6,
-          background: "rgba(250,250,250,0.08)",
+          background: "rgba(255,255,255,0.08)",
         }}
       />
       {/* Phone frame */}
@@ -73,9 +73,9 @@ export default function AppleIcon() {
           top: 82,
           width: 28,
           height: 46,
-          border: "3px solid rgba(250,250,250,0.6)",
+          border: "3px solid rgba(255,255,255,0.6)",
           borderRadius: 6,
-          background: "rgba(250,250,250,0.05)",
+          background: "rgba(255,255,255,0.05)",
         }}
       />
     </div>,

@@ -36,18 +36,18 @@ function getLevel(count: number): number {
 }
 
 const LEVEL_COLORS_LIGHT = [
-  "#E8E0D4",
-  "#A8C5AE",
-  "#6F9E7A",
-  "#4A7A62",
-  "#2F5A45",
+  "#D8E2EC",
+  "#A3C4E0",
+  "#6EA8DE",
+  "#4A85C2",
+  "#3168A6",
 ];
 const LEVEL_COLORS_DARK = [
-  "#2E2924",
-  "#3A6B4A",
-  "#4A8A5E",
-  "#6BA882",
-  "#8CC8A0",
+  "#1E2535",
+  "#2A4060",
+  "#3A6098",
+  "#5A8DC6",
+  "#7EB4E2",
 ];
 
 function formatDate(d: Date): string {

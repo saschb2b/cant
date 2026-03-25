@@ -12,8 +12,8 @@ function setStatus(status: string) {
 }
 
 setStatus("active");  // OK
-setStatus("acitve");  // OK (typo, no error)
-setStatus("banana");  // OK (nonsense, no error)`,
+setStatus("acitve");  // No error, typo undetected
+setStatus("banana");  // No error, nonsense value`,
     goodCode: `type Status = "active" | "inactive" | "pending";
 
 function setStatus(status: Status) {

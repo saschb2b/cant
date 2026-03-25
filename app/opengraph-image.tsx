@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Can't Resize - Multi-Device Preview";
+export const alt = "Can't Type - TypeScript Challenge Game";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -15,7 +15,7 @@ export default function OgImage() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        background: "#0A0A0A",
+        background: "#0F1219",
         fontFamily: "system-ui, sans-serif",
       }}
     >
@@ -34,8 +34,8 @@ export default function OgImage() {
             width: 48,
             height: 80,
             borderRadius: 8,
-            border: "2px solid #333",
-            background: "#171717",
+            border: "2px solid #2A4060",
+            background: "#181D27",
           }}
         />
         {/* Tablet */}
@@ -44,8 +44,8 @@ export default function OgImage() {
             width: 72,
             height: 96,
             borderRadius: 8,
-            border: "2px solid #333",
-            background: "#171717",
+            border: "2px solid #2A4060",
+            background: "#181D27",
           }}
         />
         {/* Desktop */}
@@ -54,8 +54,8 @@ export default function OgImage() {
             width: 120,
             height: 76,
             borderRadius: 8,
-            border: "2px solid #FAFAFA",
-            background: "#171717",
+            border: "2px solid #6EA8DE",
+            background: "#181D27",
           }}
         />
       </div>
@@ -64,23 +64,23 @@ export default function OgImage() {
         style={{
           fontSize: 56,
           fontWeight: 700,
-          color: "#FAFAFA",
+          color: "#E1E8F0",
           marginBottom: 16,
         }}
       >
-        Responsive Viewer
+        Can&apos;t Type
       </div>
 
       <div
         style={{
           fontSize: 26,
-          color: "#A3A3A3",
+          color: "#8A9BBB",
           maxWidth: 700,
           textAlign: "center",
           lineHeight: 1.4,
         }}
       >
-        One site. Every screen. Synced in real time.
+        Pick the better TypeScript pattern. 96 challenges across 16 categories.
       </div>
     </div>,
     { ...size },

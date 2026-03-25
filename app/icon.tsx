@@ -10,7 +10,7 @@ export default function Icon() {
         width: 32,
         height: 32,
         borderRadius: 6,
-        background: "#1A1A1A",
+        background: "#3178C6",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -25,7 +25,7 @@ export default function Icon() {
           top: 7,
           width: 18,
           height: 12,
-          border: "1.5px solid #FAFAFA",
+          border: "1.5px solid #FFFFFF",
           borderRadius: 2,
         }}
       />
@@ -37,7 +37,7 @@ export default function Icon() {
           top: 11,
           width: 8,
           height: 12,
-          border: "1.5px solid rgba(250,250,250,0.7)",
+          border: "1.5px solid rgba(255,255,255,0.7)",
           borderRadius: 1.5,
         }}
       />
@@ -49,7 +49,7 @@ export default function Icon() {
           bottom: 4,
           width: 6,
           height: 9,
-          border: "1.5px solid rgba(250,250,250,0.5)",
+          border: "1.5px solid rgba(255,255,255,0.5)",
           borderRadius: 1.5,
         }}
       />

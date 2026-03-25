@@ -47,7 +47,7 @@ function setStatus(status: Status) { }
 
 // Any number is accepted!
 setStatus(0);    // OK (Active)
-setStatus(999);  // OK (no such member!)`,
+setStatus(999);  // No error, no such member!`,
     goodCode: `type Status = "active" | "inactive" | "pending";
 
 function setStatus(status: Status) { }

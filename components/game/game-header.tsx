@@ -182,7 +182,7 @@ export function GameHeader({
             }
 
             if (isReviewed) {
-              shadow = `0 0 0 2px #FFFFFF, 0 0 0 4px ${bgcolor}`;
+              shadow = `0 0 0 2px var(--mui-palette-background-paper), 0 0 0 4px ${bgcolor}`;
             }
 
             const dotSx = {
