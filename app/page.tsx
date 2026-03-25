@@ -5,19 +5,39 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import {
   ArrowRight,
   Gamepad2,
   BookOpen,
   FlaskConical,
   ExternalLink,
+  X,
+  Check,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
+import { codeBlockStyles } from "@/lib/code-styles";
 
-export default function LandingPage() {
+const HERO_BAD = `function first(arr: any[]): any {
+  return arr[0];
+}
+const val = first([1, 2, 3]);
+val.toFixed(2); // No error even if wrong`;
+
+const HERO_GOOD = `function first<T>(arr: T[]): T {
+  return arr[0];
+}
+const val = first([1, 2, 3]);
+val.toFixed(2); // OK, checked by compiler`;
+
+export default async function LandingPage() {
+  const highlighter = await getHighlighter();
+  const badHtml = highlightDual(highlighter, HERO_BAD);
+  const goodHtml = highlightDual(highlighter, HERO_GOOD);
   return (
     <Box
       sx={{
@@ -51,102 +71,240 @@ export default function LandingPage() {
         sx={{
           flex: 1,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          alignItems: "center",
           pt: { xs: 6, md: 10 },
           pb: { xs: 6, md: 10 },
           position: "relative",
           zIndex: 1,
         }}
       >
-        <Box sx={{ textAlign: { xs: "center", md: "left" }, maxWidth: 600 }}>
-          <Typography
-            variant="h2"
-            component="h1"
-            fontWeight={800}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          alignItems="center"
+          spacing={{ xs: 5, md: 6 }}
+          sx={{ width: "100%" }}
+        >
+          {/* Left: copy + CTAs */}
+          <Box
             sx={{
-              lineHeight: 1.1,
-              mb: 2.5,
-              fontSize: { xs: "2.25rem", sm: "3rem", md: "3.5rem" },
-              letterSpacing: "-0.02em",
-            }}
-          >
-            One type.
-            <br />
-            <Box component="span" sx={{ color: "primary.main" }}>
-              Two ways.
-            </Box>
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{
-              lineHeight: 1.7,
-              mb: 4,
-              maxWidth: 420,
-              mx: { xs: "auto", md: 0 },
-              fontSize: { xs: "1rem", md: "1.1rem" },
-            }}
-          >
-            Test your TypeScript instincts with quick-fire challenges, and study{" "}
-            {String(challenges.length)} patterns across{" "}
-            {String(CATEGORY_ORDER.length)} categories side by side.
-          </Typography>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1.5}
-            sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
-          >
-            <NextLink href="/play" style={{ textDecoration: "none" }}>
-              <Button
-                variant="contained"
-                size="large"
-                endIcon={<ArrowRight size={18} />}
-                sx={{
-                  px: { xs: 3, md: 5 },
-                  py: { xs: 1, md: 1.5 },
-                  fontSize: { xs: "0.9rem", md: "1.05rem" },
-                }}
-              >
-                Start Playing
-              </Button>
-            </NextLink>
-            <NextLink href="/learn" style={{ textDecoration: "none" }}>
-              <Button
-                variant="text"
-                size="large"
-                sx={{
-                  px: { xs: 2, md: 3 },
-                  py: { xs: 1, md: 1.5 },
-                  fontSize: { xs: "0.9rem", md: "1.05rem" },
-                }}
-              >
-                Browse Patterns
-              </Button>
-            </NextLink>
-          </Stack>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            fontFamily="var(--font-geist-mono), monospace"
-            sx={{
-              mt: 2,
-              display: "block",
               textAlign: { xs: "center", md: "left" },
-              opacity: 0.7,
+              maxWidth: 480,
+              flexShrink: 0,
             }}
           >
-            free &middot; no signup &middot; takes 3 min &middot;{" "}
-            <NextLink
-              href="/playground"
-              style={{ color: "inherit", textDecoration: "underline" }}
+            <Typography
+              variant="h2"
+              component="h1"
+              fontWeight={800}
+              sx={{
+                lineHeight: 1.1,
+                mb: 2.5,
+                fontSize: { xs: "2.25rem", sm: "3rem", md: "3.5rem" },
+                letterSpacing: "-0.02em",
+              }}
             >
-              or try the sandbox
-            </NextLink>
-          </Typography>
-        </Box>
+              One type.
+              <br />
+              <Box component="span" sx={{ color: "primary.main" }}>
+                Two ways.
+              </Box>
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{
+                lineHeight: 1.7,
+                mb: 4,
+                maxWidth: 420,
+                mx: { xs: "auto", md: 0 },
+              }}
+            >
+              Test your TypeScript instincts with quick-fire challenges, and
+              study {String(challenges.length)} patterns across{" "}
+              {String(CATEGORY_ORDER.length)} categories side by side.
+            </Typography>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1.5}
+              sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
+            >
+              <NextLink href="/play" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowRight size={18} />}
+                  sx={{ px: { xs: 3, md: 5 } }}
+                >
+                  Start Playing
+                </Button>
+              </NextLink>
+              <NextLink href="/learn" style={{ textDecoration: "none" }}>
+                <Button variant="text" size="large">
+                  Browse Patterns
+                </Button>
+              </NextLink>
+            </Stack>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              fontFamily="var(--font-geist-mono), monospace"
+              sx={{
+                mt: 2,
+                display: "block",
+                textAlign: { xs: "center", md: "left" },
+                opacity: 0.7,
+              }}
+            >
+              free &middot; no signup &middot; takes 3 min &middot;{" "}
+              <NextLink
+                href="/playground"
+                style={{ color: "inherit", textDecoration: "underline" }}
+              >
+                or try the sandbox
+              </NextLink>
+            </Typography>
+          </Box>
+
+          {/* Right: code comparison visual */}
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: 0,
+              maxWidth: 520,
+              width: "100%",
+            }}
+          >
+            <Paper
+              elevation={0}
+              aria-hidden
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                overflow: "hidden",
+                transform: { md: "rotate(1deg)" },
+                transition: "transform 0.3s ease",
+                "&:hover": { transform: "rotate(0deg)" },
+              }}
+            >
+              <Stack
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+              >
+                {/* Bad side */}
+                <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.75}
+                    sx={{
+                      px: 1.5,
+                      py: 0.75,
+                      borderBottom: 1,
+                      borderColor: "divider",
+                      bgcolor:
+                        "rgba(var(--mui-palette-error-mainChannel) / 0.06)",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 16,
+                        height: 16,
+                        borderRadius: "50%",
+                        bgcolor:
+                          "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "error.main",
+                      }}
+                    >
+                      <X size={9} strokeWidth={3} />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="error.main"
+                    >
+                      Avoid
+                    </Typography>
+                  </Stack>
+                  <Box
+                    sx={{
+                      bgcolor:
+                        "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                      ...codeBlockStyles,
+                      "& pre": {
+                        ...codeBlockStyles["& pre"],
+                        fontSize: "0.65rem",
+                        lineHeight: 1.6,
+                        p: 1.5,
+                      },
+                    }}
+                    dangerouslySetInnerHTML={{ __html: badHtml }}
+                  />
+                </Box>
+
+                {/* Good side */}
+                <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.75}
+                    sx={{
+                      px: 1.5,
+                      py: 0.75,
+                      borderBottom: 1,
+                      borderColor: "divider",
+                      bgcolor:
+                        "rgba(var(--mui-palette-success-mainChannel) / 0.06)",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 16,
+                        height: 16,
+                        borderRadius: "50%",
+                        bgcolor:
+                          "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "success.main",
+                      }}
+                    >
+                      <Check size={9} strokeWidth={3} />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="success.main"
+                    >
+                      Prefer
+                    </Typography>
+                  </Stack>
+                  <Box
+                    sx={{
+                      bgcolor:
+                        "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                      ...codeBlockStyles,
+                      "& pre": {
+                        ...codeBlockStyles["& pre"],
+                        fontSize: "0.65rem",
+                        lineHeight: 1.6,
+                        p: 1.5,
+                      },
+                    }}
+                    dangerouslySetInnerHTML={{ __html: goodHtml }}
+                  />
+                </Box>
+              </Stack>
+            </Paper>
+          </Box>
+        </Stack>
       </Container>
 
       {/* Features */}
@@ -267,10 +425,10 @@ export default function LandingPage() {
         sx={{ py: { xs: 5, md: 6 }, position: "relative", zIndex: 1 }}
       >
         <Typography
-          variant="body2"
+          variant="caption"
           color="text.secondary"
           fontFamily="var(--font-geist-mono), monospace"
-          sx={{ textAlign: "center", mb: 2.5, fontSize: "0.8rem" }}
+          sx={{ textAlign: "center", mb: 2.5, display: "block" }}
         >
           {"Part of the Can't series"}
         </Typography>
