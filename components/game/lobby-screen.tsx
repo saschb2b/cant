@@ -804,81 +804,158 @@ export function LobbyScreen({
         >
           More topics
         </Typography>
-        <Box
-          component="a"
-          href="https://cant-maintain.saschb2b.com/play"
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            display: "block",
-            textDecoration: "none",
-            color: "inherit",
-            maxWidth: { sm: 360 },
-          }}
-        >
-          <Paper
-            elevation={0}
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
+          <Box
+            component="a"
+            href="https://cant-maintain.saschb2b.com/play"
+            target="_blank"
+            rel="noopener noreferrer"
             sx={{
-              border: 1,
-              borderColor: "divider",
-              overflow: "hidden",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                borderColor: "text.secondary",
-                transform: "translateY(-1px)",
-              },
+              display: "block",
+              textDecoration: "none",
+              color: "inherit",
+              flex: 1,
             }}
           >
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={0.75}
+            <Paper
+              elevation={0}
               sx={{
-                px: 2,
-                py: 1,
-                bgcolor: "secondary.main",
-                borderBottom: 1,
+                border: 1,
                 borderColor: "divider",
+                overflow: "hidden",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "text.secondary",
+                  transform: "translateY(-1px)",
+                },
               }}
             >
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                fontWeight={600}
-                sx={{ fontSize: "0.72rem" }}
-              >
-                {"Can't Maintain"}
-              </Typography>
-              <Box
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={0.75}
                 sx={{
-                  ml: "auto",
-                  color: "text.disabled",
-                  display: "flex",
+                  px: 2,
+                  py: 1,
+                  bgcolor: "secondary.main",
+                  borderBottom: 1,
+                  borderColor: "divider",
                 }}
               >
-                <ExternalLink size={12} />
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  fontWeight={600}
+                  sx={{ fontSize: "0.72rem" }}
+                >
+                  {"Can't Maintain"}
+                </Typography>
+                <Box
+                  sx={{
+                    ml: "auto",
+                    color: "text.disabled",
+                    display: "flex",
+                  }}
+                >
+                  <ExternalLink size={12} />
+                </Box>
+              </Stack>
+              <Box sx={{ p: 2 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ lineHeight: 1.5 }}
+                >
+                  Think you can spot clean React component APIs? Same game, same
+                  format, different topic.
+                </Typography>
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{ mt: 1, display: "block", fontSize: "0.65rem" }}
+                >
+                  Props, composition, TypeScript patterns
+                </Typography>
               </Box>
-            </Stack>
-            <Box sx={{ p: 2 }}>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ lineHeight: 1.5 }}
+            </Paper>
+          </Box>
+          <Box
+            component="a"
+            href="https://cant-resize.saschb2b.com/play"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: "block",
+              textDecoration: "none",
+              color: "inherit",
+              flex: 1,
+            }}
+          >
+            <Paper
+              elevation={0}
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                overflow: "hidden",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "text.secondary",
+                  transform: "translateY(-1px)",
+                },
+              }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={0.75}
+                sx={{
+                  px: 2,
+                  py: 1,
+                  bgcolor: "secondary.main",
+                  borderBottom: 1,
+                  borderColor: "divider",
+                }}
               >
-                Think you can spot clean React component APIs? Same game, same
-                format, different topic.
-              </Typography>
-              <Typography
-                variant="caption"
-                color="text.disabled"
-                fontFamily="var(--font-geist-mono), monospace"
-                sx={{ mt: 1, display: "block", fontSize: "0.65rem" }}
-              >
-                Props, composition, TypeScript patterns
-              </Typography>
-            </Box>
-          </Paper>
-        </Box>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  fontWeight={600}
+                  sx={{ fontSize: "0.72rem" }}
+                >
+                  {"Can't Resize"}
+                </Typography>
+                <Box
+                  sx={{
+                    ml: "auto",
+                    color: "text.disabled",
+                    display: "flex",
+                  }}
+                >
+                  <ExternalLink size={12} />
+                </Box>
+              </Stack>
+              <Box sx={{ p: 2 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ lineHeight: 1.5 }}
+                >
+                  Think you can spot responsive design patterns? Same game, same
+                  format, different topic.
+                </Typography>
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{ mt: 1, display: "block", fontSize: "0.65rem" }}
+                >
+                  Media queries, containers, fluid layouts
+                </Typography>
+              </Box>
+            </Paper>
+          </Box>
+        </Stack>
       </Box>
     </>
   );

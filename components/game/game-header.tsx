@@ -103,7 +103,24 @@ export function GameHeader({
             </Box>
 
             {streak >= 2 && (
-              <Stack direction="row" alignItems="center" spacing={0.75}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={0.75}
+                sx={{
+                  "@keyframes streakPulse": {
+                    "0%, 100%": {
+                      filter:
+                        "drop-shadow(0 0 2px var(--mui-palette-warning-main))",
+                    },
+                    "50%": {
+                      filter:
+                        "drop-shadow(0 0 8px var(--mui-palette-warning-main))",
+                    },
+                  },
+                  animation: "streakPulse 2s ease-in-out infinite",
+                }}
+              >
                 <Box sx={{ color: "warning.main", display: "flex" }}>
                   <Flame size={20} />
                 </Box>

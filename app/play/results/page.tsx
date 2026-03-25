@@ -21,7 +21,7 @@ export async function generateMetadata({
   const percentage = Math.round((score / total) * 100);
   const rank = getRank(percentage);
 
-  const title = `${rank} — ${String(score)}/${String(total)} | Can't Type`;
+  const title = `${rank.emoji} ${rank.title} — ${String(score)}/${String(total)} | Can't Type`;
   const description = `I scored ${String(score)}/${String(total)} on spotting better TypeScript patterns. Can you beat my score? Train your eye for clean TypeScript in under 5 minutes.`;
   const ogImage = "https://cant-type.saschb2b.com/opengraph-image";
 

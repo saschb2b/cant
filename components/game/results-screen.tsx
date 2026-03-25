@@ -34,6 +34,7 @@ import {
   Hash,
   Copy,
 } from "lucide-react";
+import { SparkleField } from "@/components/sparkle-field";
 
 interface ResultsScreenProps {
   state: GameState;
@@ -59,7 +60,7 @@ export function ResultsScreen({
   const minutes = Math.floor(elapsed / 60);
   const seconds = elapsed % 60;
 
-  const rank = getRank(percentage);
+  const { title: rankTitle, emoji: rankEmoji } = getRank(percentage);
 
   const scoreColor =
     percentage >= 70
@@ -156,8 +157,17 @@ export function ResultsScreen({
         <Paper
           elevation={0}
           sx={{
+            position: "relative",
+            overflow: "hidden",
             border: 1,
-            borderColor: "divider",
+            borderColor:
+              percentage >= 90
+                ? "rgba(var(--mui-palette-success-mainChannel) / 0.4)"
+                : "divider",
+            ...(percentage >= 90 && {
+              boxShadow:
+                "0 0 0 1px rgba(var(--mui-palette-success-mainChannel) / 0.1), 0 4px 24px rgba(var(--mui-palette-success-mainChannel) / 0.08)",
+            }),
             py: { xs: 3, sm: 4 },
             px: { xs: 2, sm: 3 },
             textAlign: "center",
@@ -165,6 +175,7 @@ export function ResultsScreen({
             width: "100%",
           }}
         >
+          {percentage >= 70 && <SparkleField />}
           <Typography
             variant="h2"
             fontWeight={700}
@@ -179,7 +190,7 @@ export function ResultsScreen({
             fontWeight={600}
             sx={{ mt: 1, color: "text.primary" }}
           >
-            {rank}
+            {rankEmoji} {rankTitle}
           </Typography>
 
           <Stack

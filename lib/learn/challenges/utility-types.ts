@@ -215,4 +215,38 @@ type CreateArgs = Parameters<typeof createUser>;
       "https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype",
     sourceLabel: "TypeScript Handbook: ReturnType",
   },
+  {
+    id: "ut-007",
+    category: "utility-types",
+    difficulty: "medium",
+    title: "Prettify intersections for readability",
+    badCode: `type User = { name: string } &
+  { email: string } &
+  { role: "admin" | "user" };
+
+// Hover shows:
+// { name: string } & { email: string }
+//   & { role: "admin" | "user" }
+// Hard to read with many intersections`,
+    goodCode: `type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+type User = Prettify<
+  { name: string } &
+  { email: string } &
+  { role: "admin" | "user" }
+>;
+
+// Hover shows:
+// { name: string; email: string;
+//   role: "admin" | "user" }`,
+    correctSide: "right",
+    explanationCorrect:
+      "The `Prettify` helper uses a mapped type to flatten intersections into a single object type. IDE hover tooltips show a clean, readable object instead of a chain of `&` intersections. This is especially valuable when composing types from multiple sources like mixins, Pick/Omit combinations, or module augmentations.",
+    explanationWrong:
+      "Raw intersections display as a chain of `&` in IDE tooltips. With two or three intersections this is manageable, but with more it becomes hard to see what properties are available. The `Prettify` helper solves this with zero runtime cost since it resolves to the same type.",
+    sourceUrl: "https://www.totaltypescript.com/concepts/the-prettify-helper",
+    sourceLabel: "Total TypeScript: The Prettify Helper",
+  },
 ];

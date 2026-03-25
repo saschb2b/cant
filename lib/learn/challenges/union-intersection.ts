@@ -220,4 +220,36 @@ move("UP");`,
     sourceUrl: "https://www.totaltypescript.com/concepts/unions-vs-enums",
     sourceLabel: "Total TypeScript: Unions vs Enums",
   },
+  {
+    id: "ui-007",
+    category: "union-intersection",
+    difficulty: "hard",
+    title: "Loose autocomplete with string unions",
+    badCode: `type IconSize = "sm" | "md" | "lg" | string;
+
+function setSize(size: IconSize) { }
+
+// TypeScript collapses the union to just 'string'
+// No autocomplete for "sm", "md", "lg"
+setSize("sm");   // No suggestions
+setSize("xl");   // No error, no help`,
+    goodCode: `type LooseAutocomplete<T extends string> =
+  | T
+  | (string & {});
+
+type IconSize = LooseAutocomplete<"sm" | "md" | "lg">;
+
+function setSize(size: IconSize) { }
+
+setSize("sm");   // OK, autocomplete works
+setSize("xl");   // OK, arbitrary strings allowed`,
+    correctSide: "right",
+    explanationCorrect:
+      "The `string & {}` trick preserves autocomplete for known values while still accepting any string. TypeScript sees `string & {}` as a separate branch from the literals, so it does not collapse the union. This is useful for icon sizes, color names, or any API where you want suggestions but not a closed set.",
+    explanationWrong:
+      "Adding `string` to a union of string literals causes TypeScript to collapse everything into `string`. The literal values are technically still part of the union, but the IDE no longer suggests them because the broader `string` type subsumes them.",
+    sourceUrl:
+      "https://www.totaltypescript.com/tips/create-autocomplete-helper-which-allows-for-arbitrary-values",
+    sourceLabel: "Total TypeScript: Loose Autocomplete",
+  },
 ];

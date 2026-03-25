@@ -42,7 +42,7 @@ export async function submitGameResult(data: {
     total,
     bestStreak,
     durationSec,
-    rank: getRank(percentage),
+    rank: getRank(percentage).title,
   });
 }
 

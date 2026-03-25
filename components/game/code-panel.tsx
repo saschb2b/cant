@@ -27,6 +27,59 @@ interface CodePanelProps {
   isSelected?: boolean;
 }
 
+const SPARKLE_BURSTS = Array.from({ length: 8 }, (_, i) => {
+  const angle = (i / 8) * 360;
+  const rad = (angle * Math.PI) / 180;
+  const dist = 30 + (i % 3) * 10;
+  return {
+    id: i,
+    x: Math.cos(rad) * dist,
+    y: Math.sin(rad) * dist,
+    delay: i * 0.04,
+    size: i % 2 === 0 ? 4 : 3,
+  };
+});
+
+function SparklesBurst() {
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        position: "absolute",
+        bottom: 32,
+        right: 32,
+        width: 0,
+        height: 0,
+        "@keyframes sparkleBurst": {
+          "0%": { opacity: 1, transform: "scale(0) translate(0, 0)" },
+          "60%": { opacity: 1 },
+          "100%": {
+            opacity: 0,
+            transform: "scale(1) translate(var(--tx), var(--ty))",
+          },
+        },
+      }}
+    >
+      {SPARKLE_BURSTS.map((s) => (
+        <Box
+          key={s.id}
+          sx={{
+            position: "absolute",
+            width: s.size,
+            height: s.size,
+            borderRadius: "50%",
+            bgcolor: "success.main",
+            "--tx": `${String(s.x)}px`,
+            "--ty": `${String(s.y)}px`,
+            opacity: 0,
+            animation: `sparkleBurst 0.6s ${String(s.delay)}s ease-out forwards`,
+          }}
+        />
+      ))}
+    </Box>
+  );
+}
+
 function CheckmarkOverlay() {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [isFadingOut, setIsFadingOut] = useState(false);
@@ -39,24 +92,27 @@ function CheckmarkOverlay() {
   if (isDone) return null;
 
   return (
-    <Lottie
-      lottieRef={lottieRef}
-      animationData={checkmarkAnimation}
-      loop={false}
-      onComplete={() => {
-        setIsFadingOut(true);
-        setTimeout(() => setIsDone(true), 400);
-      }}
-      style={{
-        position: "absolute",
-        bottom: 8,
-        right: 8,
-        width: 48,
-        height: 48,
-        opacity: isFadingOut ? 0 : 1,
-        transition: "opacity 0.4s ease",
-      }}
-    />
+    <>
+      <SparklesBurst />
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={checkmarkAnimation}
+        loop={false}
+        onComplete={() => {
+          setIsFadingOut(true);
+          setTimeout(() => setIsDone(true), 400);
+        }}
+        style={{
+          position: "absolute",
+          bottom: 8,
+          right: 8,
+          width: 48,
+          height: 48,
+          opacity: isFadingOut ? 0 : 1,
+          transition: "opacity 0.4s ease",
+        }}
+      />
+    </>
   );
 }
 
@@ -191,8 +247,20 @@ export function CodePanel({
           {label}
         </Typography>
         <Fade in={result === "correct"} timeout={300} unmountOnExit>
-          <Typography variant="caption" fontWeight={500} color="success.main">
-            Better
+          <Typography
+            variant="caption"
+            fontWeight={500}
+            color="success.main"
+            sx={{
+              "@keyframes shimmer": {
+                "0%": { opacity: 0.7 },
+                "50%": { opacity: 1 },
+                "100%": { opacity: 0.7 },
+              },
+              animation: "shimmer 2s ease-in-out infinite",
+            }}
+          >
+            &#x2728; Better
           </Typography>
         </Fade>
         <Fade in={result === "wrong"} timeout={300} unmountOnExit>

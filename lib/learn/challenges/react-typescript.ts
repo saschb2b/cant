@@ -283,4 +283,42 @@ function Text<T extends React.ElementType = "p">({
       "https://www.totaltypescript.com/concepts/polymorphic-components",
     sourceLabel: "Total TypeScript: Polymorphic Components",
   },
+  {
+    id: "rt-007",
+    category: "react-typescript",
+    difficulty: "easy",
+    title: "ComponentProps for wrapper components",
+    badCode: `interface ButtonProps {
+  label: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
+  type?: "button" | "submit" | "reset";
+  // Must manually list every HTML button prop
+}
+
+function Button({ label, ...rest }: ButtonProps) {
+  return <button {...rest}>{label}</button>;
+}`,
+    goodCode: `import { ComponentProps } from "react";
+
+interface ButtonProps extends ComponentProps<"button"> {
+  label: string;
+}
+
+function Button({ label, ...rest }: ButtonProps) {
+  return <button {...rest}>{label}</button>;
+}
+
+// All native button props are included automatically
+// <Button label="Go" aria-label="Go" formAction="/api" />`,
+    correctSide: "right",
+    explanationCorrect:
+      '`ComponentProps<"button">` extracts every valid HTML button attribute automatically. Your wrapper only declares the custom props it adds. New HTML attributes are picked up when React\'s types update, and consumers get full autocomplete for native props like aria attributes and form actions.',
+    explanationWrong:
+      "Manually listing HTML props is incomplete and fragile. You inevitably miss attributes like `aria-*`, `form`, `formAction`, or `autoFocus`. Every time you need another native prop, you have to update the interface. `ComponentProps` gives you all of them for free.",
+    sourceUrl:
+      "https://www.totaltypescript.com/concepts/react-componentprops-type-helper",
+    sourceLabel: "Total TypeScript: ComponentProps",
+  },
 ];

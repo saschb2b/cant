@@ -272,4 +272,35 @@ function applyPatch(
       "https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes",
     sourceLabel: "TypeScript: exactOptionalPropertyTypes",
   },
+  {
+    id: "cm-007",
+    category: "common-mistakes",
+    difficulty: "medium",
+    title: "Type-safe Object.keys",
+    badCode: `const config = { host: "localhost", port: 3000, debug: true };
+
+Object.keys(config).forEach((key) => {
+  // key is 'string', not keyof typeof config
+  console.log(config[key]); // Error
+});`,
+    goodCode: `const objectKeys = <T extends object>(
+  obj: T
+): (keyof T)[] => {
+  return Object.keys(obj) as (keyof T)[];
+};
+
+const config = { host: "localhost", port: 3000, debug: true };
+
+objectKeys(config).forEach((key) => {
+  console.log(config[key]); // OK
+});`,
+    correctSide: "right",
+    explanationCorrect:
+      "A generic `objectKeys` wrapper returns `(keyof T)[]` instead of `string[]`. This gives you literal key types when iterating, so `config[key]` is type-safe. The `as` assertion is safe here because `Object.keys` does return the object's own keys at runtime.",
+    explanationWrong:
+      "`Object.keys` returns `string[]` by design because TypeScript's type system is structural: an object can have more keys at runtime than its type declares. While this is technically correct, it makes key iteration painful. A typed wrapper trades that theoretical safety for practical usability.",
+    sourceUrl:
+      "https://www.totaltypescript.com/tips/create-your-own-objectkeys-function-using-generics-and-the-keyof-operator",
+    sourceLabel: "Total TypeScript: Type-safe Object.keys",
+  },
 ];

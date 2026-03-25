@@ -5,15 +5,13 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import {
   ArrowRight,
   Gamepad2,
   BookOpen,
   FlaskConical,
   ExternalLink,
-  X,
-  Check,
+  Sparkles,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -21,23 +19,30 @@ import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
+import { SparkleField } from "@/components/sparkle-field";
 
-const HERO_BAD = `function first(arr: any[]): any {
-  return arr[0];
-}
-const val = first([1, 2, 3]);
-val.toFixed(2); // No error even if wrong`;
+const HERO_SPELL = `type DeepReadonly<T> = {
+  readonly [K in keyof T]:
+    T[K] extends object
+      ? DeepReadonly<T[K]>
+      : T[K];
+};`;
 
-const HERO_GOOD = `function first<T>(arr: T[]): T {
-  return arr[0];
-}
-const val = first([1, 2, 3]);
-val.toFixed(2); // OK, checked by compiler`;
+const HERO_REVEAL = `type DeepReadonly<Settings> = {
+  readonly theme: {
+    readonly mode: "light" | "dark";
+    readonly accent: string;
+  };
+  readonly notifications: {
+    readonly email: boolean;
+    readonly push: boolean;
+  };
+};`;
 
 export default async function LandingPage() {
   const highlighter = await getHighlighter();
-  const badHtml = highlightDual(highlighter, HERO_BAD);
-  const goodHtml = highlightDual(highlighter, HERO_GOOD);
+  const spellHtml = highlightDual(highlighter, HERO_SPELL);
+  const revealHtml = highlightDual(highlighter, HERO_REVEAL);
   return (
     <Box
       sx={{
@@ -61,7 +66,9 @@ export default async function LandingPage() {
             "radial-gradient(circle at 50% 50%, rgba(var(--mui-palette-error-mainChannel) / 0.02) 0%, transparent 70%)",
           ].join(", "),
         }}
-      />
+      >
+        <SparkleField />
+      </Box>
 
       <SiteHeader />
 
@@ -81,6 +88,7 @@ export default async function LandingPage() {
         <Stack
           direction={{ xs: "column", md: "row" }}
           alignItems="center"
+          justifyContent="space-between"
           spacing={{ xs: 5, md: 6 }}
           sx={{ width: "100%" }}
         >
@@ -103,10 +111,10 @@ export default async function LandingPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              One type.
+              Type magic,
               <br />
               <Box component="span" sx={{ color: "primary.main" }}>
-                Two ways.
+                demystified.
               </Box>
             </Typography>
             <Typography
@@ -167,142 +175,135 @@ export default async function LandingPage() {
             </Typography>
           </Box>
 
-          {/* Right: code comparison visual */}
+          {/* Right: type transformation visual */}
           <Box
             sx={{
               flex: 1,
               minWidth: 0,
-              maxWidth: 520,
+              maxWidth: 480,
               width: "100%",
+              ml: { md: "auto" },
             }}
           >
-            <Paper
-              elevation={0}
-              aria-hidden
-              sx={{
-                border: 1,
-                borderColor: "divider",
-                overflow: "hidden",
-                transform: { md: "rotate(1deg)" },
-                transition: "transform 0.3s ease",
-                "&:hover": { transform: "rotate(0deg)" },
-              }}
-            >
-              <Stack
-                direction="row"
-                divider={<Divider orientation="vertical" flexItem />}
+            <Stack spacing={0} aria-hidden>
+              {/* Spell: the type incantation */}
+              <Paper
+                elevation={0}
+                sx={{
+                  border: 1,
+                  borderColor: "divider",
+                  overflow: "hidden",
+                }}
               >
-                {/* Bad side */}
-                <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={0.75}
-                    sx={{
-                      px: 1.5,
-                      py: 0.75,
-                      borderBottom: 1,
-                      borderColor: "divider",
-                      bgcolor:
-                        "rgba(var(--mui-palette-error-mainChannel) / 0.06)",
-                    }}
+                <Box
+                  sx={{
+                    px: 1.5,
+                    py: 0.75,
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    bgcolor:
+                      "rgba(var(--mui-palette-primary-mainChannel) / 0.06)",
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    fontWeight={600}
+                    fontFamily="var(--font-geist-mono), monospace"
+                    color="primary.main"
                   >
-                    <Box
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: "50%",
-                        bgcolor:
-                          "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "error.main",
-                      }}
-                    >
-                      <X size={9} strokeWidth={3} />
-                    </Box>
-                    <Typography
-                      variant="caption"
-                      fontWeight={600}
-                      fontFamily="var(--font-geist-mono), monospace"
-                      color="error.main"
-                    >
-                      Avoid
-                    </Typography>
-                  </Stack>
-                  <Box
-                    sx={{
-                      bgcolor:
-                        "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
-                      ...codeBlockStyles,
-                      "& pre": {
-                        ...codeBlockStyles["& pre"],
-                        fontSize: "0.65rem",
-                        lineHeight: 1.6,
-                        p: 1.5,
-                      },
-                    }}
-                    dangerouslySetInnerHTML={{ __html: badHtml }}
-                  />
+                    The spell
+                  </Typography>
                 </Box>
+                <Box
+                  sx={{
+                    bgcolor:
+                      "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                    ...codeBlockStyles,
+                    "& pre": {
+                      ...codeBlockStyles["& pre"],
+                      fontSize: "0.7rem",
+                      lineHeight: 1.6,
+                      p: 1.5,
+                    },
+                  }}
+                  dangerouslySetInnerHTML={{ __html: spellHtml }}
+                />
+              </Paper>
 
-                {/* Good side */}
-                <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={0.75}
-                    sx={{
-                      px: 1.5,
-                      py: 0.75,
-                      borderBottom: 1,
-                      borderColor: "divider",
-                      bgcolor:
-                        "rgba(var(--mui-palette-success-mainChannel) / 0.06)",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: "50%",
-                        bgcolor:
-                          "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "success.main",
-                      }}
-                    >
-                      <Check size={9} strokeWidth={3} />
-                    </Box>
-                    <Typography
-                      variant="caption"
-                      fontWeight={600}
-                      fontFamily="var(--font-geist-mono), monospace"
-                      color="success.main"
-                    >
-                      Prefer
-                    </Typography>
-                  </Stack>
-                  <Box
-                    sx={{
-                      bgcolor:
-                        "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
-                      ...codeBlockStyles,
-                      "& pre": {
-                        ...codeBlockStyles["& pre"],
-                        fontSize: "0.65rem",
-                        lineHeight: 1.6,
-                        p: 1.5,
-                      },
-                    }}
-                    dangerouslySetInnerHTML={{ __html: goodHtml }}
-                  />
+              {/* Sparkle divider */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  py: 1.5,
+                  color: "primary.main",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: "50%",
+                    bgcolor:
+                      "rgba(var(--mui-palette-primary-mainChannel) / 0.1)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Sparkles size={16} />
                 </Box>
-              </Stack>
-            </Paper>
+              </Box>
+
+              {/* Reveal: the expanded result */}
+              <Paper
+                elevation={0}
+                sx={{
+                  border: 1,
+                  borderColor:
+                    "rgba(var(--mui-palette-success-mainChannel) / 0.4)",
+                  overflow: "hidden",
+                  boxShadow:
+                    "0 0 0 1px rgba(var(--mui-palette-success-mainChannel) / 0.1), 0 4px 24px rgba(var(--mui-palette-success-mainChannel) / 0.06)",
+                }}
+              >
+                <Box
+                  sx={{
+                    px: 1.5,
+                    py: 0.75,
+                    borderBottom: 1,
+                    borderColor:
+                      "rgba(var(--mui-palette-success-mainChannel) / 0.3)",
+                    bgcolor:
+                      "rgba(var(--mui-palette-success-mainChannel) / 0.06)",
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    fontWeight={600}
+                    fontFamily="var(--font-geist-mono), monospace"
+                    color="success.main"
+                  >
+                    Revealed
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    bgcolor:
+                      "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                    ...codeBlockStyles,
+                    "& pre": {
+                      ...codeBlockStyles["& pre"],
+                      fontSize: "0.7rem",
+                      lineHeight: 1.6,
+                      p: 1.5,
+                    },
+                  }}
+                  dangerouslySetInnerHTML={{ __html: revealHtml }}
+                />
+              </Paper>
+            </Stack>
           </Box>
         </Stack>
       </Container>
@@ -327,14 +328,14 @@ export default async function LandingPage() {
             fontWeight={600}
             sx={{ textAlign: "center", mb: 1 }}
           >
-            Three ways to level up
+            Three paths to mastery
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ textAlign: "center", mb: 4 }}
           >
-            A pattern quiz, a reference library, and a type sandbox.
+            A pattern quiz, a spell book, and a type sandbox.
           </Typography>
 
           <Stack
