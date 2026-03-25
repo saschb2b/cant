@@ -17,40 +17,27 @@ export default function Icon() {
         position: "relative",
       }}
     >
-      {/* Desktop */}
       <div
         style={{
-          position: "absolute",
-          left: 5,
-          top: 7,
-          width: 18,
-          height: 12,
-          border: "1.5px solid #FFFFFF",
-          borderRadius: 2,
+          color: "#FFFFFF",
+          fontSize: 20,
+          fontWeight: 800,
+          fontFamily: "system-ui, sans-serif",
+          lineHeight: 1,
         }}
-      />
-      {/* Tablet */}
+      >
+        T
+      </div>
+      {/* Sparkle dot */}
       <div
         style={{
           position: "absolute",
-          right: 3,
-          top: 11,
-          width: 8,
-          height: 12,
-          border: "1.5px solid rgba(255,255,255,0.7)",
-          borderRadius: 1.5,
-        }}
-      />
-      {/* Phone */}
-      <div
-        style={{
-          position: "absolute",
-          left: 4,
-          bottom: 4,
-          width: 6,
-          height: 9,
-          border: "1.5px solid rgba(255,255,255,0.5)",
-          borderRadius: 1.5,
+          top: 4,
+          right: 4,
+          width: 4,
+          height: 4,
+          borderRadius: "50%",
+          background: "#FFD866",
         }}
       />
     </div>,

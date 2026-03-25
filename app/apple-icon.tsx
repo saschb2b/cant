@@ -17,65 +17,92 @@ export default function AppleIcon() {
         position: "relative",
       }}
     >
-      {/* Desktop frame */}
       <div
         style={{
-          position: "absolute",
-          left: 38,
-          top: 48,
-          width: 104,
-          height: 66,
-          border: "4px solid #FFFFFF",
-          borderRadius: 8,
+          color: "#FFFFFF",
+          fontSize: 110,
+          fontWeight: 800,
+          fontFamily: "system-ui, sans-serif",
+          lineHeight: 1,
+          marginTop: -6,
         }}
-      />
-      {/* Desktop stand */}
+      >
+        T
+      </div>
+      {/* Sparkle top-right */}
       <div
         style={{
           position: "absolute",
-          left: 86,
-          top: 114,
-          width: 4,
-          height: 12,
-          background: "#FFFFFF",
-          borderRadius: 2,
+          top: 28,
+          right: 28,
+          width: 16,
+          height: 16,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-      />
+      >
+        <div
+          style={{
+            position: "absolute",
+            width: 16,
+            height: 3,
+            borderRadius: 2,
+            background: "#FFD866",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            width: 3,
+            height: 16,
+            borderRadius: 2,
+            background: "#FFD866",
+          }}
+        />
+      </div>
+      {/* Sparkle bottom-left */}
       <div
         style={{
           position: "absolute",
-          left: 72,
-          top: 126,
-          width: 36,
-          height: 4,
-          background: "#FFFFFF",
-          borderRadius: 2,
+          bottom: 32,
+          left: 30,
+          width: 10,
+          height: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-      />
-      {/* Tablet frame */}
+      >
+        <div
+          style={{
+            position: "absolute",
+            width: 10,
+            height: 2,
+            borderRadius: 2,
+            background: "rgba(255,216,102,0.75)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            width: 2,
+            height: 10,
+            borderRadius: 2,
+            background: "rgba(255,216,102,0.75)",
+          }}
+        />
+      </div>
+      {/* Dot accent */}
       <div
         style={{
           position: "absolute",
-          left: 108,
-          top: 72,
-          width: 40,
-          height: 56,
-          border: "3.5px solid rgba(255,255,255,0.8)",
-          borderRadius: 6,
-          background: "rgba(255,255,255,0.08)",
-        }}
-      />
-      {/* Phone frame */}
-      <div
-        style={{
-          position: "absolute",
-          left: 28,
-          top: 82,
-          width: 28,
-          height: 46,
-          border: "3px solid rgba(255,255,255,0.6)",
-          borderRadius: 6,
-          background: "rgba(255,255,255,0.05)",
+          bottom: 30,
+          right: 26,
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          background: "rgba(255,216,102,0.7)",
         }}
       />
     </div>,

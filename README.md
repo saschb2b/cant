@@ -1,39 +1,50 @@
-# Can't Resize
+# Can't Type
 
-A responsive design toolkit for developers. Preview any URL across devices with synced interactions, and learn responsive patterns through side-by-side code comparisons.
+Type magic, demystified. A TypeScript education app with a pattern quiz, a reference library, and a type sandbox.
 
-## Viewer
+## Play
 
-A multi-device responsive design viewer at `/canvas`.
+Pick the better TypeScript pattern in 10 side-by-side code challenges at `/play`.
 
-- **Device presets**: iPhone, Pixel, Galaxy, iPad, MacBook, desktop sizes, and custom dimensions
-- **Freeform canvas**: Infinite pan/zoom workspace with draggable, resizable device frames (Miro-style floating UI)
-- **Grid mode**: Auto-arranged comparison view with drag-to-reorder
-- **Event sync** (same-origin): Scroll, mouse, click, hover, and navigation sync across all viewports
-- **Persistent state**: Device layout saved to localStorage
+- **Daily and weekly seeds** for shared challenges
+- **Streak tracking** with magical rank system (Novice through Archmage)
+- **Activity graph** showing your practice history
+- **Shareable results** with encoded URLs
 
 ## Learn
 
-82 responsive design patterns across 16 categories at `/learn`.
+107 TypeScript patterns across 16 categories at `/learn`.
 
-- **Foundations**: Media Queries, Container Queries, Fluid Typography, Viewport Units
-- **Layout**: Flexbox Patterns, Grid Patterns, Responsive Spacing, Overflow Handling
-- **Components**: Breakpoint Hooks, Responsive Props, Conditional Rendering, Responsive Images
-- **Frameworks**: MUI Responsive, Tailwind Responsive
-- **Anti-Patterns**: Common Mistakes, Testing Responsive
+- **Foundations**: Type Narrowing, Generics, Utility Types, Union and Intersection
+- **Type Safety**: Type Assertions, Enums and Literals, Strict Mode, Readonly and Immutability
+- **Functions and Structures**: Function Types, Interface vs Type, Mapped Types, Template Literals
+- **Applied TypeScript**: React TypeScript, Module Types
+- **Anti-Patterns**: Error Handling, Common Mistakes
 
-Each pattern shows an Avoid/Prefer code comparison with syntax highlighting, an explanation, and a link to authoritative documentation.
+Each pattern shows an Avoid/Prefer code comparison with Shiki syntax highlighting, inline IDE-style decorations (error underlines, OK indicators), and a link to authoritative documentation.
+
+Covers patterns from the TypeScript Handbook, Total TypeScript, and TypeScript 5.8/6.0 features like `NoInfer`, `const` type parameters, `--erasableSyntaxOnly`, and strict-by-default.
+
+## Sandbox
+
+A TypeScript type expander tool at `/playground`.
+
+- **Write types on the left**, see them fully expanded on the right
+- **8 presets** covering utility types, mapped types, conditionals, template literals, infer, recursive types, discriminated unions, and Record types
+- **Runs the TypeScript compiler** in a web worker (vendored locally, no CDN dependency)
+- **Shiki highlighting** on both input and output
 
 ## Search
 
-Fuzzy search across all pages, categories, and patterns with Ctrl+K / Cmd+K. Powered by fuse.js with keyword extraction from code snippets.
+Fuzzy search across all pages, categories, and patterns with Ctrl+K / Cmd+K. Powered by Fuse.js with keyword extraction from code snippets.
 
 ## Tech Stack
 
 - Next.js 16 (App Router, View Transitions)
 - React 19
 - Material UI 7 + Emotion
-- Shiki (syntax highlighting)
+- Shiki (syntax highlighting with decorations)
+- TypeScript compiler API (sandbox web worker)
 - Fuse.js (search)
 - Umami (analytics)
 - TypeScript, pnpm
@@ -45,55 +56,69 @@ pnpm install
 pnpm dev
 ```
 
+The first `dev` or `build` run minifies the TypeScript compiler into `public/workers/typescript.min.js` for the sandbox (via `scripts/vendor-typescript.mjs`). This file is gitignored and regenerated automatically.
+
+### Quality checks
+
+```bash
+pnpm run lint
+pnpm run typecheck
+pnpm run format:check
+```
+
 ## Project Structure
 
 ```
 app/
-  page.tsx                    # Landing page
-  canvas/page.tsx             # Viewer workspace
+  page.tsx                    # Landing page with hero visual
+  play/page.tsx               # Game page
+  play/results/page.tsx       # Shareable results page
   learn/
     page.tsx                  # Pattern overview
     [category]/page.tsx       # Category detail
-  not-found.tsx               # 404 redirect with analytics
+  playground/page.tsx         # Type sandbox
 
 components/
   site-header.tsx             # Shared header (search, nav, theme)
   site-footer.tsx             # Shared footer
+  sparkle-field.tsx           # Floating sparkle particles
   search-palette.tsx          # Ctrl+K search dialog
-  formatted-text.tsx          # Inline markdown renderer
-  challenge-anchor.tsx        # Copyable heading links
-  source-link.tsx             # Tracked external links
-  learn-sidebar.tsx           # Category navigation
-  learn-mobile-nav.tsx        # Mobile horizontal scroll nav
-  viewer/
-    viewer-provider.tsx       # Context + reducer for viewer state
-    canvas.tsx                # Freeform canvas + grid mode with reorder
-    canvas-overlay.tsx        # Floating widget pills (URL, zoom, tools)
-    viewport-frame.tsx        # Device frame (drag, resize, iframe sync)
-    toolbar.tsx               # Legacy toolbar (unused, kept for reference)
-    device-picker.tsx         # Device selection dialog
+  game/
+    game.tsx                  # Main game loop
+    code-panel.tsx            # Code display with sparkle burst
+    game-header.tsx           # Score, streak, progress dots
+    lobby-screen.tsx          # Game setup and history
+    results-screen.tsx        # Results with ranks and sparkles
+    explanation-panel.tsx     # Post-answer explanation
+  playground/
+    playground-editor.tsx     # Textarea + Shiki editor with output
 
 lib/
-  theme.ts                    # MUI light/dark theme
-  shiki.ts                    # Syntax highlighter (TSX + CSS)
+  theme.ts                    # MUI TypeScript-blue theme (light/dark)
+  shiki.ts                    # Syntax highlighter with decorations
   code-styles.ts              # Shared code block styles
-  analytics.ts                # Type-safe Umami event tracking
-  search-items.ts             # Search index generation
   learn/
     types.ts                  # Challenge types
     categories.ts             # 16 categories with metadata
-    challenges/               # 82 patterns across 16 files
-  viewer/
-    types.ts                  # Viewer state types
-    device-presets.ts         # Device catalog
-    use-canvas.ts             # Pan/zoom with multiplicative scaling
-    use-iframe-sync.ts        # PostMessage-based event sync
-    use-viewport-drag.ts      # Pointer-based viewport dragging
-    use-viewport-resize.ts    # Edge/corner resize handles
-    use-zoom-controls.ts      # Zoom UI logic
+    challenges/               # 107 patterns across 16 files
+  game/
+    share.ts                  # Ranks, encoding, share URLs
+    use-game.ts               # Game state machine
+  playground/
+    presets.ts                # 8 type expansion presets
+    use-type-expander.ts      # Web worker hook
+    types.ts                  # Worker message types
+
+public/
+  workers/
+    type-expander.js          # Web worker (loads vendored TS compiler)
+
+scripts/
+  vendor-typescript.mjs       # Minifies TS compiler for sandbox
 ```
 
-## Limitations
+## Part of the Can't series
 
-- Some websites block iframe embedding via X-Frame-Options or CSP headers
-- Full event sync (scroll, mouse, click, hover, navigation) requires same-origin sites (e.g., localhost)
+- **Can't Type** - TypeScript patterns (this project)
+- [Can't Maintain](https://cant-maintain.saschb2b.com) - React component API design
+- [Can't Resize](https://cant-resize.saschb2b.com) - Responsive design patterns

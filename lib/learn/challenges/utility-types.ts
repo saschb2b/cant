@@ -249,4 +249,33 @@ type User = Prettify<
     sourceUrl: "https://www.totaltypescript.com/concepts/the-prettify-helper",
     sourceLabel: "Total TypeScript: The Prettify Helper",
   },
+  {
+    id: "ut-008",
+    category: "utility-types",
+    difficulty: "medium",
+    title: "Array element type with indexed access",
+    badCode: `const ROLES = ["admin", "editor", "viewer"] as const;
+
+// Manually duplicating the values as a union
+type Role = "admin" | "editor" | "viewer";
+
+// Must update both when roles change
+function hasRole(role: Role) { }`,
+    goodCode: `const ROLES = ["admin", "editor", "viewer"] as const;
+
+// Derive the union from the array
+type Role = (typeof ROLES)[number];
+
+// "admin" | "editor" | "viewer"
+// Auto-updates when ROLES changes
+function hasRole(role: Role) { }`,
+    correctSide: "right",
+    explanationCorrect:
+      "Indexing a tuple or readonly array with `[number]` extracts a union of all element types. Combined with `as const` and `typeof`, this derives a string literal union directly from a runtime array. Adding or removing an element in `ROLES` updates the `Role` type automatically.",
+    explanationWrong:
+      "Manually writing the union duplicates the values. When you add a new role to the array but forget to update the type, the type and runtime array drift apart silently. The indexed access pattern keeps them in sync with zero maintenance.",
+    sourceUrl:
+      "https://www.totaltypescript.com/tips/access-deeper-parts-of-objects-and-arrays",
+    sourceLabel: "Total TypeScript: Indexed Access Types",
+  },
 ];

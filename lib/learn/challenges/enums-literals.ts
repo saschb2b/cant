@@ -203,4 +203,45 @@ const data: User = await fetch("/api/user")
       "https://www.typescriptlang.org/docs/handbook/enums.html#enums-at-compile-time",
     sourceLabel: "TypeScript Handbook: Enums at compile time",
   },
+  {
+    id: "el-007",
+    category: "enums-literals",
+    difficulty: "medium",
+    title: "Erasable syntax and --erasableSyntaxOnly",
+    badCode: `// With --erasableSyntaxOnly (TS 5.8+)
+// These features have runtime behavior
+// and are NOT erasable:
+
+enum Status { Active, Inactive } // Error
+
+namespace Utils {               // Error
+  export const parse = () => {};
+}
+
+class User {
+  constructor(public name: string) {} // Error
+}`,
+    goodCode: `// With --erasableSyntaxOnly (TS 5.8+)
+// All syntax is safely erasable:
+
+type Status = "active" | "inactive";
+
+const Utils = {
+  parse: () => {},
+};
+
+class User {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      'The `--erasableSyntaxOnly` flag (TypeScript 5.8) ensures all TypeScript syntax can be removed without changing runtime behavior. This is required for Node.js type stripping and the future "types as comments" proposal. Unions replace enums, plain objects replace namespaces, and explicit assignments replace parameter properties.',
+    explanationWrong:
+      "Enums, namespaces, and parameter properties generate JavaScript code that does not exist in the original source. Tools that strip types (like Node.js 23+ and future browsers) cannot handle these constructs because removing them would change runtime behavior. The erasableSyntaxOnly flag catches these at compile time.",
+    sourceUrl: "https://www.totaltypescript.com/erasable-syntax-only",
+    sourceLabel: "Total TypeScript: Erasable Syntax Only",
+  },
 ];

@@ -193,4 +193,78 @@ const meta: PaginatedList = {
       "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-parameter-defaults",
     sourceLabel: "TypeScript Handbook: Generic parameter defaults",
   },
+  {
+    id: "ge-007",
+    category: "generics",
+    difficulty: "hard",
+    title: "NoInfer to control inference sites",
+    badCode: `function createFSM<S extends string>(config: {
+  initial: S;
+  states: S[];
+}) { }
+
+// "not-a-state" widens the union, no error!
+createFSM({
+  initial: "not-a-state",
+  states: ["open", "closed"],
+});`,
+    goodCode: `function createFSM<S extends string>(config: {
+  initial: NoInfer<S>;
+  states: S[];
+}) { }
+
+createFSM({
+  initial: "open",           // OK
+  states: ["open", "closed"],
+});
+// createFSM({
+//   initial: "not-a-state", // Error
+//   states: ["open", "closed"],
+// });`,
+    correctSide: "right",
+    explanationCorrect:
+      '`NoInfer<T>` (TypeScript 5.4) marks a position as not an inference site. TypeScript infers `S` only from `states`, then checks `initial` against that inferred type. This gives you a "driver" parameter that defines the set and a "consumer" parameter that must pick from it.',
+    explanationWrong:
+      "Without `NoInfer`, TypeScript infers the generic from all positions. Any value you pass to `initial` is included in the inferred union, so there is no way to restrict it to the values in `states`. Invalid values silently widen the type instead of causing an error.",
+    sourceUrl: "https://www.totaltypescript.com/noinfer",
+    sourceLabel: "Total TypeScript: NoInfer",
+  },
+  {
+    id: "ge-008",
+    category: "generics",
+    difficulty: "hard",
+    title: "const type parameters for literal inference",
+    badCode: `function routes<T extends Record<string, string>>(
+  config: T
+): T {
+  return config;
+}
+
+const r = routes({
+  home: "/",
+  about: "/about",
+});
+// Type: { home: string; about: string }
+// Literal paths are widened to string`,
+    goodCode: `function routes<const T extends Record<string, string>>(
+  config: T
+): T {
+  return config;
+}
+
+const r = routes({
+  home: "/",
+  about: "/about",
+});
+// Type: { readonly home: "/"; readonly about: "/about" }
+// Literal paths are preserved`,
+    correctSide: "right",
+    explanationCorrect:
+      "Adding `const` to a type parameter (TypeScript 5.0) tells the compiler to infer the narrowest possible type from the argument. String and number literals are preserved instead of widened, and arrays become readonly tuples. Before this feature, callers had to write `as const` at every call site.",
+    explanationWrong:
+      "Without `const`, TypeScript applies its default widening rules: string literals become `string`, number literals become `number`, and arrays become mutable arrays. The caller loses the specific values they passed in, which defeats the purpose of inferring from the argument.",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters",
+    sourceLabel: "TypeScript 5.0: const type parameters",
+  },
 ];

@@ -217,4 +217,38 @@ function getCity(user: User): string | undefined {
       "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining",
     sourceLabel: "TypeScript 3.7: Optional chaining",
   },
+  {
+    id: "ta-007",
+    category: "type-assertions",
+    difficulty: "hard",
+    title: "Branded types for type-safe IDs",
+    badCode: `type UserId = number;
+type PostId = number;
+
+function getUser(id: UserId) { }
+function getPost(id: PostId) { }
+
+const oderId: PostId = 42;
+getUser(oderId); // No error, PostId is just number`,
+    goodCode: `type Brand<T, B extends string> =
+  T & { readonly __brand: B };
+
+type UserId = Brand<number, "UserId">;
+type PostId = Brand<number, "PostId">;
+
+function getUser(id: UserId) { }
+function getPost(id: PostId) { }
+
+const userId = 1 as UserId;
+const postId = 2 as PostId;
+getUser(userId);  // OK
+// getUser(postId); // Error`,
+    correctSide: "right",
+    explanationCorrect:
+      "A branded type adds a phantom `__brand` property that exists only at the type level. This makes `UserId` and `PostId` structurally incompatible even though both are numbers at runtime. The `as` cast is typically wrapped in a factory or validation function so callers never see it.",
+    explanationWrong:
+      "Plain type aliases for primitives are structurally identical. `UserId` and `PostId` are both just `number`, so TypeScript treats them as interchangeable. Accidentally passing a post ID where a user ID is expected compiles without error and causes bugs at runtime.",
+    sourceUrl: "https://www.typescriptlang.org/play#example/nominal-typing",
+    sourceLabel: "TypeScript Playground: Nominal Typing",
+  },
 ];

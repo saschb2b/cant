@@ -221,4 +221,41 @@ try {
     sourceUrl: "https://www.typescriptlang.org/tsconfig/#strict",
     sourceLabel: "TypeScript: strict",
   },
+  {
+    id: "sm-007",
+    category: "strict-mode",
+    difficulty: "easy",
+    title: "TypeScript 6.0 strict defaults",
+    badCode: `// tsconfig.json (TS 6.0)
+{
+  "compilerOptions": {
+    "strict": false,
+    "target": "es5",
+    "moduleResolution": "node"
+  }
+}
+// Disabling strict in TS 6.0 opts out
+// of the new safe defaults
+// "target": "es5" is deprecated
+// "moduleResolution": "node" is deprecated`,
+    goodCode: `// tsconfig.json (TS 6.0)
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler"
+  }
+}
+// strict is ON by default in TS 6.0
+// target defaults to es2025
+// No deprecated options needed
+// Just override what you actually need`,
+    correctSide: "right",
+    explanationCorrect:
+      "TypeScript 6.0 enables strict mode by default and sets modern defaults for target (es2025) and module (esnext). New projects get full type safety out of the box. You only need to configure what you actually want to change, like moduleResolution for your bundler.",
+    explanationWrong:
+      "Explicitly disabling strict in TypeScript 6.0 opts out of the safe defaults the team now recommends for all projects. Using deprecated options like `target: es5` and `moduleResolution: node` ties your project to legacy patterns that will be removed in TypeScript 7.0.",
+    sourceUrl:
+      "https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/",
+    sourceLabel: "TypeScript 6.0 Announcement",
+  },
 ];

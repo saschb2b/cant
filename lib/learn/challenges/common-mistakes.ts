@@ -303,4 +303,32 @@ objectKeys(config).forEach((key) => {
       "https://www.totaltypescript.com/tips/create-your-own-objectkeys-function-using-generics-and-the-keyof-operator",
     sourceLabel: "Total TypeScript: Type-safe Object.keys",
   },
+  {
+    id: "cm-008",
+    category: "common-mistakes",
+    difficulty: "easy",
+    title: "@ts-expect-error vs @ts-ignore",
+    badCode: `// @ts-ignore
+const port: number = "3000";
+
+// Later, someone fixes the value:
+// const port: number = 3000;
+// The @ts-ignore stays, silently hiding
+// any future error on this line`,
+    goodCode: `// @ts-expect-error: testing invalid assignment
+const port: number = "3000";
+
+// Later, when the line is fixed:
+// const port: number = 3000;
+// TypeScript reports: "Unused @ts-expect-error"
+// so you know to remove the directive`,
+    correctSide: "right",
+    explanationCorrect:
+      "`@ts-expect-error` requires the next line to have an error. If the error disappears (because someone fixed the code), TypeScript flags the unused directive. This makes it self-cleaning: you never end up with stale suppressions hiding real issues.",
+    explanationWrong:
+      "`@ts-ignore` silently suppresses any error on the next line, forever. If the original issue is fixed but a new, different error appears on the same line, `@ts-ignore` hides it. Over time, codebases accumulate `@ts-ignore` comments that mask real bugs.",
+    sourceUrl:
+      "https://www.totaltypescript.com/concepts/how-to-use-ts-expect-error",
+    sourceLabel: "Total TypeScript: @ts-expect-error",
+  },
 ];

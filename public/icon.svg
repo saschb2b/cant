@@ -1,13 +1,26 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="37" fill="#1A1A1A"/>
-  <!-- Desktop frame -->
-  <rect x="38" y="48" width="104" height="66" rx="5" stroke="#FAFAFA" stroke-width="4" fill="none"/>
-  <rect x="44" y="54" width="92" height="54" rx="2" fill="rgba(255,255,255,0.1)"/>
-  <!-- Desktop stand -->
-  <line x1="90" y1="114" x2="90" y2="126" stroke="#FAFAFA" stroke-width="4" stroke-linecap="round"/>
-  <line x1="72" y1="126" x2="108" y2="126" stroke="#FAFAFA" stroke-width="4" stroke-linecap="round"/>
-  <!-- Tablet frame -->
-  <rect x="108" y="72" width="40" height="56" rx="4" stroke="rgba(250,250,250,0.8)" stroke-width="3.5" fill="rgba(255,255,255,0.06)"/>
-  <!-- Phone frame -->
-  <rect x="28" y="82" width="28" height="46" rx="4" stroke="rgba(250,250,250,0.6)" stroke-width="3" fill="rgba(255,255,255,0.04)"/>
+  <rect width="180" height="180" rx="37" fill="#3178C6"/>
+
+  <!-- Letter T -->
+  <rect x="40" y="42" width="100" height="16" rx="4" fill="#FFFFFF"/>
+  <rect x="74" y="42" width="32" height="100" rx="4" fill="#FFFFFF"/>
+
+  <!-- Sparkle top-right -->
+  <g transform="translate(132, 36)">
+    <line x1="0" y1="-10" x2="0" y2="10" stroke="#FFD866" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-10" y1="0" x2="10" y2="0" stroke="#FFD866" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-7" y1="-7" x2="7" y2="7" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+    <line x1="7" y1="-7" x2="-7" y2="7" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  </g>
+
+  <!-- Sparkle bottom-left (smaller) -->
+  <g transform="translate(38, 140)">
+    <line x1="0" y1="-6" x2="0" y2="6" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <line x1="-6" y1="0" x2="6" y2="0" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <line x1="-4" y1="-4" x2="4" y2="4" stroke="#FFD866" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="4" y1="-4" x2="-4" y2="4" stroke="#FFD866" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Dot accent -->
+  <circle cx="148" cy="138" r="4" fill="#FFD866" opacity="0.7"/>
 </svg>
