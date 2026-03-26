@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChallengeAnchor } from "../challenge-anchor";
 
 const meta: Meta<typeof ChallengeAnchor> = {
-  title: "Components/ChallengeAnchor",
+  title: "Content/Challenge Anchor",
   component: ChallengeAnchor,
   tags: ["autodocs"],
 };

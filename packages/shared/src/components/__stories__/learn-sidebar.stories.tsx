@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LearnSidebar } from "../learn-sidebar";
 
 const meta: Meta<typeof LearnSidebar> = {
-  title: "Layout/LearnSidebar",
+  title: "Layout/Learn Sidebar",
   component: LearnSidebar,
   tags: ["autodocs"],
   parameters: {

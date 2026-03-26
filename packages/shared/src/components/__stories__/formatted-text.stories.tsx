@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FormattedText } from "../formatted-text";
 
 const meta: Meta<typeof FormattedText> = {
-  title: "Components/FormattedText",
+  title: "Content/Formatted Text",
   component: FormattedText,
   tags: ["autodocs"],
 };

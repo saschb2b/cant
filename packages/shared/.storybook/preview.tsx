@@ -59,6 +59,11 @@ function ThemeDecorator({ children }: { children: ReactNode }) {
 const preview: Preview = {
   decorators: [(Story) => <ThemeDecorator><Story /></ThemeDecorator>],
   parameters: {
+    options: {
+      storySort: {
+        order: ["Foundation", "Layout", "Content", "Game"],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

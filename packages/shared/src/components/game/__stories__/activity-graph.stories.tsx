@@ -25,7 +25,7 @@ function generateMockData(weeks: number) {
 }
 
 const meta: Meta<typeof ActivityGraph> = {
-  title: "Game/ActivityGraph",
+  title: "Game/Activity Graph",
   component: ActivityGraph,
   tags: ["autodocs"],
   decorators: [

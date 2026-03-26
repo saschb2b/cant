@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LearnMobileNav } from "../learn-mobile-nav";
 
 const meta: Meta<typeof LearnMobileNav> = {
-  title: "Layout/LearnMobileNav",
+  title: "Layout/Learn Mobile Nav",
   component: LearnMobileNav,
   tags: ["autodocs"],
   parameters: {

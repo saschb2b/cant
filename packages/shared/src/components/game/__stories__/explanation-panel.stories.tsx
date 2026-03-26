@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ExplanationPanel } from "../explanation-panel";
 
 const meta: Meta<typeof ExplanationPanel> = {
-  title: "Game/ExplanationPanel",
+  title: "Game/Explanation Panel",
   component: ExplanationPanel,
   tags: ["autodocs"],
 };

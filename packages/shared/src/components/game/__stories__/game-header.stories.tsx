@@ -3,7 +3,7 @@ import { fn } from "storybook/test";
 import { GameHeader } from "../game-header";
 
 const meta: Meta<typeof GameHeader> = {
-  title: "Game/GameHeader",
+  title: "Game/Game Header",
   component: GameHeader,
   tags: ["autodocs"],
 };

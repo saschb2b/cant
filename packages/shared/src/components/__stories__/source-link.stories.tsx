@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SourceLink } from "../source-link";
 
 const meta: Meta<typeof SourceLink> = {
-  title: "Components/SourceLink",
+  title: "Content/Source Link",
   component: SourceLink,
   tags: ["autodocs"],
 };
