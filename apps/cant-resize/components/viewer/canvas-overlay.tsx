@@ -188,8 +188,7 @@ export function CanvasOverlay({
   }
   const urlInput = urlState.local;
   const setUrlInput = useCallback(
-    (value: string) =>
-      setUrlState((prev) => ({ ...prev, local: value })),
+    (value: string) => setUrlState((prev) => ({ ...prev, local: value })),
     [],
   );
   const [syncAnchorEl, setSyncAnchorEl] = useState<HTMLElement | null>(null);

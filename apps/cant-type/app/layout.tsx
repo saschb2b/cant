@@ -80,9 +80,7 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider theme={theme}>
-          <AnalyticsProviderWrapper>
-            {children}
-          </AnalyticsProviderWrapper>
+          <AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper>
         </ThemeProvider>
       </body>
     </html>

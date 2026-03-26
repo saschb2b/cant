@@ -3,8 +3,16 @@ import { SiteFooter as SharedSiteFooter } from "@cant/shared/components/site-foo
 const NAV_LINKS = [
   { href: "/learn", label: "Learn" },
   { href: "/changelog", label: "Changelog" },
-  { href: "https://github.com/saschb2b/cant-maintain", label: "GitHub", external: true },
-  { href: "https://buymeacoffee.com/qohreuukw", label: "Support", external: true },
+  {
+    href: "https://github.com/saschb2b/cant-maintain",
+    label: "GitHub",
+    external: true,
+  },
+  {
+    href: "https://buymeacoffee.com/qohreuukw",
+    label: "Support",
+    external: true,
+  },
 ];
 
 export function SiteFooter() {

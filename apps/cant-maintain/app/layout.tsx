@@ -96,7 +96,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider theme={theme}><AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper></ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -4,7 +4,11 @@ const NAV_LINKS = [
   { href: "/canvas", label: "Viewer" },
   { href: "/play", label: "Play" },
   { href: "/learn", label: "Learn" },
-  { href: "https://github.com/saschb2b/cant-resize", label: "GitHub", external: true },
+  {
+    href: "https://github.com/saschb2b/cant-resize",
+    label: "GitHub",
+    external: true,
+  },
 ] as const;
 
 export function SiteFooter() {

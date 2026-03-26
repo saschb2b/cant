@@ -204,8 +204,7 @@ export default async function LearnPage() {
                   sx={{
                     borderTop: 1,
                     borderColor: "divider",
-                    bgcolor:
-                      "background.paper",
+                    bgcolor: "background.paper",
                   }}
                 >
                   <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>

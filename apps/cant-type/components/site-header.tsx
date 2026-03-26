@@ -4,8 +4,18 @@ import { GraduationCap, FlaskConical } from "lucide-react";
 import { SearchPalette } from "@/components/search-palette";
 
 const NAV_ITEMS = [
-  { type: "text" as const, href: "/learn", label: "Learn", icon: <GraduationCap size={18} /> },
-  { type: "text" as const, href: "/playground", label: "Sandbox", icon: <FlaskConical size={18} /> },
+  {
+    type: "text" as const,
+    href: "/learn",
+    label: "Learn",
+    icon: <GraduationCap size={18} />,
+  },
+  {
+    type: "text" as const,
+    href: "/playground",
+    label: "Sandbox",
+    icon: <FlaskConical size={18} />,
+  },
   { type: "cta" as const, href: "/play", label: "Play" },
 ];
 
