@@ -97,6 +97,88 @@ importers:
         specifier: ^8.57.2
         version: 8.57.2(eslint@9.39.4)(typescript@6.0.2)
 
+  apps/cant-orchestrate:
+    dependencies:
+      '@cant/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@emotion/cache':
+        specifier: ^11.14.0
+        version: 11.14.0
+      '@emotion/react':
+        specifier: ^11.14.0
+        version: 11.14.0(@types/react@19.2.14)(react@19.2.4)
+      '@emotion/styled':
+        specifier: ^11.14.1
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4)
+      '@mui/material':
+        specifier: ^7.3.8
+        version: 7.3.9(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@shikijs/core':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/engine-javascript':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/langs':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/themes':
+        specifier: ^4.0.2
+        version: 4.0.2
+      fuse.js:
+        specifier: ^7.1.0
+        version: 7.1.0
+      lottie-react:
+        specifier: ^2.4.1
+        version: 2.4.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      lucide-react:
+        specifier: ^0.564.0
+        version: 0.564.0(react@19.2.4)
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.3
+        version: 9.39.4
+      '@types/node':
+        specifier: ^22
+        version: 22.19.15
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      eslint:
+        specifier: ^9.39.3
+        version: 9.39.4
+      eslint-config-next:
+        specifier: ^16.1.6
+        version: 16.2.1(eslint@9.39.4)(typescript@5.7.3)
+      eslint-config-prettier:
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.39.4)
+      prettier:
+        specifier: ^3.8.1
+        version: 3.8.1
+      typescript:
+        specifier: 5.7.3
+        version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.56.1
+        version: 8.57.2(eslint@9.39.4)(typescript@5.7.3)
+
   apps/cant-resize:
     dependencies:
       '@cant/shared':
@@ -5434,7 +5516,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
     transitivePeerDependencies:
       - supports-color
 

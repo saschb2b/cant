@@ -1,0 +1,88 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
+import { ThemeProvider } from "@cant/shared/components/theme-provider";
+import { AnalyticsProviderWrapper } from "@cant/shared/components/analytics-provider-wrapper";
+import theme from "@/lib/theme";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
+
+const siteUrl = "https://cant-orchestrate.saschb2b.com";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Can't Orchestrate - Container Orchestration Pattern Game",
+    template: "%s - Can't Orchestrate",
+  },
+  description:
+    "Pick the better container orchestration pattern in side-by-side code challenges. Covers Docker, Kubernetes, Helm, Swarm, and more.",
+  keywords: [
+    "Docker",
+    "Kubernetes",
+    "container orchestration",
+    "Docker Compose",
+    "Helm",
+    "Docker Swarm",
+    "Dockerfile",
+    "CI/CD",
+    "DevOps",
+    "container security",
+    "best practices",
+    "infrastructure as code",
+  ],
+  authors: [{ name: "Sascha", url: "https://saschb2b.com/" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Can't Orchestrate",
+    title: "Can't Orchestrate - Container Orchestration Pattern Game",
+    description:
+      "One config. Two ways. Pick the better container orchestration pattern in side-by-side code challenges.",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Can't Orchestrate - Container Orchestration Pattern Game",
+    description:
+      "One config. Two ways. Pick the better container orchestration pattern in side-by-side code challenges.",
+  },
+  icons: {
+    icon: "/icon.svg",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <Script
+          async
+          src="https://umami.saschb2b.com/script.js"
+          data-website-id="placeholder-cant-orchestrate"
+        />
+      </head>
+      <body>
+        <ThemeProvider theme={theme}>
+          <AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
