@@ -8,7 +8,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import { ArrowRight, Check, X } from "lucide-react";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,

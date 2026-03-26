@@ -20,8 +20,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
 import { LiveRibbon } from "@/components/live-ribbon";
-import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
+import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 
 const BAD_CODE = `interface UserCardProps {
   data: User;

@@ -18,7 +18,7 @@ import {
   getMissedCategoryLabels,
   encodeResults,
 } from "@/lib/game/share";
-import { FormattedText } from "@/components/formatted-text";
+import { FormattedText } from "@cant/shared/components/formatted-text";
 import {
   RotateCcw,
   Check,

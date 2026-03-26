@@ -9,8 +9,8 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import { ArrowLeft, ArrowRight, Check, ExternalLink, X } from "lucide-react";
-import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
+import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import { challenges } from "@/lib/game/challenges";
 import {
   CATEGORY_ORDER,
@@ -18,8 +18,8 @@ import {
   CATEGORY_DESCRIPTIONS,
 } from "@/lib/game/categories";
 import type { ChallengeCategory, Difficulty } from "@/lib/game/types";
-import { FormattedText } from "@/components/formatted-text";
-import { ChallengeAnchor } from "@/components/challenge-anchor";
+import { FormattedText } from "@cant/shared/components/formatted-text";
+import { ChallengeAnchor } from "@cant/shared/components/challenge-anchor";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 

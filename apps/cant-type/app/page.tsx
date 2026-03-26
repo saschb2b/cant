@@ -18,7 +18,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import { SparkleField } from "@/components/sparkle-field";
 
 const HERO_SPELL = `type DeepReadonly<T> = {

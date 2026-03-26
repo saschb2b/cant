@@ -14,6 +14,9 @@ importers:
 
   apps/cant-maintain:
     dependencies:
+      '@cant/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@emotion/cache':
         specifier: ^11.14.0
         version: 11.14.0
@@ -96,6 +99,9 @@ importers:
 
   apps/cant-resize:
     dependencies:
+      '@cant/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@emotion/cache':
         specifier: ^11.14.0
         version: 11.14.0
@@ -175,6 +181,9 @@ importers:
 
   apps/cant-type:
     dependencies:
+      '@cant/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@emotion/cache':
         specifier: ^11.14.0
         version: 11.14.0
@@ -251,6 +260,49 @@ importers:
       typescript-eslint:
         specifier: ^8.56.1
         version: 8.57.2(eslint@9.39.4)(typescript@5.7.3)
+
+  packages/shared:
+    dependencies:
+      '@emotion/cache':
+        specifier: ^11.14.0
+        version: 11.14.0
+      '@emotion/react':
+        specifier: ^11.14.0
+        version: 11.14.0(@types/react@19.2.14)(react@19.2.4)
+      '@mui/material':
+        specifier: ^7.3.8
+        version: 7.3.9(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@shikijs/core':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/engine-javascript':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/langs':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/themes':
+        specifier: ^4.0.2
+        version: 4.0.2
+      lucide-react:
+        specifier: '*'
+        version: 1.7.0(react@19.2.4)
+      next:
+        specifier: '>=16.1.6'
+        version: 16.2.1(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
 
 packages:
 

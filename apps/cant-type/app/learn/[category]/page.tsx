@@ -9,7 +9,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -17,9 +17,9 @@ import {
   CATEGORY_DESCRIPTIONS,
 } from "@/lib/learn/categories";
 import type { ChallengeCategory, Difficulty } from "@/lib/learn/types";
-import { FormattedText } from "@/components/formatted-text";
-import { ChallengeAnchor } from "@/components/challenge-anchor";
-import { SourceLink } from "@/components/source-link";
+import { FormattedText } from "@cant/shared/components/formatted-text";
+import { ChallengeAnchor } from "@cant/shared/components/challenge-anchor";
+import { SourceLink } from "@cant/shared/components/source-link";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 

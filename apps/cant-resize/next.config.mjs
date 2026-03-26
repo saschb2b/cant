@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ["@cant/shared"],
 };
 
 export default nextConfig;

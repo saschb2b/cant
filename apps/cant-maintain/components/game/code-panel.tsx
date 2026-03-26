@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import type { LottieRefCurrentProps } from "lottie-react";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import checkmarkAnimation from "./checkmark-animation.json";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });

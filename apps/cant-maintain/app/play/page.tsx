@@ -5,7 +5,7 @@ import { Game } from "@/components/game/game";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
-import { getHighlighter, highlightDual } from "@/lib/shiki";
+import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
 import { challenges } from "@/lib/game/challenges";
 
 export const metadata: Metadata = {

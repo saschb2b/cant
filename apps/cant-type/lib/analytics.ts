@@ -4,6 +4,8 @@
  * @see https://umami.is/docs/tracker-functions
  */
 
+import { createTracker } from "@cant/shared/lib/analytics";
+
 interface SearchOpenedData {
   trigger: "hotkey" | "button";
 }
@@ -105,15 +107,4 @@ interface EventMap {
   "buymeacoffee-clicked": BuyMeCoffeeClickedData;
 }
 
-declare global {
-  interface Window {
-    umami?: { track: (event: string, data?: Record<string, unknown>) => void };
-  }
-}
-
-export function trackEvent<K extends keyof EventMap>(
-  event: K,
-  data: EventMap[K],
-): void {
-  window.umami?.track(event, data as unknown as Record<string, unknown>);
-}
+export const trackEvent = createTracker<EventMap>();

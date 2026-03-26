@@ -1,0 +1,29 @@
+{
+  "name": "@cant/shared",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./components/*": "./src/components/*.tsx",
+    "./components/game/*": "./src/components/game/*.tsx",
+    "./lib/*": "./src/lib/*.ts",
+    "./lib/game/*": "./src/lib/game/*.ts",
+    "./lib/analytics-context": "./src/lib/analytics-context.tsx"
+  },
+  "peerDependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@mui/material": "^7.3.8",
+    "@shikijs/core": "^4.0.2",
+    "@shikijs/engine-javascript": "^4.0.2",
+    "@shikijs/langs": "^4.0.2",
+    "@shikijs/themes": "^4.0.2",
+    "lucide-react": "*",
+    "next": ">=16.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "typescript": "6.0.2"
+  }
+}

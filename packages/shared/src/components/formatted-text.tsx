@@ -19,10 +19,10 @@ const codeStyle = {
 /**
  * Renders a string with lightweight inline markdown support.
  *
- * - `\n\n` → paragraph break (with spacing)
- * - `\n` → line break
- * - `` `code` `` → inline code
- * - `**bold**` → strong
+ * - `\n\n` -> paragraph break (with spacing)
+ * - `\n` -> line break
+ * - `` `code` `` -> inline code
+ * - `**bold**` -> strong
  */
 export function FormattedText({ text }: FormattedTextProps) {
   const paragraphs = text.split("\n\n");

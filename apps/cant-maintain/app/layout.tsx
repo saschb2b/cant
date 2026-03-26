@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@cant/shared/components/theme-provider";
+import { AnalyticsProviderWrapper } from "@cant/shared/components/analytics-provider-wrapper";
+import theme from "@/lib/theme";
 import Script from "next/script";
 
 const inter = Inter({
@@ -94,7 +96,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}><AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper></ThemeProvider>
       </body>
     </html>
   );

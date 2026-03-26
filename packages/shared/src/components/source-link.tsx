@@ -2,7 +2,7 @@
 
 import Link from "@mui/material/Link";
 import { ExternalLink } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+import { useTrackEvent } from "../lib/analytics-context";
 
 interface SourceLinkProps {
   href: string;
@@ -17,6 +17,8 @@ export function SourceLink({
   challengeId,
   category,
 }: SourceLinkProps) {
+  const trackEvent = useTrackEvent();
+
   return (
     <Link
       href={href}

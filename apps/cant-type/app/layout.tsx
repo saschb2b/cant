@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@cant/shared/components/theme-provider";
+import { AnalyticsProviderWrapper } from "@cant/shared/components/analytics-provider-wrapper";
+import theme from "@/lib/theme";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -77,7 +79,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <AnalyticsProviderWrapper>
+            {children}
+          </AnalyticsProviderWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );
