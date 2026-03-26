@@ -55,6 +55,13 @@ export const metadata: Metadata = {
     description:
       "One site. Every screen. Preview any URL across devices with synced scrolling, clicks, and navigation.",
   },
+  alternates: {
+    canonical: siteUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/icon.svg",
   },
@@ -72,6 +79,24 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Can't Resize",
+              url: siteUrl,
+              description:
+                "Preview any URL across phones, tablets, and desktops simultaneously. Learn responsive design with 128 patterns.",
+              author: {
+                "@type": "Person",
+                name: "Sascha Becker",
+                url: "https://saschb2b.com",
+              },
+            }),
+          }}
+        />
         <Script
           async
           src="https://umami.saschb2b.com/script.js"

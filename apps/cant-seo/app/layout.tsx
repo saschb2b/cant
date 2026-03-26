@@ -55,6 +55,13 @@ export const metadata: Metadata = {
     description:
       "One link. Every platform. Preview how your URLs appear across LinkedIn, Twitter/X, Slack, Teams, and more.",
   },
+  alternates: {
+    canonical: siteUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/icon.svg",
   },
@@ -72,6 +79,24 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Can't SEO",
+              url: siteUrl,
+              description:
+                "Learn SEO best practices for Next.js. Inspect link previews across platforms and study 64 patterns.",
+              author: {
+                "@type": "Person",
+                name: "Sascha Becker",
+                url: "https://saschb2b.com",
+              },
+            }),
+          }}
+        />
         <Script
           async
           src="https://umami.saschb2b.com/script.js"

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Users } from "lucide-react";
 import { PreviewCardBase } from "./preview-card-base";
+import { ImagePlaceholder } from "./image-placeholder";
 import type { InspectResponse } from "./types";
 
 function getDomain(url: string): string {
@@ -35,7 +36,6 @@ export function TeamsPreview({ data }: TeamsPreviewProps) {
           bgcolor: "#fff",
         }}
       >
-        {/* Image */}
         {image ? (
           <Box
             sx={{
@@ -64,16 +64,9 @@ export function TeamsPreview({ data }: TeamsPreviewProps) {
             />
           </Box>
         ) : (
-          <Box
-            sx={{
-              width: "100%",
-              paddingTop: "52.36%",
-              bgcolor: "#f0f0f0",
-            }}
-          />
+          <ImagePlaceholder aspectRatio="52.36%" />
         )}
 
-        {/* Text content */}
         <Box sx={{ p: 1.5 }}>
           <Typography
             sx={{
@@ -107,13 +100,7 @@ export function TeamsPreview({ data }: TeamsPreviewProps) {
             </Typography>
           )}
 
-          <Typography
-            sx={{
-              fontSize: 12,
-              color: "#a0a0a0",
-              mt: 0.75,
-            }}
-          >
+          <Typography sx={{ fontSize: 12, color: "#a0a0a0", mt: 0.75 }}>
             {domain}
           </Typography>
         </Box>

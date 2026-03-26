@@ -8,6 +8,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
+import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Search } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -23,11 +25,32 @@ import { WhatsAppPreview } from "@/components/inspector/whatsapp-preview";
 import { MetadataTable } from "@/components/inspector/metadata-table";
 import { SeoScore } from "@/components/inspector/seo-score";
 
+const PLATFORMS = [
+  "Google",
+  "LinkedIn",
+  "Twitter",
+  "Slack",
+  "Teams",
+  "Discord",
+  "WhatsApp",
+] as const;
+
+type Platform = (typeof PLATFORMS)[number];
+
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return url;
+  }
+}
+
 export default function InspectorPage() {
   const [url, setUrl] = useState("");
   const [data, setData] = useState<InspectResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hiddenPlatforms, setHiddenPlatforms] = useState(new Set<Platform>());
 
   const handleSubmit = async () => {
     if (!url.trim()) return;
@@ -66,6 +89,48 @@ export default function InspectorPage() {
       setLoading(false);
     }
   };
+
+  const togglePlatform = (platform: Platform) => {
+    setHiddenPlatforms((prev) => {
+      const next = new Set(prev);
+      if (next.has(platform)) {
+        next.delete(platform);
+      } else {
+        next.add(platform);
+      }
+      return next;
+    });
+  };
+
+  const seoFound = data
+    ? [
+        data.title,
+        data.description,
+        data.og.title,
+        data.og.description,
+        data.og.image,
+        data.og.type,
+        data.twitter.card,
+        data.twitter.image,
+        data.canonical,
+        data.robots,
+        data.favicon,
+      ].filter((v) => v !== null).length + (data.jsonLd.length > 0 ? 1 : 0)
+    : 0;
+
+  const platformComponents: Record<Platform, React.ReactNode> = data
+    ? {
+        Google: <GooglePreview data={data} />,
+        LinkedIn: <LinkedInPreview data={data} />,
+        Twitter: <TwitterPreview data={data} />,
+        Slack: <SlackPreview data={data} />,
+        Teams: <TeamsPreview data={data} />,
+        Discord: <DiscordPreview data={data} />,
+        WhatsApp: <WhatsAppPreview data={data} />,
+      }
+    : ({} as Record<Platform, React.ReactNode>);
+
+  const visiblePlatforms = PLATFORMS.filter((p) => !hiddenPlatforms.has(p));
 
   return (
     <Box
@@ -136,11 +201,7 @@ export default function InspectorPage() {
               startIcon={
                 loading ? <CircularProgress size={18} /> : <Search size={18} />
               }
-              sx={{
-                px: 4,
-                minWidth: 140,
-                whiteSpace: "nowrap",
-              }}
+              sx={{ px: 4, minWidth: 140, whiteSpace: "nowrap" }}
             >
               {loading ? "Inspecting" : "Inspect"}
             </Button>
@@ -155,14 +216,91 @@ export default function InspectorPage() {
 
         {data && (
           <Stack spacing={4}>
+            {/* Sticky summary bar */}
+            <Paper
+              variant="outlined"
+              sx={{
+                position: "sticky",
+                top: 8,
+                zIndex: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: 1.5,
+                px: 2.5,
+                py: 1.5,
+                backdropFilter: "blur(12px)",
+                bgcolor:
+                  "rgba(var(--mui-palette-background-paperChannel) / 0.85)",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                {data.favicon && (
+                  <Box
+                    component="img"
+                    src={data.favicon}
+                    alt=""
+                    sx={{ width: 20, height: 20, borderRadius: "4px" }}
+                    onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                )}
+                <Typography
+                  variant="subtitle2"
+                  fontWeight={600}
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: { xs: 200, sm: 400 },
+                  }}
+                >
+                  {getDomain(data.finalUrl)}
+                </Typography>
+              </Box>
+              <Chip
+                label={`${String(seoFound)}/12 SEO`}
+                size="small"
+                color={seoFound === 12 ? "success" : "warning"}
+                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+              />
+            </Paper>
+
             {/* SEO Score */}
             <SeoScore data={data} />
 
-            {/* Preview cards grid */}
-            <Typography variant="h5" fontWeight={600}>
-              Platform Previews
-            </Typography>
+            {/* Platform filter toggles */}
+            <Box>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ flexWrap: "wrap", gap: 1 }}
+              >
+                {PLATFORMS.map((platform) => (
+                  <Chip
+                    key={platform}
+                    label={platform}
+                    size="small"
+                    variant={
+                      hiddenPlatforms.has(platform) ? "outlined" : "filled"
+                    }
+                    color={
+                      hiddenPlatforms.has(platform) ? "default" : "primary"
+                    }
+                    onClick={() => togglePlatform(platform)}
+                    sx={{
+                      fontWeight: 500,
+                      opacity: hiddenPlatforms.has(platform) ? 0.5 : 1,
+                    }}
+                  />
+                ))}
+              </Stack>
+            </Box>
 
+            {/* Preview cards grid */}
             <Box
               sx={{
                 display: "grid",
@@ -173,13 +311,9 @@ export default function InspectorPage() {
                 gap: 3,
               }}
             >
-              <GooglePreview data={data} />
-              <LinkedInPreview data={data} />
-              <TwitterPreview data={data} />
-              <SlackPreview data={data} />
-              <TeamsPreview data={data} />
-              <DiscordPreview data={data} />
-              <WhatsAppPreview data={data} />
+              {visiblePlatforms.map((platform) => (
+                <Box key={platform}>{platformComponents[platform]}</Box>
+              ))}
             </Box>
 
             {/* Raw metadata */}

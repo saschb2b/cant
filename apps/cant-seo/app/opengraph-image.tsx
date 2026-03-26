@@ -41,8 +41,8 @@ export default function OgImage() {
             overflow: "hidden",
           }}
         >
-          <div style={{ flex: 1, background: "#334155" }} />
-          <div style={{ padding: 6 }}>
+          <div style={{ flex: 1, background: "#334155", display: "flex" }} />
+          <div style={{ padding: 6, display: "flex" }}>
             <div
               style={{
                 width: 80,
@@ -66,8 +66,8 @@ export default function OgImage() {
             overflow: "hidden",
           }}
         >
-          <div style={{ flex: 1, background: "#334155" }} />
-          <div style={{ padding: 8 }}>
+          <div style={{ flex: 1, background: "#334155", display: "flex" }} />
+          <div style={{ padding: 8, display: "flex" }}>
             <div
               style={{
                 width: 100,
@@ -123,7 +123,7 @@ export default function OgImage() {
           fontSize: 56,
           fontWeight: 700,
           color: "#F1F5F9",
-          marginBottom: 16,
+          display: "flex",
         }}
       >
         Link Inspector
@@ -136,6 +136,8 @@ export default function OgImage() {
           maxWidth: 700,
           textAlign: "center",
           lineHeight: 1.4,
+          display: "flex",
+          marginTop: 16,
         }}
       >
         One link. Every platform. Instant previews.

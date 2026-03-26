@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Link2 } from "lucide-react";
 import { PreviewCardBase } from "./preview-card-base";
+import { ImagePlaceholder } from "./image-placeholder";
 import type { InspectResponse } from "./types";
 
 function getDomain(url: string): string {
@@ -36,13 +37,12 @@ export function LinkedInPreview({ data }: LinkedInPreviewProps) {
           bgcolor: "#fff",
         }}
       >
-        {/* Image */}
         {image ? (
           <Box
             sx={{
               position: "relative",
               width: "100%",
-              paddingTop: "52.36%", // 1.91:1 aspect ratio
+              paddingTop: "52.36%",
               overflow: "hidden",
               bgcolor: "#f3f2ef",
             }}
@@ -65,16 +65,9 @@ export function LinkedInPreview({ data }: LinkedInPreviewProps) {
             />
           </Box>
         ) : (
-          <Box
-            sx={{
-              width: "100%",
-              paddingTop: "52.36%",
-              bgcolor: "#f3f2ef",
-            }}
-          />
+          <ImagePlaceholder aspectRatio="52.36%" bgcolor="#f3f2ef" />
         )}
 
-        {/* Text content */}
         <Box sx={{ p: 1.5, bgcolor: "#f3f2ef" }}>
           <Typography
             sx={{

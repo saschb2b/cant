@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { MessageCircle } from "lucide-react";
 import { PreviewCardBase } from "./preview-card-base";
+import { ImagePlaceholder } from "./image-placeholder";
 import type { InspectResponse } from "./types";
 
 function getDomain(url: string): string {
@@ -35,7 +36,6 @@ export function WhatsAppPreview({ data }: WhatsAppPreviewProps) {
           bgcolor: "#fff",
         }}
       >
-        {/* Image */}
         {image ? (
           <Box
             sx={{
@@ -64,16 +64,9 @@ export function WhatsAppPreview({ data }: WhatsAppPreviewProps) {
             />
           </Box>
         ) : (
-          <Box
-            sx={{
-              width: "100%",
-              paddingTop: "52.36%",
-              bgcolor: "#e9edef",
-            }}
-          />
+          <ImagePlaceholder aspectRatio="52.36%" bgcolor="#e9edef" />
         )}
 
-        {/* Text content */}
         <Box sx={{ px: 1.5, py: 1 }}>
           <Typography
             sx={{

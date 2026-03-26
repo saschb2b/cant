@@ -2,6 +2,7 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -23,14 +24,62 @@ export function MetadataTable({ data }: MetadataTableProps) {
   const metaCount = data.allMetaTags.length;
   const hasJsonLd = data.jsonLd.length > 0;
 
+  // Show a preview of key tags in the accordion header
+  const ogCount = data.allMetaTags.filter((t) =>
+    t.property?.startsWith("og:"),
+  ).length;
+  const twitterCount = data.allMetaTags.filter((t) =>
+    t.name?.startsWith("twitter:"),
+  ).length;
+  const otherCount = metaCount - ogCount - twitterCount;
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {/* Meta Tags */}
       <Accordion defaultExpanded={false}>
         <AccordionSummary expandIcon={<ChevronDown size={20} />}>
-          <Typography sx={{ fontWeight: 600 }}>
-            All Meta Tags ({metaCount})
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              flexWrap: "wrap",
+            }}
+          >
+            <Typography sx={{ fontWeight: 600 }}>All Meta Tags</Typography>
+            <Chip
+              label={String(metaCount)}
+              size="small"
+              sx={{
+                height: 22,
+                fontSize: "0.75rem",
+                fontWeight: 600,
+              }}
+            />
+            {ogCount > 0 && (
+              <Chip
+                label={`${String(ogCount)} OG`}
+                size="small"
+                variant="outlined"
+                sx={{ height: 20, fontSize: "0.65rem" }}
+              />
+            )}
+            {twitterCount > 0 && (
+              <Chip
+                label={`${String(twitterCount)} Twitter`}
+                size="small"
+                variant="outlined"
+                sx={{ height: 20, fontSize: "0.65rem" }}
+              />
+            )}
+            {otherCount > 0 && (
+              <Chip
+                label={`${String(otherCount)} other`}
+                size="small"
+                variant="outlined"
+                sx={{ height: 20, fontSize: "0.65rem" }}
+              />
+            )}
+          </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ p: 0 }}>
           {metaCount > 0 ? (
@@ -58,12 +107,7 @@ export function MetadataTable({ data }: MetadataTableProps) {
                           ? `property="${tag.property}"`
                           : `name="${tag.name ?? ""}"`}
                       </TableCell>
-                      <TableCell
-                        sx={{
-                          fontSize: 13,
-                          wordBreak: "break-all",
-                        }}
-                      >
+                      <TableCell sx={{ fontSize: 13, wordBreak: "break-all" }}>
                         {tag.content}
                       </TableCell>
                     </TableRow>
@@ -79,13 +123,20 @@ export function MetadataTable({ data }: MetadataTableProps) {
         </AccordionDetails>
       </Accordion>
 
-      {/* JSON-LD */}
       {hasJsonLd && (
         <Accordion defaultExpanded={false}>
           <AccordionSummary expandIcon={<ChevronDown size={20} />}>
-            <Typography sx={{ fontWeight: 600 }}>
-              JSON-LD Structured Data ({data.jsonLd.length})
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Typography sx={{ fontWeight: 600 }}>
+                JSON-LD Structured Data
+              </Typography>
+              <Chip
+                label={String(data.jsonLd.length)}
+                size="small"
+                color="success"
+                sx={{ height: 22, fontSize: "0.75rem", fontWeight: 600 }}
+              />
+            </Box>
           </AccordionSummary>
           <AccordionDetails>
             {data.jsonLd.map((item, index) => (

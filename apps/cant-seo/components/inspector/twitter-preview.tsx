@@ -2,8 +2,9 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { AtSign, Lock } from "lucide-react";
+import { AtSign, Lock, ImageOff } from "lucide-react";
 import { PreviewCardBase } from "./preview-card-base";
+import { ImagePlaceholder } from "./image-placeholder";
 import type { InspectResponse } from "./types";
 
 function getDomain(url: string): string {
@@ -31,7 +32,6 @@ export function TwitterPreview({ data }: TwitterPreviewProps) {
   return (
     <PreviewCardBase title="Twitter / X" icon={<AtSign size={16} />}>
       {isLargeImage ? (
-        /* summary_large_image card */
         <Box
           sx={{
             maxWidth: 504,
@@ -47,7 +47,7 @@ export function TwitterPreview({ data }: TwitterPreviewProps) {
               sx={{
                 position: "relative",
                 width: "100%",
-                paddingTop: "50%", // 2:1 ratio
+                paddingTop: "50%",
                 overflow: "hidden",
                 bgcolor: "#e1e8ed",
                 borderBottom: 1,
@@ -72,15 +72,9 @@ export function TwitterPreview({ data }: TwitterPreviewProps) {
               />
             </Box>
           ) : (
-            <Box
-              sx={{
-                width: "100%",
-                paddingTop: "50%",
-                bgcolor: "#e1e8ed",
-                borderBottom: 1,
-                borderColor: "#cfd9de",
-              }}
-            />
+            <Box sx={{ borderBottom: 1, borderColor: "#cfd9de" }}>
+              <ImagePlaceholder aspectRatio="50%" bgcolor="#e1e8ed" />
+            </Box>
           )}
 
           <Box sx={{ p: 1.5 }}>
@@ -130,7 +124,6 @@ export function TwitterPreview({ data }: TwitterPreviewProps) {
           </Box>
         </Box>
       ) : (
-        /* summary card */
         <Box
           sx={{
             maxWidth: 504,
@@ -177,11 +170,23 @@ export function TwitterPreview({ data }: TwitterPreviewProps) {
                 width: 130,
                 minHeight: 130,
                 flexShrink: 0,
-                bgcolor: "#e1e8ed",
                 borderRight: 1,
                 borderColor: "#cfd9de",
+                bgcolor: "#e1e8ed",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                gap: 0.5,
               }}
-            />
+            >
+              <ImageOff size={20} color="rgba(0,0,0,0.25)" />
+              <Typography
+                sx={{ fontSize: 10, color: "rgba(0,0,0,0.3)", fontWeight: 500 }}
+              >
+                No image
+              </Typography>
+            </Box>
           )}
 
           <Box

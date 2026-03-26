@@ -58,6 +58,13 @@ export const metadata: Metadata = {
     description:
       "Can you spot the better API? Train your eye for clean React component APIs in under 5 minutes.",
   },
+  alternates: {
+    canonical: siteUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       {
@@ -89,6 +96,24 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Can't Maintain",
+              url: siteUrl,
+              description:
+                "Train your eye for clean React component APIs. Pick the better pattern in side-by-side code challenges.",
+              author: {
+                "@type": "Person",
+                name: "Sascha Becker",
+                url: "https://saschb2b.com",
+              },
+            }),
+          }}
+        />
         <Script
           async
           src="https://umami.saschb2b.com/script.js"

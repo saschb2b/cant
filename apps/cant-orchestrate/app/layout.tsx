@@ -55,6 +55,13 @@ export const metadata: Metadata = {
     description:
       "One config. Two ways. Pick the better container orchestration pattern in side-by-side code challenges.",
   },
+  alternates: {
+    canonical: siteUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/icon.svg",
   },
@@ -72,6 +79,24 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Can't Orchestrate",
+              url: siteUrl,
+              description:
+                "Test your DevOps instincts. Pick the better container orchestration pattern in side-by-side challenges.",
+              author: {
+                "@type": "Person",
+                name: "Sascha Becker",
+                url: "https://saschb2b.com",
+              },
+            }),
+          }}
+        />
         <Script
           async
           src="https://umami.saschb2b.com/script.js"

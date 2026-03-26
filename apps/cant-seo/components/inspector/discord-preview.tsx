@@ -48,7 +48,6 @@ export function DiscordPreview({ data }: DiscordPreviewProps) {
 
         {/* Content */}
         <Box sx={{ p: 2, flex: 1, overflow: "hidden" }}>
-          {/* Site name */}
           <Typography
             sx={{
               fontSize: 12,
@@ -60,7 +59,6 @@ export function DiscordPreview({ data }: DiscordPreviewProps) {
             {siteName}
           </Typography>
 
-          {/* Title */}
           <Typography
             sx={{
               fontSize: 16,
@@ -71,15 +69,12 @@ export function DiscordPreview({ data }: DiscordPreviewProps) {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               cursor: "pointer",
-              "&:hover": {
-                textDecoration: "underline",
-              },
+              "&:hover": { textDecoration: "underline" },
             }}
           >
             {title}
           </Typography>
 
-          {/* Description */}
           {description && (
             <Typography
               sx={{
@@ -98,7 +93,7 @@ export function DiscordPreview({ data }: DiscordPreviewProps) {
             </Typography>
           )}
 
-          {/* Image */}
+          {/* Image constrained to reasonable height */}
           {image && (
             <Box
               sx={{
@@ -106,6 +101,7 @@ export function DiscordPreview({ data }: DiscordPreviewProps) {
                 borderRadius: 1,
                 overflow: "hidden",
                 maxWidth: 400,
+                maxHeight: 200,
               }}
             >
               <Box
@@ -114,7 +110,7 @@ export function DiscordPreview({ data }: DiscordPreviewProps) {
                 alt=""
                 sx={{
                   width: "100%",
-                  maxHeight: 300,
+                  maxHeight: 200,
                   objectFit: "cover",
                   display: "block",
                   borderRadius: 1,
