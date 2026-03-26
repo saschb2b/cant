@@ -1,0 +1,88 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
+import { ThemeProvider } from "@cant/shared/components/theme-provider";
+import { AnalyticsProviderWrapper } from "@cant/shared/components/analytics-provider-wrapper";
+import theme from "@/lib/theme";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
+
+const siteUrl = "https://cant-seo.saschb2b.com";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Can't SEO - Link Inspector",
+    template: "%s - Can't SEO",
+  },
+  description:
+    "Paste any URL and preview how it appears on LinkedIn, Twitter/X, Slack, Teams, Discord, Google, and WhatsApp. Plus SEO challenges and a pattern library for Next.js.",
+  keywords: [
+    "SEO",
+    "meta tags",
+    "Open Graph",
+    "Twitter Cards",
+    "link preview",
+    "social sharing",
+    "structured data",
+    "Next.js SEO",
+    "canonical URL",
+    "sitemap",
+    "og:image",
+    "link inspector",
+  ],
+  authors: [{ name: "Sascha", url: "https://saschb2b.com/" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Can't SEO",
+    title: "Can't SEO - Link Inspector",
+    description:
+      "One link. Every platform. Preview how your URLs appear across LinkedIn, Twitter/X, Slack, Teams, and more.",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Can't SEO - Link Inspector",
+    description:
+      "One link. Every platform. Preview how your URLs appear across LinkedIn, Twitter/X, Slack, Teams, and more.",
+  },
+  icons: {
+    icon: "/icon.svg",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <Script
+          async
+          src="https://umami.saschb2b.com/script.js"
+          data-website-id="placeholder-cant-seo"
+        />
+      </head>
+      <body>
+        <ThemeProvider theme={theme}>
+          <AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,16 @@
+import { SiteFooter as SharedSiteFooter } from "@cant/shared/components/site-footer";
+
+const NAV_LINKS = [
+  { href: "/inspector", label: "Inspector" },
+  { href: "/play", label: "Play" },
+  { href: "/learn", label: "Learn" },
+  {
+    href: "https://github.com/saschb2b/cant-seo",
+    label: "GitHub",
+    external: true,
+  },
+] as const;
+
+export function SiteFooter() {
+  return <SharedSiteFooter navLinks={[...NAV_LINKS]} />;
+}

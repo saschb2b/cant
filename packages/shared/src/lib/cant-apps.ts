@@ -42,4 +42,12 @@ export const ALL_APPS: CantApp[] = [
       "Test your DevOps instincts. Docker, Kubernetes, CI/CD, and infrastructure patterns.",
     tags: "Docker, Kubernetes, CI/CD, Helm",
   },
+  {
+    name: "Can't SEO",
+    desc: "SEO best practices for Next.js.",
+    href: "https://cant-seo.saschb2b.com",
+    playPitch:
+      "Think you know SEO? Test your meta tag instincts with Open Graph, structured data, and more.",
+    tags: "Meta tags, Open Graph, structured data, canonical URLs",
+  },
 ];
