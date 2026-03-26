@@ -1,23 +1,12 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="g" x1="90" y1="34" x2="90" y2="146" gradientUnits="userSpaceOnUse">
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#2B4C7E"/>
-      <stop offset="100%" stop-color="#D4873C"/>
-    </linearGradient>
-    <linearGradient id="gd" x1="90" y1="34" x2="90" y2="146" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#1E3A5F"/>
-      <stop offset="100%" stop-color="#B87230"/>
+      <stop offset="100%" stop-color="#1E3A5F"/>
     </linearGradient>
   </defs>
-  <style>
-    .bg { fill: #1A2332; }
-    .br { stroke: url(#g); }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #F5F0EB; }
-      .br { stroke: url(#gd); }
-    }
-  </style>
-  <rect class="bg" width="180" height="180" rx="37"/>
-  <path class="br" d="M80 34 L36 90 L80 146" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <path class="br" d="M100 34 L144 90 L100 146" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect width="180" height="180" rx="37" fill="url(#bg)"/>
+  <text x="20" y="112" font-family="system-ui, sans-serif" font-weight="700" font-size="72" fill="#E8E0D4">&lt;</text>
+  <circle cx="90" cy="90" r="14" fill="#D4A843"/>
+  <text x="97" y="112" font-family="system-ui, sans-serif" font-weight="700" font-size="72" fill="#E8E0D4">/&gt;</text>
 </svg>

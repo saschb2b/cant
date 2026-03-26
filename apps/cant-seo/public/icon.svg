@@ -1,9 +1,12 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="37" fill="#0F172A"/>
-  <!-- Magnifying glass circle -->
-  <circle cx="78" cy="78" r="35" stroke="#60A5FA" stroke-width="6" fill="none"/>
-  <!-- Handle -->
-  <line x1="103" y1="103" x2="135" y2="135" stroke="#60A5FA" stroke-width="8" stroke-linecap="round"/>
-  <!-- Meta tag bracket -->
-  <text x="58" y="90" font-family="monospace" font-weight="800" font-size="32" fill="#FBBF24">&lt;/&gt;</text>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="37" fill="url(#bg)"/>
+  <circle cx="72" cy="72" r="38" stroke="#FFFFFF" stroke-width="8" fill="none"/>
+  <line x1="100" y1="100" x2="140" y2="140" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="57" cy="57" r="7" fill="#F59E0B"/>
 </svg>

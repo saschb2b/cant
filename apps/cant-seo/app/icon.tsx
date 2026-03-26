@@ -9,8 +9,8 @@ export default function Icon() {
       style={{
         width: 32,
         height: 32,
-        borderRadius: 6,
-        background: "#0F172A",
+        borderRadius: 7,
+        background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -20,42 +20,41 @@ export default function Icon() {
       {/* Magnifying glass */}
       <div
         style={{
-          position: "absolute",
-          left: 7,
-          top: 7,
-          width: 13,
-          height: 13,
+          width: 14,
+          height: 14,
           borderRadius: "50%",
-          border: "2px solid #60A5FA",
+          border: "2.5px solid #FFFFFF",
+          position: "absolute",
+          left: 6,
+          top: 6,
+          display: "flex",
         }}
       />
       {/* Handle */}
       <div
         style={{
           position: "absolute",
-          left: 18,
-          top: 18,
+          right: 5,
+          bottom: 5,
           width: 8,
-          height: 2.5,
-          background: "#60A5FA",
-          borderRadius: 1,
+          height: 3,
+          background: "#FFFFFF",
+          borderRadius: 2,
           transform: "rotate(45deg)",
         }}
       />
-      {/* Meta tag bracket */}
+      {/* Sparkle on lens */}
       <div
         style={{
           position: "absolute",
           left: 9,
-          top: 11,
-          fontSize: 7,
-          color: "#FBBF24",
-          fontWeight: 800,
-          fontFamily: "monospace",
+          top: 9,
+          width: 3,
+          height: 3,
+          borderRadius: "50%",
+          background: "#F59E0B",
         }}
-      >
-        &lt;/&gt;
-      </div>
+      />
     </div>,
     { ...size },
   );

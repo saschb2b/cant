@@ -1,31 +1,15 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="37" fill="#7C3AED"/>
-
-  <!-- Connection lines -->
-  <line x1="90" y1="58" x2="54" y2="110" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-  <line x1="90" y1="58" x2="126" y2="110" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-  <line x1="54" y1="110" x2="126" y2="110" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-
-  <!-- Center hub (top) - helm wheel shape -->
-  <circle cx="90" cy="58" r="20" stroke="#FFFFFF" stroke-width="4" fill="rgba(255,255,255,0.15)"/>
-  <circle cx="90" cy="58" r="7" fill="#FFFFFF"/>
-  <line x1="90" y1="38" x2="90" y2="44" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
-  <line x1="90" y1="72" x2="90" y2="78" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
-  <line x1="70" y1="58" x2="76" y2="58" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
-  <line x1="104" y1="58" x2="110" y2="58" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
-
-  <!-- Bottom-left node (container) -->
-  <rect x="34" y="94" width="40" height="32" rx="5" stroke="#FFFFFF" stroke-width="3.5" fill="rgba(255,255,255,0.12)"/>
-  <line x1="42" y1="102" x2="42" y2="118" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
-  <line x1="50" y1="102" x2="50" y2="118" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
-
-  <!-- Bottom-right node (container) -->
-  <rect x="106" y="94" width="40" height="32" rx="5" stroke="#FFFFFF" stroke-width="3.5" fill="rgba(255,255,255,0.12)"/>
-  <line x1="114" y1="102" x2="114" y2="118" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
-  <line x1="122" y1="102" x2="122" y2="118" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
-
-  <!-- Small dots for extra flair -->
-  <circle cx="42" cy="142" r="3" fill="#FFFFFF" opacity="0.5"/>
-  <circle cx="138" cy="142" r="3" fill="#FFFFFF" opacity="0.5"/>
-  <circle cx="90" cy="148" r="3" fill="#FFFFFF" opacity="0.5"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#6025C0"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="37" fill="url(#bg)"/>
+  <circle cx="90" cy="90" r="45" stroke="#FFFFFF" stroke-width="7" fill="none"/>
+  <circle cx="90" cy="90" r="13" fill="#A78BFA"/>
+  <rect x="82" y="22" width="16" height="26" rx="8" fill="#FFFFFF"/>
+  <rect x="82" y="132" width="16" height="26" rx="8" fill="#FFFFFF"/>
+  <rect x="22" y="82" width="26" height="16" rx="8" fill="#FFFFFF"/>
+  <rect x="132" y="82" width="26" height="16" rx="8" fill="#FFFFFF"/>
 </svg>

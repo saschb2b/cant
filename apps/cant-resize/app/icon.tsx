@@ -9,50 +9,53 @@ export default function Icon() {
       style={{
         width: 32,
         height: 32,
-        borderRadius: 6,
-        background: "#1A1A1A",
+        borderRadius: 7,
+        background: "linear-gradient(135deg, #247A6F, #1B5E56)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
       }}
     >
-      {/* Desktop */}
+      {/* Screen frame */}
       <div
         style={{
-          position: "absolute",
-          left: 5,
-          top: 7,
           width: 18,
-          height: 12,
-          border: "1.5px solid #FAFAFA",
+          height: 14,
+          border: "2px solid #FFFFFF",
           borderRadius: 2,
+          display: "flex",
         }}
       />
-      {/* Tablet */}
+      {/* Resize handle */}
       <div
         style={{
           position: "absolute",
-          right: 3,
-          top: 11,
-          width: 8,
-          height: 12,
-          border: "1.5px solid rgba(250,250,250,0.7)",
-          borderRadius: 1.5,
-        }}
-      />
-      {/* Phone */}
-      <div
-        style={{
-          position: "absolute",
-          left: 4,
+          right: 4,
           bottom: 4,
-          width: 6,
-          height: 9,
-          border: "1.5px solid rgba(250,250,250,0.5)",
-          borderRadius: 1.5,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1.5,
+          alignItems: "flex-end",
         }}
-      />
+      >
+        <div
+          style={{
+            width: 6,
+            height: 1.5,
+            background: "#D4A843",
+            borderRadius: 1,
+          }}
+        />
+        <div
+          style={{
+            width: 4,
+            height: 1.5,
+            background: "#D4A843",
+            borderRadius: 1,
+          }}
+        />
+      </div>
     </div>,
     { ...size },
   );

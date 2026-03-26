@@ -10,74 +10,52 @@ export default function AppleIcon() {
         width: 180,
         height: 180,
         borderRadius: 37,
-        background: "#1A1A1A",
+        background: "linear-gradient(135deg, #247A6F, #1B5E56)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
       }}
     >
-      {/* Desktop frame */}
+      {/* Screen frame */}
+      <div
+        style={{
+          width: 96,
+          height: 72,
+          border: "6px solid #FFFFFF",
+          borderRadius: 10,
+          display: "flex",
+        }}
+      />
+      {/* Resize handle */}
       <div
         style={{
           position: "absolute",
-          left: 38,
-          top: 48,
-          width: 104,
-          height: 66,
-          border: "4px solid #FAFAFA",
-          borderRadius: 8,
+          right: 28,
+          bottom: 28,
+          display: "flex",
+          flexDirection: "column",
+          gap: 6,
+          alignItems: "flex-end",
         }}
-      />
-      {/* Desktop stand */}
-      <div
-        style={{
-          position: "absolute",
-          left: 86,
-          top: 114,
-          width: 4,
-          height: 12,
-          background: "#FAFAFA",
-          borderRadius: 2,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 72,
-          top: 126,
-          width: 36,
-          height: 4,
-          background: "#FAFAFA",
-          borderRadius: 2,
-        }}
-      />
-      {/* Tablet frame */}
-      <div
-        style={{
-          position: "absolute",
-          left: 108,
-          top: 72,
-          width: 40,
-          height: 56,
-          border: "3.5px solid rgba(250,250,250,0.8)",
-          borderRadius: 6,
-          background: "rgba(250,250,250,0.08)",
-        }}
-      />
-      {/* Phone frame */}
-      <div
-        style={{
-          position: "absolute",
-          left: 28,
-          top: 82,
-          width: 28,
-          height: 46,
-          border: "3px solid rgba(250,250,250,0.6)",
-          borderRadius: 6,
-          background: "rgba(250,250,250,0.05)",
-        }}
-      />
+      >
+        <div
+          style={{
+            width: 32,
+            height: 5,
+            background: "#D4A843",
+            borderRadius: 3,
+          }}
+        />
+        <div
+          style={{
+            width: 20,
+            height: 5,
+            background: "#D4A843",
+            borderRadius: 3,
+          }}
+        />
+      </div>
     </div>,
     { ...size },
   );

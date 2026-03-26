@@ -9,8 +9,8 @@ export default function Icon() {
       style={{
         width: 32,
         height: 32,
-        borderRadius: 6,
-        background: "#3178C6",
+        borderRadius: 7,
+        background: "linear-gradient(135deg, #3178C6, #265FA0)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -20,24 +20,25 @@ export default function Icon() {
       <div
         style={{
           color: "#FFFFFF",
-          fontSize: 20,
+          fontSize: 16,
           fontWeight: 800,
           fontFamily: "system-ui, sans-serif",
           lineHeight: 1,
+          letterSpacing: -0.5,
         }}
       >
-        T
+        TS
       </div>
-      {/* Sparkle dot */}
+      {/* Type cursor */}
       <div
         style={{
           position: "absolute",
-          top: 4,
-          right: 4,
-          width: 4,
-          height: 4,
-          borderRadius: "50%",
-          background: "#FFD866",
+          right: 5,
+          bottom: 6,
+          width: 2,
+          height: 8,
+          background: "#6EA8DE",
+          borderRadius: 1,
         }}
       />
     </div>,

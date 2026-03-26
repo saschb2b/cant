@@ -1,26 +1,11 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="37" fill="#3178C6"/>
-
-  <!-- Letter T -->
-  <rect x="40" y="42" width="100" height="16" rx="4" fill="#FFFFFF"/>
-  <rect x="74" y="42" width="32" height="100" rx="4" fill="#FFFFFF"/>
-
-  <!-- Sparkle top-right -->
-  <g transform="translate(132, 36)">
-    <line x1="0" y1="-10" x2="0" y2="10" stroke="#FFD866" stroke-width="3" stroke-linecap="round"/>
-    <line x1="-10" y1="0" x2="10" y2="0" stroke="#FFD866" stroke-width="3" stroke-linecap="round"/>
-    <line x1="-7" y1="-7" x2="7" y2="7" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
-    <line x1="7" y1="-7" x2="-7" y2="7" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
-  </g>
-
-  <!-- Sparkle bottom-left (smaller) -->
-  <g transform="translate(38, 140)">
-    <line x1="0" y1="-6" x2="0" y2="6" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-    <line x1="-6" y1="0" x2="6" y2="0" stroke="#FFD866" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-    <line x1="-4" y1="-4" x2="4" y2="4" stroke="#FFD866" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-    <line x1="4" y1="-4" x2="-4" y2="4" stroke="#FFD866" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-  </g>
-
-  <!-- Dot accent -->
-  <circle cx="148" cy="138" r="4" fill="#FFD866" opacity="0.7"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3178C6"/>
+      <stop offset="100%" stop-color="#265FA0"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="37" fill="url(#bg)"/>
+  <text x="85" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="88" fill="#FFFFFF" letter-spacing="-2">TS</text>
+  <rect x="144" y="104" width="6" height="40" rx="3" fill="#6EA8DE"/>
 </svg>

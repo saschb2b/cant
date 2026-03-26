@@ -10,7 +10,7 @@ export default function AppleIcon() {
         width: 180,
         height: 180,
         borderRadius: 37,
-        background: "#0F172A",
+        background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -20,42 +20,41 @@ export default function AppleIcon() {
       {/* Magnifying glass circle */}
       <div
         style={{
-          position: "absolute",
-          left: 40,
-          top: 40,
-          width: 70,
-          height: 70,
+          width: 76,
+          height: 76,
           borderRadius: "50%",
-          border: "6px solid #60A5FA",
+          border: "8px solid #FFFFFF",
+          position: "absolute",
+          left: 34,
+          top: 34,
+          display: "flex",
         }}
       />
       {/* Handle */}
       <div
         style={{
           position: "absolute",
-          left: 100,
-          top: 100,
+          right: 28,
+          bottom: 28,
           width: 40,
-          height: 8,
-          background: "#60A5FA",
-          borderRadius: 4,
+          height: 12,
+          background: "#FFFFFF",
+          borderRadius: 6,
           transform: "rotate(45deg)",
         }}
       />
-      {/* Meta tag bracket */}
+      {/* Sparkle on lens */}
       <div
         style={{
           position: "absolute",
-          left: 52,
-          top: 58,
-          fontSize: 32,
-          color: "#FBBF24",
-          fontWeight: 800,
-          fontFamily: "monospace",
+          left: 50,
+          top: 50,
+          width: 14,
+          height: 14,
+          borderRadius: "50%",
+          background: "#F59E0B",
         }}
-      >
-        &lt;/&gt;
-      </div>
+      />
     </div>,
     { ...size },
   );
