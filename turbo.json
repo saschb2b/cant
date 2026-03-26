@@ -15,6 +15,13 @@
     "typecheck": {
       "dependsOn": ["^build"]
     },
-    "format:check": {}
+    "format:check": {},
+    "storybook": {
+      "cache": false,
+      "persistent": true
+    },
+    "build-storybook": {
+      "outputs": ["storybook-static/**"]
+    }
   }
 }
