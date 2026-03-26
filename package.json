@@ -3,10 +3,18 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "dev:maintain": "turbo dev --filter=cant-maintain",
+    "dev:resize": "turbo dev --filter=cant-resize",
+    "dev:type": "turbo dev --filter=cant-type",
     "build": "turbo build",
+    "build:maintain": "turbo build --filter=cant-maintain",
+    "build:resize": "turbo build --filter=cant-resize",
+    "build:type": "turbo build --filter=cant-type",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "format:check": "turbo format:check"
+    "format:check": "turbo format:check",
+    "storybook": "pnpm --filter @cant/shared storybook",
+    "build-storybook": "pnpm --filter @cant/shared build-storybook"
   },
   "devDependencies": {
     "turbo": "^2.5.4"
