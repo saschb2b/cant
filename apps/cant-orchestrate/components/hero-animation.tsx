@@ -7,12 +7,12 @@ import Box from "@mui/material/Box";
  * Animated cluster visualization for the landing page hero.
  *
  * Shows a control-plane hub connected to three worker nodes.
- * Pods (small squares) appear, scale, and cycle through the workers
+ * Pods (small squares) appear and cycle through the workers
  * in a looping animation to convey orchestration.
  */
 
-const PHASE_COUNT = 4;
-const PHASE_DURATIONS = [2200, 1800, 2000, 1600];
+const PHASE_COUNT = 5;
+const PHASE_DURATIONS = [2200, 1800, 2000, 1800, 1600];
 
 /* ---- layout constants (SVG viewBox = 320 x 240) ---- */
 const HUB = { x: 160, y: 48 };
@@ -24,16 +24,24 @@ const WORKERS: { x: number; y: number }[] = [
 const NODE_RX = 14;
 const POD_SIZE = 12;
 
-/* pods per worker at each phase */
+/* pods per worker at each phase (sequence loops cleanly: last -> first) */
 const POD_GRID: number[][] = [
-  [1, 0, 1], // phase 0: deploy to node 0 + 2
-  [2, 1, 1], // phase 1: scale up node 0, add to 1
-  [2, 2, 2], // phase 2: balanced
-  [1, 1, 0], // phase 3: scale down, drain node 2
+  [0, 0, 0], // phase 0: empty cluster
+  [1, 0, 1], // phase 1: initial deploy to node-1 + node-3
+  [2, 1, 1], // phase 2: scale up
+  [2, 2, 2], // phase 3: balanced
+  [1, 1, 1], // phase 4: scale down evenly
+];
+
+const STATUS_LABELS = [
+  "cluster ready",
+  "deploying containers...",
+  "scaling replicas...",
+  "cluster balanced",
+  "scaling down...",
 ];
 
 const DEFAULT_PODS = [0, 0, 0];
-const DEFAULT_WORKER = { x: 0, y: 0 };
 
 function podPositions(
   cx: number,
@@ -69,6 +77,7 @@ export function HeroAnimation() {
   }, []);
 
   const pods = POD_GRID[phase] ?? DEFAULT_PODS;
+  const statusLabel = STATUS_LABELS[phase] ?? "";
 
   return (
     <Box
@@ -102,39 +111,13 @@ export function HeroAnimation() {
         style={{ width: "100%", height: "auto", display: "block" }}
       >
         <defs>
-          {/* Connection line gradient */}
-          <linearGradient id="conn" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="0%"
-              stopColor="var(--mui-palette-primary-main)"
-              stopOpacity="0.6"
-            />
-            <stop
-              offset="100%"
-              stopColor="var(--mui-palette-primary-main)"
-              stopOpacity="0.15"
-            />
-          </linearGradient>
-
-          {/* Pulse animation */}
           <style>{`
-            @keyframes hubPulse {
-              0%, 100% { r: ${String(NODE_RX + 2)}; opacity: 0; }
-              50% { r: ${String(NODE_RX + 10)}; opacity: 0.18; }
-            }
-            @keyframes podIn {
-              from { opacity: 0; transform: scale(0.3); }
-              to { opacity: 1; transform: scale(1); }
-            }
             @keyframes dashFlow {
               to { stroke-dashoffset: -12; }
             }
             .conn-line {
               stroke-dasharray: 6 6;
               animation: dashFlow 1.5s linear infinite;
-            }
-            .hub-ring {
-              animation: hubPulse 2.4s ease-in-out infinite;
             }
           `}</style>
         </defs>
@@ -148,35 +131,27 @@ export function HeroAnimation() {
             y1={HUB.y + NODE_RX}
             x2={w.x}
             y2={w.y - NODE_RX}
-            stroke="url(#conn)"
+            stroke="var(--mui-palette-primary-main)"
+            strokeOpacity="0.35"
             strokeWidth="1.5"
           />
         ))}
 
-        {/* Worker-to-worker lines */}
-        {WORKERS.map((w, i) => {
-          const next = WORKERS[(i + 1) % WORKERS.length] ?? DEFAULT_WORKER;
-          return (
-            <line
-              key={`wconn-${String(i)}`}
-              x1={w.x}
-              y1={w.y}
-              x2={next.x}
-              y2={next.y}
-              stroke="var(--mui-palette-primary-main)"
-              strokeWidth="0.75"
-              strokeOpacity="0.1"
-            />
-          );
-        })}
-
-        {/* Hub pulse ring */}
+        {/* Hub pulse ring (opacity-based, no r animation) */}
         <circle
-          className="hub-ring"
           cx={HUB.x}
           cy={HUB.y}
+          r={NODE_RX + 8}
           fill="var(--mui-palette-primary-main)"
-        />
+          opacity="0"
+        >
+          <animate
+            attributeName="opacity"
+            values="0;0.18;0"
+            dur="2.4s"
+            repeatCount="indefinite"
+          />
+        </circle>
 
         {/* Hub node */}
         <circle
@@ -270,7 +245,7 @@ export function HeroAnimation() {
                 node-{i + 1}
               </text>
 
-              {/* Pods */}
+              {/* Pods (opacity-only entrance for cross-browser safety) */}
               {podPositions(w.x, w.y, podCount).map((p, pi) => (
                 <rect
                   key={`pod-${String(i)}-${String(pi)}-phase-${String(phase)}`}
@@ -284,12 +259,16 @@ export function HeroAnimation() {
                   stroke="var(--mui-palette-primary-main)"
                   strokeWidth="1"
                   strokeOpacity={0.6}
-                  style={{
-                    animation: "podIn 0.5s ease-out both",
-                    animationDelay: `${String(pi * 120)}ms`,
-                    transformOrigin: `${String(p.px)}px ${String(p.py)}px`,
-                  }}
-                />
+                >
+                  <animate
+                    attributeName="opacity"
+                    from="0"
+                    to="1"
+                    dur="0.4s"
+                    begin={`${String(pi * 0.12)}s`}
+                    fill="freeze"
+                  />
+                </rect>
               ))}
             </g>
           );
@@ -307,10 +286,7 @@ export function HeroAnimation() {
             transition: "opacity 0.4s ease",
           }}
         >
-          {phase === 0 && "deploying containers..."}
-          {phase === 1 && "scaling replicas..."}
-          {phase === 2 && "cluster balanced"}
-          {phase === 3 && "draining node-3..."}
+          {statusLabel}
         </text>
       </svg>
     </Box>
