@@ -30,6 +30,23 @@ export const searchItems: SearchItem[] = [
   // Top-level pages
   {
     type: "page",
+    title: "Dockerfile Explorer",
+    description:
+      "Paste a Dockerfile and see stages, layers, and best-practice checks",
+    keywords: [
+      "explorer",
+      "dockerfile",
+      "parse",
+      "layers",
+      "stages",
+      "lint",
+      "best practices",
+      "multi-stage",
+    ],
+    href: "/explorer",
+  },
+  {
+    type: "page",
     title: "Learn",
     description:
       "Browse all categories and study container orchestration patterns",
