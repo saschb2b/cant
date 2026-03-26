@@ -14,23 +14,66 @@ import Grow from "@mui/material/Grow";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 // ---------------------------------------------------------------------------
-// Sub-component prop contracts
+// Minimum shape the Game component needs from a challenge
 // ---------------------------------------------------------------------------
 
-interface Challenge {
+interface BaseChallenge {
   id: string;
   title: string;
   category: string;
   difficulty: Difficulty;
   correctSide: "left" | "right";
   explanationCorrect: string;
-  explanationWrong: string;
+  explanationWrong?: string;
   sourceUrl: string;
   sourceLabel: string;
 }
 
-interface GameState {
-  challenges: Challenge[];
+// ---------------------------------------------------------------------------
+// Sub-component prop contracts
+// ---------------------------------------------------------------------------
+
+export interface CodePanelSlotProps {
+  highlightedHtml: string;
+  label: string;
+  isSelectable: boolean;
+  onSelect: () => void;
+  result?: "correct" | "wrong" | null;
+  isSelected?: boolean;
+}
+
+export interface LobbySlotProps<C extends BaseChallenge> {
+  challenges: C[];
+  onStart: (
+    rawSeed: string,
+    excludedCategories: Set<string>,
+    gameType: "daily" | "weekly" | "custom",
+  ) => void;
+  defaultSeed?: string;
+  defaultExcluded?: Set<string>;
+}
+
+export interface ResultsSlotProps<C extends BaseChallenge> {
+  state: GameState<C>;
+  onRetry: () => void;
+  onNewGame: () => void;
+}
+
+export interface ExplanationSlotProps {
+  isCorrect: boolean;
+  explanationText: string;
+  sourceUrl: string;
+  sourceLabel: string;
+  category: string;
+  challengeId: string;
+}
+
+// ---------------------------------------------------------------------------
+// Game state shape
+// ---------------------------------------------------------------------------
+
+interface GameState<C extends BaseChallenge> {
+  challenges: C[];
   currentIndex: number;
   score: number;
   streak: number;
@@ -47,56 +90,21 @@ interface GameState {
   gameType: "daily" | "weekly" | "custom";
 }
 
-type GameType = "daily" | "weekly" | "custom";
-
-export interface CodePanelSlotProps {
-  highlightedHtml: string;
-  label: string;
-  isSelectable: boolean;
-  onSelect: () => void;
-  result?: "correct" | "wrong" | null;
-  isSelected?: boolean;
-}
-
-export interface LobbySlotProps {
-  challenges: Challenge[];
-  onStart: (
-    rawSeed: string,
-    excludedCategories: Set<string>,
-    gameType: GameType,
-  ) => void;
-  defaultSeed?: string;
-  defaultExcluded?: Set<string>;
-}
-
-export interface ResultsSlotProps {
-  state: GameState;
-  onRetry: () => void;
-  onNewGame: () => void;
-}
-
-export interface ExplanationSlotProps {
-  isCorrect: boolean;
-  explanationText: string;
-  sourceUrl: string;
-  sourceLabel: string;
-  category: string;
-  challengeId: string;
-}
-
-// ---------------------------------------------------------------------------
-// useGame hook contract (injected by apps)
-// ---------------------------------------------------------------------------
-
-interface UseGameReturn {
-  state: GameState | null;
-  currentChallenge: Challenge | null;
-  currentAnswer: { result: "correct" | "wrong"; side: "left" | "right" } | null;
+interface UseGameReturn<C extends BaseChallenge> {
+  state: GameState<C> | null;
+  currentChallenge: C | null;
+  currentAnswer: {
+    result: "correct" | "wrong";
+    side: "left" | "right";
+  } | null;
   currentDifficulty: Difficulty | null;
   totalChallenges: number;
   isReviewing: boolean;
-  displayChallenge: Challenge | null;
-  displayAnswer: { result: "correct" | "wrong"; side: "left" | "right" } | null;
+  displayChallenge: C | null;
+  displayAnswer: {
+    result: "correct" | "wrong";
+    side: "left" | "right";
+  } | null;
   submitAnswer: (side: "left" | "right") => void;
   goToNext: () => void;
   restartGame: () => void;
@@ -108,29 +116,33 @@ interface UseGameReturn {
 // Game component
 // ---------------------------------------------------------------------------
 
-interface GameProps {
-  challenges: Challenge[];
+interface GameProps<C extends BaseChallenge> {
+  challenges: C[];
   highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
   defaultSeed?: string;
   /** Text shown below the challenge title, e.g. "Pick the better TypeScript pattern" */
   promptText: string;
   /** Category label map for the blurred category chip. */
   categoryLabels: Record<string, string>;
-  /** Hook that provides game state. Injected so apps control imports. */
+  /** Hook that provides game state. */
   useGame: (
-    challenges: Challenge[],
+    challenges: C[],
     seed: string | null,
     excludedCategories: Set<string>,
     retryKey: number,
-    gameType: GameType,
-  ) => UseGameReturn;
+    gameType: "daily" | "weekly" | "custom",
+  ) => UseGameReturn<C>;
   /** Seed generator function. */
   generateSeed: () => string;
-  // Injected sub-components
+  /** Code comparison panel. */
   CodePanelComponent: ComponentType<CodePanelSlotProps>;
-  LobbyComponent: ComponentType<LobbySlotProps>;
-  ResultsComponent: ComponentType<ResultsSlotProps>;
+  /** Lobby/setup screen. */
+  LobbyComponent: ComponentType<LobbySlotProps<C>>;
+  /** Results screen after game ends. */
+  ResultsComponent: ComponentType<ResultsSlotProps<C>>;
+  /** Post-answer explanation panel. */
   ExplanationComponent: ComponentType<ExplanationSlotProps>;
+  /** Score/progress header. */
   GameHeaderComponent: ComponentType<{
     score: number;
     total: number;
@@ -141,11 +153,10 @@ interface GameProps {
     reviewIndex: number | null;
     onQuestionClick: (index: number) => void;
   }>;
-  /** Optional extra content below the keyboard hints. */
   children?: ReactNode;
 }
 
-export function Game({
+export function Game<C extends BaseChallenge>({
   challenges,
   highlightMap,
   defaultSeed,
@@ -158,14 +169,16 @@ export function Game({
   ResultsComponent,
   ExplanationComponent,
   GameHeaderComponent,
-}: GameProps) {
+}: GameProps<C>) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
   const [excludedCategories, setExcludedCategories] = useState(
     new Set<string>(),
   );
   const [retryKey, setRetryKey] = useState(0);
-  const [gameType, setGameType] = useState<GameType>("custom");
+  const [gameType, setGameType] = useState<
+    "daily" | "weekly" | "custom"
+  >("custom");
 
   const {
     state,
@@ -190,7 +203,11 @@ export function Game({
   );
 
   const handleLobbyStart = useCallback(
-    (seed: string, excluded: Set<string>, type: GameType) => {
+    (
+      seed: string,
+      excluded: Set<string>,
+      type: "daily" | "weekly" | "custom",
+    ) => {
       setExcludedCategories(excluded);
       setGameType(type);
       setActiveSeed(seed || generateSeedFn());
@@ -511,7 +528,8 @@ export function Game({
                 explanationText={
                   displayAnswer.result === "correct"
                     ? displayChallenge.explanationCorrect
-                    : displayChallenge.explanationWrong
+                    : (displayChallenge.explanationWrong ??
+                        displayChallenge.explanationCorrect)
                 }
                 sourceUrl={displayChallenge.sourceUrl}
                 sourceLabel={displayChallenge.sourceLabel}

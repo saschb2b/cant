@@ -1,7 +1,7 @@
 "use server";
 
 import { getRank } from "./share";
-import { generateAnonymousName } from "./anonymous-names";
+import { generateAnonymousName } from "@cant/shared/lib/game/anonymous-names";
 import {
   addResult,
   getRecentResults,

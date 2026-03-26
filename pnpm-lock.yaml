@@ -287,6 +287,9 @@ importers:
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
+      lottie-react:
+        specifier: ^2.4.1
+        version: 2.4.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       lucide-react:
         specifier: '*'
         version: 1.7.0(react@19.2.4)

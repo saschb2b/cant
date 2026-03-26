@@ -10,7 +10,6 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Link from "@mui/material/Link";
-import type { GameState } from "../../lib/game/types";
 import { useTrackEvent } from "../../lib/analytics-context";
 import { FormattedText } from "../formatted-text";
 import {
@@ -29,26 +28,50 @@ import {
   Copy,
 } from "lucide-react";
 
-interface ResultsConfig {
+/** Minimum challenge shape the results screen needs. */
+interface ResultsChallenge {
+  id: string;
+  title: string;
+  category: string;
+  explanationCorrect: string;
+  explanationWrong?: string;
+  sourceUrl: string;
+  sourceLabel: string;
+}
+
+/** Minimum game state shape the results screen needs. */
+interface ResultsGameState<C extends ResultsChallenge = ResultsChallenge> {
+  challenges: C[];
+  answers: Record<
+    string,
+    { result: "correct" | "wrong"; side: "left" | "right" }
+  >;
+  bestStreak: number;
+  startedAt: number;
+  finishedAt: number | null;
+  seed: string;
+}
+
+interface ResultsConfig<S> {
   /** Domain-specific text for sharing, e.g. "responsive patterns". */
   shareSubject: string;
-  /** Full share URL builder. Receives encoded results and seed. */
-  getShareUrl: (state: GameState) => string;
+  /** Full share URL builder. */
+  getShareUrl: (state: S) => string;
   /** Encode game results to a URL-safe string. */
-  encodeResults: (state: GameState) => string;
+  encodeResults: (state: S) => string;
   /** Get missed category labels from game state. */
-  getMissedCategoryLabels: (state: GameState) => string[];
+  getMissedCategoryLabels: (state: S) => string[];
   /** GitHub repo URL for the contribute button. */
   githubUrl: string;
   /** Category labels map. */
   categoryLabels: Record<string, string>;
 }
 
-interface ResultsScreenProps {
-  state: GameState;
+interface ResultsScreenProps<S extends ResultsGameState = ResultsGameState> {
+  state: S;
   onRetry: () => void;
   onNewGame: () => void;
-  config: ResultsConfig;
+  config: ResultsConfig<S>;
   /** Render the rank display. Receives percentage. Default: plain text. */
   renderRank?: (percentage: number) => ReactNode;
   /** Extra content inside the hero card (e.g. sparkle field). */
@@ -57,7 +80,7 @@ interface ResultsScreenProps {
   heroSx?: Record<string, unknown>;
 }
 
-export function ResultsScreen({
+export function ResultsScreen<S extends ResultsGameState>({
   state,
   onRetry,
   onNewGame,
@@ -65,7 +88,7 @@ export function ResultsScreen({
   renderRank,
   heroExtra,
   heroSx,
-}: ResultsScreenProps) {
+}: ResultsScreenProps<S>) {
   const trackEvent = useTrackEvent();
   const isSmUp = useMediaQuery("(min-width:600px)");
   const buttonSize = isSmUp ? "large" : "medium";

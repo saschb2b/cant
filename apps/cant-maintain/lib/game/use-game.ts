@@ -50,7 +50,7 @@ const SESSION_PICKS: Record<Difficulty, number> = {
 function prepareChallenges(
   allChallenges: Challenge[],
   rng: () => number,
-  excludedCategories: Set<ChallengeCategory>,
+  excludedCategories: Set<string>,
 ): Challenge[] {
   const pool =
     excludedCategories.size === 0
@@ -81,7 +81,7 @@ function prepareChallenges(
 function createInitialState(
   allChallenges: Challenge[],
   rawSeed: string,
-  excludedCategories: Set<ChallengeCategory>,
+  excludedCategories: Set<string>,
   gameType: "daily" | "weekly" | "custom",
 ): GameState {
   const rng = createRng(hashSeed(rawSeed));
@@ -105,7 +105,7 @@ function createInitialState(
 export function useGame(
   challengePool: Challenge[],
   seed: string | null,
-  excludedCategories = new Set<ChallengeCategory>(),
+  excludedCategories: Set<string> = new Set(),
   retryKey = 0,
   gameType: "daily" | "weekly" | "custom" = "custom",
 ) {
