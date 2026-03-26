@@ -90,8 +90,8 @@ export function CodePanel(props: CodePanelProps) {
     <SharedCodePanel
       {...props}
       checkmarkAnimation={checkmarkAnimation}
-      defaultHeaderBgcolor="secondary.main"
-      codeBgcolor="rgba(var(--mui-palette-secondary-mainChannel) / 0.5)"
+      headerBackground="secondary.main"
+      codeBackground="rgba(var(--mui-palette-secondary-mainChannel) / 0.5)"
       betterLabel={shimmerBetterLabel}
       overlaySlot={<SparklesBurst />}
     />

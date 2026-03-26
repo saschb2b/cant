@@ -27,11 +27,13 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
       categoryLabels={CATEGORY_LABELS as Record<string, string>}
       useGame={useGame}
       generateSeed={generateSeed}
-      CodePanelComponent={CodePanel}
-      LobbyComponent={LobbyScreen}
-      ResultsComponent={ResultsScreen}
-      ExplanationComponent={ExplanationPanel}
-      GameHeaderComponent={GameHeader}
+      slots={{
+        codePanel: CodePanel,
+        lobby: LobbyScreen,
+        results: ResultsScreen,
+        explanation: ExplanationPanel,
+        gameHeader: GameHeader,
+      }}
     />
   );
 }

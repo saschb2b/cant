@@ -12,6 +12,8 @@ import { codeBlockStyles } from "../../lib/code-styles";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+type LottieAnimationData = Record<string, unknown>;
+
 interface CodePanelProps {
   /** Pre-rendered HTML from Shiki syntax highlighting. */
   highlightedHtml: string;
@@ -26,11 +28,11 @@ interface CodePanelProps {
   /** Whether this panel was the one the user selected. */
   isSelected?: boolean;
   /** Lottie animation JSON data for the checkmark. */
-  checkmarkAnimation: unknown;
-  /** Background color for the header when no result. Defaults to "action.selected". */
-  defaultHeaderBgcolor?: string;
-  /** Background color for the code area. Defaults to "background.paper". */
-  codeBgcolor?: string;
+  checkmarkAnimation: LottieAnimationData;
+  /** MUI theme path for the header background when no result is shown. Defaults to "action.selected". */
+  headerBackground?: string;
+  /** MUI theme path for the code area background. Defaults to "background.paper". */
+  codeBackground?: string;
   /** Custom "Better" label slot. Replaces the default text when result is correct. */
   betterLabel?: ReactNode;
   /** Custom "Worse" label slot. Replaces the default text when result is wrong. */
@@ -43,7 +45,7 @@ function CheckmarkOverlay({
   animationData,
   extraOverlay,
 }: {
-  animationData: unknown;
+  animationData: LottieAnimationData;
   extraOverlay?: ReactNode;
 }) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
@@ -89,8 +91,8 @@ export function CodePanel({
   result,
   isSelected,
   checkmarkAnimation,
-  defaultHeaderBgcolor = "action.selected",
-  codeBgcolor = "background.paper",
+  headerBackground = "action.selected",
+  codeBackground = "background.paper",
   betterLabel,
   worseLabel,
   overlaySlot,
@@ -116,7 +118,7 @@ export function CodePanel({
       ? "rgba(var(--mui-palette-success-mainChannel) / 0.1)"
       : result === "wrong"
         ? "rgba(var(--mui-palette-error-mainChannel) / 0.1)"
-        : defaultHeaderBgcolor;
+        : headerBackground;
 
   const headerBorderColor =
     result === "correct"
@@ -232,7 +234,7 @@ export function CodePanel({
       <Box
         sx={{
           flex: 1,
-          bgcolor: codeBgcolor,
+          bgcolor: codeBackground,
           ...codeBlockStyles,
         }}
       >

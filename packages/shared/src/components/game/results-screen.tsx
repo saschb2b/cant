@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import type { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -77,7 +77,7 @@ interface ResultsScreenProps<S extends ResultsGameState = ResultsGameState> {
   /** Extra content inside the hero card (e.g. sparkle field). */
   heroExtra?: ReactNode;
   /** Extra hero Paper sx overrides. */
-  heroSx?: Record<string, unknown>;
+  heroSx?: SxProps<Theme>;
 }
 
 export function ResultsScreen<S extends ResultsGameState>({
@@ -90,8 +90,6 @@ export function ResultsScreen<S extends ResultsGameState>({
   heroSx,
 }: ResultsScreenProps<S>) {
   const trackEvent = useTrackEvent();
-  const isSmUp = useMediaQuery("(min-width:600px)");
-  const buttonSize = isSmUp ? "large" : "medium";
   const total = state.challenges.length;
   const correct = Object.values(state.answers).filter(
     (a) => a.result === "correct",
@@ -124,9 +122,7 @@ export function ResultsScreen<S extends ResultsGameState>({
   const buildShareText = useCallback(() => {
     const dots = state.challenges
       .map((c) =>
-        state.answers[c.id]?.result === "correct"
-          ? "\u{1F7E2}"
-          : "\u{1F534}",
+        state.answers[c.id]?.result === "correct" ? "\u{1F7E2}" : "\u{1F534}",
       )
       .join("");
     const shareUrl = config.getShareUrl(state);
@@ -181,7 +177,10 @@ export function ResultsScreen<S extends ResultsGameState>({
     });
   }, [buildShareText, correct, total, trackEvent]);
 
-  const resultsParam = useMemo(() => config.encodeResults(state), [state, config]);
+  const resultsParam = useMemo(
+    () => config.encodeResults(state),
+    [state, config],
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -250,8 +249,7 @@ export function ResultsScreen<S extends ResultsGameState>({
             sx={{ mt: 2 }}
           >
             {state.challenges.map((c) => {
-              const isCorrect =
-                state.answers[c.id]?.result === "correct";
+              const isCorrect = state.answers[c.id]?.result === "correct";
               return (
                 <Box
                   key={c.id}
@@ -324,10 +322,7 @@ export function ResultsScreen<S extends ResultsGameState>({
                   color="var(--mui-palette-success-main)"
                 />
               ) : (
-                <Copy
-                  size={12}
-                  color="var(--mui-palette-text-secondary)"
-                />
+                <Copy size={12} color="var(--mui-palette-text-secondary)" />
               )}
             </Stack>
           </Stack>
@@ -341,27 +336,42 @@ export function ResultsScreen<S extends ResultsGameState>({
           >
             <Button
               variant={percentage >= 70 ? "contained" : "outlined"}
-              size={buttonSize}
+              size="medium"
               onClick={handleShare}
               startIcon={
-                hasCopied ? (
-                  <ClipboardCheck size={18} />
-                ) : (
-                  <Share2 size={18} />
-                )
+                hasCopied ? <ClipboardCheck size={18} /> : <Share2 size={18} />
               }
+              sx={{
+                px: { sm: 2.75 },
+                py: { sm: 1 },
+                fontSize: { sm: "0.9375rem" },
+              }}
             >
               {hasCopied ? "Copied!" : "Share"}
             </Button>
             <Button
               variant={percentage >= 70 ? "outlined" : "contained"}
-              size={buttonSize}
+              size="medium"
               onClick={onRetry}
               startIcon={<RotateCcw size={18} />}
+              sx={{
+                px: { sm: 2.75 },
+                py: { sm: 1 },
+                fontSize: { sm: "0.9375rem" },
+              }}
             >
               Retry
             </Button>
-            <Button variant="text" size={buttonSize} onClick={onNewGame}>
+            <Button
+              variant="text"
+              size="medium"
+              onClick={onNewGame}
+              sx={{
+                px: { sm: 2.75 },
+                py: { sm: 1 },
+                fontSize: { sm: "0.9375rem" },
+              }}
+            >
               New Game
             </Button>
           </Stack>
@@ -460,8 +470,7 @@ export function ResultsScreen<S extends ResultsGameState>({
         {wrongChallenges.length > 0 && (
           <Box
             sx={{
-              gridColumn:
-                correctChallenges.length > 0 ? undefined : "1 / -1",
+              gridColumn: correctChallenges.length > 0 ? undefined : "1 / -1",
             }}
           >
             <Stack
@@ -471,11 +480,7 @@ export function ResultsScreen<S extends ResultsGameState>({
               sx={{ mb: 1.5 }}
             >
               <X size={16} color="var(--mui-palette-error-main)" />
-              <Typography
-                variant="body2"
-                fontWeight={600}
-                color="text.primary"
-              >
+              <Typography variant="body2" fontWeight={600} color="text.primary">
                 You missed ({String(wrongChallenges.length)})
               </Typography>
             </Stack>
@@ -531,7 +536,10 @@ export function ResultsScreen<S extends ResultsGameState>({
                       }}
                     >
                       <FormattedText
-                        text={challenge.explanationWrong ?? challenge.explanationCorrect}
+                        text={
+                          challenge.explanationWrong ??
+                          challenge.explanationCorrect
+                        }
                       />
                     </Box>
                     <Stack direction="row" spacing={2}>
@@ -580,8 +588,7 @@ export function ResultsScreen<S extends ResultsGameState>({
                         }}
                       >
                         <BookOpen size={12} />
-                        Review{" "}
-                        {config.categoryLabels[challenge.category]}
+                        Review {config.categoryLabels[challenge.category]}
                       </Link>
                     </Stack>
                   </Box>
@@ -595,8 +602,7 @@ export function ResultsScreen<S extends ResultsGameState>({
           <Stack
             spacing={3}
             sx={{
-              gridColumn:
-                wrongChallenges.length > 0 ? undefined : "1 / -1",
+              gridColumn: wrongChallenges.length > 0 ? undefined : "1 / -1",
               position: { md: "sticky" },
               top: { md: 24 },
             }}
@@ -608,10 +614,7 @@ export function ResultsScreen<S extends ResultsGameState>({
                 spacing={1}
                 sx={{ mb: 1.5 }}
               >
-                <Check
-                  size={16}
-                  color="var(--mui-palette-success-main)"
-                />
+                <Check size={16} color="var(--mui-palette-success-main)" />
                 <Typography
                   variant="body2"
                   fontWeight={600}

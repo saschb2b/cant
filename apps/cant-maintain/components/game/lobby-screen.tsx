@@ -7,7 +7,6 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { ExternalLink } from "lucide-react";
-import type { Challenge } from "@/lib/game/types";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
 import {
   decodeSeed,
@@ -26,7 +25,6 @@ import { ActivityGraph } from "./activity-graph";
 export type { GameType };
 
 interface LobbyScreenProps {
-  challenges: Challenge[];
   onStart: (
     rawSeed: string,
     excludedCategories: Set<string>,
@@ -43,17 +41,19 @@ export function LobbyScreen(props: LobbyScreenProps) {
       config={{
         categorySections: CATEGORY_SECTIONS,
         categoryLabels: CATEGORY_LABELS,
-        headerBgcolor: "secondary.main",
-        decodeSeed,
-        generateSeed,
-        seedFromKey,
-        getTodayKey,
-        getWeekKey,
-        getHistory,
-        getEntryBySeed,
-        formatRelativeDate,
+        headerBackground: "secondary.main",
+        gameUtils: {
+          decodeSeed,
+          generateSeed,
+          seedFromKey,
+          getTodayKey,
+          getWeekKey,
+          getHistory,
+          getEntryBySeed,
+          formatRelativeDate,
+        },
       }}
-      ActivityGraphComponent={ActivityGraph}
+      slots={{ activityGraph: ActivityGraph }}
       crossPromoSlot={
         <Box sx={{ pb: { xs: 3, md: 6 } }}>
           <Typography

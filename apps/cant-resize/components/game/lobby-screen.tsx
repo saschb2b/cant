@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { ExternalLink } from "lucide-react";
 import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game/lobby-screen";
-import type { Challenge } from "@/lib/game/types";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   decodeSeed,
@@ -27,14 +26,16 @@ export type GameType = "daily" | "weekly" | "custom";
 const config = {
   categorySections: CATEGORY_SECTIONS,
   categoryLabels: CATEGORY_LABELS,
-  decodeSeed,
-  generateSeed,
-  seedFromKey,
-  getTodayKey,
-  getWeekKey,
-  getHistory,
-  getEntryBySeed,
-  formatRelativeDate,
+  gameUtils: {
+    decodeSeed,
+    generateSeed,
+    seedFromKey,
+    getTodayKey,
+    getWeekKey,
+    getHistory,
+    getEntryBySeed,
+    formatRelativeDate,
+  },
 };
 
 const crossPromoSlot = (
@@ -148,7 +149,6 @@ const crossPromoSlot = (
 );
 
 interface LobbyScreenProps {
-  challenges: Challenge[];
   onStart: (
     rawSeed: string,
     excludedCategories: Set<string>,
@@ -163,7 +163,7 @@ export function LobbyScreen(props: LobbyScreenProps) {
     <SharedLobbyScreen
       {...props}
       config={config}
-      ActivityGraphComponent={ActivityGraph}
+      slots={{ activityGraph: ActivityGraph }}
       crossPromoSlot={crossPromoSlot}
     />
   );

@@ -45,6 +45,20 @@ interface HistoryEntry {
 
 export type GameType = "daily" | "weekly" | "custom";
 
+interface LobbyGameUtils {
+  decodeSeed: (seed: string) => {
+    rawSeed: string;
+    excludedCategories: Set<string>;
+  };
+  generateSeed: () => string;
+  seedFromKey: (key: string) => string;
+  getTodayKey: () => string;
+  getWeekKey: () => string;
+  getHistory: () => HistoryEntry[];
+  getEntryBySeed: (seed: string) => HistoryEntry | null;
+  formatRelativeDate: (timestamp: number) => string;
+}
+
 // ---------------------------------------------------------------------------
 // ChallengeCard (internal)
 // ---------------------------------------------------------------------------
@@ -56,7 +70,7 @@ function ChallengeCard({
   seed,
   result,
   onPlay,
-  headerBgcolor,
+  headerBackground,
 }: {
   icon: ReactNode;
   label: string;
@@ -64,7 +78,7 @@ function ChallengeCard({
   seed: string;
   result: HistoryEntry | null;
   onPlay: () => void;
-  headerBgcolor: string;
+  headerBackground: string;
 }) {
   const completed = result !== null;
   const pct = completed
@@ -92,7 +106,7 @@ function ChallengeCard({
         sx={{
           px: 2,
           py: 1,
-          bgcolor: headerBgcolor,
+          bgcolor: headerBackground,
           borderBottom: 1,
           borderColor: "divider",
         }}
@@ -186,9 +200,7 @@ function ChallengeCard({
             >
               {seed}
             </Typography>
-            <Box
-              sx={{ ml: "auto", color: "text.secondary", display: "flex" }}
-            >
+            <Box sx={{ ml: "auto", color: "text.secondary", display: "flex" }}>
               <ArrowRight size={14} />
             </Box>
           </Stack>
@@ -202,27 +214,21 @@ function ChallengeCard({
 // Lobby config
 // ---------------------------------------------------------------------------
 
-interface LobbyConfig {
+export interface LobbyConfig {
   categorySections: CategorySection[];
   categoryLabels: Record<string, string>;
-  /** Background color for card headers. Defaults to "action.selected". */
-  headerBgcolor?: string;
-  // Injected game lib functions
-  decodeSeed: (seed: string) => {
-    rawSeed: string;
-    excludedCategories: Set<string>;
-  };
-  generateSeed: () => string;
-  seedFromKey: (key: string) => string;
-  getTodayKey: () => string;
-  getWeekKey: () => string;
-  getHistory: () => HistoryEntry[];
-  getEntryBySeed: (seed: string) => HistoryEntry | null;
-  formatRelativeDate: (timestamp: number) => string;
+  /** MUI theme path for card header backgrounds. Defaults to "action.selected". */
+  headerBackground?: string;
+  /** Game-specific utility functions for seeds, history, and date formatting. */
+  gameUtils: LobbyGameUtils;
+}
+
+interface LobbySlots {
+  /** Activity graph component rendered in the activity section. */
+  activityGraph: React.ComponentType;
 }
 
 interface LobbyScreenProps {
-  challenges: unknown[];
   onStart: (
     rawSeed: string,
     excludedCategories: Set<string>,
@@ -231,8 +237,8 @@ interface LobbyScreenProps {
   defaultSeed?: string;
   defaultExcluded?: Set<string>;
   config: LobbyConfig;
-  /** Activity graph component. */
-  ActivityGraphComponent: React.ComponentType;
+  /** Injected sub-components. */
+  slots: LobbySlots;
   /** Optional "more topics" section rendered below the activity section. */
   crossPromoSlot?: ReactNode;
 }
@@ -246,37 +252,37 @@ export function LobbyScreen({
   defaultSeed = "",
   defaultExcluded,
   config,
-  ActivityGraphComponent,
+  slots,
   crossPromoSlot,
 }: LobbyScreenProps) {
   const trackEvent = useTrackEvent();
-  const headerBgcolor = config.headerBgcolor ?? "action.selected";
+  const { gameUtils } = config;
+  const ActivityGraphComponent = slots.activityGraph;
+  const headerBackground = config.headerBackground ?? "action.selected";
   const ALL_CATEGORIES = config.categorySections.flatMap((s) => s.categories);
 
-  const defaultDecoded = defaultSeed ? config.decodeSeed(defaultSeed) : null;
+  const defaultDecoded = defaultSeed ? gameUtils.decodeSeed(defaultSeed) : null;
   const [seedInput, setSeedInput] = useState(defaultSeed);
   const [excluded, setExcluded] = useState(
-    defaultDecoded?.excludedCategories ??
-      defaultExcluded ??
-      new Set<string>(),
+    defaultDecoded?.excludedCategories ?? defaultExcluded ?? new Set<string>(),
   );
 
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [dailyResult, setDailyResult] = useState<HistoryEntry | null>(null);
   const [weeklyResult, setWeeklyResult] = useState<HistoryEntry | null>(null);
 
-  const dailySeed = config.seedFromKey(config.getTodayKey());
-  const weeklySeed = config.seedFromKey(config.getWeekKey());
+  const dailySeed = gameUtils.seedFromKey(gameUtils.getTodayKey());
+  const weeklySeed = gameUtils.seedFromKey(gameUtils.getWeekKey());
 
   useEffect(() => {
-    setHistory(config.getHistory());
-    setDailyResult(config.getEntryBySeed(dailySeed));
-    setWeeklyResult(config.getEntryBySeed(weeklySeed));
+    setHistory(gameUtils.getHistory());
+    setDailyResult(gameUtils.getEntryBySeed(dailySeed));
+    setWeeklyResult(gameUtils.getEntryBySeed(weeklySeed));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hasSeed = seedInput.trim().length > 0;
   const seedDecoded = hasSeed
-    ? config.decodeSeed(seedInput.trim().toUpperCase())
+    ? gameUtils.decodeSeed(seedInput.trim().toUpperCase())
     : null;
   const seedHasCategories = (seedDecoded?.excludedCategories.size ?? 0) > 0;
   const effectiveExcluded = hasSeed
@@ -317,7 +323,7 @@ export function LobbyScreen({
   const handleStart = () => {
     const trimmed = seedInput.trim().toUpperCase();
     if (trimmed) {
-      const { rawSeed, excludedCategories } = config.decodeSeed(trimmed);
+      const { rawSeed, excludedCategories } = gameUtils.decodeSeed(trimmed);
       trackEvent("game-started", {
         seed: trimmed,
         type: "custom",
@@ -459,7 +465,7 @@ export function LobbyScreen({
               <Tooltip title="Random seed" arrow>
                 <IconButton
                   size="small"
-                  onClick={() => setSeedInput(config.generateSeed())}
+                  onClick={() => setSeedInput(gameUtils.generateSeed())}
                   sx={{
                     color: "text.secondary",
                     "&:hover": { color: "text.primary" },
@@ -534,9 +540,7 @@ export function LobbyScreen({
                       transition: "opacity 0.15s ease",
                     }}
                   >
-                    {section.categories.every((c) =>
-                      effectiveExcluded.has(c),
-                    )
+                    {section.categories.every((c) => effectiveExcluded.has(c))
                       ? "enable all"
                       : "disable all"}
                   </Typography>
@@ -557,13 +561,9 @@ export function LobbyScreen({
                           bgcolor: isEnabled
                             ? "action.selected"
                             : "transparent",
-                          color: isEnabled
-                            ? "text.primary"
-                            : "text.disabled",
+                          color: isEnabled ? "text.primary" : "text.disabled",
                           border: 1,
-                          borderColor: isEnabled
-                            ? "transparent"
-                            : "divider",
+                          borderColor: isEnabled ? "transparent" : "divider",
                           opacity: isEnabled ? 1 : 0.45,
                           transition: "all 0.15s ease",
                           "&:hover": {
@@ -609,7 +609,7 @@ export function LobbyScreen({
             sublabel="Resets every day"
             seed={dailySeed}
             result={dailyResult}
-            headerBgcolor={headerBgcolor}
+            headerBackground={headerBackground}
             onPlay={() => {
               trackEvent("game-started", {
                 seed: dailySeed,
@@ -625,7 +625,7 @@ export function LobbyScreen({
             sublabel="Resets every Monday"
             seed={weeklySeed}
             result={weeklyResult}
-            headerBgcolor={headerBgcolor}
+            headerBackground={headerBackground}
             onPlay={() => {
               trackEvent("game-started", {
                 seed: weeklySeed,
@@ -689,15 +689,12 @@ export function LobbyScreen({
               sx={{
                 px: 2,
                 py: 1,
-                bgcolor: headerBgcolor,
+                bgcolor: headerBackground,
                 borderBottom: 1,
                 borderColor: "divider",
               }}
             >
-              <History
-                size={13}
-                color="var(--mui-palette-text-secondary)"
-              />
+              <History size={13} color="var(--mui-palette-text-secondary)" />
               <Typography
                 variant="caption"
                 color="text.secondary"
@@ -741,10 +738,8 @@ export function LobbyScreen({
                             previousBestScore: entry.bestScore,
                             plays: entry.plays,
                           });
-                          const {
-                            rawSeed: s,
-                            excludedCategories: ec,
-                          } = config.decodeSeed(entry.seed);
+                          const { rawSeed: s, excludedCategories: ec } =
+                            gameUtils.decodeSeed(entry.seed);
                           onStart(s, ec, "custom");
                         }}
                         sx={{
@@ -814,7 +809,7 @@ export function LobbyScreen({
                             flexShrink: 0,
                           }}
                         >
-                          {config.formatRelativeDate(entry.lastPlayedAt)}
+                          {gameUtils.formatRelativeDate(entry.lastPlayedAt)}
                         </Typography>
                       </Box>
                     );

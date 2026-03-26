@@ -42,8 +42,7 @@ export interface CodePanelSlotProps {
   isSelected?: boolean;
 }
 
-export interface LobbySlotProps<C extends BaseChallenge> {
-  challenges: C[];
+export interface LobbySlotProps {
   onStart: (
     rawSeed: string,
     excludedCategories: Set<string>,
@@ -65,6 +64,7 @@ export interface ExplanationSlotProps {
   sourceUrl: string;
   sourceLabel: string;
   category: string;
+  categoryLabel: string;
   challengeId: string;
 }
 
@@ -116,6 +116,30 @@ interface UseGameReturn<C extends BaseChallenge> {
 // Game component
 // ---------------------------------------------------------------------------
 
+export interface GameHeaderSlotProps {
+  score: number;
+  total: number;
+  currentQuestion: number;
+  streak: number;
+  difficulty: Difficulty | null;
+  questionResults: ("correct" | "wrong" | null)[];
+  reviewIndex: number | null;
+  onQuestionClick: (index: number) => void;
+}
+
+interface GameSlots<C extends BaseChallenge> {
+  /** Code comparison panel. */
+  codePanel: ComponentType<CodePanelSlotProps>;
+  /** Lobby/setup screen. */
+  lobby: ComponentType<LobbySlotProps>;
+  /** Results screen after game ends. */
+  results: ComponentType<ResultsSlotProps<C>>;
+  /** Post-answer explanation panel. */
+  explanation: ComponentType<ExplanationSlotProps>;
+  /** Score/progress header. */
+  gameHeader: ComponentType<GameHeaderSlotProps>;
+}
+
 interface GameProps<C extends BaseChallenge> {
   challenges: C[];
   highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
@@ -134,25 +158,8 @@ interface GameProps<C extends BaseChallenge> {
   ) => UseGameReturn<C>;
   /** Seed generator function. */
   generateSeed: () => string;
-  /** Code comparison panel. */
-  CodePanelComponent: ComponentType<CodePanelSlotProps>;
-  /** Lobby/setup screen. */
-  LobbyComponent: ComponentType<LobbySlotProps<C>>;
-  /** Results screen after game ends. */
-  ResultsComponent: ComponentType<ResultsSlotProps<C>>;
-  /** Post-answer explanation panel. */
-  ExplanationComponent: ComponentType<ExplanationSlotProps>;
-  /** Score/progress header. */
-  GameHeaderComponent: ComponentType<{
-    score: number;
-    total: number;
-    currentQuestion: number;
-    streak: number;
-    difficulty: Difficulty | null;
-    questionResults: ("correct" | "wrong" | null)[];
-    reviewIndex: number | null;
-    onQuestionClick: (index: number) => void;
-  }>;
+  /** Injected sub-components for each game screen and UI element. */
+  slots: GameSlots<C>;
   children?: ReactNode;
 }
 
@@ -164,11 +171,13 @@ export function Game<C extends BaseChallenge>({
   categoryLabels,
   useGame: useGameHook,
   generateSeed: generateSeedFn,
-  CodePanelComponent,
-  LobbyComponent,
-  ResultsComponent,
-  ExplanationComponent,
-  GameHeaderComponent,
+  slots: {
+    codePanel: CodePanelComponent,
+    lobby: LobbyComponent,
+    results: ResultsComponent,
+    explanation: ExplanationComponent,
+    gameHeader: GameHeaderComponent,
+  },
 }: GameProps<C>) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
@@ -176,9 +185,9 @@ export function Game<C extends BaseChallenge>({
     new Set<string>(),
   );
   const [retryKey, setRetryKey] = useState(0);
-  const [gameType, setGameType] = useState<
-    "daily" | "weekly" | "custom"
-  >("custom");
+  const [gameType, setGameType] = useState<"daily" | "weekly" | "custom">(
+    "custom",
+  );
 
   const {
     state,
@@ -243,9 +252,7 @@ export function Game<C extends BaseChallenge>({
     return { leftHtml: left, rightHtml: right };
   }, [displayChallenge, highlightMap]);
 
-  const getResult = (
-    side: "left" | "right",
-  ): "correct" | "wrong" | null => {
+  const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
     if (!displayAnswer || !displayChallenge) return null;
     return side === displayChallenge.correctSide ? "correct" : "wrong";
   };
@@ -332,7 +339,6 @@ export function Game<C extends BaseChallenge>({
   if (!activeSeed) {
     return (
       <LobbyComponent
-        challenges={challenges}
         onStart={handleLobbyStart}
         defaultSeed={lobbySeed}
         defaultExcluded={excludedCategories}
@@ -394,8 +400,7 @@ export function Game<C extends BaseChallenge>({
               py: 1,
               border: 1,
               borderColor: "primary.main",
-              bgcolor:
-                "rgba(var(--mui-palette-primary-mainChannel) / 0.06)",
+              bgcolor: "rgba(var(--mui-palette-primary-mainChannel) / 0.06)",
               borderRadius: 2,
             }}
           >
@@ -430,34 +435,28 @@ export function Game<C extends BaseChallenge>({
             color: "text.primary",
             fontSize: "0.7rem",
             height: 22,
-            filter:
-              displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
+            filter: displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
             opacity: displayAnswer || isReviewing ? 1 : 0.6,
             transition:
               displayAnswer || isReviewing
                 ? "filter 0.4s ease, opacity 0.4s ease"
                 : "none",
-            userSelect:
-              displayAnswer || isReviewing ? "auto" : "none",
+            userSelect: displayAnswer || isReviewing ? "auto" : "none",
           }}
         />
         <Typography
           variant="h6"
           fontWeight={600}
           sx={{
-            filter:
-              displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
+            filter: displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
             opacity: displayAnswer || isReviewing ? 1 : 0.6,
             transform:
-              displayAnswer || isReviewing
-                ? "scale(1)"
-                : "scale(0.97)",
+              displayAnswer || isReviewing ? "scale(1)" : "scale(0.97)",
             transition:
               displayAnswer || isReviewing
                 ? "filter 0.4s ease, opacity 0.4s ease, transform 0.3s ease"
                 : "none",
-            userSelect:
-              displayAnswer || isReviewing ? "auto" : "none",
+            userSelect: displayAnswer || isReviewing ? "auto" : "none",
           }}
         >
           {displayChallenge.title}
@@ -529,11 +528,15 @@ export function Game<C extends BaseChallenge>({
                   displayAnswer.result === "correct"
                     ? displayChallenge.explanationCorrect
                     : (displayChallenge.explanationWrong ??
-                        displayChallenge.explanationCorrect)
+                      displayChallenge.explanationCorrect)
                 }
                 sourceUrl={displayChallenge.sourceUrl}
                 sourceLabel={displayChallenge.sourceLabel}
                 category={displayChallenge.category}
+                categoryLabel={
+                  categoryLabels[displayChallenge.category] ??
+                  displayChallenge.category
+                }
                 challengeId={displayChallenge.id}
               />
             </Box>

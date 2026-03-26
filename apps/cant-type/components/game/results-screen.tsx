@@ -53,8 +53,7 @@ export function ResultsScreen(props: ResultsScreenProps) {
       heroSx={
         percentage >= 90
           ? {
-              borderColor:
-                "rgba(var(--mui-palette-success-mainChannel) / 0.4)",
+              borderColor: "rgba(var(--mui-palette-success-mainChannel) / 0.4)",
               boxShadow:
                 "0 0 0 1px rgba(var(--mui-palette-success-mainChannel) / 0.1), 0 4px 24px rgba(var(--mui-palette-success-mainChannel) / 0.08)",
             }
