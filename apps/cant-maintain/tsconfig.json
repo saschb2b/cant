@@ -1,19 +1,6 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["dom", "esnext"],
-    "types": ["node"],
-    "allowJs": true,
-    "target": "ES2017",
-    "skipLibCheck": true,
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noEmit": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "incremental": true,
     "plugins": [
       {
         "name": "next"
@@ -21,8 +8,7 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    },
-    "esModuleInterop": true
+    }
   },
   "include": [
     "next-env.d.ts",

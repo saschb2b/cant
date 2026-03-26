@@ -9,19 +9,20 @@ node_modules/
 !.yarn/versions
 
 # build
-/.next/
-/out/
-/build/
+.next/
+out/
+build/
+dist/
 
 # testing
-/coverage
+coverage/
 
 # environment
 .env*.local
 
 # IDE
-/.vscode
-/.idea
+.vscode/
+.idea/
 
 # misc
 .DS_Store
@@ -37,13 +38,8 @@ pnpm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# vercel
-.vercel
+# turbo
+.turbo/
 
 # claude
 .claude/settings.local.json
-
-# v0 runtime files
-__v0_runtime_loader.js
-__v0_devtools.tsx
-__v0_jsx-dev-runtime.ts
