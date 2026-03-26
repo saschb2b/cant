@@ -1,7 +1,7 @@
 "use server";
 
+import { createGameActions } from "@cant/shared/lib/game/actions";
 import { getRank } from "./share";
-import { generateAnonymousName } from "@cant/shared/lib/game/anonymous-names";
 import {
   addResult,
   getRecentResults,
@@ -9,7 +9,13 @@ import {
   type RecentResult,
 } from "./recent-results-store";
 
-// Server actions must be async per Next.js convention, but these are synchronous.
+const actions = createGameActions((pct: number) => getRank(pct).title, {
+  hasResult,
+  addResult,
+  getRecentResults,
+});
+
+// Server actions must be async per Next.js convention.
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function submitGameResult(data: {
   sessionId: string;
@@ -18,35 +24,10 @@ export async function submitGameResult(data: {
   bestStreak: number;
   durationSec: number;
 }): Promise<void> {
-  const { sessionId, score, total, bestStreak, durationSec } = data;
-
-  if (
-    !Number.isInteger(score) ||
-    !Number.isInteger(total) ||
-    !Number.isInteger(bestStreak) ||
-    !Number.isInteger(durationSec)
-  )
-    return;
-  if (total <= 0 || score < 0 || score > total) return;
-  if (bestStreak < 0 || durationSec < 0) return;
-  if (!sessionId) return;
-
-  if (hasResult(sessionId)) return;
-
-  const percentage = Math.round((score / total) * 100);
-
-  addResult({
-    sessionId,
-    playerName: generateAnonymousName(),
-    score,
-    total,
-    bestStreak,
-    durationSec,
-    rank: getRank(percentage).title,
-  });
+  actions.submitGameResult(data);
 }
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function fetchRecentResults(): Promise<RecentResult[]> {
-  return getRecentResults();
+  return actions.fetchRecentResults();
 }

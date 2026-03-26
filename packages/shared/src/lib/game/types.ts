@@ -15,8 +15,8 @@ export interface BaseChallenge {
 }
 
 /** Snapshot of the current game state. */
-export interface GameState {
-  challenges: BaseChallenge[];
+export interface GameState<T extends BaseChallenge = BaseChallenge> {
+  challenges: T[];
   currentIndex: number;
   score: number;
   streak: number;
