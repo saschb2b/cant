@@ -1,11 +1,7 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import { ExternalLink } from "lucide-react";
 import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game/lobby-screen";
+import { LobbyCrossPromo } from "@cant/shared/components/game/lobby-cross-promo";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   decodeSeed,
@@ -38,115 +34,7 @@ const config = {
   },
 };
 
-const crossPromoSlot = (
-  <Box sx={{ pb: { xs: 3, md: 6 } }}>
-    <Typography
-      variant="caption"
-      color="text.secondary"
-      fontFamily="var(--font-geist-mono), monospace"
-      sx={{
-        fontSize: "0.63rem",
-        letterSpacing: "0.05em",
-        textTransform: "uppercase",
-        mb: 1.5,
-        display: "block",
-      }}
-    >
-      More topics
-    </Typography>
-    <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-      {[
-        {
-          name: "Can't Maintain",
-          href: "https://cant-maintain.saschb2b.com/play",
-          desc: "Think you can spot clean React component APIs? Same game, same format, different topic.",
-          tags: "Props, composition, patterns",
-        },
-        {
-          name: "Can't Type",
-          href: "https://cant-type.saschb2b.com/play",
-          desc: "Test your TypeScript instincts. Generics, narrowing, utility types, and common mistakes.",
-          tags: "Generics, narrowing, utility types",
-        },
-      ].map((site) => (
-        <Box
-          key={site.name}
-          component="a"
-          href={site.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            display: "block",
-            textDecoration: "none",
-            color: "inherit",
-          }}
-        >
-          <Paper
-            elevation={0}
-            sx={{
-              border: 1,
-              borderColor: "divider",
-              overflow: "hidden",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                borderColor: "text.secondary",
-                transform: "translateY(-1px)",
-              },
-            }}
-          >
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={0.75}
-              sx={{
-                px: 2,
-                py: 1,
-                bgcolor: "action.selected",
-                borderBottom: 1,
-                borderColor: "divider",
-              }}
-            >
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                fontWeight={600}
-                sx={{ fontSize: "0.72rem" }}
-              >
-                {site.name}
-              </Typography>
-              <Box
-                sx={{
-                  ml: "auto",
-                  color: "text.disabled",
-                  display: "flex",
-                }}
-              >
-                <ExternalLink size={12} />
-              </Box>
-            </Stack>
-            <Box sx={{ p: 2 }}>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ lineHeight: 1.5 }}
-              >
-                {site.desc}
-              </Typography>
-              <Typography
-                variant="caption"
-                color="text.disabled"
-                fontFamily="var(--font-geist-mono), monospace"
-                sx={{ mt: 1, display: "block", fontSize: "0.65rem" }}
-              >
-                {site.tags}
-              </Typography>
-            </Box>
-          </Paper>
-        </Box>
-      ))}
-    </Stack>
-  </Box>
-);
+const crossPromoSlot = <LobbyCrossPromo currentAppName="Can't Resize" />;
 
 interface LobbyScreenProps {
   onStart: (

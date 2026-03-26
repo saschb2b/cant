@@ -311,19 +311,7 @@ export default async function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries
-        currentApp={{
-          name: "Can't Maintain",
-          desc: "React component API design.",
-        }}
-        otherApps={[
-          {
-            name: "Can't Resize",
-            href: "https://cant-resize.saschb2b.com",
-            desc: "Responsive design patterns.",
-          },
-        ]}
-      />
+      <LandingCantSeries currentAppName="Can't Maintain" />
 
       {/* Open source */}
       <LandingOpenSource githubUrl="https://github.com/saschb2b/cant-maintain" />

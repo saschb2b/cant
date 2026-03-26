@@ -176,29 +176,7 @@ export default function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries
-        currentApp={{
-          name: "Can't Orchestrate",
-          desc: "Container orchestration patterns.",
-        }}
-        otherApps={[
-          {
-            name: "Can't Maintain",
-            desc: "React component API design.",
-            href: "https://cant-maintain.saschb2b.com",
-          },
-          {
-            name: "Can't Resize",
-            desc: "Responsive design patterns.",
-            href: "https://cant-resize.saschb2b.com",
-          },
-          {
-            name: "Can't Type",
-            desc: "TypeScript patterns.",
-            href: "https://cant-type.saschb2b.com",
-          },
-        ]}
-      />
+      <LandingCantSeries currentAppName="Can't Orchestrate" />
 
       {/* Open source CTA */}
       <LandingOpenSource

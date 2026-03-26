@@ -337,21 +337,7 @@ export default async function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries
-        currentApp={{ name: "Can't Type", desc: "TypeScript patterns." }}
-        otherApps={[
-          {
-            name: "Can't Maintain",
-            desc: "React component API design.",
-            href: "https://cant-maintain.saschb2b.com",
-          },
-          {
-            name: "Can't Resize",
-            desc: "Responsive design patterns.",
-            href: "https://cant-resize.saschb2b.com",
-          },
-        ]}
-      />
+      <LandingCantSeries currentAppName="Can't Type" />
 
       {/* Open source CTA */}
       <LandingOpenSource
