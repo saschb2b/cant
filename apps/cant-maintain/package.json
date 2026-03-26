@@ -1,0 +1,52 @@
+{
+  "name": "cant-maintain",
+  "version": "0.10.0",
+  "description": "Train your eye for code that lasts — a quiz game about React component API design",
+  "author": "saschb2b",
+  "license": "MIT",
+  "homepage": "https://github.com/saschb2b/cant-maintain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saschb2b/cant-maintain.git"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/lab": "7.0.1-beta.23",
+    "@mui/material": "^7.3.9",
+    "@shikijs/core": "^4.0.2",
+    "@shikijs/engine-javascript": "^4.0.2",
+    "@shikijs/langs": "^4.0.2",
+    "@shikijs/themes": "^4.0.2",
+    "fuse.js": "^7.1.0",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^1.6.0",
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^22",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "typescript": "6.0.2",
+    "typescript-eslint": "^8.57.2"
+  },
+  "packageManager": "pnpm@10.20.0"
+}
