@@ -10,9 +10,11 @@ import {
   Gamepad2,
   BookOpen,
   FlaskConical,
-  ExternalLink,
   Sparkles,
 } from "lucide-react";
+import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { LandingCantSeries } from "@cant/shared/components/landing-cant-series";
+import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@/lib/learn/challenges";
@@ -309,282 +311,54 @@ export default async function LandingPage() {
       </Container>
 
       {/* Features */}
-      <Box
-        sx={{
-          bgcolor: "rgba(var(--mui-palette-background-defaultChannel) / 0.7)",
-          backdropFilter: "blur(40px)",
-          borderTop: 1,
-          borderBottom: 1,
-          borderColor: "divider",
-          py: { xs: 5, md: 6 },
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <Container maxWidth="md">
-          <Typography
-            variant="h5"
-            component="h2"
-            fontWeight={600}
-            sx={{ textAlign: "center", mb: 1 }}
-          >
-            Three paths to mastery
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "center", mb: 4 }}
-          >
-            A pattern quiz, a spell book, and a type sandbox.
-          </Typography>
-
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={2}
-            justifyContent="center"
-          >
-            {[
-              {
-                icon: <Gamepad2 size={20} />,
-                title: "Play",
-                desc: "Pick the better TypeScript pattern in 10 side-by-side code challenges. Daily and weekly seeds included.",
-                href: "/play",
-              },
-              {
-                icon: <BookOpen size={20} />,
-                title: "Learn",
-                desc: `${String(challenges.length)} patterns across ${String(CATEGORY_ORDER.length)} categories. Each shows the fragile approach, the resilient one, and why it matters.`,
-                href: "/learn",
-              },
-              {
-                icon: <FlaskConical size={20} />,
-                title: "Sandbox",
-                desc: "Write TypeScript types and see them fully expanded. Explore utility types, mapped types, conditionals, and more.",
-                href: "/playground",
-              },
-            ].map((feature) => (
-              <NextLink
-                key={feature.title}
-                href={feature.href}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  flex: 1,
-                  display: "flex",
-                }}
-              >
-                <Paper
-                  elevation={0}
-                  sx={{
-                    flex: 1,
-                    p: 2.5,
-                    border: 1,
-                    borderColor: "divider",
-                    transition: "all 0.2s ease",
-                    "&:hover": {
-                      borderColor: "text.secondary",
-                      transform: "translateY(-2px)",
-                      boxShadow: 8,
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 2,
-                      bgcolor: "action.selected",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "text.primary",
-                      mb: 1.5,
-                    }}
-                  >
-                    {feature.icon}
-                  </Box>
-                  <Typography variant="body2" fontWeight={600} sx={{ mb: 0.5 }}>
-                    {feature.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ lineHeight: 1.5 }}
-                  >
-                    {feature.desc}
-                  </Typography>
-                </Paper>
-              </NextLink>
-            ))}
-          </Stack>
-        </Container>
-      </Box>
+      <LandingFeatures
+        title="Three paths to mastery"
+        subtitle="A pattern quiz, a spell book, and a type sandbox."
+        cards={[
+          {
+            icon: <Gamepad2 size={20} />,
+            title: "Play",
+            desc: "Pick the better TypeScript pattern in 10 side-by-side code challenges. Daily and weekly seeds included.",
+            href: "/play",
+          },
+          {
+            icon: <BookOpen size={20} />,
+            title: "Learn",
+            desc: `${String(challenges.length)} patterns across ${String(CATEGORY_ORDER.length)} categories. Each shows the fragile approach, the resilient one, and why it matters.`,
+            href: "/learn",
+          },
+          {
+            icon: <FlaskConical size={20} />,
+            title: "Sandbox",
+            desc: "Write TypeScript types and see them fully expanded. Explore utility types, mapped types, conditionals, and more.",
+            href: "/playground",
+          },
+        ]}
+      />
 
       {/* Can't series */}
-      <Container
-        maxWidth="md"
-        sx={{ py: { xs: 5, md: 6 }, position: "relative", zIndex: 1 }}
-      >
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          fontFamily="var(--font-geist-mono), monospace"
-          sx={{ textAlign: "center", mb: 2.5, display: "block" }}
-        >
-          {"Part of the Can't series"}
-        </Typography>
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
-          justifyContent="center"
-        >
-          <Paper
-            elevation={0}
-            sx={{
-              flex: 1,
-              maxWidth: { sm: 280 },
-              p: 2.5,
-              border: 1,
-              borderColor: "primary.main",
-              bgcolor: "rgba(var(--mui-palette-primary-mainChannel) / 0.04)",
-            }}
-          >
-            <Typography variant="body2" fontWeight={600} sx={{ mb: 0.5 }}>
-              {"Can't Type"}
-            </Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ lineHeight: 1.5 }}
-            >
-              TypeScript patterns. You are here.
-            </Typography>
-          </Paper>
-          {[
-            {
-              name: "Can't Maintain",
-              desc: "React component API design.",
-              href: "https://cant-maintain.saschb2b.com",
-            },
-            {
-              name: "Can't Resize",
-              desc: "Responsive design patterns.",
-              href: "https://cant-resize.saschb2b.com",
-            },
-          ].map((site) => (
-            <NextLink
-              key={site.name}
-              href={site.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-                flex: 1,
-                display: "flex",
-                maxWidth: 280,
-              }}
-            >
-              <Paper
-                elevation={0}
-                sx={{
-                  flex: 1,
-                  p: 2.5,
-                  border: 1,
-                  borderColor: "divider",
-                  transition: "all 0.2s ease",
-                  "&:hover": {
-                    borderColor: "text.secondary",
-                    transform: "translateY(-1px)",
-                  },
-                }}
-              >
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={0.75}
-                  sx={{ mb: 0.5 }}
-                >
-                  <Typography variant="body2" fontWeight={600}>
-                    {site.name}
-                  </Typography>
-                  <ExternalLink
-                    size={12}
-                    color="var(--mui-palette-text-disabled)"
-                  />
-                </Stack>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ lineHeight: 1.5 }}
-                >
-                  {site.desc} Same format, different topic.
-                </Typography>
-              </Paper>
-            </NextLink>
-          ))}
-        </Stack>
-      </Container>
+      <LandingCantSeries
+        currentApp={{ name: "Can't Type", desc: "TypeScript patterns." }}
+        otherApps={[
+          {
+            name: "Can't Maintain",
+            desc: "React component API design.",
+            href: "https://cant-maintain.saschb2b.com",
+          },
+          {
+            name: "Can't Resize",
+            desc: "Responsive design patterns.",
+            href: "https://cant-resize.saschb2b.com",
+          },
+        ]}
+      />
 
       {/* Open source CTA */}
-      <Container
-        maxWidth="lg"
-        sx={{ py: { xs: 5, md: 7 }, position: "relative", zIndex: 1 }}
-      >
-        <Paper
-          elevation={0}
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            px: { xs: 3, md: 5 },
-            py: { xs: 3, md: 4 },
-          }}
-        >
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            alignItems="center"
-            spacing={{ xs: 2, md: 4 }}
-          >
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="h6" component="p" fontWeight={600}>
-                Open source
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ lineHeight: 1.7, mt: 0.5 }}
-              >
-                Built with Next.js, Material UI, and TypeScript. Contributions
-                welcome.
-              </Typography>
-            </Box>
-            <NextLink
-              href="https://github.com/saschb2b/cant-type"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "none", flexShrink: 0 }}
-            >
-              <Button
-                variant="outlined"
-                size="medium"
-                startIcon={<ExternalLink size={16} />}
-                sx={{
-                  px: 3,
-                  borderColor: "divider",
-                  color: "text.primary",
-                  fontWeight: 600,
-                  "&:hover": {
-                    borderColor: "text.secondary",
-                    bgcolor: "action.hover",
-                  },
-                }}
-              >
-                View on GitHub
-              </Button>
-            </NextLink>
-          </Stack>
-        </Paper>
-      </Container>
+      <LandingOpenSource
+        title="Open source"
+        description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
+        githubUrl="https://github.com/saschb2b/cant-type"
+      />
 
       <SiteFooter />
     </Box>
