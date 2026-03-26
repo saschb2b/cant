@@ -57,7 +57,11 @@ export function FeatureCard({
       <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 0.75 }}>
         {title}
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ lineHeight: 1.7 }}
+      >
         {description}
       </Typography>
     </Paper>

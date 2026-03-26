@@ -48,14 +48,10 @@ export function CategoryFilter({
                 mb: 0.75,
                 color: "text.secondary",
                 cursor: disabled ? "default" : "pointer",
-                "&:hover": disabled
-                  ? {}
-                  : { color: "text.primary" },
+                "&:hover": disabled ? {} : { color: "text.primary" },
               }}
               onClick={
-                disabled
-                  ? undefined
-                  : () => onToggleSection(section.categories)
+                disabled ? undefined : () => onToggleSection(section.categories)
               }
             >
               {section.label}
@@ -73,9 +69,7 @@ export function CategoryFilter({
                         <Check size={12} strokeWidth={3} />
                       ) : undefined
                     }
-                    onClick={
-                      disabled ? undefined : () => onToggleCategory(cat)
-                    }
+                    onClick={disabled ? undefined : () => onToggleCategory(cat)}
                     variant={isExcluded ? "outlined" : "filled"}
                     sx={{
                       fontWeight: 500,

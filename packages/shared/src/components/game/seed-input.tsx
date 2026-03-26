@@ -43,11 +43,7 @@ export function SeedInput({
         }}
       >
         <Hash size={13} color="var(--mui-palette-text-secondary)" />
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          fontWeight={500}
-        >
+        <Typography variant="caption" color="text.secondary" fontWeight={500}>
           {hint}
         </Typography>
       </Stack>
