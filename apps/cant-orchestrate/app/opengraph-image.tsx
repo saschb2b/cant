@@ -15,7 +15,7 @@ export default function OgImage() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        background: "#0F1219",
+        background: "#110D1B",
         fontFamily: "system-ui, sans-serif",
       }}
     >
@@ -34,8 +34,8 @@ export default function OgImage() {
             width: 56,
             height: 48,
             borderRadius: 6,
-            border: "2px solid #2A4060",
-            background: "#181D27",
+            border: "2px solid #3D2A60",
+            background: "#1A1525",
           }}
         />
         {/* Pod */}
@@ -44,8 +44,8 @@ export default function OgImage() {
             width: 72,
             height: 72,
             borderRadius: 12,
-            border: "2px solid #2A4060",
-            background: "#181D27",
+            border: "2px solid #3D2A60",
+            background: "#1A1525",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -57,7 +57,7 @@ export default function OgImage() {
               width: 16,
               height: 16,
               borderRadius: 4,
-              background: "#326CE5",
+              background: "#7C3AED",
             }}
           />
           <div
@@ -65,7 +65,7 @@ export default function OgImage() {
               width: 16,
               height: 16,
               borderRadius: 4,
-              background: "#326CE5",
+              background: "#7C3AED",
             }}
           />
         </div>
@@ -75,8 +75,8 @@ export default function OgImage() {
             width: 100,
             height: 80,
             borderRadius: 8,
-            border: "2px solid #6BA3FF",
-            background: "#181D27",
+            border: "2px solid #A78BFA",
+            background: "#1A1525",
           }}
         />
       </div>
@@ -85,7 +85,7 @@ export default function OgImage() {
         style={{
           fontSize: 56,
           fontWeight: 700,
-          color: "#E1E8F0",
+          color: "#E8E1F0",
           marginBottom: 16,
         }}
       >
@@ -95,7 +95,7 @@ export default function OgImage() {
       <div
         style={{
           fontSize: 26,
-          color: "#8A9BBB",
+          color: "#9B8ABB",
           maxWidth: 700,
           textAlign: "center",
           lineHeight: 1.4,
