@@ -8,32 +8,11 @@ import Button from "@mui/material/Button";
 import { ArrowRight, Gamepad2, BookOpen, ExternalLink } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { HeroAnimation } from "@/components/hero-animation";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
-import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 
-const HERO_BAD = `FROM node:latest
-WORKDIR /app
-COPY . .
-RUN npm install
-CMD npm start`;
-
-const HERO_GOOD = `FROM node:20-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-FROM gcr.io/distroless/nodejs20
-COPY --from=build /app/dist ./dist
-CMD ["dist/server.js"]`;
-
-export default async function LandingPage() {
-  const highlighter = await getHighlighter();
-  const badHtml = highlightDual(highlighter, HERO_BAD, "dockerfile");
-  const goodHtml = highlightDual(highlighter, HERO_GOOD, "dockerfile");
+export default function LandingPage() {
   return (
     <Box
       sx={{
@@ -158,7 +137,7 @@ export default async function LandingPage() {
             </Typography>
           </Box>
 
-          {/* Right: code comparison visual */}
+          {/* Right: animated cluster visual */}
           <Box
             sx={{
               flex: 1,
@@ -167,101 +146,9 @@ export default async function LandingPage() {
               width: "100%",
               ml: { md: "auto" },
             }}
+            aria-hidden
           >
-            <Stack spacing={2} aria-hidden>
-              {/* Bad example */}
-              <Paper
-                elevation={0}
-                sx={{
-                  border: 1,
-                  borderColor:
-                    "rgba(var(--mui-palette-error-mainChannel) / 0.3)",
-                  overflow: "hidden",
-                }}
-              >
-                <Box
-                  sx={{
-                    px: 1.5,
-                    py: 0.75,
-                    borderBottom: 1,
-                    borderColor: "divider",
-                    bgcolor:
-                      "rgba(var(--mui-palette-error-mainChannel) / 0.06)",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    fontWeight={600}
-                    fontFamily="var(--font-geist-mono), monospace"
-                    color="error.main"
-                  >
-                    Avoid
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    bgcolor:
-                      "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
-                    ...codeBlockStyles,
-                    "& pre": {
-                      ...codeBlockStyles["& pre"],
-                      fontSize: "0.7rem",
-                      lineHeight: 1.6,
-                      p: 1.5,
-                    },
-                  }}
-                  dangerouslySetInnerHTML={{ __html: badHtml }}
-                />
-              </Paper>
-
-              {/* Good example */}
-              <Paper
-                elevation={0}
-                sx={{
-                  border: 1,
-                  borderColor:
-                    "rgba(var(--mui-palette-success-mainChannel) / 0.4)",
-                  overflow: "hidden",
-                  boxShadow:
-                    "0 0 0 1px rgba(var(--mui-palette-success-mainChannel) / 0.1), 0 4px 24px rgba(var(--mui-palette-success-mainChannel) / 0.06)",
-                }}
-              >
-                <Box
-                  sx={{
-                    px: 1.5,
-                    py: 0.75,
-                    borderBottom: 1,
-                    borderColor:
-                      "rgba(var(--mui-palette-success-mainChannel) / 0.3)",
-                    bgcolor:
-                      "rgba(var(--mui-palette-success-mainChannel) / 0.06)",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    fontWeight={600}
-                    fontFamily="var(--font-geist-mono), monospace"
-                    color="success.main"
-                  >
-                    Prefer
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    bgcolor:
-                      "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
-                    ...codeBlockStyles,
-                    "& pre": {
-                      ...codeBlockStyles["& pre"],
-                      fontSize: "0.7rem",
-                      lineHeight: 1.6,
-                      p: 1.5,
-                    },
-                  }}
-                  dangerouslySetInnerHTML={{ __html: goodHtml }}
-                />
-              </Paper>
-            </Stack>
+            <HeroAnimation />
           </Box>
         </Stack>
       </Container>
