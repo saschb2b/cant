@@ -143,10 +143,84 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 ## Adding a new challenge
 
 1. Open the relevant category file in the app's `lib/learn/challenges/` (or `lib/game/challenges/`)
-2. Append a `Challenge` object with both `explanationCorrect` and `explanationWrong`
+2. Append a `Challenge` object with a `content` block and both `explanationCorrect` and `explanationWrong`
 3. Link to an authoritative source (React docs, MDN, TypeScript docs)
-4. Follow visual parity rules: both code sides should have similar length and structure
-5. The `correctSide` value is randomized at runtime
+4. Follow visual parity rules: both sides should have similar length and structure
+5. The `correctSide` value is randomized at runtime in game mode
+
+### Challenge content types
+
+Every challenge has a `content` field that describes what is being compared. The `correctSide` field indicates which side (`"left"` or `"right"`) is the better option.
+
+**Code challenge** (two syntax-highlighted code snippets):
+
+```ts
+{
+  id: "mq-001",
+  category: "media-queries",
+  difficulty: "easy",
+  title: "Mobile-first vs desktop-first",
+  content: {
+    type: "code",
+    lang: "css",                    // optional, defaults to "tsx"
+    left: `/* Desktop-first */
+@media (max-width: 768px) { ... }`,
+    right: `/* Mobile-first */
+@media (min-width: 768px) { ... }`,
+  },
+  correctSide: "right",
+  explanationCorrect: "Mobile-first starts with the simplest layout...",
+  explanationWrong: "Desktop-first forces you to undo styles...",
+  sourceUrl: "https://developer.mozilla.org/...",
+  sourceLabel: "MDN: Mobile-first responsive design",
+}
+```
+
+**Image challenge** (two static images, e.g. UX screenshots):
+
+```ts
+{
+  id: "ux-001",
+  category: "form-ux",
+  difficulty: "easy",
+  title: "Touch target sizing",
+  content: {
+    type: "image",
+    left: { src: "/challenges/ux-001-a.png", alt: "Tiny buttons" },
+    right: { src: "/challenges/ux-001-b.png", alt: "44px touch targets" },
+  },
+  correctSide: "right",
+  // ...
+}
+```
+
+**Visual challenge** (two live React components from a registry):
+
+```ts
+{
+  id: "vis-001",
+  category: "layout",
+  difficulty: "medium",
+  title: "Form layout comparison",
+  content: {
+    type: "visual",
+    left: { componentId: "LoginFormCramped" },
+    right: { componentId: "LoginFormSpaced" },
+  },
+  correctSide: "right",
+  // ...
+}
+```
+
+### Shared infrastructure
+
+Challenge rendering is centralized in `@cant/shared`:
+
+- `buildContentMap()` processes challenges into a render-ready content map, handling `correctSide` mapping and Shiki highlighting for code challenges
+- `LearnCategoryPage` renders the full learn/[category] page; apps only provide a `renderExplanation` slot
+- `LearnIndexPage` renders the learn index page with optional learning path
+- `LearnContentPanel` renders the Avoid/Prefer content panels (code, image, or visual)
+- `ImagePanel` and `VisualPanel` are game-mode panel components for non-code challenges
 
 ## Deployment
 
