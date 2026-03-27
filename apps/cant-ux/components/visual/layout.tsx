@@ -2,105 +2,148 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+
+/* ---------- Full-width vs constrained article header ---------- */
 
 export function LayoutFullWidth() {
   return (
     <Paper sx={{ p: 2, width: "100%" }}>
-      <Typography sx={{ fontSize: 18, fontWeight: 700, mb: 1 }}>
-        Getting Started
+      <Box
+        sx={{
+          width: "100%",
+          aspectRatio: "16 / 5",
+          bgcolor: "#c5ccd3",
+          mb: 1.5,
+        }}
+      />
+      <Typography sx={{ fontSize: 17, fontWeight: 700, mb: 0.5 }}>
+        Understanding Design Systems at Scale
       </Typography>
-      <Typography sx={{ fontSize: 13, mb: 1.5 }}>
-        Welcome to the platform. This guide will walk you through everything you
-        need to know to set up your account, configure your workspace, and start
-        collaborating with your team on projects.
+      <Stack direction="row" spacing={1} sx={{ mb: 1, alignItems: "center" }}>
+        <Box
+          sx={{
+            width: 24,
+            height: 24,
+            borderRadius: "50%",
+            bgcolor: "#a3b1c6",
+            flexShrink: 0,
+          }}
+        />
+        <Typography sx={{ fontSize: 11, color: "text.secondary" }}>
+          Sarah Chen · Mar 14, 2026 · 8 min read
+        </Typography>
+      </Stack>
+      <Typography
+        sx={{ fontSize: 13, color: "text.secondary", lineHeight: 1.5 }}
+      >
+        Design systems have become the backbone of modern product development.
+        They allow teams to move faster, maintain consistency across dozens of
+        surfaces, and reduce the cognitive load on designers and engineers who
+        would otherwise reinvent common patterns from scratch every sprint.
       </Typography>
-      <Button variant="contained" size="small">
-        Begin Setup
-      </Button>
     </Paper>
   );
 }
 
 export function LayoutConstrained() {
   return (
-    <Paper sx={{ p: 2, maxWidth: 280 }}>
-      <Typography sx={{ fontSize: 18, fontWeight: 700, mb: 1 }}>
-        Getting Started
-      </Typography>
-      <Typography sx={{ fontSize: 13, mb: 1.5 }}>
-        Welcome to the platform. This guide will walk you through everything you
-        need to know to set up your account, configure your workspace, and start
-        collaborating with your team on projects.
-      </Typography>
-      <Button variant="contained" size="small">
-        Begin Setup
-      </Button>
+    <Paper
+      sx={{
+        p: 2,
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Box sx={{ maxWidth: 300, width: "100%" }}>
+        <Box
+          sx={{
+            width: "100%",
+            aspectRatio: "16 / 5",
+            bgcolor: "#c5ccd3",
+            mb: 1.5,
+          }}
+        />
+        <Typography sx={{ fontSize: 17, fontWeight: 700, mb: 0.5 }}>
+          Understanding Design Systems at Scale
+        </Typography>
+        <Stack direction="row" spacing={1} sx={{ mb: 1, alignItems: "center" }}>
+          <Box
+            sx={{
+              width: 24,
+              height: 24,
+              borderRadius: "50%",
+              bgcolor: "#a3b1c6",
+              flexShrink: 0,
+            }}
+          />
+          <Typography sx={{ fontSize: 11, color: "text.secondary" }}>
+            Sarah Chen · Mar 14, 2026 · 8 min read
+          </Typography>
+        </Stack>
+        <Typography
+          sx={{ fontSize: 13, color: "text.secondary", lineHeight: 1.5 }}
+        >
+          Design systems have become the backbone of modern product development.
+          They allow teams to move faster, maintain consistency across dozens of
+          surfaces, and reduce the cognitive load on designers and engineers who
+          would otherwise reinvent common patterns from scratch every sprint.
+        </Typography>
+      </Box>
     </Paper>
   );
 }
 
+/* ---------- Side-by-side vs stacked form labels ---------- */
+
+const contactFields = [
+  { label: "Full name", placeholder: "Sarah Chen" },
+  { label: "Email address", placeholder: "sarah@company.com" },
+  { label: "Subject", placeholder: "Project inquiry" },
+  { label: "Message", placeholder: "Tell us about your project..." },
+] as const;
+
+const inputSx = {
+  height: 30,
+  border: "1px solid",
+  borderColor: "divider",
+  borderRadius: 1,
+  px: 1,
+  display: "flex",
+  alignItems: "center",
+} as const;
+
 export function FormSideBySide() {
   return (
     <Paper sx={{ p: 2 }}>
+      <Typography sx={{ fontSize: 14, fontWeight: 600, mb: 1.5 }}>
+        Contact Us
+      </Typography>
       <Stack spacing={1.5}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ fontSize: 13, minWidth: 70 }}>Name</Typography>
+        {contactFields.map((field) => (
           <Box
-            sx={{
-              flex: 1,
-              height: 28,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              px: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
+            key={field.label}
+            sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
-            <Typography sx={{ fontSize: 13, color: "text.disabled" }}>
-              Jane
+            <Typography
+              sx={{
+                fontSize: 12,
+                color: "text.secondary",
+                minWidth: 90,
+                textAlign: "right",
+                flexShrink: 0,
+              }}
+            >
+              {field.label}
             </Typography>
+            <Box sx={{ ...inputSx, flex: 1 }}>
+              <Typography sx={{ fontSize: 12, color: "text.disabled" }}>
+                {field.placeholder}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ fontSize: 13, minWidth: 70 }}>Email</Typography>
-          <Box
-            sx={{
-              flex: 1,
-              height: 28,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              px: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color: "text.disabled" }}>
-              jane@co.com
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ fontSize: 13, minWidth: 70 }}>Company</Typography>
-          <Box
-            sx={{
-              flex: 1,
-              height: 28,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              px: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color: "text.disabled" }}>
-              Acme Inc
-            </Typography>
-          </Box>
-        </Box>
+        ))}
       </Stack>
     </Paper>
   );
@@ -109,92 +152,97 @@ export function FormSideBySide() {
 export function FormStacked() {
   return (
     <Paper sx={{ p: 2 }}>
-      <Stack spacing={2}>
-        <Box>
-          <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 0.5 }}>
-            Name
-          </Typography>
-          <Box
-            sx={{
-              height: 28,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              px: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color: "text.disabled" }}>
-              Jane
+      <Typography sx={{ fontSize: 14, fontWeight: 600, mb: 1.5 }}>
+        Contact Us
+      </Typography>
+      <Stack spacing={1.5}>
+        {contactFields.map((field) => (
+          <Box key={field.label}>
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 500,
+                color: "text.primary",
+                mb: 0.5,
+              }}
+            >
+              {field.label}
             </Typography>
+            <Box sx={inputSx}>
+              <Typography sx={{ fontSize: 12, color: "text.disabled" }}>
+                {field.placeholder}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 0.5 }}>
-            Email
-          </Typography>
-          <Box
-            sx={{
-              height: 28,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              px: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color: "text.disabled" }}>
-              jane@co.com
-            </Typography>
-          </Box>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 0.5 }}>
-            Company
-          </Typography>
-          <Box
-            sx={{
-              height: 28,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              px: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color: "text.disabled" }}>
-              Acme Inc
-            </Typography>
-          </Box>
-        </Box>
+        ))}
       </Stack>
     </Paper>
   );
 }
 
+/* ---------- Uneven vs consistent card layout ---------- */
+
+const products = [
+  { name: "Wireless Earbuds", price: "$59", color: "#d4c5a9" },
+  { name: "Travel Mug", price: "$24", color: "#a9c5d4" },
+  { name: "Desk Lamp", price: "$42", color: "#c5a9c5" },
+] as const;
+
 export function CardLayoutUneven() {
   return (
-    <Box sx={{ display: "flex", gap: 1 }}>
-      <Paper sx={{ p: 1.5, flex: "0 0 auto", width: 80 }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>Plan A</Typography>
-        <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
-          Basic
+    <Box sx={{ display: "flex", gap: 0.75 }}>
+      <Paper sx={{ p: 1, flex: "0 0 auto", width: 95 }}>
+        <Box
+          sx={{
+            width: "100%",
+            aspectRatio: "1",
+            bgcolor: products[0].color,
+            mb: 0.5,
+          }}
+        />
+        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+          {products[0].name}
+        </Typography>
+        <Typography sx={{ fontSize: 11, color: "text.secondary" }}>
+          {products[0].price}
         </Typography>
       </Paper>
-      <Paper sx={{ p: 1.5, flex: "0 0 auto", width: 110 }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>Plan B</Typography>
-        <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
-          Pro tier with extras
+      <Paper variant="outlined" sx={{ p: 1.5, flex: "0 0 auto", width: 110 }}>
+        <Box
+          sx={{
+            width: "100%",
+            aspectRatio: "4 / 3",
+            bgcolor: products[1].color,
+            mb: 1,
+          }}
+        />
+        <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
+          {products[1].name}
         </Typography>
-        <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
-          $29/mo
+        <Typography sx={{ fontSize: 13, color: "text.secondary", mt: 0.5 }}>
+          {products[1].price}
         </Typography>
       </Paper>
-      <Paper sx={{ p: 1.5, flex: "0 0 auto", width: 90 }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>Plan C</Typography>
+      <Paper
+        sx={{
+          p: 0.75,
+          flex: "0 0 auto",
+          width: 85,
+          border: "2px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            aspectRatio: "3 / 2",
+            bgcolor: products[2].color,
+            mb: 0.25,
+          }}
+        />
+        <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+          {products[2].name}
+        </Typography>
       </Paper>
     </Box>
   );
@@ -202,21 +250,22 @@ export function CardLayoutUneven() {
 
 export function CardLayoutConsistent() {
   return (
-    <Box sx={{ display: "flex", gap: 1 }}>
-      {[
-        { name: "Plan A", desc: "Basic", price: "$9/mo" },
-        { name: "Plan B", desc: "Pro", price: "$29/mo" },
-        { name: "Plan C", desc: "Team", price: "$79/mo" },
-      ].map((plan) => (
-        <Paper key={plan.name} sx={{ p: 1.5, flex: 1, minHeight: 70 }}>
-          <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
-            {plan.name}
+    <Box sx={{ display: "flex", gap: 0.75 }}>
+      {products.map((product) => (
+        <Paper key={product.name} sx={{ p: 1, flex: 1, minWidth: 0 }}>
+          <Box
+            sx={{
+              width: "100%",
+              aspectRatio: "1",
+              bgcolor: product.color,
+              mb: 0.75,
+            }}
+          />
+          <Typography sx={{ fontSize: 12, fontWeight: 600 }}>
+            {product.name}
           </Typography>
-          <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
-            {plan.desc}
-          </Typography>
-          <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
-            {plan.price}
+          <Typography sx={{ fontSize: 11, color: "text.secondary", mt: 0.25 }}>
+            {product.price}
           </Typography>
         </Paper>
       ))}
@@ -224,44 +273,90 @@ export function CardLayoutConsistent() {
   );
 }
 
-export function ContentLeftAligned() {
+/* ---------- Center-aligned vs left-aligned content section ---------- */
+
+const features = [
+  "Real-time collaboration with up to 20 team members",
+  "Version history and automatic backups",
+  "Role-based access controls and audit logs",
+] as const;
+
+export function ContentCenterAligned() {
   return (
-    <Paper sx={{ p: 2, maxWidth: 260 }}>
+    <Paper sx={{ p: 2, textAlign: "center" }}>
       <Typography sx={{ fontSize: 16, fontWeight: 700, mb: 0.5 }}>
-        Features
+        Why teams choose Acme
       </Typography>
-      <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 1 }}>
-        Everything you need to build great products.
+      <Typography sx={{ fontSize: 12, color: "text.secondary", mb: 1.5 }}>
+        Everything you need to ship products faster.
       </Typography>
-      <Stack spacing={0.5} sx={{ mb: 1.5 }}>
-        <Typography sx={{ fontSize: 13 }}>Real-time collaboration</Typography>
-        <Typography sx={{ fontSize: 13 }}>Version history</Typography>
-        <Typography sx={{ fontSize: 13 }}>Role-based access</Typography>
+      <Stack spacing={0.75} sx={{ mb: 1.5, alignItems: "center" }}>
+        {features.map((feature) => (
+          <Typography
+            key={feature}
+            sx={{ fontSize: 12, color: "text.primary" }}
+          >
+            {feature}
+          </Typography>
+        ))}
       </Stack>
-      <Button variant="contained" size="small">
-        Learn More
-      </Button>
+      <Typography
+        sx={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: "primary.main",
+          cursor: "pointer",
+        }}
+      >
+        Start your free trial
+      </Typography>
     </Paper>
   );
 }
 
-export function ContentCenterAligned() {
+export function ContentLeftAligned() {
   return (
-    <Paper sx={{ p: 2, maxWidth: 260, textAlign: "center" }}>
+    <Paper sx={{ p: 2 }}>
       <Typography sx={{ fontSize: 16, fontWeight: 700, mb: 0.5 }}>
-        Features
+        Why teams choose Acme
       </Typography>
-      <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 1 }}>
-        Everything you need to build great products.
+      <Typography sx={{ fontSize: 12, color: "text.secondary", mb: 1.5 }}>
+        Everything you need to ship products faster.
       </Typography>
-      <Stack spacing={0.5} sx={{ mb: 1.5, alignItems: "center" }}>
-        <Typography sx={{ fontSize: 13 }}>Real-time collaboration</Typography>
-        <Typography sx={{ fontSize: 13 }}>Version history</Typography>
-        <Typography sx={{ fontSize: 13 }}>Role-based access</Typography>
+      <Stack spacing={0.75} sx={{ mb: 1.5 }}>
+        {features.map((feature) => (
+          <Stack
+            key={feature}
+            direction="row"
+            spacing={0.75}
+            sx={{ alignItems: "flex-start" }}
+          >
+            <Box
+              sx={{
+                width: 4,
+                height: 4,
+                borderRadius: "50%",
+                bgcolor: "primary.main",
+                mt: 0.75,
+                flexShrink: 0,
+              }}
+            />
+            <Typography sx={{ fontSize: 12, color: "text.primary" }}>
+              {feature}
+            </Typography>
+          </Stack>
+        ))}
       </Stack>
-      <Button variant="contained" size="small">
-        Learn More
-      </Button>
+      <Typography
+        sx={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: "primary.main",
+          cursor: "pointer",
+        }}
+      >
+        Start your free trial
+      </Typography>
     </Paper>
   );
 }

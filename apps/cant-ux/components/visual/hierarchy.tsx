@@ -3,52 +3,111 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+
+/* ---------- Flat vs clear hierarchy (property card) ---------- */
 
 export function HierarchyFlat() {
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography sx={{ fontSize: 14 }}>Quarterly Report</Typography>
-      <Typography sx={{ fontSize: 14, mt: 0.5 }}>
-        Revenue grew 12% compared to last quarter across all regions.
-      </Typography>
-      <Typography sx={{ fontSize: 14, mt: 0.5 }}>
-        Published Jan 15, 2025 by Analytics Team
-      </Typography>
+    <Paper sx={{ p: 0, overflow: "hidden" }}>
+      <Box sx={{ height: 90, bgcolor: "#c5ccd3", width: "100%" }} />
+      <Stack sx={{ p: 1.5 }} spacing={0.5}>
+        <Typography
+          sx={{ fontSize: 16, fontWeight: 400, color: "text.primary" }}
+        >
+          Kreuzberg Loft Apartment
+        </Typography>
+        <Typography
+          sx={{ fontSize: 14, fontWeight: 400, color: "text.primary" }}
+        >
+          Bergmannstrasse, Berlin
+        </Typography>
+        <Typography
+          sx={{ fontSize: 14, fontWeight: 400, color: "text.primary" }}
+        >
+          $1,850 / month
+        </Typography>
+        <Typography
+          sx={{ fontSize: 14, fontWeight: 400, color: "text.primary" }}
+        >
+          2 beds, 1 bath, 72 m2
+        </Typography>
+        <Button
+          variant="outlined"
+          size="small"
+          sx={{ mt: 0.5, textTransform: "none", alignSelf: "flex-start" }}
+        >
+          View details
+        </Button>
+      </Stack>
     </Paper>
   );
 }
 
 export function HierarchyClear() {
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography sx={{ fontSize: 18, fontWeight: 700, color: "text.primary" }}>
-        Quarterly Report
-      </Typography>
-      <Typography sx={{ fontSize: 14, color: "text.secondary", mt: 0.5 }}>
-        Revenue grew 12% compared to last quarter across all regions.
-      </Typography>
-      <Typography sx={{ fontSize: 12, color: "text.disabled", mt: 0.5 }}>
-        Published Jan 15, 2025 by Analytics Team
-      </Typography>
+    <Paper sx={{ p: 0, overflow: "hidden" }}>
+      <Box sx={{ height: 90, bgcolor: "#c5ccd3", width: "100%" }} />
+      <Stack sx={{ p: 1.5 }} spacing={0.25}>
+        <Typography
+          sx={{ fontSize: 16, fontWeight: 700, color: "text.primary" }}
+        >
+          Kreuzberg Loft Apartment
+        </Typography>
+        <Typography
+          sx={{ fontSize: 13, fontWeight: 400, color: "text.secondary" }}
+        >
+          Bergmannstrasse, Berlin
+        </Typography>
+        <Typography
+          sx={{ fontSize: 16, fontWeight: 600, color: "primary.main", mt: 0.5 }}
+        >
+          $1,850
+          <Box
+            component="span"
+            sx={{ fontSize: 12, fontWeight: 400, color: "text.secondary" }}
+          >
+            {" "}
+            / month
+          </Box>
+        </Typography>
+        <Typography
+          sx={{ fontSize: 12, fontWeight: 400, color: "text.disabled" }}
+        >
+          2 beds, 1 bath, 72 m2
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          sx={{ mt: 0.75, textTransform: "none", alignSelf: "flex-start" }}
+        >
+          View details
+        </Button>
+      </Stack>
     </Paper>
   );
 }
 
+/* ---------- All-primary vs hierarchical buttons ---------- */
+
 export function ButtonsAllPrimary() {
   return (
     <Paper sx={{ p: 2 }}>
-      <Typography sx={{ fontSize: 14, fontWeight: 600, mb: 1.5 }}>
-        Confirm Changes
+      <Typography sx={{ fontSize: 15, fontWeight: 600, mb: 0.5 }}>
+        Unsaved changes
+      </Typography>
+      <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 1.5 }}>
+        You have unsaved changes in this document. What would you like to do?
       </Typography>
       <Stack direction="row" spacing={1}>
-        <Button variant="contained" size="small">
-          Save
+        <Button variant="contained" size="small" sx={{ textTransform: "none" }}>
+          Save changes
         </Button>
-        <Button variant="contained" size="small">
+        <Button variant="contained" size="small" sx={{ textTransform: "none" }}>
+          Discard
+        </Button>
+        <Button variant="contained" size="small" sx={{ textTransform: "none" }}>
           Cancel
-        </Button>
-        <Button variant="contained" size="small">
-          Delete
         </Button>
       </Stack>
     </Paper>
@@ -58,38 +117,53 @@ export function ButtonsAllPrimary() {
 export function ButtonsWithHierarchy() {
   return (
     <Paper sx={{ p: 2 }}>
-      <Typography sx={{ fontSize: 14, fontWeight: 600, mb: 1.5 }}>
-        Confirm Changes
+      <Typography sx={{ fontSize: 15, fontWeight: 600, mb: 0.5 }}>
+        Unsaved changes
+      </Typography>
+      <Typography sx={{ fontSize: 13, color: "text.secondary", mb: 1.5 }}>
+        You have unsaved changes in this document. What would you like to do?
       </Typography>
       <Stack direction="row" spacing={1}>
-        <Button variant="contained" size="small">
-          Save
+        <Button variant="contained" size="small" sx={{ textTransform: "none" }}>
+          Save changes
         </Button>
-        <Button variant="outlined" size="small">
+        <Button
+          variant="outlined"
+          size="small"
+          color="error"
+          sx={{ textTransform: "none" }}
+        >
+          Discard
+        </Button>
+        <Button variant="text" size="small" sx={{ textTransform: "none" }}>
           Cancel
-        </Button>
-        <Button variant="text" size="small" color="error">
-          Delete
         </Button>
       </Stack>
     </Paper>
   );
 }
 
+/* ---------- Everything bold vs selective emphasis ---------- */
+
 export function EverythingBold() {
   return (
     <Paper sx={{ p: 2 }}>
       <Typography sx={{ fontSize: 16, fontWeight: 700 }}>
-        Order #4821
+        Berlin Design Meetup
       </Typography>
       <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.5 }}>
-        Status: Processing
+        Saturday, April 12, 2025
+      </Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.25 }}>
+        Factory Berlin, Rheinsberger Str. 76
       </Typography>
       <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.5 }}>
-        Items: 3 products
+        Lightning talks on design tokens, accessibility audits, and component
+        API patterns.
       </Typography>
-      <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.5 }}>
-        Estimated delivery: March 28
+      <Divider sx={{ my: 1 }} />
+      <Typography sx={{ fontSize: 13, fontWeight: 700 }}>
+        142 attending
       </Typography>
     </Paper>
   );
@@ -98,44 +172,63 @@ export function EverythingBold() {
 export function SelectiveEmphasis() {
   return (
     <Paper sx={{ p: 2 }}>
-      <Typography sx={{ fontSize: 16, fontWeight: 700 }}>
-        Order #4821
+      <Typography sx={{ fontSize: 16, fontWeight: 700, color: "text.primary" }}>
+        Berlin Design Meetup
       </Typography>
-      <Typography sx={{ fontSize: 14, color: "text.secondary", mt: 0.5 }}>
-        Status:{" "}
-        <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
-          Processing
-        </Box>
+      <Typography
+        sx={{ fontSize: 14, fontWeight: 400, color: "text.secondary", mt: 0.5 }}
+      >
+        Saturday, April 12, 2025
       </Typography>
-      <Typography sx={{ fontSize: 14, color: "text.secondary", mt: 0.5 }}>
-        Items: 3 products
+      <Typography
+        sx={{ fontSize: 13, fontWeight: 400, color: "text.disabled", mt: 0.25 }}
+      >
+        Factory Berlin, Rheinsberger Str. 76
       </Typography>
-      <Typography sx={{ fontSize: 14, color: "text.secondary", mt: 0.5 }}>
-        Estimated delivery:{" "}
-        <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
-          March 28
-        </Box>
+      <Typography
+        sx={{ fontSize: 14, fontWeight: 400, color: "text.secondary", mt: 0.5 }}
+      >
+        Lightning talks on design tokens, accessibility audits, and component
+        API patterns.
+      </Typography>
+      <Divider sx={{ my: 1 }} />
+      <Typography sx={{ fontSize: 13, fontWeight: 700, color: "text.primary" }}>
+        142 attending
       </Typography>
     </Paper>
   );
 }
 
+/* ---------- Label same as value vs dimmed label / bold value ---------- */
+
+const orderData = [
+  { label: "Order ID", value: "#ORD-7284" },
+  { label: "Status", value: "Shipped" },
+  { label: "Date", value: "Mar 22, 2025" },
+  { label: "Total", value: "$134.00" },
+] as const;
+
 export function LabelSameAsValue() {
   return (
     <Paper sx={{ p: 2 }}>
       <Stack spacing={1}>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography sx={{ fontSize: 14 }}>Name</Typography>
-          <Typography sx={{ fontSize: 14 }}>Jane Cooper</Typography>
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography sx={{ fontSize: 14 }}>Role</Typography>
-          <Typography sx={{ fontSize: 14 }}>Designer</Typography>
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography sx={{ fontSize: 14 }}>Location</Typography>
-          <Typography sx={{ fontSize: 14 }}>Berlin, DE</Typography>
-        </Box>
+        {orderData.map((row) => (
+          <Box
+            key={row.label}
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 400, color: "text.primary" }}
+            >
+              {row.label}
+            </Typography>
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 400, color: "text.primary" }}
+            >
+              {row.value}
+            </Typography>
+          </Box>
+        ))}
       </Stack>
     </Paper>
   );
@@ -145,45 +238,29 @@ export function LabelDimmedValueBold() {
   return (
     <Paper sx={{ p: 2 }}>
       <Stack spacing={1}>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography
-            sx={{
-              fontSize: 12,
-              color: "text.disabled",
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
+        {orderData.map((row) => (
+          <Box
+            key={row.label}
+            sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            Name
-          </Typography>
-          <Typography sx={{ fontSize: 14 }}>Jane Cooper</Typography>
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography
-            sx={{
-              fontSize: 12,
-              color: "text.disabled",
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Role
-          </Typography>
-          <Typography sx={{ fontSize: 14 }}>Designer</Typography>
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography
-            sx={{
-              fontSize: 12,
-              color: "text.disabled",
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Location
-          </Typography>
-          <Typography sx={{ fontSize: 14 }}>Berlin, DE</Typography>
-        </Box>
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 400,
+                color: "text.disabled",
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+              }}
+            >
+              {row.label}
+            </Typography>
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: "text.primary" }}
+            >
+              {row.value}
+            </Typography>
+          </Box>
+        ))}
       </Stack>
     </Paper>
   );
