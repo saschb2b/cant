@@ -1,10 +1,9 @@
-import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import { ArrowRight, Gamepad2, BookOpen } from "lucide-react";
+import { Gamepad2, BookOpen } from "lucide-react";
+import { HeroCta } from "@cant/shared/components/hero-cta";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
@@ -102,28 +101,7 @@ export default function LandingPage() {
               {String(CATEGORY_ORDER.length)} categories side by side.
             </Typography>
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1.5}
-              sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
-            >
-              <NextLink href="/play" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowRight size={18} />}
-                  sx={{ px: { xs: 3, md: 5 } }}
-                >
-                  Start Playing
-                </Button>
-              </NextLink>
-              <NextLink href="/learn" style={{ textDecoration: "none" }}>
-                <Button variant="text" size="large">
-                  Browse Patterns
-                </Button>
-              </NextLink>
-            </Stack>
+            <HeroCta gimmick={{ href: "/explorer", label: "Open Explorer" }} />
             <Typography
               variant="caption"
               color="text.secondary"

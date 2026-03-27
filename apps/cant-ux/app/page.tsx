@@ -1,10 +1,9 @@
-import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import { ArrowRight, Gamepad2, BookOpen } from "lucide-react";
+import { Gamepad2, BookOpen } from "lucide-react";
+import { HeroCta } from "@cant/shared/components/hero-cta";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
@@ -99,40 +98,7 @@ export default function LandingPage() {
               patterns across 7 categories.
             </Typography>
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1.5}
-              sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
-            >
-              <NextLink href="/play" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowRight size={18} />}
-                  sx={{
-                    px: { xs: 3, md: 5 },
-                    py: { xs: 1, md: 1.5 },
-                    fontSize: { xs: "0.9rem", md: "1.05rem" },
-                  }}
-                >
-                  Play
-                </Button>
-              </NextLink>
-              <NextLink href="/learn" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  sx={{
-                    px: { xs: 2, md: 3 },
-                    py: { xs: 1, md: 1.5 },
-                    fontSize: { xs: "0.9rem", md: "1.05rem" },
-                  }}
-                >
-                  Browse Patterns
-                </Button>
-              </NextLink>
-            </Stack>
+            <HeroCta />
             <Typography
               variant="caption"
               color="text.secondary"

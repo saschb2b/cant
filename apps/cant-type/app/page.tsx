@@ -1,17 +1,10 @@
-import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import {
-  ArrowRight,
-  Gamepad2,
-  BookOpen,
-  FlaskConical,
-  Sparkles,
-} from "lucide-react";
+import { Gamepad2, BookOpen, FlaskConical, Sparkles } from "lucide-react";
+import { HeroCta } from "@cant/shared/components/hero-cta";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
@@ -134,28 +127,7 @@ export default async function LandingPage() {
               {String(CATEGORY_ORDER.length)} categories side by side.
             </Typography>
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1.5}
-              sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
-            >
-              <NextLink href="/play" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowRight size={18} />}
-                  sx={{ px: { xs: 3, md: 5 } }}
-                >
-                  Start Playing
-                </Button>
-              </NextLink>
-              <NextLink href="/learn" style={{ textDecoration: "none" }}>
-                <Button variant="text" size="large">
-                  Browse Patterns
-                </Button>
-              </NextLink>
-            </Stack>
+            <HeroCta gimmick={{ href: "/playground", label: "Open Sandbox" }} />
             <Typography
               variant="caption"
               color="text.secondary"
@@ -167,13 +139,7 @@ export default async function LandingPage() {
                 opacity: 0.7,
               }}
             >
-              free &middot; no signup &middot; takes 3 min &middot;{" "}
-              <NextLink
-                href="/playground"
-                style={{ color: "inherit", textDecoration: "underline" }}
-              >
-                or try the sandbox
-              </NextLink>
+              free &middot; no signup &middot; takes 3 min
             </Typography>
           </Box>
 

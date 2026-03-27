@@ -1,16 +1,15 @@
-import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { ArrowRight, Check, X, Gamepad2, BookOpen, Zap } from "lucide-react";
+import { Check, X, Gamepad2, BookOpen, Zap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
 import { LiveRibbon } from "@/components/live-ribbon";
+import { HeroCta } from "@cant/shared/components/hero-cta";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
@@ -98,40 +97,7 @@ export default async function LandingPage() {
               Train your eye in under 5 minutes.
             </Typography>
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1.5}
-              sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
-            >
-              <NextLink href="/play" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowRight size={18} />}
-                  sx={{
-                    px: { xs: 3, md: 5 },
-                    py: { xs: 1, md: 1.5 },
-                    fontSize: { xs: "0.9rem", md: "1.05rem" },
-                  }}
-                >
-                  Start Playing
-                </Button>
-              </NextLink>
-              <NextLink href="/learn" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="text"
-                  size="large"
-                  sx={{
-                    px: { xs: 2, md: 3 },
-                    py: { xs: 1, md: 1.5 },
-                    fontSize: { xs: "0.9rem", md: "1.05rem" },
-                  }}
-                >
-                  Browse Patterns
-                </Button>
-              </NextLink>
-            </Stack>
+            <HeroCta />
             <Typography
               variant="caption"
               color="text.secondary"
