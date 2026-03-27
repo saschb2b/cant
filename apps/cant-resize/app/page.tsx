@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import { Monitor, Gamepad2, BookOpen } from "lucide-react";
-import { LandingHero } from "@cant/shared/components/landing-hero";
-import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { Hero } from "@cant/shared/components/hero";
+import { FeatureGrid } from "@cant/shared/components/feature-grid";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
+import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
@@ -21,7 +21,7 @@ export default function LandingPage() {
     >
       <SiteHeader />
 
-      <LandingHero
+      <Hero
         titleLine1="One site."
         titleLine2="Every screen."
         subtitle="Preview your site on every device at once, test your knowledge with quick-fire challenges, and study 128 responsive patterns side by side."
@@ -31,7 +31,7 @@ export default function LandingPage() {
       />
 
       {/* Features */}
-      <LandingFeatures
+      <FeatureGrid
         title="Three ways to level up"
         subtitle="A multi-device viewer, a pattern quiz, and a reference library."
         cards={[
@@ -60,7 +60,7 @@ export default function LandingPage() {
       <CantSeriesGrid currentAppName="Can't Resize" />
 
       {/* Open source CTA */}
-      <LandingOpenSource
+      <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
         githubUrl="https://github.com/saschb2b/cant-resize"

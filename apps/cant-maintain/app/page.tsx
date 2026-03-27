@@ -7,10 +7,10 @@ import { Check, X, Gamepad2, BookOpen, Zap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { LiveRibbon } from "@/components/live-ribbon";
-import { LandingHero } from "@cant/shared/components/landing-hero";
-import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { Hero } from "@cant/shared/components/hero";
+import { FeatureGrid } from "@cant/shared/components/feature-grid";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
+import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
 import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 
@@ -185,7 +185,7 @@ export default async function LandingPage() {
       <SiteHeader />
       <LiveRibbon />
 
-      <LandingHero
+      <Hero
         titleLine1="One component."
         titleLine2="Two APIs."
         subtitle="Can you tell which props your future self will thank you for? Train your eye in under 5 minutes."
@@ -199,7 +199,7 @@ export default async function LandingPage() {
       />
 
       {/* What you'll learn */}
-      <LandingFeatures
+      <FeatureGrid
         title="Train your eye for code that lasts"
         subtitle="Real conventions from React, MUI, and production codebases."
         cards={[
@@ -228,7 +228,7 @@ export default async function LandingPage() {
       <CantSeriesGrid currentAppName="Can't Maintain" />
 
       {/* Open source */}
-      <LandingOpenSource githubUrl="https://github.com/saschb2b/cant-maintain" />
+      <OpenSourceBanner githubUrl="https://github.com/saschb2b/cant-maintain" />
 
       <SiteFooter />
     </Box>

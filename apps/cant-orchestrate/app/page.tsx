@@ -1,14 +1,14 @@
 import Box from "@mui/material/Box";
 import { Gamepad2, BookOpen } from "lucide-react";
-import { LandingHero } from "@cant/shared/components/landing-hero";
+import { Hero } from "@cant/shared/components/hero";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
-import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { FeatureGrid } from "@cant/shared/components/feature-grid";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
+import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 
 export default function LandingPage() {
   return (
@@ -23,7 +23,7 @@ export default function LandingPage() {
     >
       <SiteHeader />
 
-      <LandingHero
+      <Hero
         titleLine1="Ship containers,"
         titleLine2="not mistakes."
         subtitle={
@@ -39,7 +39,7 @@ export default function LandingPage() {
       />
 
       {/* Features */}
-      <LandingFeatures
+      <FeatureGrid
         title="Two paths to mastery"
         subtitle="A pattern quiz and a reference library."
         cards={[
@@ -62,7 +62,7 @@ export default function LandingPage() {
       <CantSeriesGrid currentAppName="Can't Orchestrate" />
 
       {/* Open source CTA */}
-      <LandingOpenSource
+      <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
         githubUrl="https://github.com/saschb2b/cant"

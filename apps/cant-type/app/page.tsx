@@ -3,10 +3,10 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Gamepad2, BookOpen, FlaskConical, Sparkles } from "lucide-react";
-import { LandingHero } from "@cant/shared/components/landing-hero";
-import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { Hero } from "@cant/shared/components/hero";
+import { FeatureGrid } from "@cant/shared/components/feature-grid";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
+import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@/lib/learn/challenges";
@@ -172,7 +172,7 @@ export default async function LandingPage() {
     >
       <SiteHeader />
 
-      <LandingHero
+      <Hero
         titleLine1="Type magic,"
         titleLine2="demystified."
         subtitle={
@@ -191,7 +191,7 @@ export default async function LandingPage() {
       />
 
       {/* Features */}
-      <LandingFeatures
+      <FeatureGrid
         title="Three paths to mastery"
         subtitle="A pattern quiz, a spell book, and a type sandbox."
         cards={[
@@ -220,7 +220,7 @@ export default async function LandingPage() {
       <CantSeriesGrid currentAppName="Can't Type" />
 
       {/* Open source CTA */}
-      <LandingOpenSource
+      <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
         githubUrl="https://github.com/saschb2b/cant-type"

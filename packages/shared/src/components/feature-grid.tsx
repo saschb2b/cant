@@ -13,17 +13,17 @@ export interface FeatureCard {
   href: string;
 }
 
-export interface LandingFeaturesProps {
+export interface FeatureGridProps {
   title: string;
   subtitle: string;
   cards: FeatureCard[];
 }
 
-export function LandingFeatures({
+export function FeatureGrid({
   title,
   subtitle,
   cards,
-}: LandingFeaturesProps) {
+}: FeatureGridProps) {
   return (
     <Box
       sx={{

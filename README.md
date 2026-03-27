@@ -106,7 +106,7 @@ import { createTracker } from "@cant/shared/lib/analytics";
 
 ### What lives in shared
 
-**Components:** ThemeProvider, EmotionRegistry, FormattedText, ChallengeAnchor, SourceLink, Template, NotFound, AnalyticsProviderWrapper, CantSeriesGrid, LandingFeatures, LandingOpenSource
+**Components:** ThemeProvider, EmotionRegistry, FormattedText, ChallengeAnchor, SourceLink, Template, NotFound, AnalyticsProviderWrapper, CantSeriesGrid, Hero, HeroCta, FeatureGrid, OpenSourceBanner
 
 **Game UI:** Game, GameHeader, LobbyScreen, ResultsScreen, CodePanel, ExplanationPanel, ActivityGraph, CategoryFilter, SeedInput
 

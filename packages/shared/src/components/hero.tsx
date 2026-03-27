@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { HeroCta } from "./hero-cta";
 
-interface LandingHeroProps {
+interface HeroProps {
   /** Two-line title. First line is plain, second line is accented. */
   titleLine1: string;
   titleLine2: string;
@@ -24,7 +24,7 @@ const DEFAULT_GRADIENT = [
   "radial-gradient(ellipse 60% 50% at 85% 75%, rgba(var(--mui-palette-primary-mainChannel) / 0.03) 0%, transparent 100%)",
 ].join(", ");
 
-export function LandingHero({
+export function Hero({
   titleLine1,
   titleLine2,
   subtitle,
@@ -32,7 +32,7 @@ export function LandingHero({
   gimmick,
   visual,
   gradientOverlay,
-}: LandingHeroProps) {
+}: HeroProps) {
   return (
     <>
       {/* Mesh gradient background */}

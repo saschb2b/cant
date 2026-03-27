@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import { Search, Gamepad2, BookOpen } from "lucide-react";
-import { LandingHero } from "@cant/shared/components/landing-hero";
-import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { Hero } from "@cant/shared/components/hero";
+import { FeatureGrid } from "@cant/shared/components/feature-grid";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
+import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
@@ -21,7 +21,7 @@ export default function LandingPage() {
     >
       <SiteHeader />
 
-      <LandingHero
+      <Hero
         titleLine1="One link."
         titleLine2="Every platform."
         subtitle="Paste any URL and see how it appears on LinkedIn, Twitter/X, Slack, Teams, and more. Plus 64 SEO challenges and a pattern library for Next.js."
@@ -31,7 +31,7 @@ export default function LandingPage() {
       />
 
       {/* Features */}
-      <LandingFeatures
+      <FeatureGrid
         title="Three ways to level up"
         subtitle="A link inspector, a pattern quiz, and a reference library."
         cards={[
@@ -60,7 +60,7 @@ export default function LandingPage() {
       <CantSeriesGrid currentAppName="Can't SEO" />
 
       {/* Open source CTA */}
-      <LandingOpenSource
+      <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
         githubUrl="https://github.com/saschb2b/cant-seo"

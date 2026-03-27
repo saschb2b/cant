@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { Star, GitPullRequest, Code2, Heart } from "lucide-react";
 
-export interface LandingOpenSourceProps {
+export interface OpenSourceBannerProps {
   title?: string;
   description?: string;
   githubUrl: string;
@@ -40,11 +40,11 @@ const ACTION_ICONS = [
   },
 ];
 
-export function LandingOpenSource({
+export function OpenSourceBanner({
   title = "Open source & community-driven",
   description = "New challenges, categories, and improvements are all welcome.",
   githubUrl,
-}: LandingOpenSourceProps) {
+}: OpenSourceBannerProps) {
   return (
     <Container
       maxWidth="lg"

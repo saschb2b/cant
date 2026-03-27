@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import { Gamepad2, BookOpen } from "lucide-react";
-import { LandingHero } from "@cant/shared/components/landing-hero";
-import { LandingFeatures } from "@cant/shared/components/landing-features";
+import { Hero } from "@cant/shared/components/hero";
+import { FeatureGrid } from "@cant/shared/components/feature-grid";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
+import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
@@ -21,7 +21,7 @@ export default function LandingPage() {
     >
       <SiteHeader />
 
-      <LandingHero
+      <Hero
         titleLine1="Spot the"
         titleLine2="better design."
         subtitle="Train your design eye with side-by-side UX comparisons. Learn typography, spacing, color, hierarchy, and more through 28 patterns across 7 categories."
@@ -30,7 +30,7 @@ export default function LandingPage() {
       />
 
       {/* Features */}
-      <LandingFeatures
+      <FeatureGrid
         title="Two ways to level up"
         subtitle="A pattern quiz and a reference library for UX design."
         cards={[
@@ -53,7 +53,7 @@ export default function LandingPage() {
       <CantSeriesGrid currentAppName="Can't UX" />
 
       {/* Open source CTA */}
-      <LandingOpenSource
+      <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
         githubUrl="https://github.com/saschb2b/cant-ux"
