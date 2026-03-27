@@ -20,6 +20,7 @@ import {
 import type { ChallengeCategory, Difficulty } from "@/lib/game/types";
 import { FormattedText } from "@cant/shared/components/formatted-text";
 import { ChallengeAnchor } from "@cant/shared/components/challenge-anchor";
+import { ChallengeListToggle } from "@cant/shared/components/challenge-list-toggle";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 
@@ -143,6 +144,7 @@ export default async function CategoryPage({ params }: PageProps) {
       </Stack>
 
       {/* Challenges */}
+      <ChallengeListToggle>
       <Stack spacing={3}>
         {categoryChallenges.map((challenge) => (
           <Paper
@@ -171,16 +173,10 @@ export default async function CategoryPage({ params }: PageProps) {
             {/* Code comparison */}
             <Stack
               direction={{ xs: "column", sm: "row" }}
-              divider={
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  sx={{ display: { xs: "none", sm: "block" } }}
-                />
-              }
               sx={{ borderTop: 1, borderBottom: 1, borderColor: "divider" }}
             >
               <Box
+                className="compact-hide"
                 sx={{
                   flex: "1 1 50%",
                   minWidth: 0,
@@ -226,9 +222,11 @@ export default async function CategoryPage({ params }: PageProps) {
                 />
               </Box>
 
-              <Divider sx={{ display: { sm: "none" } }} />
+              <Divider className="compact-hide" orientation="vertical" flexItem sx={{ display: { xs: "none", sm: "block" } }} />
+              <Divider className="compact-hide" sx={{ display: { sm: "none" } }} />
 
               <Box
+                className="compact-full-width"
                 sx={{
                   flex: "1 1 50%",
                   minWidth: 0,
@@ -276,7 +274,7 @@ export default async function CategoryPage({ params }: PageProps) {
             </Stack>
 
             {/* Explanation + source */}
-            <Box sx={{ px: 2.5, py: 2, maxWidth: 720 }}>
+            <Box className="compact-hide" sx={{ px: 2.5, py: 2, maxWidth: 720 }}>
               <Box
                 sx={{
                   typography: "body2",
@@ -308,6 +306,7 @@ export default async function CategoryPage({ params }: PageProps) {
           </Paper>
         ))}
       </Stack>
+      </ChallengeListToggle>
 
       {/* Previous / Next navigation */}
       <Stack
