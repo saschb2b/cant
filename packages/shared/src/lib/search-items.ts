@@ -22,7 +22,8 @@ export function firstSentence(text: string): string {
   return line.length > 120 ? `${line.slice(0, 117)}...` : line;
 }
 
-const BASE_NOISE = new Set([
+const NOISE = new Set([
+  // JS/TS keywords and built-in types
   "string",
   "number",
   "boolean",
@@ -39,35 +40,60 @@ const BASE_NOISE = new Set([
   "const",
   "function",
   "return",
+  "extends",
+  // React
   "React",
   "ReactNode",
   "children",
   "Props",
   "props",
-  "extends",
+  "HTMLAttributes",
+  "HTMLDivElement",
+  "HTMLButtonElement",
+  "ComponentProps",
+  // HTML elements
   "div",
   "span",
   "button",
+  // CSS properties and values
+  "none",
+  "auto",
+  "block",
+  "flex",
+  "grid",
+  "display",
+  "width",
+  "height",
+  "margin",
+  "padding",
+  // Common short words in config/shell
+  "name",
+  "the",
+  "and",
+  "for",
+  "with",
+  "this",
+  "that",
+  "run",
+  "set",
+  "get",
+  "use",
+  "echo",
+  "env",
 ]);
 
 /**
  * Pull identifiers out of code snippets so users can search by
  * prop names, type names, CSS properties, and other tokens.
- *
- * Apps can pass extra domain-specific noise words to exclude.
  */
-export function extractCodeKeywords(
-  left: string,
-  right: string,
-  extraNoise?: Set<string>,
-): string[] {
+export function extractCodeKeywords(left: string, right: string): string[] {
   const identifierRe = /\b[a-zA-Z][a-zA-Z0-9-]{2,}\b/g;
   const all = `${left} ${right}`;
   const matches = all.match(identifierRe) ?? [];
 
   const unique = new Set<string>();
   for (const m of matches) {
-    if (!BASE_NOISE.has(m) && !extraNoise?.has(m)) unique.add(m);
+    if (!NOISE.has(m)) unique.add(m);
   }
   return [...unique];
 }
@@ -85,8 +111,6 @@ interface SearchItemsConfig {
   categoryDescriptions: Record<string, string>;
   /** Category sections (for section keyword). */
   categorySections: { label: string; categories: string[] }[];
-  /** Extra noise words to exclude from code keyword extraction. */
-  extraNoise?: Set<string>;
 }
 
 /**
@@ -103,7 +127,6 @@ export function buildSearchItems(config: SearchItemsConfig): SearchItem[] {
     categoryLabels,
     categoryDescriptions,
     categorySections,
-    extraNoise,
   } = config;
 
   function sectionFor(category: string): string | undefined {
@@ -134,7 +157,7 @@ export function buildSearchItems(config: SearchItemsConfig): SearchItem[] {
       difficulty: c.difficulty,
       keywords:
         c.content.type === "code"
-          ? extractCodeKeywords(c.content.left, c.content.right, extraNoise)
+          ? extractCodeKeywords(c.content.left, c.content.right)
           : [],
       href: `/learn/${c.category}#${c.id}`,
     })),

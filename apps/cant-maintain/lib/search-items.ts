@@ -12,13 +12,6 @@ import {
 
 export type { SearchItem };
 
-const EXTRA_NOISE = new Set([
-  "HTMLAttributes",
-  "HTMLDivElement",
-  "HTMLButtonElement",
-  "ComponentProps",
-]);
-
 const pages: SearchItem[] = [
   {
     type: "page",
@@ -53,5 +46,4 @@ export const searchItems: SearchItem[] = buildSearchItems({
   categoryLabels: CATEGORY_LABELS,
   categoryDescriptions: CATEGORY_DESCRIPTIONS,
   categorySections: CATEGORY_SECTIONS,
-  extraNoise: EXTRA_NOISE,
 });
