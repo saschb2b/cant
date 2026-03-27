@@ -102,11 +102,14 @@ export function SpacingCramped() {
     <Paper sx={{ p: "6px" }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
         <Box
+          component="img"
+          src="/challenges/avatar.jpg"
+          alt="Avatar"
           sx={{
             width: 28,
             height: 28,
             borderRadius: "50%",
-            bgcolor: "#c5cae9",
+            objectFit: "cover",
             flexShrink: 0,
           }}
         />
@@ -151,11 +154,14 @@ export function SpacingGenerous() {
     <Paper sx={{ p: "24px" }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
         <Box
+          component="img"
+          src="/challenges/avatar.jpg"
+          alt="Avatar"
           sx={{
             width: 40,
             height: 40,
             borderRadius: "50%",
-            bgcolor: "#c5cae9",
+            objectFit: "cover",
             flexShrink: 0,
           }}
         />

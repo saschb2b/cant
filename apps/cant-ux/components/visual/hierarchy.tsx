@@ -10,7 +10,12 @@ import Divider from "@mui/material/Divider";
 export function HierarchyFlat() {
   return (
     <Paper sx={{ p: 0, overflow: "hidden" }}>
-      <Box sx={{ height: 90, bgcolor: "#c5ccd3", width: "100%" }} />
+      <Box
+        component="img"
+        src="/challenges/apartment.jpg"
+        alt="Loft apartment interior"
+        sx={{ width: "100%", height: 90, objectFit: "cover", display: "block" }}
+      />
       <Stack sx={{ p: 1.5 }} spacing={0.5}>
         <Typography
           sx={{ fontSize: 16, fontWeight: 400, color: "text.primary" }}
@@ -47,7 +52,12 @@ export function HierarchyFlat() {
 export function HierarchyClear() {
   return (
     <Paper sx={{ p: 0, overflow: "hidden" }}>
-      <Box sx={{ height: 90, bgcolor: "#c5ccd3", width: "100%" }} />
+      <Box
+        component="img"
+        src="/challenges/apartment.jpg"
+        alt="Loft apartment interior"
+        sx={{ width: "100%", height: 90, objectFit: "cover", display: "block" }}
+      />
       <Stack sx={{ p: 1.5 }} spacing={0.25}>
         <Typography
           sx={{ fontSize: 16, fontWeight: 700, color: "text.primary" }}

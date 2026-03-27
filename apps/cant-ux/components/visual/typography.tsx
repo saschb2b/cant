@@ -10,7 +10,17 @@ import Divider from "@mui/material/Divider";
 export function TypoSizeOnlyHierarchy() {
   return (
     <Paper sx={{ p: 0, overflow: "hidden" }}>
-      <Box sx={{ height: 100, bgcolor: "#b8c9d9", width: "100%" }} />
+      <Box
+        component="img"
+        src="/challenges/amsterdam.jpg"
+        alt="Amsterdam canal houses"
+        sx={{
+          width: "100%",
+          height: 100,
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
       <Stack sx={{ p: 1.5 }} spacing={0.5}>
         <Typography
           sx={{ fontSize: 20, fontWeight: 400, color: "text.primary" }}
@@ -74,7 +84,17 @@ export function TypoSizeOnlyHierarchy() {
 export function TypoMultiDimensionHierarchy() {
   return (
     <Paper sx={{ p: 0, overflow: "hidden" }}>
-      <Box sx={{ height: 100, bgcolor: "#b8c9d9", width: "100%" }} />
+      <Box
+        component="img"
+        src="/challenges/amsterdam.jpg"
+        alt="Amsterdam canal houses"
+        sx={{
+          width: "100%",
+          height: 100,
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
       <Stack sx={{ p: 1.5 }} spacing={0.5}>
         <Typography
           sx={{ fontSize: 20, fontWeight: 700, color: "text.primary" }}

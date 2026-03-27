@@ -9,10 +9,14 @@ export function LayoutFullWidth() {
   return (
     <Paper sx={{ p: 2, width: "100%" }}>
       <Box
+        component="img"
+        src="/challenges/blog-cover.jpg"
+        alt="Blog cover"
         sx={{
           width: "100%",
           aspectRatio: "16 / 5",
-          bgcolor: "#c5ccd3",
+          objectFit: "cover",
+          display: "block",
           mb: 1.5,
         }}
       />
@@ -21,11 +25,14 @@ export function LayoutFullWidth() {
       </Typography>
       <Stack direction="row" spacing={1} sx={{ mb: 1, alignItems: "center" }}>
         <Box
+          component="img"
+          src="/challenges/avatar.jpg"
+          alt="Author"
           sx={{
             width: 24,
             height: 24,
             borderRadius: "50%",
-            bgcolor: "#a3b1c6",
+            objectFit: "cover",
             flexShrink: 0,
           }}
         />
@@ -58,10 +65,14 @@ export function LayoutConstrained() {
     >
       <Box sx={{ maxWidth: 300, width: "100%" }}>
         <Box
+          component="img"
+          src="/challenges/blog-cover.jpg"
+          alt="Blog cover"
           sx={{
             width: "100%",
             aspectRatio: "16 / 5",
-            bgcolor: "#c5ccd3",
+            objectFit: "cover",
+            display: "block",
             mb: 1.5,
           }}
         />
@@ -70,11 +81,14 @@ export function LayoutConstrained() {
         </Typography>
         <Stack direction="row" spacing={1} sx={{ mb: 1, alignItems: "center" }}>
           <Box
+            component="img"
+            src="/challenges/avatar.jpg"
+            alt="Author"
             sx={{
               width: 24,
               height: 24,
               borderRadius: "50%",
-              bgcolor: "#a3b1c6",
+              objectFit: "cover",
               flexShrink: 0,
             }}
           />
@@ -183,9 +197,9 @@ export function FormStacked() {
 /* ---------- Uneven vs consistent card layout ---------- */
 
 const products = [
-  { name: "Wireless Earbuds", price: "$59", color: "#d4c5a9" },
-  { name: "Travel Mug", price: "$24", color: "#a9c5d4" },
-  { name: "Desk Lamp", price: "$42", color: "#c5a9c5" },
+  { name: "Wireless Earbuds", price: "$59", img: "/challenges/earbuds.jpg" },
+  { name: "Travel Mug", price: "$24", img: "/challenges/mug.jpg" },
+  { name: "Desk Lamp", price: "$42", img: "/challenges/lamp.jpg" },
 ] as const;
 
 export function CardLayoutUneven() {
@@ -193,10 +207,14 @@ export function CardLayoutUneven() {
     <Box sx={{ display: "flex", gap: 0.75 }}>
       <Paper sx={{ p: 1, flex: "0 0 auto", width: 95 }}>
         <Box
+          component="img"
+          src={products[0].img}
+          alt={products[0].name}
           sx={{
             width: "100%",
             aspectRatio: "1",
-            bgcolor: products[0].color,
+            objectFit: "cover",
+            display: "block",
             mb: 0.5,
           }}
         />
@@ -209,10 +227,14 @@ export function CardLayoutUneven() {
       </Paper>
       <Paper variant="outlined" sx={{ p: 1.5, flex: "0 0 auto", width: 110 }}>
         <Box
+          component="img"
+          src={products[1].img}
+          alt={products[1].name}
           sx={{
             width: "100%",
             aspectRatio: "4 / 3",
-            bgcolor: products[1].color,
+            objectFit: "cover",
+            display: "block",
             mb: 1,
           }}
         />
@@ -233,10 +255,14 @@ export function CardLayoutUneven() {
         }}
       >
         <Box
+          component="img"
+          src={products[2].img}
+          alt={products[2].name}
           sx={{
             width: "100%",
             aspectRatio: "3 / 2",
-            bgcolor: products[2].color,
+            objectFit: "cover",
+            display: "block",
             mb: 0.25,
           }}
         />
@@ -254,10 +280,14 @@ export function CardLayoutConsistent() {
       {products.map((product) => (
         <Paper key={product.name} sx={{ p: 1, flex: 1, minWidth: 0 }}>
           <Box
+            component="img"
+            src={product.img}
+            alt={product.name}
             sx={{
               width: "100%",
               aspectRatio: "1",
-              bgcolor: product.color,
+              objectFit: "cover",
+              display: "block",
               mb: 0.75,
             }}
           />
