@@ -6,7 +6,12 @@ export const dockerComposeChallenges: Challenge[] = [
     category: "docker-compose",
     difficulty: "easy",
     title: "depends_on with health checks",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   db:
     image: postgres:16
     environment:
@@ -16,7 +21,8 @@ export const dockerComposeChallenges: Challenge[] = [
     build: .
     depends_on:
       - db`,
-    goodCode: `services:
+
+      right: `services:
   db:
     image: postgres:16
     environment:
@@ -32,7 +38,8 @@ export const dockerComposeChallenges: Challenge[] = [
     depends_on:
       db:
         condition: service_healthy`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Using `condition: service_healthy` with a proper `healthcheck` ensures the app container only starts when the database is actually ready to accept connections. The `pg_isready` check verifies PostgreSQL is listening, not just that the container is running.",
@@ -47,13 +54,19 @@ export const dockerComposeChallenges: Challenge[] = [
     category: "docker-compose",
     difficulty: "easy",
     title: "Named volumes for persistence",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   db:
     image: postgres:16
     environment:
       POSTGRES_PASSWORD: secret
     # No volume - data lost on restart`,
-    goodCode: `services:
+
+      right: `services:
   db:
     image: postgres:16
     environment:
@@ -63,7 +76,8 @@ export const dockerComposeChallenges: Challenge[] = [
 
 volumes:
   pgdata:`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Named volumes persist data across container restarts and `docker compose down`. The `pgdata` volume is managed by Docker and survives container lifecycle events. Defining it in the top-level `volumes` section makes it explicit and shareable.",
@@ -77,7 +91,12 @@ volumes:
     category: "docker-compose",
     difficulty: "medium",
     title: "Use profiles for optional services",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     build: .
     ports:
@@ -94,7 +113,8 @@ volumes:
     image: adminer
     ports:
       - "8080:8080"`,
-    goodCode: `services:
+
+      right: `services:
   app:
     build: .
     ports:
@@ -113,7 +133,8 @@ volumes:
       - "8080:8080"
     profiles:
       - debug`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Profiles let you define optional services that only start when explicitly requested with `docker compose --profile debug up`. This keeps the default `docker compose up` fast and lightweight while debug tools remain available on demand.",
@@ -128,7 +149,12 @@ volumes:
     category: "docker-compose",
     difficulty: "medium",
     title: "Explicit network isolation",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   frontend:
     build: ./frontend
     ports:
@@ -141,7 +167,8 @@ volumes:
     image: postgres:16
     # All services on default network
     # Frontend can reach DB directly`,
-    goodCode: `services:
+
+      right: `services:
   frontend:
     build: ./frontend
     ports:
@@ -163,7 +190,8 @@ volumes:
 networks:
   frontend:
   backend:`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Explicit networks isolate services by tier. The frontend can only reach the backend, and the backend can reach both frontend and database. The frontend cannot access the database directly. This follows the principle of least privilege and mirrors production topology.",

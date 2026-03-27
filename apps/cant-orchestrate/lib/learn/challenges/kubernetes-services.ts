@@ -6,7 +6,12 @@ export const kubernetesServicesChallenges: Challenge[] = [
     category: "kubernetes-services",
     difficulty: "easy",
     title: "ClusterIP for internal services",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Service
 metadata:
   name: backend
@@ -19,7 +24,8 @@ spec:
       targetPort: 8080
       # Exposed on every node
       nodePort: 30080`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Service
 metadata:
   name: backend
@@ -30,7 +36,8 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`ClusterIP` makes the service reachable only within the cluster. Internal services like backends, databases, and caches should never be exposed externally. Other pods reach it via `backend:8080` or `backend.namespace.svc.cluster.local`.",
@@ -45,7 +52,12 @@ spec:
     category: "kubernetes-services",
     difficulty: "medium",
     title: "Ingress for HTTP routing",
-    badCode: `# One LoadBalancer per service
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# One LoadBalancer per service
 apiVersion: v1
 kind: Service
 metadata:
@@ -67,7 +79,8 @@ spec:
     app: app-b
   ports:
     - port: 80`,
-    goodCode: `apiVersion: networking.k8s.io/v1
+
+      right: `apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: apps
@@ -93,7 +106,8 @@ spec:
                 name: app-b
                 port:
                   number: 80`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "An Ingress resource routes traffic from a single load balancer to multiple services based on hostname or path. This is cheaper (one LB instead of many), supports TLS termination, and centralizes routing rules in a declarative configuration.",
@@ -108,7 +122,12 @@ spec:
     category: "kubernetes-services",
     difficulty: "medium",
     title: "Label selectors for routing",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Service
 metadata:
   name: web
@@ -118,7 +137,8 @@ spec:
     app: web
   ports:
     - port: 80`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Service
 metadata:
   name: web
@@ -129,7 +149,8 @@ spec:
     version: v2
   ports:
     - port: 80`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Using multiple labels in the selector ensures the Service only routes traffic to the exact Pods you intend. Labels like `component` and `version` prevent accidental routing to backend Pods or old versions that happen to share the `app: web` label.",
@@ -144,7 +165,12 @@ spec:
     category: "kubernetes-services",
     difficulty: "hard",
     title: "Headless service for StatefulSets",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Service
 metadata:
   name: db
@@ -155,7 +181,8 @@ spec:
     app: db
   ports:
     - port: 5432`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Service
 metadata:
   name: db
@@ -181,7 +208,8 @@ spec:
       containers:
         - name: postgres
           image: postgres:16`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A headless service (`clusterIP: None`) gives each StatefulSet Pod a stable DNS name like `db-0.db.namespace.svc.cluster.local`. This is essential for stateful workloads (databases, message brokers) where clients need to connect to specific instances.",

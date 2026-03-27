@@ -6,7 +6,12 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "easy",
     title: "Use service names for DNS",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     build: .
     environment:
@@ -15,7 +20,8 @@ export const networkingChallenges: Challenge[] = [
 
   db:
     image: postgres:16`,
-    goodCode: `services:
+
+      right: `services:
   app:
     build: .
     environment:
@@ -24,7 +30,8 @@ export const networkingChallenges: Challenge[] = [
 
   db:
     image: postgres:16`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Docker Compose creates a DNS entry for each service name. Using `db` as the hostname lets Docker resolve it to the correct container IP automatically. This works even when containers are recreated and get new IPs.",
@@ -38,19 +45,26 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "easy",
     title: "Bind to specific interface",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   db:
     image: postgres:16
     ports:
       # Exposed on all interfaces
       - "5432:5432"`,
-    goodCode: `services:
+
+      right: `services:
   db:
     image: postgres:16
     ports:
       # Only accessible from localhost
       - "127.0.0.1:5432:5432"`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Binding to `127.0.0.1` restricts the port to the host's loopback interface. The database is accessible from the host machine for development but not from the network. This prevents accidental exposure of development databases.",
@@ -64,7 +78,12 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "medium",
     title: "Expose vs ports",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   backend:
     build: .
     # Published to host, but only
@@ -76,7 +95,8 @@ export const networkingChallenges: Challenge[] = [
     build: ./frontend
     ports:
       - "3000:3000"`,
-    goodCode: `services:
+
+      right: `services:
   backend:
     build: .
     # Only visible to other containers
@@ -87,7 +107,8 @@ export const networkingChallenges: Challenge[] = [
     build: ./frontend
     ports:
       - "3000:3000"`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`expose` documents that a service listens on a port and makes it reachable from other containers on the same network, without publishing it to the host. Only the frontend needs a host-published port since it's the entry point for users.",
@@ -102,14 +123,20 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "hard",
     title: "Custom bridge network for isolation",
-    badCode: `# Using default bridge network
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# Using default bridge network
 docker run -d --name app1 myapp
 docker run -d --name app2 myapp
 
 # Containers on default bridge
 # must use --link or IP addresses
 # No automatic DNS resolution`,
-    goodCode: `# Create custom bridge network
+
+      right: `# Create custom bridge network
 docker network create mynet
 
 docker run -d --name app1 --network mynet myapp
@@ -117,7 +144,8 @@ docker run -d --name app2 --network mynet myapp
 
 # Containers resolve each other by name
 # Isolated from other containers`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Custom bridge networks provide automatic DNS resolution between containers, better isolation from unrelated containers, and the ability to connect/disconnect containers at runtime. Containers on different custom networks cannot communicate by default.",

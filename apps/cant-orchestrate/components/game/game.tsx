@@ -1,6 +1,7 @@
 "use client";
 
 import { Game as SharedGame } from "@cant/shared/components/game/game";
+import type { ContentMapEntry } from "@cant/shared/components/game/game";
 import type { Challenge } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { useGame } from "@/lib/game/use-game";
@@ -13,15 +14,15 @@ import { LobbyScreen } from "./lobby-screen";
 
 interface GameProps {
   challenges: Challenge[];
-  highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
+  contentMap: Record<string, ContentMapEntry>;
   defaultSeed?: string;
 }
 
-export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
+export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
   return (
     <SharedGame
       challenges={challenges}
-      highlightMap={highlightMap}
+      contentMap={contentMap}
       defaultSeed={defaultSeed}
       promptText="Pick the better orchestration pattern"
       categoryLabels={CATEGORY_LABELS as Record<string, string>}

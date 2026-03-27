@@ -6,7 +6,10 @@ export const typeAssertionChallenges: Challenge[] = [
     category: "type-assertions",
     difficulty: "easy",
     title: "satisfies vs as",
-    badCode: `type Color = "red" | "green" | "blue";
+    content: {
+      type: "code",
+
+      left: `type Color = "red" | "green" | "blue";
 
 const palette = {
   primary: "red",
@@ -16,7 +19,8 @@ const palette = {
 // Lost the specific keys!
 palette.primary;    // Color (not "red")
 palette.oops;       // Color (no error for bad key)`,
-    goodCode: `type Color = "red" | "green" | "blue";
+
+      right: `type Color = "red" | "green" | "blue";
 
 const palette = {
   primary: "red",
@@ -26,6 +30,8 @@ const palette = {
 // Keeps specific keys and values!
 palette.primary;    // "red"
 palette.oops;       // Error: property doesn't exist`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       '`satisfies` validates that a value matches a type without widening it. The value keeps its inferred literal types, so `palette.primary` is `"red"` (not `Color`) and invalid keys are caught. It gives you validation and precision at the same time.',
@@ -40,7 +46,10 @@ palette.oops;       // Error: property doesn't exist`,
     category: "type-assertions",
     difficulty: "easy",
     title: "as const for literals",
-    badCode: `const config = {
+    content: {
+      type: "code",
+
+      left: `const config = {
   endpoint: "https://api.example.com",
   retries: 3,
   methods: ["GET", "POST"],
@@ -49,7 +58,8 @@ palette.oops;       // Error: property doesn't exist`,
 // config.endpoint is string (not the literal)
 // config.methods is string[] (not tuple)
 // config.methods[0] is string (not "GET")`,
-    goodCode: `const config = {
+
+      right: `const config = {
   endpoint: "https://api.example.com",
   retries: 3,
   methods: ["GET", "POST"],
@@ -58,6 +68,8 @@ palette.oops;       // Error: property doesn't exist`,
 // config.endpoint is "https://api.example.com"
 // config.methods is readonly ["GET", "POST"]
 // config.methods[0] is "GET"`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`as const` makes every property `readonly` and narrows all values to their literal types. Strings become literal string types, arrays become readonly tuples with literal element types. This is essential for objects used as configuration or lookup tables.",
@@ -72,7 +84,10 @@ palette.oops;       // Error: property doesn't exist`,
     category: "type-assertions",
     difficulty: "medium",
     title: "Type predicates with is",
-    badCode: `interface Fish { swim(): void }
+    content: {
+      type: "code",
+
+      left: `interface Fish { swim(): void }
 interface Bird { fly(): void }
 
 function isFish(pet: Fish | Bird): boolean {
@@ -84,7 +99,8 @@ if (isFish(pet)) {
   // Still Fish | Bird here, no narrowing!
   pet.swim(); // Error
 }`,
-    goodCode: `interface Fish { swim(): void }
+
+      right: `interface Fish { swim(): void }
 interface Bird { fly(): void }
 
 function isFish(pet: Fish | Bird): pet is Fish {
@@ -96,6 +112,8 @@ if (isFish(pet)) {
   // Narrowed to Fish
   pet.swim(); // OK
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `pet is Fish` return type is a type predicate that tells TypeScript the function acts as a type guard. When it returns `true`, the compiler narrows the argument to `Fish` in the calling scope. Without the predicate, the boolean return provides no narrowing information.",
@@ -110,7 +128,10 @@ if (isFish(pet)) {
     category: "type-assertions",
     difficulty: "medium",
     title: "Assertion functions",
-    badCode: `function loadConfig(): Config | undefined {
+    content: {
+      type: "code",
+
+      left: `function loadConfig(): Config | undefined {
   return JSON.parse(fs.readFileSync("config.json", "utf-8"));
 }
 
@@ -120,7 +141,8 @@ if (!config) throw new Error("Missing config");
 console.log(config.port);
 if (!config) throw new Error("Missing config");
 console.log(config.host);`,
-    goodCode: `function assertDefined<T>(
+
+      right: `function assertDefined<T>(
   val: T | undefined,
   msg: string
 ): asserts val is T {
@@ -132,6 +154,8 @@ assertDefined(config, "Missing config");
 // From here on, config is Config (not undefined)
 console.log(config.port); // OK
 console.log(config.host); // OK`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "An assertion function with `asserts val is T` tells TypeScript that if the function returns normally (does not throw), the value is narrowed for the rest of the scope. One call replaces repeated null checks throughout the function.",
@@ -146,14 +170,18 @@ console.log(config.host); // OK`,
     category: "type-assertions",
     difficulty: "hard",
     title: "Avoiding double assertions",
-    badCode: `interface User { name: string; age: number }
+    content: {
+      type: "code",
+
+      left: `interface User { name: string; age: number }
 interface Product { title: string; price: number }
 
 // Double assertion bypasses ALL type checking
 const user = { title: "Widget", price: 10 } as unknown as User;
 
 console.log(user.name); // undefined at runtime!`,
-    goodCode: `interface User { name: string; age: number }
+
+      right: `interface User { name: string; age: number }
 interface Product { title: string; price: number }
 
 // Use a type guard or validation function
@@ -170,6 +198,8 @@ const data: unknown = fetchData();
 if (isUser(data)) {
   console.log(data.name); // safe
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A type guard validates the shape at runtime, so the narrowed type reflects reality. The compiler trusts the guard, and you can trust the runtime. This is the correct approach when dealing with external data of unknown shape.",
@@ -184,7 +214,10 @@ if (isUser(data)) {
     category: "type-assertions",
     difficulty: "hard",
     title: "Non-null assertion vs optional chaining",
-    badCode: `interface User {
+    content: {
+      type: "code",
+
+      left: `interface User {
   address?: {
     city: string;
     zip: string;
@@ -196,7 +229,8 @@ function getCity(user: User): string {
   return user.address!.city;
   // Crashes if address is undefined
 }`,
-    goodCode: `interface User {
+
+      right: `interface User {
   address?: {
     city: string;
     zip: string;
@@ -208,6 +242,8 @@ function getCity(user: User): string | undefined {
   return user.address?.city;
   // Returns undefined if address is missing
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Optional chaining (`?.`) safely returns `undefined` if any part of the chain is nullish. The return type honestly reflects the possibility of `undefined`. This is a runtime-safe operation, unlike the non-null assertion which is erased at compile time.",
@@ -222,7 +258,10 @@ function getCity(user: User): string | undefined {
     category: "type-assertions",
     difficulty: "hard",
     title: "Branded types for type-safe IDs",
-    badCode: `type UserId = number;
+    content: {
+      type: "code",
+
+      left: `type UserId = number;
 type PostId = number;
 
 function getUser(id: UserId) { }
@@ -230,7 +269,8 @@ function getPost(id: PostId) { }
 
 const oderId: PostId = 42;
 getUser(oderId); // No error, PostId is just number`,
-    goodCode: `type Brand<T, B extends string> =
+
+      right: `type Brand<T, B extends string> =
   T & { readonly __brand: B };
 
 type UserId = Brand<number, "UserId">;
@@ -243,6 +283,8 @@ const userId = 1 as UserId;
 const postId = 2 as PostId;
 getUser(userId);  // OK
 // getUser(postId); // Error`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A branded type adds a phantom `__brand` property that exists only at the type level. This makes `UserId` and `PostId` structurally incompatible even though both are numbers at runtime. The `as` cast is typically wrapped in a factory or validation function so callers never see it.",

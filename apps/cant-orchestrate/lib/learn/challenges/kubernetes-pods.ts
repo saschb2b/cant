@@ -6,7 +6,12 @@ export const kubernetesPodsChallenges: Challenge[] = [
     category: "kubernetes-pods",
     difficulty: "easy",
     title: "Deployment vs bare Pod",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Pod
 metadata:
   name: web
@@ -16,7 +21,8 @@ spec:
       image: myapp:1.0
       ports:
         - containerPort: 8080`,
-    goodCode: `apiVersion: apps/v1
+
+      right: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -35,7 +41,8 @@ spec:
           image: myapp:1.0
           ports:
             - containerPort: 8080`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Deployments manage Pod replicas, rolling updates, and rollbacks. If a Pod crashes, the Deployment controller creates a replacement. Scaling is a single field change. This is the standard way to run stateless workloads in Kubernetes.",
@@ -50,7 +57,12 @@ spec:
     category: "kubernetes-pods",
     difficulty: "easy",
     title: "Set resource requests and limits",
-    badCode: `apiVersion: apps/v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -65,7 +77,8 @@ spec:
         - name: web
           image: myapp:1.0
           # No resource constraints`,
-    goodCode: `apiVersion: apps/v1
+
+      right: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -86,7 +99,8 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Resource requests guarantee minimum resources for scheduling. Limits cap maximum usage to prevent runaway containers from starving others. The scheduler uses requests to place Pods on nodes with enough capacity, ensuring stable performance.",
@@ -101,7 +115,12 @@ spec:
     category: "kubernetes-pods",
     difficulty: "medium",
     title: "Rolling update strategy",
-    badCode: `apiVersion: apps/v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -117,7 +136,8 @@ spec:
       containers:
         - name: web
           image: myapp:2.0`,
-    goodCode: `apiVersion: apps/v1
+
+      right: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -136,7 +156,8 @@ spec:
       containers:
         - name: web
           image: myapp:2.0`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`RollingUpdate` with `maxUnavailable: 0` ensures all existing Pods keep running while new ones start. `maxSurge: 1` creates one extra Pod at a time. This gives you zero-downtime deployments. If the new version fails health checks, the rollout pauses automatically.",
@@ -151,7 +172,12 @@ spec:
     category: "kubernetes-pods",
     difficulty: "hard",
     title: "Pod disruption budgets",
-    badCode: `# No PDB defined
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# No PDB defined
 # During node drain, all pods
 # can be evicted simultaneously
 
@@ -169,7 +195,8 @@ spec:
       containers:
         - name: web
           image: myapp:1.0`,
-    goodCode: `apiVersion: policy/v1
+
+      right: `apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: web-pdb
@@ -193,7 +220,8 @@ spec:
       containers:
         - name: web
           image: myapp:1.0`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A PodDisruptionBudget guarantees that at least 2 Pods remain available during voluntary disruptions like node upgrades, cluster autoscaling, or `kubectl drain`. The API server blocks eviction requests that would violate the budget.",

@@ -6,7 +6,10 @@ export const responsivePropsChallenges: Challenge[] = [
     category: "responsive-props",
     difficulty: "easy",
     title: "Breakpoint-aware direction prop",
-    badCode: `function Features() {
+    content: {
+      type: "code",
+
+      left: `function Features() {
   const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
@@ -16,7 +19,8 @@ export const responsivePropsChallenges: Challenge[] = [
     </Stack>
   );
 }`,
-    goodCode: `function Features() {
+
+      right: `function Features() {
   return (
     <Stack direction={{ xs: "column", sm: "row" }}>
       <FeatureCard />
@@ -24,6 +28,8 @@ export const responsivePropsChallenges: Challenge[] = [
     </Stack>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "MUI's responsive prop objects compile to CSS media queries with no hook, no re-render, and no SSR flash. The intent is also more readable: `{ xs: 'column', sm: 'row' }` is a data structure describing the layout at each breakpoint.",
@@ -37,7 +43,10 @@ export const responsivePropsChallenges: Challenge[] = [
     category: "responsive-props",
     difficulty: "easy",
     title: "Responsive Typography variant",
-    badCode: `function PageTitle({ children }: Props) {
+    content: {
+      type: "code",
+
+      left: `function PageTitle({ children }: Props) {
   const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
@@ -46,7 +55,8 @@ export const responsivePropsChallenges: Challenge[] = [
     </Typography>
   );
 }`,
-    goodCode: `function PageTitle({ children }: Props) {
+
+      right: `function PageTitle({ children }: Props) {
   return (
     <Typography
       variant="h3"
@@ -58,6 +68,8 @@ export const responsivePropsChallenges: Challenge[] = [
     </Typography>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Keep the semantic `variant` (h3 for heading hierarchy and accessibility) and override the visual size with responsive `fontSize` in `sx`. This gives you correct heading semantics with flexible visual sizing, and no JavaScript hook is needed.",
@@ -72,7 +84,10 @@ export const responsivePropsChallenges: Challenge[] = [
     category: "responsive-props",
     difficulty: "medium",
     title: "Designing responsive component APIs",
-    badCode: `interface CardProps {
+    content: {
+      type: "code",
+
+      left: `interface CardProps {
   layout: "horizontal" | "vertical";
 }
 
@@ -96,7 +111,8 @@ function Page() {
     <Card layout={isMobile ? "vertical" : "horizontal"} />
   );
 }`,
-    goodCode: `interface CardProps {
+
+      right: `interface CardProps {
   layout:
     | "horizontal"
     | "vertical"
@@ -128,6 +144,8 @@ function Page() {
     <Card layout={{ xs: "vertical", sm: "horizontal" }} />
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "By accepting breakpoint objects in the API, the component handles responsiveness internally via CSS. The consumer never needs `useMediaQuery`. This follows MUI's pattern, so if your component wraps MUI, expose the same responsive API.",
@@ -142,7 +160,10 @@ function Page() {
     category: "responsive-props",
     difficulty: "medium",
     title: "Responsive visibility prop",
-    badCode: `interface SectionProps {
+    content: {
+      type: "code",
+
+      left: `interface SectionProps {
   children: ReactNode;
   hideOnMobile?: boolean;
 }
@@ -153,7 +174,8 @@ function Section({ children, hideOnMobile }: SectionProps) {
   if (hideOnMobile && isMobile) return null;
   return <Box>{children}</Box>;
 }`,
-    goodCode: `interface SectionProps {
+
+      right: `interface SectionProps {
   children: ReactNode;
   display?: ResponsiveStyleValue<"block" | "none">;
 }
@@ -169,6 +191,8 @@ function Section({
 <Section display={{ xs: "none", md: "block" }}>
   <Sidebar />
 </Section>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Exposing `display` as a responsive prop delegates visibility to CSS. The component renders in the HTML (good for SEO), toggles via media queries (no flash), and the consumer controls exactly which breakpoints show or hide it.",
@@ -182,7 +206,10 @@ function Section({
     category: "responsive-props",
     difficulty: "hard",
     title: "Responsive columns prop",
-    badCode: `interface GridProps {
+    content: {
+      type: "code",
+
+      left: `interface GridProps {
   columns: number;
   mobileColumns?: number;
   tabletColumns?: number;
@@ -213,7 +240,8 @@ function AppGrid({
     </Box>
   );
 }`,
-    goodCode: `interface GridProps {
+
+      right: `interface GridProps {
   columns: ResponsiveStyleValue<number>;
   children: ReactNode;
 }
@@ -238,6 +266,8 @@ function AppGrid({ columns, children }: GridProps) {
 
 // Usage: clean, one prop
 <AppGrid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "One `columns` prop accepting breakpoint objects replaces three separate props and two hooks. The consumer's API is clean (`columns={{ xs: 1, md: 3 }}`), and the implementation compiles to pure CSS media queries.",

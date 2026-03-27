@@ -6,7 +6,10 @@ export const strictModeChallenges: Challenge[] = [
     category: "strict-mode",
     difficulty: "easy",
     title: "strictNullChecks prevents null crashes",
-    badCode: `// tsconfig: "strict": false
+    content: {
+      type: "code",
+
+      left: `// tsconfig: "strict": false
 function getLength(name: string) {
   return name.length;
 }
@@ -16,7 +19,8 @@ const user = users.find((u) => u.id === id);
 console.log(getLength(user.name));
 // Runtime: Cannot read property 'name'
 // of undefined`,
-    goodCode: `// tsconfig: "strict": true
+
+      right: `// tsconfig: "strict": true
 function getLength(name: string) {
   return name.length;
 }
@@ -26,6 +30,8 @@ const user = users.find((u) => u.id === id);
 if (user) {
   console.log(getLength(user.name));
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "With strictNullChecks enabled, TypeScript knows that Array.find() returns T | undefined. The compiler forces you to handle the undefined case before accessing properties, catching potential runtime crashes at compile time.",
@@ -39,7 +45,10 @@ if (user) {
     category: "strict-mode",
     difficulty: "easy",
     title: "noUncheckedIndexedAccess for arrays",
-    badCode: `// tsconfig: noUncheckedIndexedAccess not set
+    content: {
+      type: "code",
+
+      left: `// tsconfig: noUncheckedIndexedAccess not set
 const names: string[] = ["Alice", "Bob"];
 
 // TypeScript says this is 'string'
@@ -47,7 +56,8 @@ const third = names[2];
 console.log(third.toUpperCase());
 // Runtime: Cannot read property
 // 'toUpperCase' of undefined`,
-    goodCode: `// tsconfig: "noUncheckedIndexedAccess": true
+
+      right: `// tsconfig: "noUncheckedIndexedAccess": true
 const names: string[] = ["Alice", "Bob"];
 
 // TypeScript says this is 'string | undefined'
@@ -55,6 +65,8 @@ const third = names[2];
 if (third !== undefined) {
   console.log(third.toUpperCase());
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "With noUncheckedIndexedAccess enabled, accessing an array element by index returns T | undefined instead of just T. This forces you to handle the case where the index is out of bounds, preventing runtime errors from accessing properties on undefined.",
@@ -69,7 +81,10 @@ if (third !== undefined) {
     category: "strict-mode",
     difficulty: "medium",
     title: "Strict property initialization",
-    badCode: `class UserService {
+    content: {
+      type: "code",
+
+      left: `class UserService {
   private db: Database;
   private cache: Map<string, User>;
 
@@ -85,7 +100,8 @@ if (third !== undefined) {
     // of undefined (if init not called)
   }
 }`,
-    goodCode: `class UserService {
+
+      right: `class UserService {
   private db: Database;
   private cache: Map<string, User>;
 
@@ -100,6 +116,8 @@ if (third !== undefined) {
     // in the constructor
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "With strictPropertyInitialization enabled (part of strict mode), TypeScript requires that class properties declared without a type that includes undefined must be initialized in the constructor. This catches the common pattern of forgetting to call an init method before using the class.",
@@ -114,7 +132,10 @@ if (third !== undefined) {
     category: "strict-mode",
     difficulty: "medium",
     title: "exactOptionalPropertyTypes",
-    badCode: `interface Settings {
+    content: {
+      type: "code",
+
+      left: `interface Settings {
   theme?: "light" | "dark";
 }
 
@@ -125,7 +146,8 @@ const settings: Settings = {};
 settings.theme = undefined;
 // But this is different from "not set"
 // in many serialization formats`,
-    goodCode: `// tsconfig: exactOptionalPropertyTypes: true
+
+      right: `// tsconfig: exactOptionalPropertyTypes: true
 interface Settings {
   theme?: "light" | "dark";
   // ? means "can be missing"
@@ -140,6 +162,8 @@ settings.theme = undefined;
 
 // To allow explicit undefined, write:
 // theme?: "light" | "dark" | undefined;`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "With exactOptionalPropertyTypes, the ? modifier means the property can be missing, not that it can be explicitly set to undefined. This distinction matters for serialization: JSON.stringify omits missing keys but includes keys with undefined values differently across environments.",
@@ -154,7 +178,10 @@ settings.theme = undefined;
     category: "strict-mode",
     difficulty: "hard",
     title: "useUnknownInCatchVariables",
-    badCode: `// tsconfig: useUnknownInCatchVariables: false
+    content: {
+      type: "code",
+
+      left: `// tsconfig: useUnknownInCatchVariables: false
 try {
   JSON.parse(userInput);
 } catch (error) {
@@ -164,7 +191,8 @@ try {
   // if something else was thrown
   // (e.g., a string or number)
 }`,
-    goodCode: `// tsconfig: useUnknownInCatchVariables: true
+
+      right: `// tsconfig: useUnknownInCatchVariables: true
 try {
   JSON.parse(userInput);
 } catch (error) {
@@ -175,6 +203,8 @@ try {
     console.log("Unexpected error:", String(error));
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "With useUnknownInCatchVariables (part of strict since TypeScript 4.4), catch clause variables are typed as unknown instead of any. This forces you to narrow the type before accessing properties, which is correct because JavaScript allows throwing any value, not just Error objects.",
@@ -189,7 +219,10 @@ try {
     category: "strict-mode",
     difficulty: "hard",
     title: "Enabling strict mode incrementally",
-    badCode: `// tsconfig.json
+    content: {
+      type: "code",
+
+      left: `// tsconfig.json
 {
   "compilerOptions": {
     "strict": true
@@ -198,7 +231,8 @@ try {
     // reverts to "strict": false
   }
 }`,
-    goodCode: `// tsconfig.json
+
+      right: `// tsconfig.json
 {
   "compilerOptions": {
     "strict": false,
@@ -213,6 +247,8 @@ try {
     // "strict": true
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The strict flag is a shorthand that enables multiple sub-flags at once. In a large codebase, enabling all of them simultaneously creates an overwhelming number of errors. Enabling them one at a time lets you fix each category of issue incrementally, building toward full strict mode without blocking development.",
@@ -226,7 +262,10 @@ try {
     category: "strict-mode",
     difficulty: "easy",
     title: "TypeScript 6.0 strict defaults",
-    badCode: `// tsconfig.json (TS 6.0)
+    content: {
+      type: "code",
+
+      left: `// tsconfig.json (TS 6.0)
 {
   "compilerOptions": {
     "strict": false,
@@ -238,7 +277,8 @@ try {
 // of the new safe defaults
 // "target": "es5" is deprecated
 // "moduleResolution": "node" is deprecated`,
-    goodCode: `// tsconfig.json (TS 6.0)
+
+      right: `// tsconfig.json (TS 6.0)
 {
   "compilerOptions": {
     "module": "esnext",
@@ -249,6 +289,8 @@ try {
 // target defaults to es2025
 // No deprecated options needed
 // Just override what you actually need`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "TypeScript 6.0 enables strict mode by default and sets modern defaults for target (es2025) and module (esnext). New projects get full type safety out of the box. You only need to configure what you actually want to change, like moduleResolution for your bundler.",

@@ -6,7 +6,12 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "easy",
     title: "Text truncation in flex containers",
-    badCode: `.list-item {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.list-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -17,7 +22,8 @@ export const overflowHandlingChallenges: Challenge[] = [
   overflow: hidden;
   text-overflow: ellipsis;
 }`,
-    goodCode: `.list-item {
+
+      right: `.list-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -29,7 +35,8 @@ export const overflowHandlingChallenges: Challenge[] = [
   overflow: hidden;
   text-overflow: ellipsis;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Flex items default to `min-width: auto`, which prevents them from shrinking below their content width. Adding `min-width: 0` allows the element to shrink, letting `text-overflow: ellipsis` actually work.",
@@ -43,12 +50,18 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "easy",
     title: "Responsive table with horizontal scroll",
-    badCode: `/* Table overflows the page on mobile */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Table overflows the page on mobile */
 .data-table {
   width: 100%;
   border-collapse: collapse;
 }`,
-    goodCode: `.table-wrapper {
+
+      right: `.table-wrapper {
   overflow-x: auto;
 
 }
@@ -58,7 +71,8 @@ export const overflowHandlingChallenges: Challenge[] = [
   min-width: 600px;
   border-collapse: collapse;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Wrapping the table in a scroll container with `overflow-x: auto` lets the table maintain its readable layout while scrolling horizontally on small screens. `min-width` ensures columns don't compress to unreadable widths.",
@@ -72,16 +86,23 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "medium",
     title: "Long words and URLs breaking layout",
-    badCode: `.comment {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.comment {
   max-width: 600px;
 }
 
 /* Long URLs break out of the container */`,
-    goodCode: `.comment {
+
+      right: `.comment {
   max-width: 600px;
   overflow-wrap: break-word;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`overflow-wrap: break-word` breaks long unbreakable strings (URLs, long words, base64) only when they would overflow their container. Normal text wraps at natural word boundaries; the forced break is a last resort. This prevents horizontal overflow from user-generated content.",
@@ -95,14 +116,20 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "medium",
     title: "Preventing code blocks from overflowing",
-    badCode: `pre {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `pre {
   background: #1e1e1e;
   padding: 1rem;
   border-radius: 0.5rem;
 }
 
 /* Code blocks overflow on mobile */`,
-    goodCode: `pre {
+
+      right: `pre {
   background: #1e1e1e;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -110,7 +137,8 @@ export const overflowHandlingChallenges: Challenge[] = [
   white-space: pre;
 
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`overflow-x: auto` adds a horizontal scrollbar only when the code exceeds the container width. `white-space: pre` preserves code formatting (indentation, line breaks) while allowing horizontal scroll for long lines.",
@@ -124,7 +152,12 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "hard",
     title: "Nested scroll containers",
-    badCode: `.modal {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.modal {
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -135,7 +168,8 @@ export const overflowHandlingChallenges: Challenge[] = [
 }
 
 /* Two nested scrollbars confuse users */`,
-    goodCode: `.modal {
+
+      right: `.modal {
   max-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -150,7 +184,8 @@ export const overflowHandlingChallenges: Challenge[] = [
 }
 
 .modal-footer { flex-shrink: 0; }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A flex column layout with `min-height: 0` on the body lets the body scroll while header and footer stay fixed. Only one scrollbar exists. The key is `min-height: 0` because without it, the flex child won't shrink below its content height.",

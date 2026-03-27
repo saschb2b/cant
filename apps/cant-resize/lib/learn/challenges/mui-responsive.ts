@@ -6,7 +6,10 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "easy",
     title: "Responsive sx values",
-    badCode: `<Typography
+    content: {
+      type: "code",
+
+      left: `<Typography
   sx={{
     fontSize: window.innerWidth < 600
       ? "1rem"
@@ -15,13 +18,16 @@ export const muiResponsiveChallenges: Challenge[] = [
 >
   Welcome back
 </Typography>`,
-    goodCode: `<Typography
+
+      right: `<Typography
   sx={{
     fontSize: { xs: "1rem", sm: "1.5rem" },
   }}
 >
   Welcome back
 </Typography>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "MUI's `sx` prop accepts breakpoint objects that compile to CSS media queries at build time. This is SSR-safe, avoids hydration mismatches, and doesn't trigger re-renders on resize.",
@@ -36,12 +42,16 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "easy",
     title: "Grid responsive columns",
-    badCode: `<Grid container spacing={2}>
+    content: {
+      type: "code",
+
+      left: `<Grid container spacing={2}>
   <Grid size={4}><Card /></Grid>
   <Grid size={4}><Card /></Grid>
   <Grid size={4}><Card /></Grid>
 </Grid>`,
-    goodCode: `<Grid container spacing={2}>
+
+      right: `<Grid container spacing={2}>
   <Grid size={{ xs: 12, sm: 6, md: 4 }}>
     <Card />
   </Grid>
@@ -52,6 +62,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     <Card />
   </Grid>
 </Grid>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Responsive `size` objects give each card the full width on mobile (12 columns), half on tablets (6), and a third on desktop (4). The layout adapts without any custom CSS or media queries.",
@@ -65,7 +77,10 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "medium",
     title: "Responsive Stack direction",
-    badCode: `function FeatureSection() {
+    content: {
+      type: "code",
+
+      left: `function FeatureSection() {
   const isMobile = useMediaQuery(
     theme.breakpoints.down("md"),
   );
@@ -78,7 +93,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     </Stack>
   );
 }`,
-    goodCode: `function FeatureSection() {
+
+      right: `function FeatureSection() {
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -90,6 +106,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     </Stack>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Stack's `direction` and `spacing` props accept breakpoint objects natively. This avoids a `useMediaQuery` hook, its SSR hydration flash, and the extra re-render when the breakpoint crosses.",
@@ -103,7 +121,10 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "medium",
     title: "Dialog to full-screen on mobile",
-    badCode: `function ConfirmDialog({ open, onClose }: Props) {
+    content: {
+      type: "code",
+
+      left: `function ConfirmDialog({ open, onClose }: Props) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm action</DialogTitle>
@@ -115,7 +136,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     </Dialog>
   );
 }`,
-    goodCode: `function ConfirmDialog({ open, onClose }: Props) {
+
+      right: `function ConfirmDialog({ open, onClose }: Props) {
   const fullScreen = useMediaQuery(
     (theme: Theme) => theme.breakpoints.down("sm"),
   );
@@ -135,6 +157,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     </Dialog>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "On small screens, a floating dialog with backdrop can feel cramped and the close button may be hard to reach. `fullScreen` on mobile gives the dialog room to breathe and makes it feel like a native screen transition. This is one of the valid uses for `useMediaQuery` because you need a boolean prop, not a CSS value.",
@@ -149,7 +173,10 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "medium",
     title: "Theme breakpoints in sx",
-    badCode: `<Box
+    content: {
+      type: "code",
+
+      left: `<Box
   sx={{
     padding: "16px",
     "@media (min-width: 600px)": {
@@ -160,11 +187,14 @@ export const muiResponsiveChallenges: Challenge[] = [
     },
   }}
 >`,
-    goodCode: `<Box
+
+      right: `<Box
   sx={{
     p: { xs: 2, sm: 3, md: 4 },
   }}
 >`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "MUI's `sx` shorthand converts breakpoint objects to media queries using the theme's breakpoint values. `p: 2` means `16px` (2 * 8px spacing unit). It's shorter, consistent with the theme, and automatically uses the correct breakpoint values.",
@@ -179,7 +209,10 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "hard",
     title: "Responsive Drawer pattern",
-    badCode: `function Sidebar() {
+    content: {
+      type: "code",
+
+      left: `function Sidebar() {
   const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 899px)");
 
@@ -202,7 +235,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     </>
   );
 }`,
-    goodCode: `function Sidebar() {
+
+      right: `function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const drawer = <NavLinks />;
@@ -242,6 +276,8 @@ export const muiResponsiveChallenges: Challenge[] = [
     </>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Rendering both Drawer variants and toggling with CSS `display` avoids the hydration flash from `useMediaQuery`. The `NavLinks` component is shared, so there's no duplication of logic. MUI's `variant` prop handles the behavioral difference (overlay vs inline).",

@@ -6,7 +6,10 @@ export const readonlyImmutabilityChallenges: Challenge[] = [
     category: "readonly-immutability",
     difficulty: "easy",
     title: "Readonly properties prevent accidental mutation",
-    badCode: `interface Config {
+    content: {
+      type: "code",
+
+      left: `interface Config {
   apiUrl: string;
   timeout: number;
 }
@@ -19,7 +22,8 @@ const config: Config = {
 // Oops, accidentally mutated config
 config.timeout = -1;
 // No error, invalid state`,
-    goodCode: `interface Config {
+
+      right: `interface Config {
   readonly apiUrl: string;
   readonly timeout: number;
 }
@@ -32,6 +36,8 @@ const config: Config = {
 // config.timeout = -1;
 // Error: Cannot assign to 'timeout'
 // because it is a read-only property`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The readonly modifier on interface properties prevents reassignment after initialization. This catches accidental mutations at compile time. It is especially valuable for configuration objects that should be set once and never changed.",
@@ -46,7 +52,10 @@ const config: Config = {
     category: "readonly-immutability",
     difficulty: "easy",
     title: "Readonly<T> utility type",
-    badCode: `interface User {
+    content: {
+      type: "code",
+
+      left: `interface User {
   name: string;
   email: string;
   role: "admin" | "user";
@@ -58,7 +67,8 @@ function displayUser(user: User) {
   // Caller's object is now corrupted
   console.log(user.name);
 }`,
-    goodCode: `interface User {
+
+      right: `interface User {
   name: string;
   email: string;
   role: "admin" | "user";
@@ -75,6 +85,8 @@ function displayUser(user: Readonly<User>) {
 function promoteUser(user: User) {
   user.role = "admin"; // OK
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Readonly<T> makes all properties of T readonly without changing the original type. Applying it to function parameters signals that the function only reads the data. Functions that need to mutate can still use the original mutable type.",
@@ -89,7 +101,10 @@ function promoteUser(user: User) {
     category: "readonly-immutability",
     difficulty: "medium",
     title: "ReadonlyArray prevents mutations",
-    badCode: `function getTopScores(
+    content: {
+      type: "code",
+
+      left: `function getTopScores(
   scores: number[]
 ): number[] {
   // Sort mutates the original array!
@@ -101,7 +116,8 @@ const allScores = [42, 99, 17, 88, 73];
 const top3 = getTopScores(allScores);
 // allScores is now [99, 88, 73, 42, 17]
 // Original order is destroyed`,
-    goodCode: `function getTopScores(
+
+      right: `function getTopScores(
   scores: readonly number[]
 ): number[] {
   // scores.sort(...);
@@ -117,6 +133,8 @@ const top3 = getTopScores(allScores);
 const allScores = [42, 99, 17, 88, 73];
 const top3 = getTopScores(allScores);
 // allScores is still [42, 99, 17, 88, 73]`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "readonly number[] (or ReadonlyArray<number>) removes mutating methods like sort, push, pop, and splice from the type. This forces you to copy the array before sorting, preventing accidental mutation of the caller's data. The spread operator creates a shallow copy that is safe to sort.",
@@ -131,7 +149,10 @@ const top3 = getTopScores(allScores);
     category: "readonly-immutability",
     difficulty: "medium",
     title: "as const for tuple inference",
-    badCode: `const COLORS = ["red", "green", "blue"];
+    content: {
+      type: "code",
+
+      left: `const COLORS = ["red", "green", "blue"];
 // Type: string[]
 
 type Color = typeof COLORS[number];
@@ -143,7 +164,8 @@ function setColor(color: Color) {
 }
 
 setColor("banana"); // No error`,
-    goodCode: `const COLORS = ["red", "green", "blue"] as const;
+
+      right: `const COLORS = ["red", "green", "blue"] as const;
 // Type: readonly ["red", "green", "blue"]
 
 type Color = typeof COLORS[number];
@@ -155,6 +177,8 @@ function setColor(color: Color) {
 
 setColor("red");    // OK
 // setColor("banana"); // Error`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The as const assertion tells TypeScript to infer the narrowest possible type: a readonly tuple of literal strings instead of a mutable array of string. Indexing with [number] extracts a union of the literal types. This keeps the runtime array and the type in sync from a single source of truth.",
@@ -169,7 +193,10 @@ setColor("red");    // OK
     category: "readonly-immutability",
     difficulty: "hard",
     title: "Deep readonly for nested objects",
-    badCode: `interface AppState {
+    content: {
+      type: "code",
+
+      left: `interface AppState {
   readonly user: {
     name: string;
     preferences: {
@@ -189,7 +216,8 @@ const state: AppState = {
 state.user.name = "Bob"; // No error!
 state.user.preferences.theme = "dark"; // No error!
 // readonly is only one level deep`,
-    goodCode: `type DeepReadonly<T> = T extends object
+
+      right: `type DeepReadonly<T> = T extends object
   ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
   : T;
 
@@ -212,6 +240,8 @@ const state: DeepReadonly<AppState> = {
 // state.user.name = "Bob"; // Error
 // state.user.preferences.theme = "dark";
 // Error: Cannot assign to 'theme'`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Readonly<T> and the readonly modifier only apply to the immediate properties. Nested objects remain mutable. A recursive DeepReadonly type applies readonly at every level by checking if the value is an object and recursively wrapping it. This provides true immutability for the entire object tree.",
@@ -226,7 +256,10 @@ const state: DeepReadonly<AppState> = {
     category: "readonly-immutability",
     difficulty: "hard",
     title: "Readonly function parameters",
-    badCode: `interface CartItem {
+    content: {
+      type: "code",
+
+      left: `interface CartItem {
   id: string;
   quantity: number;
   price: number;
@@ -243,7 +276,8 @@ function calculateTotal(items: CartItem[]) {
   // Caller's items now have inflated prices
   // Calling twice doubles the tax
 }`,
-    goodCode: `interface CartItem {
+
+      right: `interface CartItem {
   id: string;
   quantity: number;
   price: number;
@@ -262,6 +296,8 @@ function calculateTotal(
   return total;
   // Caller's data is untouched
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Combining ReadonlyArray (prevents push/pop/splice) with Readonly on each element (prevents property assignment) provides full protection. The function is forced to use local variables for computed values instead of mutating the input. This makes the function pure and safe to call repeatedly.",

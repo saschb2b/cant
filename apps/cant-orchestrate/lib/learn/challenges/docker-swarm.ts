@@ -6,7 +6,12 @@ export const dockerSwarmChallenges: Challenge[] = [
     category: "docker-swarm",
     difficulty: "easy",
     title: "Services vs standalone containers",
-    badCode: `# Running containers directly
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# Running containers directly
 docker run -d --name web-1 myapp:1.0
 docker run -d --name web-2 myapp:1.0
 docker run -d --name web-3 myapp:1.0
@@ -14,7 +19,8 @@ docker run -d --name web-3 myapp:1.0
 # Manual management needed
 # No auto-restart on failure
 # No load balancing`,
-    goodCode: `# Initialize swarm (once)
+
+      right: `# Initialize swarm (once)
 docker swarm init
 
 # Create a service with replicas
@@ -26,7 +32,8 @@ docker service create \\
 
 # Swarm handles scheduling,
 # load balancing, and restarts`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Swarm services automatically schedule replicas across nodes, restart failed containers, and load-balance incoming traffic. Scaling is a single command: `docker service scale web=5`. The desired state is maintained automatically.",
@@ -41,7 +48,12 @@ docker service create \\
     category: "docker-swarm",
     difficulty: "medium",
     title: "Swarm secrets for credentials",
-    badCode: `# docker-compose.yml for swarm
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# docker-compose.yml for swarm
 services:
   db:
     image: postgres:16
@@ -53,7 +65,8 @@ services:
     image: myapp:1.0
     environment:
       DB_PASSWORD: "s3cret"`,
-    goodCode: `# Create secret first:
+
+      right: `# Create secret first:
 # echo "s3cret" | docker secret create db_password -
 
 services:
@@ -72,7 +85,8 @@ services:
 secrets:
   db_password:
     external: true`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Docker secrets are encrypted at rest in the Swarm Raft log and only mounted into containers that need them as in-memory files at `/run/secrets/`. They never appear in environment variables, docker inspect, or stack definitions.",
@@ -86,21 +100,28 @@ secrets:
     category: "docker-swarm",
     difficulty: "medium",
     title: "Rolling updates in Swarm",
-    badCode: `docker service update \\
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `docker service update \\
   --image myapp:2.0 \\
   web
 
 # Default: updates all tasks at once
 # No health check verification
 # No automatic rollback`,
-    goodCode: `docker service update \\
+
+      right: `docker service update \\
   --image myapp:2.0 \\
   --update-parallelism 1 \\
   --update-delay 10s \\
   --update-failure-action rollback \\
   --update-order start-first \\
   web`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`--update-parallelism 1` updates one task at a time. `--update-delay 10s` waits between updates. `--update-order start-first` starts the new task before stopping the old one (zero downtime). `--update-failure-action rollback` automatically reverts on failure.",
@@ -115,7 +136,12 @@ secrets:
     category: "docker-swarm",
     difficulty: "hard",
     title: "Placement constraints for scheduling",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   db:
     image: postgres:16
     deploy:
@@ -123,7 +149,8 @@ secrets:
       # No constraint
       # DB could land on any node
       # including workers with no SSD`,
-    goodCode: `services:
+
+      right: `services:
   db:
     image: postgres:16
     deploy:
@@ -134,7 +161,8 @@ secrets:
           - node.labels.storage == ssd
         preferences:
           - spread: datacenter`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Placement constraints ensure workloads run on appropriate nodes. A database needs SSD storage and stable nodes (managers). Spread preferences distribute replicas across datacenters for high availability. This gives you predictable, hardware-aware scheduling.",

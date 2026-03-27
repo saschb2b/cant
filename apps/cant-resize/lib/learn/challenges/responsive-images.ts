@@ -6,18 +6,24 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "easy",
     title: "Preventing layout shift with aspect ratio",
-    badCode: `<img
+    content: {
+      type: "code",
+
+      left: `<img
   src="/hero.jpg"
   alt="Hero image"
   style={{ width: "100%", height: "auto" }}
 />`,
-    goodCode: `<img
+
+      right: `<img
   src="/hero.jpg"
   alt="Hero image"
   width={1200}
   height={630}
   style={{ width: "100%", height: "auto" }}
 />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Setting `width` and `height` attributes lets the browser calculate the aspect ratio and reserve space before the image loads. Combined with `width: 100%` and `height: auto`, the image scales responsively while preventing Cumulative Layout Shift (CLS).",
@@ -32,13 +38,17 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "easy",
     title: "next/image for automatic optimization",
-    badCode: `<img
+    content: {
+      type: "code",
+
+      left: `<img
   src="/product.jpg"
   alt="Product"
   width={800}
   height={600}
 />`,
-    goodCode: `import Image from "next/image";
+
+      right: `import Image from "next/image";
 
 <Image
   src="/product.jpg"
@@ -47,6 +57,8 @@ export const responsiveImageChallenges: Challenge[] = [
   height={600}
   sizes="(max-width: 768px) 100vw, 50vw"
 />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Next.js `Image` automatically generates `srcSet` with multiple resolutions, serves WebP/AVIF, lazy-loads by default, and prevents layout shift. The `sizes` prop tells the browser how wide the image will be at each viewport, so it downloads the right size.",
@@ -60,7 +72,10 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "medium",
     title: "Art direction with picture element",
-    badCode: `// Same crop for all screen sizes
+    content: {
+      type: "code",
+
+      left: `// Same crop for all screen sizes
 <Image
   src="/hero-wide.jpg"
   alt="Team photo"
@@ -68,7 +83,8 @@ export const responsiveImageChallenges: Challenge[] = [
   height={600}
   sizes="100vw"
 />`,
-    goodCode: `<picture>
+
+      right: `<picture>
   <source
     media="(max-width: 640px)"
     srcSet="/hero-portrait.jpg"
@@ -89,6 +105,8 @@ export const responsiveImageChallenges: Challenge[] = [
     style={{ width: "100%", height: "auto" }}
   />
 </picture>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Art direction uses `<picture>` to serve different crops for different screens. A wide panoramic hero on desktop becomes a tall portrait crop on mobile, keeping the subject visible. `srcSet` alone only changes resolution, not composition.",
@@ -103,7 +121,10 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "medium",
     title: "Correct sizes attribute",
-    badCode: `<Image
+    content: {
+      type: "code",
+
+      left: `<Image
   src="/card.jpg"
   alt="Card image"
   width={400}
@@ -112,7 +133,8 @@ export const responsiveImageChallenges: Challenge[] = [
 />
 
 {/* Image is actually in a 3-column grid */}`,
-    goodCode: `<Image
+
+      right: `<Image
   src="/card.jpg"
   alt="Card image"
   width={400}
@@ -121,6 +143,8 @@ export const responsiveImageChallenges: Challenge[] = [
          (max-width: 1024px) 50vw,
          33vw"
 />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `sizes` attribute tells the browser how wide the image will display at each viewport width *before* CSS loads. With `100vw`, a card in a 3-column grid triggers downloading a full-width image. Accurate sizes lets the browser pick the right resolution from the srcSet.",
@@ -135,13 +159,19 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "hard",
     title: "Responsive background images",
-    badCode: `.hero {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.hero {
   background-image: url("/hero-4k.jpg");
   background-size: cover;
   background-position: center;
   min-height: 60vh;
 }`,
-    goodCode: `.hero {
+
+      right: `.hero {
   background-image: url("/hero-640.jpg");
   background-size: cover;
   background-position: center;
@@ -164,7 +194,8 @@ export const responsiveImageChallenges: Challenge[] = [
       );
   }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Background images can't use `srcSet`, so media queries swap resolution manually. `image-set()` provides format negotiation (AVIF > WebP > JPEG). Mobile users get a 640px image instead of a 4K one, saving up to 10x the file size.",

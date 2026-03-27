@@ -6,14 +6,18 @@ export const stylingApiChallenges: Challenge[] = [
     category: "styling-api",
     difficulty: "easy",
     title: "Variants vs style overrides",
-    badCode: `interface BadgeProps {
+    content: {
+      type: "code",
+
+      left: `interface BadgeProps {
   children: React.ReactNode;
   backgroundColor?: string;
   textColor?: string;
   borderRadius?: number;
   fontSize?: number;
 }`,
-    goodCode: `interface BadgeProps {
+
+      right: `interface BadgeProps {
   children: React.ReactNode;
   /** @default "default" */
   variant?: 'default' | 'success' | 'warning'
@@ -21,6 +25,8 @@ export const stylingApiChallenges: Challenge[] = [
   /** @default "md" */
   size?: 'sm' | 'md' | 'lg';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Exposing raw style values (`backgroundColor`, `fontSize`) turns every consumer into a designer. Variants encode design decisions once, so consumers pick from a curated set.\n\n`<Badge variant="success" size="sm" />` is self-documenting and guaranteed to look correct. With raw values, two developers will pick two different greens for success.',
@@ -34,7 +40,10 @@ export const stylingApiChallenges: Challenge[] = [
     category: "styling-api",
     difficulty: "easy",
     title: "className pass-through",
-    badCode: `interface CardProps {
+    content: {
+      type: "code",
+
+      left: `interface CardProps {
   children: React.ReactNode;
   variant?: 'elevated' | 'outlined';
 }
@@ -46,7 +55,8 @@ function Card({ children, variant }: CardProps) {
     </div>
   );
 }`,
-    goodCode: `interface CardProps {
+
+      right: `interface CardProps {
   children: React.ReactNode;
   variant?: 'elevated' | 'outlined';
   className?: string;
@@ -59,6 +69,8 @@ function Card({ children, variant, className }: CardProps) {
     </div>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A `className` prop is the escape hatch every component needs. Without it, consumers can't add margins, adjust positioning, or apply one-off overrides without wrapping the component in an extra `<div>`.\n\nMerging with `clsx` (or `cn`) ensures the component's own styles are preserved while the consumer's additions take effect.",
@@ -72,18 +84,24 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Inline style prop vs className",
-    badCode: `interface TooltipProps {
+    content: {
+      type: "code",
+
+      left: `interface TooltipProps {
   content: string;
   children: React.ReactNode;
   /** Custom width for the tooltip. */
   style?: React.CSSProperties;
 }`,
-    goodCode: `interface TooltipProps {
+
+      right: `interface TooltipProps {
   content: string;
   children: React.ReactNode;
   /** Additional classes for the tooltip. */
   className?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Exposing `style` as the primary customization prop encourages inline styles, which can't use media queries, pseudo-classes, or CSS variables. `className` integrates with any CSS methodology (Tailwind, CSS modules, styled-components) and supports responsive design.\n\nIf you need both, accept both. But `className` alone covers more use cases than `style` alone.",
@@ -98,19 +116,25 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Design tokens vs arbitrary color props",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   children: React.ReactNode;
   /** Any valid CSS color. */
   color?: string;
   /** Any valid CSS color. */
   hoverColor?: string;
 }`,
-    goodCode: `interface ButtonProps {
+
+      right: `interface ButtonProps {
   children: React.ReactNode;
   /** @default "primary" */
   color?: 'primary' | 'secondary' | 'error'
     | 'success' | 'inherit';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A `color` prop that accepts any string is impossible to validate. `color=\"rde\"` (typo) compiles fine. Token-based color props constrain consumers to the design system's palette and handle hover, focus, and disabled states internally.\n\nMUI's Button uses this exact pattern: `color` maps to theme palette keys, and the component derives all related colors (hover, active, text contrast) automatically.",
@@ -124,7 +148,10 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Slot classNames for sub-elements",
-    badCode: `interface DialogProps {
+    content: {
+      type: "code",
+
+      left: `interface DialogProps {
   title: string;
   children: React.ReactNode;
   headerClassName?: string;
@@ -133,7 +160,8 @@ function Card({ children, variant, className }: CardProps) {
   overlayClassName?: string;
   closeButtonClassName?: string;
 }`,
-    goodCode: `interface DialogProps {
+
+      right: `interface DialogProps {
   title: string;
   children: React.ReactNode;
   className?: string;
@@ -145,6 +173,8 @@ function Card({ children, variant, className }: CardProps) {
     closeButton?: string;
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Grouping sub-element classNames into a `classes` object keeps the top-level API clean. The root `className` handles the common case, while `classes` is there for fine-grained control.\n\nWith five flat `*ClassName` props, the component's main API (title, children, callbacks) gets buried. MUI uses this exact `classes` pattern across all its components.",
@@ -159,7 +189,10 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "CSS variables vs style props",
-    badCode: `interface ProgressBarProps {
+    content: {
+      type: "code",
+
+      left: `interface ProgressBarProps {
   /** Progress from 0 to 100. */
   value: number;
   /** Height in pixels. @default 8 */
@@ -171,7 +204,8 @@ function Card({ children, variant, className }: CardProps) {
   /** Border radius in pixels. @default 4 */
   borderRadius?: number;
 }`,
-    goodCode: `interface ProgressBarProps {
+
+      right: `interface ProgressBarProps {
   /** Progress from 0 to 100. */
   value: number;
   /** @default "md" */
@@ -181,6 +215,8 @@ function Card({ children, variant, className }: CardProps) {
     | 'error';
   className?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Four separate style props (`height`, `trackColor`, `fillColor`, `borderRadius`) make the consumer responsible for visual coherence. Do `height={4}` and `borderRadius={8}` look right together? Nobody knows without rendering it.\n\nSemantic props (`size`, `color`) express intent and let the component handle internally consistent styling. `className` is the escape hatch for anything the variants don't cover.",
@@ -195,14 +231,18 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "hard",
     title: "Responsive prop values",
-    badCode: `interface GridProps {
+    content: {
+      type: "code",
+
+      left: `interface GridProps {
   children: React.ReactNode;
   columns: number;
   mobileColumns?: number;
   tabletColumns?: number;
   desktopColumns?: number;
 }`,
-    goodCode: `interface GridProps {
+
+      right: `interface GridProps {
   children: React.ReactNode;
   columns: number | {
     xs?: number;
@@ -212,6 +252,8 @@ function Card({ children, variant, className }: CardProps) {
     xl?: number;
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A single prop that accepts either a static value or a breakpoint object scales cleanly. `columns={3}` for simple cases, `columns={{ xs: 1, md: 2, lg: 3 }}` for responsive ones.\n\nSeparate props per breakpoint (`mobileColumns`, `tabletColumns`) don't compose. What if you add an `xxl` breakpoint? Every responsive prop needs a new sibling. MUI's Grid uses this responsive object pattern.",
@@ -225,7 +267,10 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Exposing internal layout props",
-    badCode: `interface ListProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface ListProps<T> {
   items: T[];
   renderItem: (item: T) => React.ReactNode;
   gap?: number;
@@ -235,7 +280,8 @@ function Card({ children, variant, className }: CardProps) {
   display?: 'flex' | 'grid';
   flexDirection?: 'row' | 'column';
 }`,
-    goodCode: `interface ListProps<T> {
+
+      right: `interface ListProps<T> {
   items: T[];
   renderItem: (item: T) => React.ReactNode;
   /** @default "vertical" */
@@ -244,6 +290,8 @@ function Card({ children, variant, className }: CardProps) {
   spacing?: 'none' | 'sm' | 'md' | 'lg';
   className?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Props like `display`, `flexDirection`, and `overflow` leak CSS implementation details into the component API. They couple consumers to the component's internal layout strategy.\n\n`direction` and `spacing` express the same concepts at a higher abstraction level. If the component switches from flexbox to grid internally, the API stays the same. `className` covers edge cases.",

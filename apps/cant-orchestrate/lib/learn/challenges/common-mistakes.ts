@@ -6,7 +6,12 @@ export const commonMistakesChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Don't use latest in production",
-    badCode: `apiVersion: apps/v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -17,7 +22,8 @@ spec:
         - name: web
           image: myapp:latest
           imagePullPolicy: Always`,
-    goodCode: `apiVersion: apps/v1
+
+      right: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -29,7 +35,8 @@ spec:
           image: myapp:1.2.3
           # Or use SHA:
           # image: myapp@sha256:abc123...`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Pinning a specific version tag (or image digest) ensures every deployment uses the exact same image. Rollbacks go to a known version. You can audit which version is running in each environment. Image digests provide cryptographic guarantees.",
@@ -44,7 +51,12 @@ spec:
     category: "common-mistakes",
     difficulty: "easy",
     title: "Don't run as root",
-    badCode: `FROM python:3.12
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM python:3.12
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
@@ -52,7 +64,8 @@ COPY . .
 
 # Running as root (default)
 CMD ["python", "app.py"]`,
-    goodCode: `FROM python:3.12-slim
+
+      right: `FROM python:3.12-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -62,7 +75,8 @@ RUN useradd --create-home appuser
 USER appuser
 
 CMD ["python", "app.py"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Creating a dedicated user and switching with `USER` ensures the application runs with minimal privileges. If an attacker exploits a vulnerability, they can't modify system files, install packages, or access sensitive host resources.",
@@ -77,7 +91,12 @@ CMD ["python", "app.py"]`,
     category: "common-mistakes",
     difficulty: "medium",
     title: "Don't store state in containers",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     build: .
     # User uploads stored in container
@@ -86,7 +105,8 @@ CMD ["python", "app.py"]`,
   # Uploaded files at /app/uploads/
   # Session data in memory
   # Generated reports in /tmp/`,
-    goodCode: `services:
+
+      right: `services:
   app:
     build: .
     volumes:
@@ -100,7 +120,8 @@ CMD ["python", "app.py"]`,
 
 volumes:
   uploads:`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Externalizing state to volumes, databases, and object storage lets containers be truly ephemeral. Any replica can handle any request because state lives outside the container. Scaling, restarts, and deployments don't lose data.",
@@ -114,7 +135,12 @@ volumes:
     category: "common-mistakes",
     difficulty: "medium",
     title: "Use .dockerignore consistently",
-    badCode: `# No .dockerignore
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `# No .dockerignore
 # Build context includes:
 COPY . .
 
@@ -125,7 +151,8 @@ COPY . .
 # build/         (stale output)
 # __pycache__/   (bytecode)
 # .vscode/       (editor config)`,
-    goodCode: `# .dockerignore
+
+      right: `# .dockerignore
 node_modules
 .git
 .env
@@ -140,7 +167,8 @@ __pycache__
 README.md
 docker-compose*.yml
 Dockerfile`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A comprehensive `.dockerignore` reduces build context size from hundreds of MB to just the files your image needs. Builds are faster, secrets don't leak into layers, and stale build artifacts don't override fresh ones inside the container.",
@@ -155,14 +183,20 @@ Dockerfile`,
     category: "common-mistakes",
     difficulty: "hard",
     title: "Graceful shutdown handling",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
 
 # npm wraps node, eats SIGTERM
 CMD ["npm", "start"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
@@ -175,7 +209,8 @@ CMD ["node", "server.js"]
 # process.on('SIGTERM', () => {
 #   server.close(() => process.exit(0));
 # });`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Running `node` directly as PID 1 ensures it receives SIGTERM from Docker. The app can finish in-flight requests, close database connections, and flush logs before exiting. Docker gives it 10 seconds (configurable) before sending SIGKILL.",

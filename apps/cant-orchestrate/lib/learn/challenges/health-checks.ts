@@ -6,14 +6,20 @@ export const healthChecksChallenges: Challenge[] = [
     category: "health-checks",
     difficulty: "easy",
     title: "Dockerfile HEALTHCHECK",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
 
 # No health check defined
 CMD ["node", "server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
@@ -23,7 +29,8 @@ HEALTHCHECK --interval=30s --timeout=3s \\
   CMD wget --spider -q http://localhost:3000/health
 
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A `HEALTHCHECK` instruction lets Docker monitor whether your application is actually working, not just whether the process is running. The `--start-period` gives the app time to boot before checks begin. Docker marks unhealthy containers so orchestrators can restart them.",
@@ -37,7 +44,12 @@ CMD ["node", "server.js"]`,
     category: "health-checks",
     difficulty: "medium",
     title: "Kubernetes liveness vs readiness",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Pod
 metadata:
   name: web
@@ -56,7 +68,8 @@ spec:
           path: /health
           port: 8080
         initialDelaySeconds: 5`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Pod
 metadata:
   name: web
@@ -78,7 +91,8 @@ spec:
           port: 8080
         initialDelaySeconds: 5
         periodSeconds: 5`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Liveness and readiness probes serve different purposes. Liveness checks if the app needs to be restarted (deadlocked, corrupted). Readiness checks if it can handle traffic (still loading data, warming caches). Using different endpoints and intervals lets each probe do its job correctly.",
@@ -93,7 +107,12 @@ spec:
     category: "health-checks",
     difficulty: "medium",
     title: "Startup probe for slow apps",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Pod
 metadata:
   name: legacy-app
@@ -109,7 +128,8 @@ spec:
         # for slow startup
         initialDelaySeconds: 120
         periodSeconds: 10`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Pod
 metadata:
   name: legacy-app
@@ -128,7 +148,8 @@ spec:
           path: /healthz
           port: 8080
         periodSeconds: 10`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A startup probe runs during initialization and disables liveness/readiness probes until it succeeds. This gives slow-starting apps up to 300 seconds (30 x 10s) to boot. Once the startup probe passes, the liveness probe takes over with normal intervals.",
@@ -143,12 +164,18 @@ spec:
     category: "health-checks",
     difficulty: "hard",
     title: "Health check with dependency awareness",
-    badCode: `# /health endpoint
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# /health endpoint
 app.get('/health', (req, res) => {
   // Always returns 200
   res.status(200).json({ status: 'ok' });
 });`,
-    goodCode: `# /ready endpoint
+
+      right: `# /ready endpoint
 app.get('/ready', async (req, res) => {
   try {
     await db.query('SELECT 1');
@@ -161,7 +188,8 @@ app.get('/ready', async (req, res) => {
     });
   }
 });`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A readiness check that verifies downstream dependencies (database, cache) ensures the pod only receives traffic when it can actually serve requests. Returning 503 removes the pod from the service's endpoint list until dependencies recover.",

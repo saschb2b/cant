@@ -6,7 +6,12 @@ export const sitemapsRobotsChallenges: Challenge[] = [
     category: "sitemaps-robots",
     difficulty: "easy",
     title: "Next.js sitemap.ts file",
-    badCode: `// public/sitemap.xml (static file)
+    content: {
+      type: "code",
+
+      lang: "html",
+
+      left: `// public/sitemap.xml (static file)
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -17,7 +22,8 @@ export const sitemapsRobotsChallenges: Challenge[] = [
   </url>
   <!-- Must manually update -->
 </urlset>`,
-    goodCode: `// app/sitemap.ts
+
+      right: `// app/sitemap.ts
 import type { MetadataRoute } from "next";
 
 export default function sitemap():
@@ -37,7 +43,8 @@ export default function sitemap():
     },
   ];
 }`,
-    lang: "html",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Next.js generates the sitemap at build time from the `sitemap.ts` file. This approach is type-safe, stays in sync with your routes, and can fetch data dynamically. You never have to manually edit XML or remember to add new pages.",
@@ -52,7 +59,10 @@ export default function sitemap():
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "Dynamic sitemap from database",
-    badCode: `// app/sitemap.ts
+    content: {
+      type: "code",
+
+      left: `// app/sitemap.ts
 import type { MetadataRoute } from "next";
 
 export default function sitemap():
@@ -64,7 +74,8 @@ export default function sitemap():
     { url: "https://acme.com/blog/post-3" },
   ];
 }`,
-    goodCode: `// app/sitemap.ts
+
+      right: `// app/sitemap.ts
 import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/posts";
 
@@ -88,7 +99,9 @@ export default async function sitemap():
     ...blogUrls,
   ];
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Making the sitemap function `async` lets you fetch blog posts from a database or CMS. New posts are automatically included in the sitemap without any code changes. The `lastModified` date from the database gives search engines accurate freshness signals.",
     explanationWrong:
@@ -102,10 +115,14 @@ export default async function sitemap():
     category: "sitemaps-robots",
     difficulty: "easy",
     title: "robots.ts allow and disallow",
-    badCode: `// public/robots.txt (static file)
+    content: {
+      type: "code",
+
+      left: `// public/robots.txt (static file)
 User-agent: *
 Disallow:`,
-    goodCode: `// app/robots.ts
+
+      right: `// app/robots.ts
 import type { MetadataRoute } from "next";
 
 export default function robots():
@@ -119,7 +136,9 @@ export default function robots():
     sitemap: "https://acme.com/sitemap.xml",
   };
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Using `robots.ts` is type-safe and keeps configuration with your code. Disallowing `/admin/` and `/api/` prevents crawlers from wasting time on pages that are not useful in search results. Including the sitemap URL in robots.txt helps crawlers discover your sitemap automatically.",
     explanationWrong:
@@ -133,7 +152,10 @@ export default function robots():
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "noindex vs disallow difference",
-    badCode: `// app/robots.ts - trying to hide a page
+    content: {
+      type: "code",
+
+      left: `// app/robots.ts - trying to hide a page
 export default function robots():
   MetadataRoute.Robots {
   return {
@@ -146,7 +168,8 @@ export default function robots():
 }
 // The page at /secret-launch is still
 // indexed because other sites link to it`,
-    goodCode: `// app/secret-launch/page.tsx
+
+      right: `// app/secret-launch/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -169,6 +192,8 @@ export default function robots():
     // so crawlers can see the noindex tag
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "To prevent a page from appearing in search results, use `noindex` in the page metadata. This is more reliable than `Disallow` because Google must be able to crawl the page to see the `noindex` directive. If you disallow crawling, Google might still index the URL (without a snippet) based on external links.",
@@ -183,7 +208,10 @@ export default function robots():
     category: "sitemaps-robots",
     difficulty: "hard",
     title: "Sitemap index for large sites",
-    badCode: `// app/sitemap.ts
+    content: {
+      type: "code",
+
+      left: `// app/sitemap.ts
 import type { MetadataRoute } from "next";
 
 export default async function sitemap():
@@ -195,7 +223,8 @@ export default async function sitemap():
     lastModified: new Date(p.updatedAt),
   }));
 }`,
-    goodCode: `// app/sitemap.ts
+
+      right: `// app/sitemap.ts
 import type { MetadataRoute } from "next";
 
 export default function sitemap():
@@ -224,7 +253,9 @@ export default async function sitemap({
     lastModified: new Date(p.updatedAt),
   }));
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The sitemap protocol limits each file to 50,000 URLs. Next.js supports `generateSitemaps()` to split large sitemaps into multiple files with an automatic sitemap index. This keeps each file within limits and allows search engines to re-fetch only the changed segments.",
     explanationWrong:
@@ -238,7 +269,10 @@ export default async function sitemap({
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "Robots meta tag per page",
-    badCode: `// app/staging/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/staging/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -246,7 +280,8 @@ export const metadata: Metadata = {
   // Forgetting to add noindex on staging
   // pages that are publicly accessible
 };`,
-    goodCode: `// app/staging/page.tsx
+
+      right: `// app/staging/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -261,6 +296,8 @@ export const metadata: Metadata = {
     },
   },
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Staging and preview pages that are publicly accessible should have `noindex` to prevent them from appearing in search results. The `googleBot` field allows you to set additional directives specific to Google's crawler, like `noimageindex` to prevent images from appearing in Google Images.",
@@ -275,7 +312,10 @@ export const metadata: Metadata = {
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "Accurate lastModified dates",
-    badCode: `// app/sitemap.ts
+    content: {
+      type: "code",
+
+      left: `// app/sitemap.ts
 export default async function sitemap():
   Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
@@ -284,7 +324,8 @@ export default async function sitemap():
     lastModified: new Date(), // Always "now"
   }));
 }`,
-    goodCode: `// app/sitemap.ts
+
+      right: `// app/sitemap.ts
 export default async function sitemap():
   Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
@@ -293,7 +334,9 @@ export default async function sitemap():
     lastModified: new Date(post.updatedAt),
   }));
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The `lastModified` date should reflect when the content actually changed. Google uses this signal to prioritize which pages to re-crawl. Accurate dates help your updated content get re-indexed faster while avoiding unnecessary crawling of unchanged pages.",
     explanationWrong:
@@ -307,7 +350,10 @@ export default async function sitemap():
     category: "sitemaps-robots",
     difficulty: "hard",
     title: "Sitemap priority values",
-    badCode: `// app/sitemap.ts
+    content: {
+      type: "code",
+
+      left: `// app/sitemap.ts
 export default function sitemap():
   MetadataRoute.Sitemap {
   return [
@@ -322,7 +368,8 @@ export default function sitemap():
     // Everything is top priority
   ];
 }`,
-    goodCode: `// app/sitemap.ts
+
+      right: `// app/sitemap.ts
 export default function sitemap():
   MetadataRoute.Sitemap {
   return [
@@ -338,6 +385,8 @@ export default function sitemap():
       priority: 0.3 },
   ];
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Priority values range from 0.0 to 1.0 and indicate the relative importance of pages within your own site. Using a meaningful hierarchy helps search engines understand which pages matter most to you. Note that Google has stated it largely ignores priority, but other search engines like Bing may use it.",

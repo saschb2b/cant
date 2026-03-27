@@ -6,7 +6,10 @@ export const reactTypescriptChallenges: Challenge[] = [
     category: "react-typescript",
     difficulty: "easy",
     title: "Component props typing",
-    badCode: `function UserCard(props: any) {
+    content: {
+      type: "code",
+
+      left: `function UserCard(props: any) {
   return (
     <div>
       <h2>{props.name}</h2>
@@ -19,7 +22,8 @@ export const reactTypescriptChallenges: Challenge[] = [
 
 <UserCard name="Alice" />
 // Missing email, no error`,
-    goodCode: `interface UserCardProps {
+
+      right: `interface UserCardProps {
   name: string;
   email: string;
   role?: "admin" | "user";
@@ -37,6 +41,8 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
 
 // <UserCard name="Alice" />
 // Error: missing required prop 'email'`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Defining a props interface gives you autocomplete, catches typos, and ensures required props are passed. Destructuring in the parameter list with default values makes the component signature clear. Optional props use ? and can have defaults.",
@@ -50,7 +56,10 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
     category: "react-typescript",
     difficulty: "easy",
     title: "Event handler types",
-    badCode: `function SearchInput() {
+    content: {
+      type: "code",
+
+      left: `function SearchInput() {
   const handleChange = (e: any) => {
     // e is 'any', no autocomplete
     console.log(e.target.value);
@@ -65,7 +74,8 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
 
   return <input onChange={handleChange} />;
 }`,
-    goodCode: `function SearchInput() {
+
+      right: `function SearchInput() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -82,6 +92,8 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
 
   return <input onChange={handleChange} />;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React provides generic event types like ChangeEvent, FormEvent, MouseEvent, and KeyboardEvent. The generic parameter specifies the element type (HTMLInputElement, HTMLFormElement), which types the target property correctly and provides autocomplete for element-specific properties.",
@@ -95,7 +107,10 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
     category: "react-typescript",
     difficulty: "medium",
     title: "forwardRef with generics",
-    badCode: `const Input = React.forwardRef((props, ref) => {
+    content: {
+      type: "code",
+
+      left: `const Input = React.forwardRef((props, ref) => {
   // ref is unknown, props is {}
   // No autocomplete, no type safety
   return (
@@ -107,7 +122,8 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
     />
   );
 });`,
-    goodCode: `interface InputProps {
+
+      right: `interface InputProps {
   placeholder?: string;
   label: string;
   error?: string;
@@ -127,6 +143,8 @@ const Input = React.forwardRef<
 });
 
 Input.displayName = "Input";`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React.forwardRef accepts two generic parameters: the ref element type and the props type. This gives the ref the correct type (HTMLInputElement) so consumers get autocomplete on ref.current, and the component gets typed props. Setting displayName helps with React DevTools.",
@@ -140,7 +158,10 @@ Input.displayName = "Input";`,
     category: "react-typescript",
     difficulty: "medium",
     title: "Children typing",
-    badCode: `interface LayoutProps {
+    content: {
+      type: "code",
+
+      left: `interface LayoutProps {
   children: any;
 }
 
@@ -153,7 +174,8 @@ function Layout({ children }: LayoutProps) {
 <Layout children={new Map()} />
 <Layout children={Symbol("x")} />
 // Maps and Symbols aren't renderable`,
-    goodCode: `interface LayoutProps {
+
+      right: `interface LayoutProps {
   children: React.ReactNode;
 }
 
@@ -169,6 +191,8 @@ function Layout({ children }: LayoutProps) {
 
 // For single element only:
 // children: React.ReactElement`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React.ReactNode covers everything React can render: elements, strings, numbers, fragments, portals, null, undefined, and booleans. Using it instead of any prevents passing non-renderable values like Maps, Sets, and Symbols. Use React.ReactElement if you need exactly one JSX element.",
@@ -182,7 +206,10 @@ function Layout({ children }: LayoutProps) {
     category: "react-typescript",
     difficulty: "hard",
     title: "Discriminated prop unions",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   variant: "link" | "button";
   href?: string;
   onClick?: () => void;
@@ -199,7 +226,8 @@ function Button({ variant, href, onClick, children }: ButtonProps) {
 
 // No error, but link has no href:
 <Button variant="link">Go</Button>`,
-    goodCode: `type ButtonProps =
+
+      right: `type ButtonProps =
   | {
       variant: "link";
       href: string;
@@ -225,6 +253,8 @@ function Button(props: ButtonProps) {
 
 // Error: 'href' is missing for variant "link"
 // <Button variant="link">Go</Button>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Discriminated unions use a literal type field (variant) to determine which set of props is required. When variant is 'link', TypeScript knows href is required and onClick does not exist. This makes invalid states unrepresentable at the type level.",
@@ -239,7 +269,10 @@ function Button(props: ButtonProps) {
     category: "react-typescript",
     difficulty: "hard",
     title: "Polymorphic 'as' prop",
-    badCode: `interface TextProps {
+    content: {
+      type: "code",
+
+      left: `interface TextProps {
   as?: string;
   children: React.ReactNode;
   className?: string;
@@ -254,7 +287,8 @@ function Text({ as = "p", children, ...rest }: TextProps) {
 // No type safety on element-specific props
 <Text as="buttn">Click</Text>
 // Typo renders <buttn> tag`,
-    goodCode: `type TextProps<T extends React.ElementType> = {
+
+      right: `type TextProps<T extends React.ElementType> = {
   as?: T;
   children: React.ReactNode;
 } & Omit<
@@ -274,6 +308,8 @@ function Text<T extends React.ElementType = "p">({
 <Text as="a" href="/about">Link</Text>
 // <Text as="a" href={42}>Link</Text>
 // Error: href must be string`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A generic component parameterized by React.ElementType lets TypeScript infer the correct props for whatever element or component is passed via the 'as' prop. Using Omit prevents conflicts between your custom props and the target element's props. This is the pattern used by libraries like Chakra UI and Radix.",
@@ -288,7 +324,10 @@ function Text<T extends React.ElementType = "p">({
     category: "react-typescript",
     difficulty: "easy",
     title: "ComponentProps for wrapper components",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   label: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -300,7 +339,8 @@ function Text<T extends React.ElementType = "p">({
 function Button({ label, ...rest }: ButtonProps) {
   return <button {...rest}>{label}</button>;
 }`,
-    goodCode: `import { ComponentProps } from "react";
+
+      right: `import { ComponentProps } from "react";
 
 interface ButtonProps extends ComponentProps<"button"> {
   label: string;
@@ -312,6 +352,8 @@ function Button({ label, ...rest }: ButtonProps) {
 
 // All native button props are included automatically
 // <Button label="Go" aria-label="Go" formAction="/api" />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       '`ComponentProps<"button">` extracts every valid HTML button attribute automatically. Your wrapper only declares the custom props it adds. New HTML attributes are picked up when React\'s types update, and consumers get full autocomplete for native props like aria attributes and form actions.',

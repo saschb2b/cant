@@ -6,13 +6,17 @@ export const typeNarrowingChallenges: Challenge[] = [
     category: "type-narrowing",
     difficulty: "easy",
     title: "typeof guards",
-    badCode: `function double(value: string | number) {
+    content: {
+      type: "code",
+
+      left: `function double(value: string | number) {
   // No narrowing, just cast
   return (value as number) * 2;
 }
 
 double("hello"); // NaN at runtime`,
-    goodCode: `function double(value: string | number) {
+
+      right: `function double(value: string | number) {
   if (typeof value === "number") {
     return value * 2;
   }
@@ -20,6 +24,8 @@ double("hello"); // NaN at runtime`,
 }
 
 double("hello"); // "hellohello"`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Using `typeof` to check the type at runtime lets TypeScript narrow the type inside each branch. In the `number` branch, `value` is known to be a number, so multiplication is safe. In the `string` branch, string methods are available. No type assertions needed.",
@@ -34,13 +40,17 @@ double("hello"); // "hellohello"`,
     category: "type-narrowing",
     difficulty: "easy",
     title: "Truthiness narrowing",
-    badCode: `function greet(name?: string) {
+    content: {
+      type: "code",
+
+      left: `function greet(name?: string) {
   // Might be undefined
   return \`Hello, \${name.toUpperCase()}!\`;
 }
 
 greet(); // Runtime error`,
-    goodCode: `function greet(name?: string) {
+
+      right: `function greet(name?: string) {
   if (name) {
     return \`Hello, \${name.toUpperCase()}!\`;
   }
@@ -48,6 +58,8 @@ greet(); // Runtime error`,
 }
 
 greet(); // "Hello, stranger!"`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Checking `if (name)` filters out both `undefined` and empty strings. Inside the truthy branch, TypeScript knows `name` is a non-empty string, so `.toUpperCase()` is safe. This is the simplest form of narrowing.",
@@ -62,7 +74,10 @@ greet(); // "Hello, stranger!"`,
     category: "type-narrowing",
     difficulty: "medium",
     title: "Discriminated unions",
-    badCode: `type Shape =
+    content: {
+      type: "code",
+
+      left: `type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "rect"; width: number; height: number };
 
@@ -72,7 +87,8 @@ function area(shape: Shape) {
   // Error: Property 'width' does not exist
   // on type '{ kind: "circle"; radius: number }'
 }`,
-    goodCode: `type Shape =
+
+      right: `type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "rect"; width: number; height: number };
 
@@ -84,6 +100,8 @@ function area(shape: Shape) {
       return shape.width * shape.height;
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Discriminated unions use a shared literal property (here `kind`) to tell variants apart. When you switch on `shape.kind`, TypeScript narrows each case to the correct variant. You get full autocompletion and type safety in every branch.",
@@ -98,7 +116,10 @@ function area(shape: Shape) {
     category: "type-narrowing",
     difficulty: "medium",
     title: "The in operator",
-    badCode: `type Fish = { swim: () => void };
+    content: {
+      type: "code",
+
+      left: `type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 
 function move(animal: Fish | Bird) {
@@ -108,7 +129,8 @@ function move(animal: Fish | Bird) {
 
 const bird: Bird = { fly: () => {} };
 move(bird); // Runtime error: swim is not a function`,
-    goodCode: `type Fish = { swim: () => void };
+
+      right: `type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 
 function move(animal: Fish | Bird) {
@@ -118,6 +140,8 @@ function move(animal: Fish | Bird) {
     animal.fly();
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'The `in` operator checks whether a property exists on an object at runtime. TypeScript uses this to narrow the type: inside the `"swim" in animal` branch, `animal` is narrowed to `Fish`. This works well when union members have distinct properties but no shared discriminant.',
@@ -132,13 +156,17 @@ function move(animal: Fish | Bird) {
     category: "type-narrowing",
     difficulty: "hard",
     title: "instanceof narrowing",
-    badCode: `function handleError(err: Error | string) {
+    content: {
+      type: "code",
+
+      left: `function handleError(err: Error | string) {
   // Assumes it's always an Error
   console.log(err.message);
   console.log(err.stack);
   // Error if err is a string
 }`,
-    goodCode: `function handleError(err: Error | string) {
+
+      right: `function handleError(err: Error | string) {
   if (err instanceof Error) {
     console.log(err.message);
     console.log(err.stack);
@@ -146,6 +174,8 @@ function move(animal: Fish | Bird) {
     console.log(err);
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`instanceof` checks the prototype chain at runtime. Inside the `instanceof Error` branch, TypeScript knows `err` is an `Error` with `.message` and `.stack`. In the else branch, it is narrowed to `string`. This is especially useful for class hierarchies.",
@@ -160,7 +190,10 @@ function move(animal: Fish | Bird) {
     category: "type-narrowing",
     difficulty: "hard",
     title: "User-defined type guards",
-    badCode: `type Cat = { meow: () => void; purr: () => void };
+    content: {
+      type: "code",
+
+      left: `type Cat = { meow: () => void; purr: () => void };
 type Dog = { bark: () => void; fetch: () => void };
 
 function isCat(pet: Cat | Dog) {
@@ -173,7 +206,8 @@ function handle(pet: Cat | Dog) {
     pet.purr(); // Error
   }
 }`,
-    goodCode: `type Cat = { meow: () => void; purr: () => void };
+
+      right: `type Cat = { meow: () => void; purr: () => void };
 type Dog = { bark: () => void; fetch: () => void };
 
 function isCat(pet: Cat | Dog): pet is Cat {
@@ -186,6 +220,8 @@ function handle(pet: Cat | Dog) {
     pet.purr(); // OK
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A user-defined type guard uses the `pet is Cat` return type to tell TypeScript that when the function returns true, the argument is a specific type. Without this annotation, TypeScript cannot infer the narrowing across function boundaries. The return type `pet is Cat` bridges runtime logic and compile-time types.",

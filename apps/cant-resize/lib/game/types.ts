@@ -6,7 +6,6 @@
 export type {
   Challenge,
   ChallengeCategory,
-  CodeLanguage,
   Difficulty,
 } from "../learn/types";
 

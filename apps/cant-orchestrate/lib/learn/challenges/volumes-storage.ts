@@ -6,13 +6,19 @@ export const volumesStorageChallenges: Challenge[] = [
     category: "volumes-storage",
     difficulty: "easy",
     title: "Named volumes vs anonymous volumes",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   db:
     image: postgres:16
     volumes:
       # Anonymous volume
       - /var/lib/postgresql/data`,
-    goodCode: `services:
+
+      right: `services:
   db:
     image: postgres:16
     volumes:
@@ -21,7 +27,8 @@ export const volumesStorageChallenges: Challenge[] = [
 
 volumes:
   pgdata:`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Named volumes are easy to identify, back up, and manage with `docker volume` commands. They have a meaningful name (`pgdata`) so you can find them later. They persist across `docker compose down` by default.",
@@ -35,20 +42,27 @@ volumes:
     category: "volumes-storage",
     difficulty: "medium",
     title: "Bind mounts for development",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     build: .
     volumes:
       # Copies node_modules from host
       - .:/app`,
-    goodCode: `services:
+
+      right: `services:
   app:
     build: .
     volumes:
       - .:/app
       # Preserve container's node_modules
       - /app/node_modules`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The anonymous volume at `/app/node_modules` prevents the host bind mount from overwriting the container's installed dependencies. The container keeps its own `node_modules` (built for its OS and architecture) while your source code is still synced from the host.",
@@ -62,21 +76,28 @@ volumes:
     category: "volumes-storage",
     difficulty: "medium",
     title: "Read-only bind mounts",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   nginx:
     image: nginx:alpine
     volumes:
       # Read-write access to config
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./html:/usr/share/nginx/html`,
-    goodCode: `services:
+
+      right: `services:
   nginx:
     image: nginx:alpine
     volumes:
       # Read-only access to config
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./html:/usr/share/nginx/html:ro`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `:ro` flag makes bind mounts read-only inside the container. If the container is compromised, it cannot modify your configuration files or static assets on the host. This follows the principle of least privilege.",
@@ -91,7 +112,12 @@ volumes:
     category: "volumes-storage",
     difficulty: "hard",
     title: "tmpfs for sensitive temp data",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
@@ -99,7 +125,8 @@ RUN npm ci
 # Temp files written to container layer
 # Visible in docker inspect, image history
 CMD ["node", "server.js"]`,
-    goodCode: `# In docker-compose.yml
+
+      right: `# In docker-compose.yml
 services:
   app:
     build: .
@@ -107,7 +134,8 @@ services:
       - /app/tmp:size=100m
     # Or in docker run:
     # docker run --tmpfs /app/tmp:size=100m`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`tmpfs` mounts store data in memory only. It never touches disk, is not included in image layers, and is automatically cleaned up when the container stops. This is ideal for session tokens, temporary uploads, and other sensitive ephemeral data.",

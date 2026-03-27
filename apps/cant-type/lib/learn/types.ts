@@ -1,3 +1,5 @@
+import type { ChallengeContent } from "@cant/shared/lib/game/types";
+
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -23,8 +25,8 @@ export type ChallengeCategory =
 /**
  * A single TypeScript challenge.
  *
- * Each challenge shows a fragile/wrong approach (`badCode`) next to
- * the resilient/correct approach (`goodCode`) with an explanation.
+ * Each challenge shows a fragile/wrong approach next to
+ * the resilient/correct approach with an explanation.
  */
 export interface Challenge {
   /** Unique identifier, prefixed by category abbreviation (e.g. "tn-001"). */
@@ -33,11 +35,9 @@ export interface Challenge {
   difficulty: Difficulty;
   /** Short title shown above the code panels. */
   title: string;
-  /** The "bad" code snippet. */
-  badCode: string;
-  /** The "good" code snippet. */
-  goodCode: string;
-  /** Which side the good code appears on. Randomized at render in game mode. */
+  /** The challenge content (code snippets, images, or visual components). */
+  content: ChallengeContent;
+  /** Which side the good content appears on. Randomized at render in game mode. */
   correctSide: "left" | "right";
   /** Explanation shown when the user picks correctly (or in learn mode). */
   explanationCorrect: string;

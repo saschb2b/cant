@@ -18,7 +18,5 @@ export function AnalyticsProviderWrapper({
     window.umami?.track(event, data);
   }
 
-  return (
-    <AnalyticsProvider value={trackEvent}>{children}</AnalyticsProvider>
-  );
+  return <AnalyticsProvider value={trackEvent}>{children}</AnalyticsProvider>;
 }

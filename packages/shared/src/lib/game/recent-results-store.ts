@@ -35,9 +35,7 @@ export function createRecentResultsStore(symbolKey: string) {
     return results.some((r) => r.sessionId === sessionId);
   }
 
-  function addResult(
-    data: Omit<RecentResult, "id" | "timestamp">,
-  ): void {
+  function addResult(data: Omit<RecentResult, "id" | "timestamp">): void {
     results.unshift({
       ...data,
       id: crypto.randomUUID(),

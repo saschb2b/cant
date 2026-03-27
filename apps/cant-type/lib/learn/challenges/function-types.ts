@@ -6,7 +6,9 @@ export const functionTypeChallenges: Challenge[] = [
     category: "function-types",
     difficulty: "easy",
     title: "Callback typing",
-    badCode: `// Callback typed as Function
+    content: {
+      type: "code",
+      left: `// Callback typed as Function
 function fetchData(callback: Function) {
   const data = { name: "Alice" };
   callback(data);
@@ -17,7 +19,7 @@ fetchData((data) => {
   // data is 'any'
   console.log(data.nonexistent); // No error
 });`,
-    goodCode: `interface User {
+      right: `interface User {
   name: string;
 }
 
@@ -30,6 +32,7 @@ fetchData((data) => {
   console.log(data.name);        // OK
   console.log(data.nonexistent); // Error
 });`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Typing the callback with a specific signature gives TypeScript full knowledge of the parameter types. The callback's `data` parameter is inferred as `User`, providing autocomplete and catching property access errors. Never use the `Function` type.",
@@ -44,14 +47,16 @@ fetchData((data) => {
     category: "function-types",
     difficulty: "easy",
     title: "void vs undefined return",
-    badCode: `// Forces callbacks to return undefined explicitly
+    content: {
+      type: "code",
+      left: `// Forces callbacks to return undefined explicitly
 type Handler = () => undefined;
 
 // Error: map returns number[], not undefined
 const handler: Handler = () => [1, 2].map(n => n * 2);
 
 // Must write: () => { [1,2].map(n => n*2); return undefined; }`,
-    goodCode: `// void means "return value is ignored"
+      right: `// void means "return value is ignored"
 type Handler = () => void;
 
 // Any return value is accepted
@@ -61,6 +66,7 @@ const handler: Handler = () => [1, 2].map(n => n * 2);
 const a: Handler = () => {};
 const b: Handler = () => true;
 const c: Handler = () => "hello";`,
+    },
     correctSide: "right",
     explanationCorrect:
       "`void` means the return value will not be used, so TypeScript allows any return type. This is intentional: callbacks like `forEach` accept `() => void` so you can pass functions that happen to return values. Using `undefined` as the return type forces callers to explicitly return nothing.",
@@ -75,7 +81,9 @@ const c: Handler = () => "hello";`,
     category: "function-types",
     difficulty: "medium",
     title: "Generic function parameters",
-    badCode: `function merge(a: object, b: object): object {
+    content: {
+      type: "code",
+      left: `function merge(a: object, b: object): object {
   return { ...a, ...b };
 }
 
@@ -85,7 +93,7 @@ const result = merge(
 );
 // result is 'object', no properties accessible
 result.name; // Error`,
-    goodCode: `function merge<A extends object, B extends object>(
+      right: `function merge<A extends object, B extends object>(
   a: A,
   b: B
 ): A & B {
@@ -99,6 +107,7 @@ const result = merge(
 // result is { name: string } & { age: number }
 result.name; // string
 result.age;  // number`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Generic type parameters `A` and `B` capture the exact shapes of both arguments. The return type `A & B` is the intersection, giving you access to all properties from both objects. TypeScript infers the generics from the arguments, so no explicit type annotation is needed at the call site.",
@@ -112,13 +121,15 @@ result.age;  // number`,
     category: "function-types",
     difficulty: "medium",
     title: "Overloads vs unions",
-    badCode: `// Overloads for something simple
+    content: {
+      type: "code",
+      left: `// Overloads for something simple
 function format(input: string): string;
 function format(input: number): string;
 function format(input: string | number): string {
   return String(input);
 }`,
-    goodCode: `// Union parameter when the logic is the same
+      right: `// Union parameter when the logic is the same
 function format(input: string | number): string {
   return String(input);
 }
@@ -131,6 +142,7 @@ function parse(input: string | number): Date {
   if (typeof input === "string") return new Date(input);
   return new Date(input);
 }`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Use union types when all input types follow the same logic and produce the same return type. Reserve overloads for cases where the return type changes based on the input type, or when you need distinct call signatures for documentation. Overloads add complexity, so prefer the simpler approach when possible.",
@@ -145,7 +157,9 @@ function parse(input: string | number): Date {
     category: "function-types",
     difficulty: "hard",
     title: "Inferred return types",
-    badCode: `// Explicit return type duplicates the logic
+    content: {
+      type: "code",
+      left: `// Explicit return type duplicates the logic
 function createUser(
   name: string,
   role: "admin" | "user"
@@ -162,7 +176,7 @@ function createUser(
     createdAt: new Date(),
   };
 }`,
-    goodCode: `// Let TypeScript infer the return type
+      right: `// Let TypeScript infer the return type
 function createUser(
   name: string,
   role: "admin" | "user"
@@ -177,6 +191,7 @@ function createUser(
 
 // Use ReturnType if you need the type elsewhere
 type NewUser = ReturnType<typeof createUser>;`,
+    },
     correctSide: "right",
     explanationCorrect:
       "TypeScript automatically infers the return type from the return statement. Omitting the explicit annotation avoids duplication and keeps the return type in sync with the implementation. If you need the type in other places, use `ReturnType<typeof createUser>` to extract it.",
@@ -191,14 +206,16 @@ type NewUser = ReturnType<typeof createUser>;`,
     category: "function-types",
     difficulty: "hard",
     title: "Rest params with tuples",
-    badCode: `// Loses argument structure
+    content: {
+      type: "code",
+      left: `// Loses argument structure
 function call(fn: Function, ...args: any[]) {
   return fn(...args);
 }
 
 // No type safety whatsoever
 call(Math.max, "not", "numbers"); // No error`,
-    goodCode: `function call<A extends unknown[], R>(
+      right: `function call<A extends unknown[], R>(
   fn: (...args: A) => R,
   ...args: A
 ): R {
@@ -207,6 +224,7 @@ call(Math.max, "not", "numbers"); // No error`,
 
 call(Math.max, 1, 2, 3);          // OK, returns number
 call(Math.max, "not", "numbers");  // Error!`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Using a generic tuple type `A extends unknown[]` for the rest parameter links the function's expected arguments to the actual arguments passed. TypeScript infers `A` from the function signature and checks that the remaining arguments match. The return type `R` is also inferred correctly.",

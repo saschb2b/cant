@@ -6,7 +6,10 @@ export const serverComponentPropsChallenges: Challenge[] = [
     category: "server-component-props",
     difficulty: "easy",
     title: "Serializable callback props",
-    badCode: `// ServerPage.tsx (Server Component)
+    content: {
+      type: "code",
+
+      left: `// ServerPage.tsx (Server Component)
 import { saveToDatabase } from './db';
 
 <ClientForm
@@ -14,7 +17,8 @@ import { saveToDatabase } from './db';
     saveToDatabase(data);
   }}
 />`,
-    goodCode: `// actions.ts
+
+      right: `// actions.ts
 'use server';
 
 export async function saveForm(data: FormData) {
@@ -25,6 +29,8 @@ export async function saveForm(data: FormData) {
 import { saveForm } from './actions';
 
 <ClientForm action={saveForm} />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Props from Server Components to Client Components are serialized over the network. Regular functions can't survive this, and they crash at runtime.\n\n`'use server'` is the key: it turns the function into a serializable reference (essentially a URL). The actual code stays on the server; the client gets a reference it can call over the network.",
@@ -38,7 +44,10 @@ import { saveForm } from './actions';
     category: "server-component-props",
     difficulty: "easy",
     title: "Passing server content to client wrappers",
-    badCode: `// page.tsx (Server Component)
+    content: {
+      type: "code",
+
+      left: `// page.tsx (Server Component)
 
 <AnimatedContainer
   title={article.title}
@@ -46,11 +55,14 @@ import { saveForm } from './actions';
   author={article.author}
   publishedAt={article.publishedAt}
 />`,
-    goodCode: `// page.tsx (Server Component)
+
+      right: `// page.tsx (Server Component)
 
 <AnimatedContainer>
   <ArticleContent article={article} />
 </AnimatedContainer>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'This is called the "donut pattern": the Client Component is the outer ring (handles animation), and Server Component `children` pass through the hole in the middle. `AnimatedContainer` never touches the article data, it just renders `{children}`.\n\n`ArticleContent` stays a Server Component: all article data is rendered on the server and never serialized to the client. The client only ships the animation JavaScript.',
@@ -65,7 +77,10 @@ import { saveForm } from './actions';
     category: "server-component-props",
     difficulty: "medium",
     title: "Form action vs onSubmit",
-    badCode: `'use client';
+    content: {
+      type: "code",
+
+      left: `'use client';
 
 interface ContactFormProps {
   /** Called when the form is submitted. */
@@ -73,7 +88,8 @@ interface ContactFormProps {
   /** Shows a loading spinner. */
   isPending: boolean;
 }`,
-    goodCode: `'use client';
+
+      right: `'use client';
 
 interface ContactFormProps {
   /**
@@ -86,6 +102,8 @@ interface ContactFormProps {
 // isPending comes from useActionState:
 // const [state, formAction, isPending] =
 //   useActionState(action, initialState);`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React 19's `<form action={...}>` pattern handles pending state automatically via `useActionState` or `useFormStatus`. Passing `isPending` as a prop duplicates what the framework already provides.\n\nNaming the prop `action` (not `onSubmit`) signals it's a Server Action, not a client-side event handler.",
@@ -99,7 +117,10 @@ interface ContactFormProps {
     category: "server-component-props",
     difficulty: "medium",
     title: "Non-serializable prop types",
-    badCode: `// Server Component
+    content: {
+      type: "code",
+
+      left: `// Server Component
 <ClientEditor
   pattern={highlightPattern}
   metadata={documentMeta}
@@ -110,7 +131,8 @@ interface ClientEditorProps {
   pattern: RegExp;
   metadata: DocumentMeta; // class instance
 }`,
-    goodCode: `// Server Component
+
+      right: `// Server Component
 <ClientEditor
   pattern={highlightPattern.source}
   metadata={{
@@ -124,6 +146,8 @@ interface ClientEditorProps {
   pattern: string;
   metadata: { title: string; wordCount: number };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`RegExp` and class instances are not serializable across the server/client boundary. Convert to serializable equivalents: `RegExp` → its `.source` string, class instances → plain objects with only the needed fields.\n\nSerializable types include: primitives, `Date`, `Map`, `Set`, `BigInt`, typed arrays, plain objects, and arrays. NOT serializable: `RegExp`, class instances, `WeakMap`, `Symbol`, and functions.",
@@ -137,7 +161,10 @@ interface ClientEditorProps {
     category: "server-component-props",
     difficulty: "hard",
     title: "Avoiding unnecessary client boundaries",
-    badCode: `'use client';
+    content: {
+      type: "code",
+
+      left: `'use client';
 
 interface ProductPageProps {
   product: {
@@ -150,7 +177,8 @@ interface ProductPageProps {
   onAddToCart: () => void;
   onToggleWishlist: () => void;
 }`,
-    goodCode: `// ProductPage (Server Component)
+
+      right: `// ProductPage (Server Component)
 interface ProductPageProps {
   product: {
     id: string;
@@ -166,6 +194,8 @@ interface AddToCartButtonProps {
   productId: string;
   action: (id: string) => Promise<void>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Making the entire page a Client Component just because two buttons need interactivity forces all product data to be serialized and sent to the client. Instead, keep the page as a Server Component and push `'use client'` to the smallest leaf components.\n\nOnly the button needs to be a Client Component, and it receives just a `productId` and a Server Action, not the full product object.",

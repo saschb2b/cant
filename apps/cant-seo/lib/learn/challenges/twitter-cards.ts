@@ -6,7 +6,10 @@ export const twitterCardsChallenges: Challenge[] = [
     category: "twitter-cards",
     difficulty: "easy",
     title: "Summary vs summary_large_image",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -24,7 +27,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -42,6 +46,8 @@ export async function generateMetadata({
     },
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Blog posts with cover images should use `summary_large_image` to display the image prominently. The large image card takes up more space in the timeline, which increases visibility and click-through rates. The `summary` card shows only a small square thumbnail.",
@@ -56,7 +62,10 @@ export async function generateMetadata({
     category: "twitter-cards",
     difficulty: "easy",
     title: "Twitter image aspect ratio",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -69,7 +78,8 @@ export const metadata: Metadata = {
     }],
   },
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -83,7 +93,9 @@ export const metadata: Metadata = {
     }],
   },
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Twitter's large image card expects a 2:1 aspect ratio (minimum 300x157, recommended 1200x628). Providing the correct dimensions ensures the image is displayed without cropping. The `alt` text is required for accessibility and is read by screen readers.",
     explanationWrong:
@@ -97,7 +109,10 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "medium",
     title: "twitter:site vs twitter:creator",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -112,7 +127,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -128,6 +144,8 @@ export async function generateMetadata({
     },
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`twitter:site` identifies the website's Twitter account (your company), while `twitter:creator` identifies the content author's personal account. Setting both correctly attributes the content to the right people and enables Twitter analytics for both accounts.",
@@ -142,7 +160,10 @@ export async function generateMetadata({
     category: "twitter-cards",
     difficulty: "medium",
     title: "Twitter card fallback to Open Graph",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -158,7 +179,8 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -173,7 +195,9 @@ export const metadata: Metadata = {
     // fall back to openGraph values
   },
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Twitter automatically falls back to Open Graph tags when dedicated `twitter:` tags are absent. You only need to set `twitter:card` to choose the card type. Duplicating every field is unnecessary and creates a maintenance burden where changes must be made in two places.",
     explanationWrong:
@@ -187,7 +211,10 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "medium",
     title: "Twitter title length",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -202,7 +229,8 @@ article on Acme Corp's blog for more details\`,
     },
   };
 }`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -217,6 +245,8 @@ export async function generateMetadata({
     },
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Twitter truncates titles longer than about 70 characters and descriptions longer than 200 characters. Keeping the title concise ensures the full text is visible in the card. If the title needs context, put it in the description field instead.",
@@ -231,7 +261,10 @@ export async function generateMetadata({
     category: "twitter-cards",
     difficulty: "medium",
     title: "Dedicated twitter metadata in Next.js",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   openGraph: {
     title: "Acme Corp - Official Website",
@@ -246,7 +279,8 @@ export const metadata: Metadata = {
   // Twitter inherits OG values, but the
   // OG title is too long for Twitter cards
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   openGraph: {
     title: "Acme Corp - Official Website",
@@ -263,7 +297,9 @@ export const metadata: Metadata = {
     images: ["/twitter-card.png"],
   },
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "When your OG tags are optimized for Facebook and LinkedIn but do not fit Twitter's constraints, set dedicated twitter fields. Twitter cards have shorter character limits and a different image aspect ratio (2:1 vs 1.91:1). Providing platform-specific values ensures the best appearance everywhere.",
     explanationWrong:
@@ -277,7 +313,10 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "easy",
     title: "Image alt text for Twitter cards",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
@@ -290,7 +329,8 @@ export const metadata: Metadata = {
     ],
   },
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
@@ -306,6 +346,8 @@ export const metadata: Metadata = {
     ],
   },
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `alt` attribute on Twitter card images is rendered as `twitter:image:alt` in the HTML. Screen readers use this text to describe the image to visually impaired users. It also serves as fallback text if the image fails to load.",
@@ -320,7 +362,10 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "hard",
     title: "Validating Twitter cards before launch",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
@@ -330,7 +375,8 @@ export const metadata: Metadata = {
 
 // Deploy to production and share on Twitter
 // to see if the card looks correct`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   metadataBase: new URL("https://acme.com"),
   twitter: {
@@ -347,6 +393,8 @@ export const metadata: Metadata = {
 // Validate: check meta tags in page source,
 // then use https://cards-dev.twitter.com/
 // after deploying to a public URL`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Setting `metadataBase` ensures all image URLs resolve to absolute paths, which is required for Twitter's crawler. Before sharing publicly, validate the card using Twitter's Card Validator tool. This catches issues like incorrect image dimensions, missing required fields, or inaccessible image URLs.",

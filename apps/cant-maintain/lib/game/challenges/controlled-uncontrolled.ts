@@ -6,14 +6,20 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "easy",
     title: "Toggle component API",
-    badCode: `interface ToggleProps {
+    content: {
+      type: "code",
+
+      left: `interface ToggleProps {
   toggled: boolean;
   setToggled: (value: boolean) => void;
 }`,
-    goodCode: `interface ToggleProps {
+
+      right: `interface ToggleProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Custom toggle components should mirror the native `<input type="checkbox">` API: `checked` + `onChange`. Consumers familiar with HTML form elements instantly understand the contract. `setToggled` implies the child owns the state; in React, data flows down and events flow up.',
@@ -28,18 +34,24 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "easy",
     title: "Default value naming",
-    badCode: `interface DatePickerProps {
+    content: {
+      type: "code",
+
+      left: `interface DatePickerProps {
   /** The initially selected date. */
   initialDate?: Date;
   /** Called when the user picks a date. */
   onDateChange: (date: Date) => void;
 }`,
-    goodCode: `interface DatePickerProps {
+
+      right: `interface DatePickerProps {
   /** The initial date for uncontrolled mode. */
   defaultValue?: Date;
   /** Called when the user picks a date. */
   onChange: (date: Date) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React's convention for uncontrolled initial values is `defaultValue` (or `defaultChecked` for checkboxes). `initialDate` invents a custom name. Using `defaultValue` + `onChange` makes any form library and React developer immediately understand this is an uncontrolled component.",
@@ -54,7 +66,10 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "medium",
     title: "Dual-mode component API",
-    badCode: `interface AccordionProps {
+    content: {
+      type: "code",
+
+      left: `interface AccordionProps {
   children: React.ReactNode;
   /** Which panel is expanded. */
   expanded?: number;
@@ -63,7 +78,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
   /** Initially expanded panel. */
   startExpanded?: number;
 }`,
-    goodCode: `interface AccordionProps {
+
+      right: `interface AccordionProps {
   children: React.ReactNode;
   /** Controlled: which panel is expanded. */
   value?: number;
@@ -72,6 +88,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
   /** Uncontrolled: initially expanded panel. */
   defaultValue?: number;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `value` / `defaultValue` / `onChange` trio is React's universal contract for dual-mode (controlled + uncontrolled) components. `expanded` + `startExpanded` + `onToggle` invents custom names for the same concept. Consumers immediately know: pass `value` + `onChange` for controlled, or `defaultValue` for uncontrolled.",
@@ -85,7 +103,10 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "medium",
     title: "Multi-value controlled pattern",
-    badCode: `interface TagInputProps {
+    content: {
+      type: "code",
+
+      left: `interface TagInputProps {
   /** Current tags. */
   selectedTags: string[];
   /** Called to add a tag. */
@@ -94,13 +115,16 @@ export const controlledUncontrolledChallenges: Challenge[] = [
   onRemoveTag: (tag: string) => void;
   placeholder?: string;
 }`,
-    goodCode: `interface TagInputProps {
+
+      right: `interface TagInputProps {
   /** Controlled: the current list of tags. */
   value: string[];
   /** Called with the full updated tag list. */
   onChange: (tags: string[]) => void;
   placeholder?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Following the `value`/`onChange` convention, the component reports the entire new state, not individual operations. The parent decides how to update: `onChange` receives the full array after any add or remove. This matches how `<select multiple>` works natively.\n\nTradeoff: if the parent needs to know the operation type (e.g., show "Tag added" vs "Tag removed" toasts), supplementary callbacks like `onAdd`/`onRemove` alongside `value`/`onChange` can be useful.',
@@ -115,7 +139,10 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "hard",
     title: "Multiple controlled dimensions",
-    badCode: `interface ColorPickerProps {
+    content: {
+      type: "code",
+
+      left: `interface ColorPickerProps {
   /** The current color. */
   color?: string;
   /** Called when a color is selected. */
@@ -129,7 +156,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
   /** Whether popup starts visible. */
   initiallyVisible?: boolean;
 }`,
-    goodCode: `interface ColorPickerProps {
+
+      right: `interface ColorPickerProps {
   /** Controlled: the selected color. */
   value?: string;
   /** Called when the selected color changes. */
@@ -143,6 +171,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
   /** Uncontrolled: initial popup open state. */
   defaultOpen?: boolean;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Each controlled dimension follows the same convention: `value`/`defaultValue`/`onChange` for the color, `open`/`defaultOpen`/`onOpenChange` for the popup. Once a developer learns the pattern, every dimension is predictable.\n\nThe alternative uses natural-sounding names (`color`, `initialColor`, `isVisible`), but each dimension uses its own convention. `initialColor` could mean a default, a fallback, or a reset target. `isVisible` reads as a status report rather than a controllable prop.",
@@ -156,7 +186,10 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "medium",
     title: "Resetting uncontrolled state",
-    badCode: `interface ReplyFormProps {
+    content: {
+      type: "code",
+
+      left: `interface ReplyFormProps {
   /** Current conversation. */
   conversationId: string;
   /** Called when the reply is sent. */
@@ -167,7 +200,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 
 // Internally resets via useEffect:
 // useEffect(() => { clearDraft(); }, [resetTrigger]);`,
-    goodCode: `interface ReplyFormProps {
+
+      right: `interface ReplyFormProps {
   /** Called when the reply is sent. */
   onSend: (message: string) => void;
 }
@@ -176,6 +210,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 // <ReplyForm
 //   key={conversationId} onSend={handleSend}
 // />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When the user switches conversations, the reply draft should reset. React's `key` prop handles this: when `key` changes, React unmounts and remounts the component with fresh state. No extra props needed.\n\nThe bad version threads `conversationId` through as a prop the component doesn't need for rendering, plus a `resetTrigger` counter. `key` eliminates both from the API.",
@@ -190,7 +226,10 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "easy",
     title: "Resetting state on prop change",
-    badCode: `interface ProfileEditorProps {
+    content: {
+      type: "code",
+
+      left: `interface ProfileEditorProps {
   /** Used to detect user changes. */
   userId: string;
   user: User;
@@ -199,7 +238,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 
 // Resets draft state when user changes:
 // useEffect(() => { setDraft(user); }, [userId]);`,
-    goodCode: `interface ProfileEditorProps {
+
+      right: `interface ProfileEditorProps {
   user: User;
   onSave: (updates: Partial<User>) => void;
 }
@@ -208,6 +248,8 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 // <ProfileEditor
 //   key={user.id} user={user} onSave={...}
 // />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The bad version passes `userId` separately from `user` just to use it as a `useEffect` dependency for resetting internal draft state. But `user.id` already carries that information.\n\nUsing `key={user.id}` at the call site eliminates the redundant prop and the `useEffect` entirely. When the key changes, React remounts the component with clean state. This is the pattern the React docs recommend over syncing state in effects.",

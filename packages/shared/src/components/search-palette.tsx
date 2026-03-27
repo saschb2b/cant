@@ -478,8 +478,7 @@ export function SearchPalette({
         },
         backdrop: {
           sx: {
-            bgcolor:
-              "rgba(var(--mui-palette-background-defaultChannel) / 0.7)",
+            bgcolor: "rgba(var(--mui-palette-background-defaultChannel) / 0.7)",
             backdropFilter: "blur(8px)",
           },
         },
@@ -509,9 +508,7 @@ export function SearchPalette({
         },
       }}
     >
-      <Box
-        sx={{ display: "flex", alignItems: "center", p: 2, pb: 1, gap: 1 }}
-      >
+      <Box sx={{ display: "flex", alignItems: "center", p: 2, pb: 1, gap: 1 }}>
         <TextField
           inputRef={inputRef}
           autoFocus

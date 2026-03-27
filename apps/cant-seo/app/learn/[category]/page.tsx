@@ -9,7 +9,8 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@/lib/code-styles";
+import { buildContentMap } from "@cant/shared/lib/content-map";
+import { LearnContentPanel } from "@cant/shared/components/learn-content-panel";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -81,14 +82,11 @@ export default async function CategoryPage({ params }: PageProps) {
       : undefined;
 
   const highlighter = await getHighlighter();
-  const highlighted = new Map<string, { goodHtml: string; badHtml: string }>();
-  for (const challenge of categoryChallenges) {
-    const lang = challenge.lang ?? "tsx";
-    highlighted.set(challenge.id, {
-      goodHtml: highlightDual(highlighter, challenge.goodCode, lang),
-      badHtml: highlightDual(highlighter, challenge.badCode, lang),
-    });
-  }
+  const contentMap = buildContentMap(
+    categoryChallenges,
+    highlighter,
+    highlightDual,
+  );
 
   return (
     <>
@@ -146,219 +144,226 @@ export default async function CategoryPage({ params }: PageProps) {
 
       {/* Challenges */}
       <ChallengeListToggle>
-      <Stack spacing={3}>
-        {categoryChallenges.map((challenge) => (
-          <Paper
-            key={challenge.id}
-            id={challenge.id}
-            elevation={0}
-            sx={{ border: 1, borderColor: "divider", overflow: "hidden" }}
-          >
-            {/* Header */}
-            <Box sx={{ px: 2.5, pt: 2, pb: 1.5 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <ChallengeAnchor id={challenge.id} title={challenge.title} />
-                <Chip
-                  label={challenge.difficulty}
-                  size="small"
-                  sx={{
-                    height: 20,
-                    fontSize: "0.65rem",
-                    fontWeight: 600,
-                    bgcolor: difficultyColor(challenge.difficulty),
-                  }}
-                />
-              </Stack>
-            </Box>
-
-            {/* Code comparison */}
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              sx={{ borderTop: 1, borderBottom: 1, borderColor: "divider" }}
+        <Stack spacing={3}>
+          {categoryChallenges.map((challenge) => (
+            <Paper
+              key={challenge.id}
+              id={challenge.id}
+              elevation={0}
+              sx={{ border: 1, borderColor: "divider", overflow: "hidden" }}
             >
+              {/* Header */}
+              <Box sx={{ px: 2.5, pt: 2, pb: 1.5 }}>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <ChallengeAnchor id={challenge.id} title={challenge.title} />
+                  <Chip
+                    label={challenge.difficulty}
+                    size="small"
+                    sx={{
+                      height: 20,
+                      fontSize: "0.65rem",
+                      fontWeight: 600,
+                      bgcolor: difficultyColor(challenge.difficulty),
+                    }}
+                  />
+                </Stack>
+              </Box>
+
+              {/* Code comparison */}
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                sx={{ borderTop: 1, borderBottom: 1, borderColor: "divider" }}
+              >
+                <Box
+                  className="compact-hide"
+                  sx={{
+                    flex: "1 1 50%",
+                    minWidth: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.75}
+                    sx={{ px: 2, pt: 1.5 }}
+                  >
+                    <Box
+                      sx={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        bgcolor:
+                          "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "error.main",
+                      }}
+                    >
+                      <X size={11} strokeWidth={3} />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="error.main"
+                    >
+                      Avoid
+                    </Typography>
+                  </Stack>
+                  <LearnContentPanel
+                    entry={contentMap[challenge.id]}
+                    side="bad"
+                  />
+                </Box>
+
+                <Divider
+                  className="compact-hide"
+                  orientation="vertical"
+                  flexItem
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                />
+                <Divider
+                  className="compact-hide"
+                  sx={{ display: { sm: "none" } }}
+                />
+
+                <Box
+                  className="compact-full-width"
+                  sx={{
+                    flex: "1 1 50%",
+                    minWidth: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.75}
+                    sx={{ px: 2, pt: 1.5 }}
+                  >
+                    <Box
+                      sx={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        bgcolor:
+                          "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "success.main",
+                      }}
+                    >
+                      <Check size={11} strokeWidth={3} />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="success.main"
+                    >
+                      Prefer
+                    </Typography>
+                  </Stack>
+                  <LearnContentPanel
+                    entry={contentMap[challenge.id]}
+                    side="good"
+                  />
+                </Box>
+              </Stack>
+
+              {/* Explanation + source */}
               <Box
                 className="compact-hide"
-                sx={{
-                  flex: "1 1 50%",
-                  minWidth: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  bgcolor: "background.paper",
-                }}
+                sx={{ px: 2.5, py: 2, maxWidth: 720 }}
               >
                 <Stack
                   direction="row"
-                  alignItems="center"
-                  spacing={0.75}
-                  sx={{ px: 2, pt: 1.5 }}
+                  spacing={1}
+                  alignItems="flex-start"
+                  sx={{ mb: 1.5 }}
                 >
                   <Box
                     sx={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: "50%",
-                      bgcolor:
-                        "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "error.main",
+                      width: 3,
+                      minHeight: 20,
+                      bgcolor: "error.main",
+                      borderRadius: 100,
+                      mt: 0.5,
+                      flexShrink: 0,
                     }}
-                  >
-                    <X size={11} strokeWidth={3} />
+                  />
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      color="error.main"
+                      fontFamily="var(--font-geist-mono), monospace"
+                    >
+                      Why avoid
+                    </Typography>
+                    <Box
+                      sx={{
+                        typography: "body2",
+                        lineHeight: 1.75,
+                        color: "text.primary",
+                        mt: 0.25,
+                      }}
+                    >
+                      <FormattedText text={challenge.explanationWrong} />
+                    </Box>
                   </Box>
-                  <Typography
-                    variant="caption"
-                    fontWeight={600}
-                    fontFamily="var(--font-geist-mono), monospace"
-                    color="error.main"
-                  >
-                    Avoid
-                  </Typography>
                 </Stack>
-                <Box
-                  sx={{ ...codeBlockStyles, flex: 1 }}
-                  dangerouslySetInnerHTML={{
-                    __html: highlighted.get(challenge.id)?.badHtml ?? "",
-                  }}
+
+                <Stack direction="row" spacing={1} alignItems="flex-start">
+                  <Box
+                    sx={{
+                      width: 3,
+                      minHeight: 20,
+                      bgcolor: "success.main",
+                      borderRadius: 100,
+                      mt: 0.5,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      color="success.main"
+                      fontFamily="var(--font-geist-mono), monospace"
+                    >
+                      Why prefer
+                    </Typography>
+                    <Box
+                      sx={{
+                        typography: "body2",
+                        lineHeight: 1.75,
+                        color: "text.primary",
+                        mt: 0.25,
+                      }}
+                    >
+                      <FormattedText text={challenge.explanationCorrect} />
+                    </Box>
+                  </Box>
+                </Stack>
+
+                <SourceLink
+                  href={challenge.sourceUrl}
+                  label={challenge.sourceLabel}
+                  challengeId={challenge.id}
+                  category={challenge.category}
                 />
               </Box>
-
-              <Divider className="compact-hide" orientation="vertical" flexItem sx={{ display: { xs: "none", sm: "block" } }} />
-              <Divider className="compact-hide" sx={{ display: { sm: "none" } }} />
-
-              <Box
-                className="compact-full-width"
-                sx={{
-                  flex: "1 1 50%",
-                  minWidth: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  bgcolor: "background.paper",
-                }}
-              >
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={0.75}
-                  sx={{ px: 2, pt: 1.5 }}
-                >
-                  <Box
-                    sx={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: "50%",
-                      bgcolor:
-                        "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "success.main",
-                    }}
-                  >
-                    <Check size={11} strokeWidth={3} />
-                  </Box>
-                  <Typography
-                    variant="caption"
-                    fontWeight={600}
-                    fontFamily="var(--font-geist-mono), monospace"
-                    color="success.main"
-                  >
-                    Prefer
-                  </Typography>
-                </Stack>
-                <Box
-                  sx={{ ...codeBlockStyles, flex: 1 }}
-                  dangerouslySetInnerHTML={{
-                    __html: highlighted.get(challenge.id)?.goodHtml ?? "",
-                  }}
-                />
-              </Box>
-            </Stack>
-
-            {/* Explanation + source */}
-            <Box className="compact-hide" sx={{ px: 2.5, py: 2, maxWidth: 720 }}>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="flex-start"
-                sx={{ mb: 1.5 }}
-              >
-                <Box
-                  sx={{
-                    width: 3,
-                    minHeight: 20,
-                    bgcolor: "error.main",
-                    borderRadius: 100,
-                    mt: 0.5,
-                    flexShrink: 0,
-                  }}
-                />
-                <Box>
-                  <Typography
-                    variant="caption"
-                    fontWeight={600}
-                    color="error.main"
-                    fontFamily="var(--font-geist-mono), monospace"
-                  >
-                    Why avoid
-                  </Typography>
-                  <Box
-                    sx={{
-                      typography: "body2",
-                      lineHeight: 1.75,
-                      color: "text.primary",
-                      mt: 0.25,
-                    }}
-                  >
-                    <FormattedText text={challenge.explanationWrong} />
-                  </Box>
-                </Box>
-              </Stack>
-
-              <Stack direction="row" spacing={1} alignItems="flex-start">
-                <Box
-                  sx={{
-                    width: 3,
-                    minHeight: 20,
-                    bgcolor: "success.main",
-                    borderRadius: 100,
-                    mt: 0.5,
-                    flexShrink: 0,
-                  }}
-                />
-                <Box>
-                  <Typography
-                    variant="caption"
-                    fontWeight={600}
-                    color="success.main"
-                    fontFamily="var(--font-geist-mono), monospace"
-                  >
-                    Why prefer
-                  </Typography>
-                  <Box
-                    sx={{
-                      typography: "body2",
-                      lineHeight: 1.75,
-                      color: "text.primary",
-                      mt: 0.25,
-                    }}
-                  >
-                    <FormattedText text={challenge.explanationCorrect} />
-                  </Box>
-                </Box>
-              </Stack>
-
-              <SourceLink
-                href={challenge.sourceUrl}
-                label={challenge.sourceLabel}
-                challengeId={challenge.id}
-                category={challenge.category}
-              />
-            </Box>
-          </Paper>
-        ))}
-      </Stack>
+            </Paper>
+          ))}
+        </Stack>
       </ChallengeListToggle>
 
       {/* Previous / Next navigation */}

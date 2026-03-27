@@ -6,15 +6,22 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Fixed width containers",
-    badCode: `.container {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.container {
   width: 960px;
   margin: 0 auto;
 }`,
-    goodCode: `.container {
+
+      right: `.container {
   width: min(100% - 2rem, 960px);
   margin-inline: auto;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`min(100% - 2rem, 960px)` caps at 960px on large screens but shrinks to fit on small screens with 1rem padding on each side. One line, no media queries, no horizontal overflow. `margin-inline: auto` is the logical property equivalent.",
@@ -28,12 +35,16 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Touch target size",
-    badCode: `<IconButton size="small" sx={{ p: 0.5 }}>
+    content: {
+      type: "code",
+
+      left: `<IconButton size="small" sx={{ p: 0.5 }}>
   <CloseIcon sx={{ fontSize: 16 }} />
 </IconButton>
 
 {/* Renders as ~24px tap target */}`,
-    goodCode: `<IconButton
+
+      right: `<IconButton
   size="small"
   sx={{ minWidth: 44, minHeight: 44 }}
 >
@@ -41,6 +52,8 @@ export const commonMistakeChallenges: Challenge[] = [
 </IconButton>
 
 {/* Visual is small, tap target is 44px */}`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "WCAG recommends at least 44x44px touch targets. Setting `minWidth`/`minHeight` on the button keeps the visual compact while making the clickable area finger-friendly. The icon stays 16px but the touch area is 44px.",
@@ -54,11 +67,15 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "medium",
     title: "Forgetting the viewport meta tag",
-    badCode: `<head>
+    content: {
+      type: "code",
+
+      left: `<head>
   <title>My App</title>
   <meta charSet="utf-8" />
 </head>`,
-    goodCode: `<head>
+
+      right: `<head>
   <title>My App</title>
   <meta charSet="utf-8" />
   <meta
@@ -66,6 +83,8 @@ export const commonMistakeChallenges: Challenge[] = [
     content="width=device-width, initial-scale=1"
   />
 </head>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Without the viewport meta tag, mobile browsers render the page at ~980px wide and zoom out to fit. `width=device-width` tells the browser to use the actual device width, enabling your media queries and responsive CSS to work correctly.",
@@ -80,7 +99,12 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "medium",
     title: "Landscape orientation",
-    badCode: `.mobile-layout {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.mobile-layout {
   padding-top: env(safe-area-inset-top);
 }
 
@@ -88,7 +112,8 @@ export const commonMistakeChallenges: Challenge[] = [
 @media (max-width: 768px) {
   .sidebar { display: none; }
 }`,
-    goodCode: `.mobile-layout {
+
+      right: `.mobile-layout {
   padding-top: env(safe-area-inset-top);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -99,7 +124,8 @@ export const commonMistakeChallenges: Challenge[] = [
   .header { position: static; }
   .hero { min-height: auto; }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Landscape phones have very little vertical space (~320px). A sticky header + full-height hero can leave zero room for content. Safe area insets on left/right handle the notch in landscape. Always test your layout rotated.",
@@ -113,7 +139,10 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "hard",
     title: "Pixel assumptions in responsive design",
-    badCode: `// "iPhones are 375px wide"
+    content: {
+      type: "code",
+
+      left: `// "iPhones are 375px wide"
 const MOBILE_WIDTH = 375;
 
 function useLayout() {
@@ -123,7 +152,8 @@ function useLayout() {
   if (width <= 768) return "tablet";
   return "desktop";
 }`,
-    goodCode: `// Use CSS for visual changes
+
+      right: `// Use CSS for visual changes
 <Box
   sx={{
     display: "grid",
@@ -136,6 +166,8 @@ function useLayout() {
 >
   {/* Layout adapts to content needs */}
 </Box>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Device pixel widths are arbitrary and constantly changing. iPhones range from 320px (SE 1st gen) to 440px (16 Pro Max), and Android phones vary even more. Instead of mapping widths to device categories, use CSS layouts that adapt fluidly. Breakpoints should be based on *content needs*, not device brands.",

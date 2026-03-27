@@ -6,7 +6,12 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "easy",
     title: "clamp() vs breakpoint steps",
-    badCode: `h1 {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `h1 {
   font-size: 1.5rem;
 }
 
@@ -21,10 +26,12 @@ export const fluidTypographyChallenges: Challenge[] = [
 @media (min-width: 1280px) {
   h1 { font-size: 3rem; }
 }`,
-    goodCode: `h1 {
+
+      right: `h1 {
   font-size: clamp(1.5rem, 1rem + 2vw, 3rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`clamp(min, preferred, max)` scales the font smoothly between 1.5rem and 3rem based on viewport width. No breakpoints needed, no jarring jumps. The `1rem + 2vw` preferred value blends a fixed base with a viewport-relative portion.",
@@ -38,13 +45,20 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "easy",
     title: "Avoid pure vw for font size",
-    badCode: `h1 {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `h1 {
   font-size: 5vw;
 }`,
-    goodCode: `h1 {
+
+      right: `h1 {
   font-size: clamp(1.25rem, 0.5rem + 3vw, 3rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Pure `vw` has no minimum or maximum. On a 320px phone it's just 16px (too small for a heading), and on a 2560px monitor it's 128px (enormous). `clamp()` provides guardrails at both ends. The `rem` base also respects the user's browser font-size preference.",
@@ -59,7 +73,12 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "medium",
     title: "Fluid type scale with custom properties",
-    badCode: `:root {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `:root {
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.25rem;
@@ -76,14 +95,16 @@ export const fluidTypographyChallenges: Challenge[] = [
     --text-2xl: 3rem;
   }
 }`,
-    goodCode: `:root {
+
+      right: `:root {
   --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
   --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
   --text-lg: clamp(1.25rem, 1rem + 1vw, 1.5rem);
   --text-xl: clamp(1.5rem, 1rem + 1.5vw, 2rem);
   --text-2xl: clamp(2rem, 1.25rem + 2.5vw, 3rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A fluid type scale defined once with `clamp()` eliminates the need to redefine every token at each breakpoint. The scale naturally expands on larger screens and contracts on smaller ones, keeping proportions consistent.",
@@ -97,15 +118,22 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "medium",
     title: "Line height for fluid text",
-    badCode: `h1 {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `h1 {
   font-size: clamp(1.5rem, 1rem + 2vw, 3rem);
   line-height: 48px;
 }`,
-    goodCode: `h1 {
+
+      right: `h1 {
   font-size: clamp(1.5rem, 1rem + 2vw, 3rem);
   line-height: 1.2;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A unitless `line-height` of `1.2` scales proportionally with the font size. When the heading is 1.5rem, line-height is 1.8rem; at 3rem, it's 3.6rem. The spacing always feels right because it's relative to the text.",
@@ -120,13 +148,20 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "hard",
     title: "Accessible fluid typography",
-    badCode: `body {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `body {
   font-size: clamp(14px, 1.2vw, 18px);
 }`,
-    goodCode: `body {
+
+      right: `body {
   font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1.125rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Using `rem` for the min and max respects the user's browser font size preference. If they set their default to 20px for accessibility, `0.875rem` becomes 17.5px instead of being locked to 14px. The `rem` + `vw` blend in the preferred value also partially scales with their setting.",

@@ -6,7 +6,9 @@ export const mappedTypeChallenges: Challenge[] = [
     category: "mapped-types",
     difficulty: "easy",
     title: "Basic mapped types",
-    badCode: `interface User {
+    content: {
+      type: "code",
+      left: `interface User {
   name: string;
   email: string;
   age: number;
@@ -19,7 +21,7 @@ interface PartialUser {
   age?: number;
 }
 // Must update both when User changes`,
-    goodCode: `interface User {
+      right: `interface User {
   name: string;
   email: string;
   age: number;
@@ -33,6 +35,7 @@ type PartialUser = {
 // Or simply use the built-in:
 type AlsoPartialUser = Partial<User>;
 // Both auto-update when User changes`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Mapped types iterate over keys of an existing type using `[K in keyof T]` and can add or remove modifiers like `?` and `readonly`. This is exactly how the built-in Partial utility type works. Changes to the source type automatically propagate to the mapped type.",
@@ -47,7 +50,9 @@ type AlsoPartialUser = Partial<User>;
     category: "mapped-types",
     difficulty: "easy",
     title: "Key remapping with as",
-    badCode: `interface Config {
+    content: {
+      type: "code",
+      left: `interface Config {
   host: string;
   port: number;
   debug: boolean;
@@ -59,7 +64,7 @@ interface ConfigSetters {
   setPort: (val: number) => void;
   setDebug: (val: boolean) => void;
 }`,
-    goodCode: `interface Config {
+      right: `interface Config {
   host: string;
   port: number;
   debug: boolean;
@@ -75,6 +80,7 @@ type ConfigSetters = Setters<Config>;
 // { setHost: (value: string) => void;
 //   setPort: (value: number) => void;
 //   setDebug: (value: boolean) => void }`,
+    },
     correctSide: "right",
     explanationCorrect:
       "The `as` clause in mapped types lets you remap keys to new names. Combined with template literal types and Capitalize, you can automatically generate setter method names from property keys. The value types stay correctly linked to their original properties.",
@@ -89,7 +95,9 @@ type ConfigSetters = Setters<Config>;
     category: "mapped-types",
     difficulty: "medium",
     title: "Conditional types for filtering",
-    badCode: `interface User {
+    content: {
+      type: "code",
+      left: `interface User {
   id: number;
   name: string;
   email: string;
@@ -103,7 +111,7 @@ interface StringFields {
   email: string;
 }
 // Breaks if User changes`,
-    goodCode: `type StringKeys<T> = {
+      right: `type StringKeys<T> = {
   [K in keyof T]: T[K] extends string ? K : never;
 }[keyof T];
 
@@ -120,6 +128,7 @@ type UserStringKeys = StringKeys<User>;
 
 type UserStrings = Pick<User, UserStringKeys>;
 // { name: string; email: string }`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Conditional types inside mapped types can filter keys by their value type. Mapping non-matching keys to `never` and then indexing with `[keyof T]` produces a union of only the matching keys. Combined with Pick, this extracts a subset of properties based on their types.",
@@ -134,7 +143,9 @@ type UserStrings = Pick<User, UserStringKeys>;
     category: "mapped-types",
     difficulty: "medium",
     title: "Extracting types with infer",
-    badCode: `// Manually defining return types
+    content: {
+      type: "code",
+      left: `// Manually defining return types
 type UserFromAPI = {
   name: string;
   email: string;
@@ -147,7 +158,7 @@ async function fetchUser(): Promise<UserFromAPI> {
 // Must keep UserFromAPI in sync with
 // what the function actually returns
 type FetchedUser = UserFromAPI;`,
-    goodCode: `async function fetchUser() {
+      right: `async function fetchUser() {
   const res = await api.get<{
     name: string;
     email: string;
@@ -165,6 +176,7 @@ type FetchedUser = UnwrapPromise<
 >;
 // { name: string; email: string }
 // Auto-updates when fetchUser changes`,
+    },
     correctSide: "right",
     explanationCorrect:
       "The infer keyword lets you declare a type variable within a conditional type and extract part of a matched type. Here it unwraps the Promise to get the resolved value type. Combined with ReturnType, this derives the type directly from the function, so changes to fetchUser automatically flow to FetchedUser.",
@@ -179,7 +191,9 @@ type FetchedUser = UnwrapPromise<
     category: "mapped-types",
     difficulty: "hard",
     title: "Distributive conditional types",
-    badCode: `type NonNullableFields<T> = {
+    content: {
+      type: "code",
+      left: `type NonNullableFields<T> = {
   [K in keyof T]: Exclude<T[K], null | undefined>;
 };
 
@@ -194,7 +208,7 @@ interface Form {
 
 type Clean = NonNullableFields<Form>;
 // address.city is still string | null`,
-    goodCode: `type DeepNonNullable<T> =
+      right: `type DeepNonNullable<T> =
   T extends object
     ? { [K in keyof T]-?:
         DeepNonNullable<NonNullable<T[K]>>
@@ -212,6 +226,7 @@ interface Form {
 type Clean = DeepNonNullable<Form>;
 // { name: string;
 //   address: { city: string; zip: string } }`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Distributive conditional types (T extends object ? ...) distribute over union members. By recursively applying the transformation, DeepNonNullable strips null and undefined from every level of a nested type. The -? modifier removes optional markers as well.",
@@ -226,7 +241,9 @@ type Clean = DeepNonNullable<Form>;
     category: "mapped-types",
     difficulty: "hard",
     title: "Recursive types for nested paths",
-    badCode: `interface Config {
+    content: {
+      type: "code",
+      left: `interface Config {
   db: { host: string; port: number };
   cache: { ttl: number };
 }
@@ -239,7 +256,7 @@ type ConfigPath =
   | "cache"
   | "cache.ttl";
 // Must update when Config changes`,
-    goodCode: `type Paths<T, Prefix extends string = ""> =
+      right: `type Paths<T, Prefix extends string = ""> =
   T extends object
     ? {
         [K in keyof T & string]:
@@ -256,6 +273,7 @@ interface Config {
 type ConfigPath = Paths<Config>;
 // "db" | "db.host" | "db.port"
 // | "cache" | "cache.ttl"`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Recursive mapped types can generate dot-notation path strings for any nested object structure. By iterating over keys and recursing into object values, the type builds a union of all valid paths. Adding a new nested field to Config automatically produces the correct path string.",

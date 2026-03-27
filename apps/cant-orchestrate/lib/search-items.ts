@@ -71,7 +71,10 @@ export const searchItems: SearchItem[] = [
     description: firstSentence(c.explanationCorrect),
     subtitle: `${CATEGORY_LABELS[c.category]} · ${c.difficulty}`,
     difficulty: c.difficulty,
-    keywords: extractCodeKeywords(c.goodCode, c.badCode),
+    keywords:
+      c.content.type === "code"
+        ? extractCodeKeywords(c.content.left, c.content.right)
+        : [],
     href: `/learn/${c.category}#${c.id}`,
   })),
 ];

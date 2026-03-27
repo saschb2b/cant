@@ -6,7 +6,10 @@ export const errorHandlingChallenges: Challenge[] = [
     category: "error-handling",
     difficulty: "easy",
     title: "unknown vs any in catch blocks",
-    badCode: `try {
+    content: {
+      type: "code",
+
+      left: `try {
   await fetchData();
 } catch (error) {
   // With useUnknownInCatchVariables: false
@@ -16,7 +19,8 @@ export const errorHandlingChallenges: Challenge[] = [
   // if a string or number was thrown
   showToast(error.message);
 }`,
-    goodCode: `try {
+
+      right: `try {
   await fetchData();
 } catch (error) {
   // error is 'unknown'
@@ -28,6 +32,8 @@ export const errorHandlingChallenges: Challenge[] = [
     showToast("An unexpected error occurred");
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When catch variables are unknown, TypeScript forces you to narrow the type before accessing properties. This is correct because JavaScript allows throwing any value: strings, numbers, objects, or Error instances. The instanceof check narrows to Error and provides safe access to .message and .stack.",
@@ -42,7 +48,10 @@ export const errorHandlingChallenges: Challenge[] = [
     category: "error-handling",
     difficulty: "easy",
     title: "Type narrowing errors safely",
-    badCode: `function handleError(error: unknown) {
+    content: {
+      type: "code",
+
+      left: `function handleError(error: unknown) {
   // Unsafe: type assertion
   const err = error as Error;
   logToService(err.message, err.stack);
@@ -50,7 +59,8 @@ export const errorHandlingChallenges: Challenge[] = [
   // err.message is undefined
   // err.stack is undefined
 }`,
-    goodCode: `function getErrorMessage(
+
+      right: `function getErrorMessage(
   error: unknown
 ): string {
   if (error instanceof Error) {
@@ -69,6 +79,8 @@ export const errorHandlingChallenges: Challenge[] = [
   }
   return "An unknown error occurred";
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A robust error handler should handle Error instances, plain strings, and objects with a message property. Each branch narrows the type progressively, and the final fallback ensures every case returns a useful string. This pattern works with any thrown value.",
@@ -82,7 +94,10 @@ export const errorHandlingChallenges: Challenge[] = [
     category: "error-handling",
     difficulty: "medium",
     title: "Result type pattern",
-    badCode: `async function fetchUser(
+    content: {
+      type: "code",
+
+      left: `async function fetchUser(
   id: string
 ): Promise<User> {
   const res = await fetch(\`/api/users/\${id}\`);
@@ -96,7 +111,8 @@ export const errorHandlingChallenges: Challenge[] = [
 // Nothing in the type signature indicates
 // this function can fail
 const user = await fetchUser("123");`,
-    goodCode: `type Result<T, E = Error> =
+
+      right: `type Result<T, E = Error> =
   | { ok: true; value: T }
   | { ok: false; error: E };
 
@@ -120,6 +136,8 @@ if (result.ok) {
 } else {
   console.log(result.error.message);
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The Result type makes failure explicit in the function signature. Callers cannot access the value without first checking ok, so error handling is enforced at compile time. This pattern is inspired by Rust's Result type and eliminates forgotten try/catch blocks.",
@@ -133,7 +151,10 @@ if (result.ok) {
     category: "error-handling",
     difficulty: "medium",
     title: "Assertion functions",
-    badCode: `function processOrder(order: Order | null) {
+    content: {
+      type: "code",
+
+      left: `function processOrder(order: Order | null) {
   if (!order) {
     throw new Error("Order is required");
   }
@@ -151,7 +172,8 @@ function process(order: Order | null) {
   validateOrder(order);
   order.id; // Error: possibly null
 }`,
-    goodCode: `function assertOrder(
+
+      right: `function assertOrder(
   order: Order | null
 ): asserts order is Order {
   if (!order) {
@@ -169,6 +191,8 @@ function process(order: Order | null) {
   //   val: T
   // ): asserts val is NonNullable<T>
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Assertion functions use the `asserts` return type to tell TypeScript that if the function returns normally (without throwing), the parameter has been narrowed. This lets you extract validation logic into reusable functions while preserving type narrowing in the caller.",
@@ -183,7 +207,10 @@ function process(order: Order | null) {
     category: "error-handling",
     difficulty: "hard",
     title: "Custom error classes with instanceof",
-    badCode: `// Using plain Error for everything
+    content: {
+      type: "code",
+
+      left: `// Using plain Error for everything
 async function fetchData(url: string) {
   const res = await fetch(url);
   if (res.status === 404) throw new Error("Not found");
@@ -200,7 +227,8 @@ try {
     // Fragile string comparison
   }
 }`,
-    goodCode: `class NotFoundError extends Error {
+
+      right: `class NotFoundError extends Error {
   constructor(public resource: string) {
     super(\`\${resource} not found\`);
     this.name = "NotFoundError";
@@ -225,6 +253,8 @@ try {
     showGenericError();
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Custom error classes let you use instanceof for type-safe branching. Each error class can carry structured data (like the resource name) instead of encoding information in message strings. TypeScript narrows the type inside each instanceof branch, giving you access to class-specific properties.",
@@ -239,7 +269,10 @@ try {
     category: "error-handling",
     difficulty: "hard",
     title: "Exhaustive error handling",
-    badCode: `type ApiError =
+    content: {
+      type: "code",
+
+      left: `type ApiError =
   | { type: "network" }
   | { type: "auth" }
   | { type: "validation"; fields: string[] };
@@ -256,7 +289,8 @@ function handleError(error: ApiError) {
     // No compile error, silently unhandled
   }
 }`,
-    goodCode: `type ApiError =
+
+      right: `type ApiError =
   | { type: "network" }
   | { type: "auth" }
   | { type: "validation"; fields: string[] }
@@ -283,6 +317,8 @@ function handleError(error: ApiError) {
       // Compile error if a case is missing
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The assertNever function takes a value of type never, which is only valid when all union members have been handled. If you add a new error type to the union without adding a case, TypeScript reports a compile error because the value is not never. This guarantees exhaustive handling.",

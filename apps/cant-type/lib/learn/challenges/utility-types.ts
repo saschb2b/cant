@@ -6,7 +6,9 @@ export const utilityTypeChallenges: Challenge[] = [
     category: "utility-types",
     difficulty: "easy",
     title: "Partial for updates",
-    badCode: `interface User {
+    content: {
+      type: "code",
+      left: `interface User {
   name: string;
   email: string;
   age: number;
@@ -22,7 +24,7 @@ updateUser("1", {
   email: "alice@example.com",
   age: 30,
 }); // Just wanted to update name!`,
-    goodCode: `interface User {
+      right: `interface User {
   name: string;
   email: string;
   age: number;
@@ -33,6 +35,7 @@ function updateUser(id: string, data: Partial<User>) {
 }
 
 updateUser("1", { name: "Alice" }); // OK`,
+    },
     correctSide: "right",
     explanationCorrect:
       "`Partial<User>` makes every property optional, so callers can pass only the fields they want to update. This is the standard pattern for PATCH-style updates. The type still ensures only valid `User` properties with correct types are provided.",
@@ -47,7 +50,9 @@ updateUser("1", { name: "Alice" }); // OK`,
     category: "utility-types",
     difficulty: "easy",
     title: "Pick for subsets",
-    badCode: `interface User {
+    content: {
+      type: "code",
+      left: `interface User {
   id: string;
   name: string;
   email: string;
@@ -61,7 +66,7 @@ interface UserPreview {
   name: string;
   email: string;
 }`,
-    goodCode: `interface User {
+      right: `interface User {
   id: string;
   name: string;
   email: string;
@@ -71,6 +76,7 @@ interface UserPreview {
 
 // Derived from the source of truth
 type UserPreview = Pick<User, "id" | "name" | "email">;`,
+    },
     correctSide: "right",
     explanationCorrect:
       '`Pick<User, "id" | "name" | "email">` creates a new type with only those three properties. If `User` changes a field\'s type, the preview type updates automatically. This keeps your types DRY and avoids drift between related shapes.',
@@ -85,7 +91,9 @@ type UserPreview = Pick<User, "id" | "name" | "email">;`,
     category: "utility-types",
     difficulty: "medium",
     title: "Omit for exclusion",
-    badCode: `interface DbUser {
+    content: {
+      type: "code",
+      left: `interface DbUser {
   id: string;
   name: string;
   email: string;
@@ -98,7 +106,7 @@ interface PublicUser {
   name: string;
   email: string;
 }`,
-    goodCode: `interface DbUser {
+      right: `interface DbUser {
   id: string;
   name: string;
   email: string;
@@ -107,6 +115,7 @@ interface PublicUser {
 
 // Automatically excludes passwordHash
 type PublicUser = Omit<DbUser, "passwordHash">;`,
+    },
     correctSide: "right",
     explanationCorrect:
       '`Omit<DbUser, "passwordHash">` creates a type with every property except `passwordHash`. If new fields are added to `DbUser`, they automatically appear in `PublicUser`. This is safer than `Pick` when you want to exclude a small number of fields from a large type.',
@@ -121,7 +130,9 @@ type PublicUser = Omit<DbUser, "passwordHash">;`,
     category: "utility-types",
     difficulty: "medium",
     title: "Record for maps",
-    badCode: `// Using a plain object with index signature
+    content: {
+      type: "code",
+      left: `// Using a plain object with index signature
 const themes: { [key: string]: string } = {
   light: "#ffffff",
   dark: "#1a1a1a",
@@ -130,7 +141,7 @@ const themes: { [key: string]: string } = {
 
 // Any string key is accepted
 themes.nonexistent; // No error, undefined`,
-    goodCode: `type Theme = "light" | "dark" | "ocean";
+      right: `type Theme = "light" | "dark" | "ocean";
 
 const themes: Record<Theme, string> = {
   light: "#ffffff",
@@ -141,6 +152,7 @@ const themes: Record<Theme, string> = {
 // Only valid keys accepted
 themes.light;  // OK
 themes.forest; // Error: not in Theme`,
+    },
     correctSide: "right",
     explanationCorrect:
       "`Record<Theme, string>` creates an object type where every key in the `Theme` union must be present and map to a `string`. It catches missing keys (if you add a new theme, you must add a color) and rejects invalid keys. Much safer than an index signature.",
@@ -155,7 +167,9 @@ themes.forest; // Error: not in Theme`,
     category: "utility-types",
     difficulty: "hard",
     title: "Extract and Exclude for unions",
-    badCode: `type Event =
+    content: {
+      type: "code",
+      left: `type Event =
   | { type: "click"; x: number; y: number }
   | { type: "keypress"; key: string }
   | { type: "scroll"; offset: number };
@@ -163,7 +177,7 @@ themes.forest; // Error: not in Theme`,
 // Manually picking event types
 type MouseEvent = { type: "click"; x: number; y: number };
 type KeyEvent = { type: "keypress"; key: string };`,
-    goodCode: `type AppEvent =
+      right: `type AppEvent =
   | { type: "click"; x: number; y: number }
   | { type: "keypress"; key: string }
   | { type: "scroll"; offset: number };
@@ -174,6 +188,7 @@ type MouseEvent = Extract<AppEvent, { type: "click" }>;
 
 type NonMouseEvent = Exclude<AppEvent, { type: "click" }>;
 // keypress | scroll events`,
+    },
     correctSide: "right",
     explanationCorrect:
       "`Extract` filters a union to members assignable to the given shape. `Exclude` does the opposite, removing matching members. Both stay in sync when the original union changes. This is cleaner and safer than manually copying type definitions.",
@@ -188,7 +203,9 @@ type NonMouseEvent = Exclude<AppEvent, { type: "click" }>;
     category: "utility-types",
     difficulty: "hard",
     title: "ReturnType and Parameters",
-    badCode: `// Manually typing what the function returns
+    content: {
+      type: "code",
+      left: `// Manually typing what the function returns
 function createUser(name: string, age: number) {
   return { id: crypto.randomUUID(), name, age };
 }
@@ -196,7 +213,7 @@ function createUser(name: string, age: number) {
 // Hand-written, can drift from implementation
 type NewUser = { id: string; name: string; age: number };
 type CreateArgs = [string, number];`,
-    goodCode: `function createUser(name: string, age: number) {
+      right: `function createUser(name: string, age: number) {
   return { id: crypto.randomUUID(), name, age };
 }
 
@@ -206,6 +223,7 @@ type NewUser = ReturnType<typeof createUser>;
 
 type CreateArgs = Parameters<typeof createUser>;
 // [name: string, age: number]`,
+    },
     correctSide: "right",
     explanationCorrect:
       "`ReturnType` extracts the return type and `Parameters` extracts the parameter tuple from a function type. Both stay in sync with the implementation automatically. This is especially useful when you do not control the function's source or want to avoid exporting an extra type.",
@@ -220,7 +238,9 @@ type CreateArgs = Parameters<typeof createUser>;
     category: "utility-types",
     difficulty: "medium",
     title: "Prettify intersections for readability",
-    badCode: `type User = { name: string } &
+    content: {
+      type: "code",
+      left: `type User = { name: string } &
   { email: string } &
   { role: "admin" | "user" };
 
@@ -228,7 +248,7 @@ type CreateArgs = Parameters<typeof createUser>;
 // { name: string } & { email: string }
 //   & { role: "admin" | "user" }
 // Hard to read with many intersections`,
-    goodCode: `type Prettify<T> = {
+      right: `type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
@@ -241,6 +261,7 @@ type User = Prettify<
 // Hover shows:
 // { name: string; email: string;
 //   role: "admin" | "user" }`,
+    },
     correctSide: "right",
     explanationCorrect:
       "The `Prettify` helper uses a mapped type to flatten intersections into a single object type. IDE hover tooltips show a clean, readable object instead of a chain of `&` intersections. This is especially valuable when composing types from multiple sources like mixins, Pick/Omit combinations, or module augmentations.",
@@ -254,14 +275,16 @@ type User = Prettify<
     category: "utility-types",
     difficulty: "medium",
     title: "Array element type with indexed access",
-    badCode: `const ROLES = ["admin", "editor", "viewer"] as const;
+    content: {
+      type: "code",
+      left: `const ROLES = ["admin", "editor", "viewer"] as const;
 
 // Manually duplicating the values as a union
 type Role = "admin" | "editor" | "viewer";
 
 // Must update both when roles change
 function hasRole(role: Role) { }`,
-    goodCode: `const ROLES = ["admin", "editor", "viewer"] as const;
+      right: `const ROLES = ["admin", "editor", "viewer"] as const;
 
 // Derive the union from the array
 type Role = (typeof ROLES)[number];
@@ -269,6 +292,7 @@ type Role = (typeof ROLES)[number];
 // "admin" | "editor" | "viewer"
 // Auto-updates when ROLES changes
 function hasRole(role: Role) { }`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Indexing a tuple or readonly array with `[number]` extracts a union of all element types. Combined with `as const` and `typeof`, this derives a string literal union directly from a runtime array. Adding or removing an element in `ROLES` updates the `Role` type automatically.",

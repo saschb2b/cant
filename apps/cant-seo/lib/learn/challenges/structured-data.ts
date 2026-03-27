@@ -6,7 +6,10 @@ export const structuredDataChallenges: Challenge[] = [
     category: "structured-data",
     difficulty: "easy",
     title: "JSON-LD in Next.js via script tag",
-    badCode: `// app/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/page.tsx
 export const metadata: Metadata = {
   other: {
     "application/ld+json": JSON.stringify({
@@ -20,7 +23,8 @@ export const metadata: Metadata = {
 export default function Home() {
   return <main>Welcome to Acme</main>;
 }`,
-    goodCode: `// app/page.tsx
+
+      right: `// app/page.tsx
 export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -41,6 +45,8 @@ export default function Home() {
     </main>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The recommended way to add JSON-LD in Next.js is via a `<script type='application/ld+json'>` tag in the page component. This approach is explicit, easy to read, and works with both static and dynamic data. Google's own documentation recommends JSON-LD over other structured data formats.",
@@ -55,7 +61,10 @@ export default function Home() {
     category: "structured-data",
     difficulty: "medium",
     title: "Article schema for blog posts",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 export default async function BlogPost({
   params,
 }: {
@@ -82,7 +91,8 @@ export default async function BlogPost({
     </article>
   );
 }`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 export default async function BlogPost({
   params,
 }: {
@@ -125,7 +135,9 @@ export default async function BlogPost({
     </article>
   );
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "A complete Article schema includes the headline, dates, author, image, and publisher. Google uses these fields to display rich results like article carousels with author photos and publish dates. The more fields you provide, the more likely your content qualifies for enhanced search features.",
     explanationWrong:
@@ -139,7 +151,10 @@ export default async function BlogPost({
     category: "structured-data",
     difficulty: "medium",
     title: "FAQ schema markup",
-    badCode: `// app/faq/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/faq/page.tsx
 export default function FAQPage() {
   return (
     <main>
@@ -155,7 +170,8 @@ export default function FAQPage() {
     </main>
   );
 }`,
-    goodCode: `// app/faq/page.tsx
+
+      right: `// app/faq/page.tsx
 const faqs = [
   { q: "What is your return policy?",
     a: "You can return items within 30 days." },
@@ -195,6 +211,8 @@ export default function FAQPage() {
     </main>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "FAQ schema markup can trigger rich results that show expandable question-and-answer pairs directly in Google search. This takes up more visual space on the results page, increasing your visibility. The data-driven approach also keeps the schema and rendered content in sync.",
@@ -209,7 +227,10 @@ export default function FAQPage() {
     category: "structured-data",
     difficulty: "medium",
     title: "BreadcrumbList schema",
-    badCode: `// components/breadcrumbs.tsx
+    content: {
+      type: "code",
+
+      left: `// components/breadcrumbs.tsx
 export function Breadcrumbs({
   items,
 }: {
@@ -228,7 +249,8 @@ export function Breadcrumbs({
     </nav>
   );
 }`,
-    goodCode: `// components/breadcrumbs.tsx
+
+      right: `// components/breadcrumbs.tsx
 export function Breadcrumbs({
   items,
 }: {
@@ -264,7 +286,9 @@ export function Breadcrumbs({
     </nav>
   );
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "BreadcrumbList schema tells Google how to display the page's position in the site hierarchy directly in search results. Instead of showing the raw URL, Google shows clickable breadcrumb links like 'Home > Products > Widgets'. This improves navigation and click-through rates.",
     explanationWrong:
@@ -278,7 +302,10 @@ export function Breadcrumbs({
     category: "structured-data",
     difficulty: "easy",
     title: "Organization schema in root layout",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   title: {
     default: "Acme Corp",
@@ -297,7 +324,8 @@ export default function RootLayout({
     </html>
   );
 }`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   title: {
     default: "Acme Corp",
@@ -336,6 +364,8 @@ export default function RootLayout({
     </html>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Placing Organization schema in the root layout makes it available on every page. It tells Google your company name, logo, and social profiles, which can appear in the Knowledge Panel on the right side of search results. The `sameAs` array links to your verified social accounts.",
@@ -350,7 +380,10 @@ export default function RootLayout({
     category: "structured-data",
     difficulty: "hard",
     title: "Multiple schemas per page",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -364,7 +397,8 @@ const jsonLd = {
     ],
   },
 };`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -387,6 +421,8 @@ const breadcrumbJsonLd = {
 };
 
 // Render as two separate script tags`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Each schema type should be in its own `<script type='application/ld+json'>` tag. This is cleaner and avoids nesting unrelated schemas. Google recommends keeping schemas separate unless they have a natural parent-child relationship. It also makes validation easier.",
@@ -401,7 +437,10 @@ const breadcrumbJsonLd = {
     category: "structured-data",
     difficulty: "hard",
     title: "Validating structured data",
-    badCode: `// app/products/[id]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/products/[id]/page.tsx
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -410,7 +449,8 @@ const jsonLd = {
   // Missing required fields: offers, image
   // Deploy and hope Google picks it up
 };`,
-    goodCode: `// app/products/[id]/page.tsx
+
+      right: `// app/products/[id]/page.tsx
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -427,7 +467,9 @@ const jsonLd = {
 };
 // Validate: paste URL into
 // search.google.com/test/rich-results`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Product schema requires specific fields like `offers` and `image` to qualify for rich results. Always validate your schema using Google's Rich Results Test before deploying. This tool shows exactly which fields are missing or incorrect, saving you from waiting weeks to discover the schema was invalid.",
     explanationWrong:
@@ -440,7 +482,10 @@ const jsonLd = {
     category: "structured-data",
     difficulty: "hard",
     title: "Dynamic JSON-LD from component props",
-    badCode: `// app/events/[id]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/events/[id]/page.tsx
 export default async function EventPage({
   params,
 }: {
@@ -457,7 +502,8 @@ export default async function EventPage({
   );
   // No structured data at all
 }`,
-    goodCode: `// app/events/[id]/page.tsx
+
+      right: `// app/events/[id]/page.tsx
 export default async function EventPage({
   params,
 }: {
@@ -497,6 +543,8 @@ export default async function EventPage({
     </main>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Building JSON-LD from fetched data ensures each event page has accurate, unique structured data. Google can display event rich results with the date, venue, and organizer directly in search. This is especially valuable for event pages because users often search for events by date or location.",

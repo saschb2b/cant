@@ -6,16 +6,22 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "easy",
     title: "Button size: booleans vs enum",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   children: React.ReactNode;
   isSmall?: boolean;
   isLarge?: boolean;
 }`,
-    goodCode: `interface ButtonProps {
+
+      right: `interface ButtonProps {
   children: React.ReactNode;
   /** @default "md" */
   size?: 'sm' | 'md' | 'lg';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'A `size` union replaces two booleans with a single, self-documenting prop. `<Button size="sm" />` is clear, and adding `"xs"` later is just one more union member.\n\nWith booleans, `<Button isSmall isLarge />` compiles fine but makes no sense. Unions make invalid states impossible and scale without combinatorial explosion.',
@@ -29,18 +35,24 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "easy",
     title: "Alert severity levels",
-    badCode: `interface AlertProps {
+    content: {
+      type: "code",
+
+      left: `interface AlertProps {
   children: React.ReactNode;
   isError?: boolean;
   isWarning?: boolean;
   isSuccess?: boolean;
   isInfo?: boolean;
 }`,
-    goodCode: `interface AlertProps {
+
+      right: `interface AlertProps {
   children: React.ReactNode;
   /** @default "info" */
   severity?: 'error' | 'warning' | 'success' | 'info';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Four mutually exclusive booleans should always be a single union. `<Alert severity="error" />` reads better than `<Alert isError />` and makes it impossible to pass conflicting states.\n\nBonus: `severity` works naturally in a switch statement for styling and icon selection, and adding new variants later is trivial.',
@@ -54,7 +66,10 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "medium",
     title: "Chip visual variants",
-    badCode: `interface ChipProps {
+    content: {
+      type: "code",
+
+      left: `interface ChipProps {
   label: string;
   isOutlined?: boolean;
   isFilled?: boolean;
@@ -63,7 +78,8 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   isPrimary?: boolean;
   isSecondary?: boolean;
 }`,
-    goodCode: `interface ChipProps {
+
+      right: `interface ChipProps {
   label: string;
   /** @default "filled" */
   variant?: 'filled' | 'outlined';
@@ -72,6 +88,8 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   onClick?: () => void;
   onDelete?: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Six booleans collapse into two enums plus event callbacks. `variant` and `color` are independent dimensions, so you can combine any variant with any color. And clickable/deletable are better expressed by the presence of their callbacks: if `onClick` is defined, the chip is clickable.\n\nThis is exactly how MUI's Chip API works.",
@@ -85,18 +103,24 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "easy",
     title: "Text alignment prop",
-    badCode: `interface TextProps {
+    content: {
+      type: "code",
+
+      left: `interface TextProps {
   children: React.ReactNode;
   alignLeft?: boolean;
   alignCenter?: boolean;
   alignRight?: boolean;
   alignJustify?: boolean;
 }`,
-    goodCode: `interface TextProps {
+
+      right: `interface TextProps {
   children: React.ReactNode;
   /** @default "left" */
   align?: 'left' | 'center' | 'right' | 'justify';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'This is a textbook case for a union. `align` maps directly to the CSS `text-align` property, making the prop name and values immediately familiar. One prop, one concept, one value.\n\n`<Text align="center" />` is concise and self-explanatory. MUI\'s Typography uses this exact pattern.',
@@ -110,19 +134,25 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "medium",
     title: "Loading state representation",
-    badCode: `interface DataViewProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface DataViewProps<T> {
   data: T[];
   isLoading?: boolean;
   isError?: boolean;
   isEmpty?: boolean;
   isRefreshing?: boolean;
 }`,
-    goodCode: `interface DataViewProps<T> {
+
+      right: `interface DataViewProps<T> {
   data: T[];
   /** @default "idle" */
   status?: 'idle' | 'loading' | 'error'
     | 'empty' | 'refreshing';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Async state is a finite state machine. The view is always in exactly one state. A `status` union models this correctly and lets you exhaustively handle every case in a switch.\n\nWith booleans, `isLoading && isError` is a valid but meaningless combination that your component must defend against.",
@@ -136,14 +166,18 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "hard",
     title: "Icon position variants",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   children: React.ReactNode;
   icon?: React.ReactNode;
   isIconBefore?: boolean;
   isIconAfter?: boolean;
   isIconOnly?: boolean;
 }`,
-    goodCode: `interface ButtonProps {
+
+      right: `interface ButtonProps {
   children: React.ReactNode;
   icon?: React.ReactNode;
   /** @default "start" */
@@ -153,6 +187,8 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   icon: React.ReactNode;
   iconPosition?: never;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'The "icon-only" variant is fundamentally different: it requires `aria-label` for accessibility and has no `children`. That\'s a discriminated union, not a boolean.\n\nFor icon + text buttons, `iconPosition` is a clean enum. `<Button icon={<Save />} iconPosition="end">Save</Button>` reads naturally. Three booleans for one concept is a code smell.',
@@ -166,20 +202,26 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "medium",
     title: "Spacing scale vs arbitrary numbers",
-    badCode: `interface StackProps {
+    content: {
+      type: "code",
+
+      left: `interface StackProps {
   children: React.ReactNode;
   /** Gap between items in pixels. */
   gap?: number;
   /** Padding in pixels. */
   padding?: number;
 }`,
-    goodCode: `interface StackProps {
+
+      right: `interface StackProps {
   children: React.ReactNode;
   /** @default "md" */
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   /** @default "none" */
   padding?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Named spacing tokens enforce visual consistency. `gap=\"md\"` constrains consumers to your design system's scale, so every component uses the same values.\n\nNote: MUI uses numbers (`gap={2}`) that multiply `theme.spacing`, which also works because the multiplier constrains values to the scale. The key insight is the same: don't accept arbitrary pixel values. Whether you use string tokens or a numeric multiplier, the API should map to a finite set of spacing steps.",
@@ -193,7 +235,10 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "hard",
     title: "Multi-dimensional boolean explosion",
-    badCode: `interface CardProps {
+    content: {
+      type: "code",
+
+      left: `interface CardProps {
   children: React.ReactNode;
   isElevated?: boolean;
   isOutlined?: boolean;
@@ -201,7 +246,8 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   isHorizontal?: boolean;
   isInteractive?: boolean;
 }`,
-    goodCode: `interface CardProps {
+
+      right: `interface CardProps {
   children: React.ReactNode;
   /** @default "elevated" */
   variant?: 'elevated' | 'outlined' | 'flat';
@@ -211,6 +257,8 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   direction?: 'vertical' | 'horizontal';
   onClick?: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Five booleans are really three independent dimensions: surface style (`variant`), density (`padding`), and layout (`direction`). Each dimension gets its own union prop. `isInteractive` is better expressed by the presence of `onClick`. If there's a click handler, the card is interactive.\n\nBooleans create 32 combinations, many conflicting. Enums produce 18, and every single one is valid.",

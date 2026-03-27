@@ -6,7 +6,12 @@ export const dockerfileBasicsChallenges: Challenge[] = [
     category: "dockerfile-basics",
     difficulty: "easy",
     title: "COPY vs ADD",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 
 # Add application files
 ADD . /app
@@ -14,7 +19,8 @@ WORKDIR /app
 
 RUN npm install
 CMD ["node", "server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 
 # Copy application files
 COPY . /app
@@ -22,7 +28,8 @@ WORKDIR /app
 
 RUN npm install
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`COPY` is explicit and predictable: it copies files from the build context into the image. Use `COPY` unless you specifically need `ADD`'s extra features (auto-extracting tarballs or fetching remote URLs). Most builds only need `COPY`.",
@@ -37,21 +44,28 @@ CMD ["node", "server.js"]`,
     category: "dockerfile-basics",
     difficulty: "easy",
     title: "CMD exec form vs shell form",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm install
 
 # Shell form
 CMD npm start`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm install
 
 # Exec form
 CMD ["npm", "start"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       'The exec form (`CMD ["npm", "start"]`) runs the command directly without a shell wrapper. This means the process receives signals like SIGTERM properly, enabling graceful shutdown. It also avoids unexpected shell variable expansion.',
@@ -65,14 +79,20 @@ CMD ["npm", "start"]`,
     category: "dockerfile-basics",
     difficulty: "medium",
     title: "ENTRYPOINT + CMD",
-    badCode: `FROM python:3.12-slim
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM python:3.12-slim
 
 COPY app.py /app/app.py
 WORKDIR /app
 
 # Hardcoded command, can't override args
 ENTRYPOINT ["python", "app.py", "--port", "8080"]`,
-    goodCode: `FROM python:3.12-slim
+
+      right: `FROM python:3.12-slim
 
 COPY app.py /app/app.py
 WORKDIR /app
@@ -80,7 +100,8 @@ WORKDIR /app
 # Fixed binary, overridable defaults
 ENTRYPOINT ["python", "app.py"]
 CMD ["--port", "8080"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Splitting `ENTRYPOINT` (the fixed executable) from `CMD` (the default arguments) lets users override arguments at runtime with `docker run myimage --port 9090` without replacing the entire command. This is the standard pattern for flexible container images.",
@@ -95,14 +116,20 @@ CMD ["--port", "8080"]`,
     category: "dockerfile-basics",
     difficulty: "medium",
     title: "Minimize RUN layers",
-    badCode: `FROM ubuntu:24.04
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM ubuntu:24.04
 
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y git
 RUN apt-get install -y wget
 RUN rm -rf /var/lib/apt/lists/*`,
-    goodCode: `FROM ubuntu:24.04
+
+      right: `FROM ubuntu:24.04
 
 RUN apt-get update && \\
     apt-get install -y \\
@@ -110,7 +137,8 @@ RUN apt-get update && \\
       git \\
       wget && \\
     rm -rf /var/lib/apt/lists/*`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Combining related commands in a single `RUN` instruction creates one layer instead of five. The cleanup (`rm -rf /var/lib/apt/lists/*`) actually removes files from the image because it happens in the same layer as the install. Fewer layers also mean a smaller image.",
@@ -125,7 +153,12 @@ RUN apt-get update && \\
     category: "dockerfile-basics",
     difficulty: "hard",
     title: "WORKDIR vs cd in RUN",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 
 RUN mkdir -p /app
 RUN cd /app && npm init -y
@@ -134,7 +167,8 @@ COPY server.js /app/server.js
 RUN cd /app && node -e "require('./server')"
 
 CMD ["node", "/app/server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 
 WORKDIR /app
 RUN npm init -y
@@ -143,7 +177,8 @@ COPY server.js .
 RUN node -e "require('./server')"
 
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`WORKDIR` sets the working directory for all subsequent instructions. It creates the directory if it doesn't exist and persists across layers. This eliminates repetitive `cd` commands and makes paths relative to the app directory.",

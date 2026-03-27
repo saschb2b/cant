@@ -6,7 +6,10 @@ export const metaTagsChallenges: Challenge[] = [
     category: "meta-tags",
     difficulty: "easy",
     title: "Page title via metadata API",
-    badCode: `// app/about/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/about/page.tsx
 export default function AboutPage() {
   return (
     <>
@@ -20,7 +23,8 @@ export default function AboutPage() {
     </>
   );
 }`,
-    goodCode: `// app/about/page.tsx
+
+      right: `// app/about/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -35,6 +39,8 @@ export default function AboutPage() {
     </main>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Next.js provides a built-in Metadata API that handles the title tag, deduplication, and template merging automatically. Exporting a `metadata` object from a page or layout is the recommended approach. It also enables the title template feature from the root layout.",
@@ -49,14 +55,18 @@ export default function AboutPage() {
     category: "meta-tags",
     difficulty: "easy",
     title: "Meta description length",
-    badCode: `// app/products/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/products/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Products",
   description: "Products.",
 };`,
-    goodCode: `// app/products/page.tsx
+
+      right: `// app/products/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -66,7 +76,9 @@ export const metadata: Metadata = {
     + "and gadgets. Free shipping on orders over "
     + "$50. Rated 4.8 stars by 2,000+ customers.",
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "A meta description between 120 and 160 characters gives search engines enough text to display a meaningful snippet. It should summarize the page content and include a compelling reason to click. Too short and you waste valuable SERP real estate.",
     explanationWrong:
@@ -79,7 +91,10 @@ export const metadata: Metadata = {
     category: "meta-tags",
     difficulty: "easy",
     title: "Viewport meta tag",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -101,7 +116,8 @@ export default function RootLayout({
     </html>
   );
 }`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 import type { Metadata, Viewport } from "next";
 
 export const viewport: Viewport = {
@@ -124,6 +140,8 @@ export default function RootLayout({
     </html>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Next.js provides a dedicated `viewport` export that is separate from `metadata`. Setting `width: 'device-width'` ensures the page scales to the actual screen size. The separate export allows Next.js to handle viewport-related tags independently from other metadata.",
@@ -138,7 +156,10 @@ export default function RootLayout({
     category: "meta-tags",
     difficulty: "medium",
     title: "Dynamic metadata with generateMetadata",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -154,7 +175,8 @@ export default async function BlogPost({
   const post = await getPost(params.slug);
   return <article>{post.content}</article>;
 }`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -177,6 +199,8 @@ export default async function BlogPost({
   const post = await getPost(params.slug);
   return <article>{post.content}</article>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "For dynamic routes, `generateMetadata` fetches data and returns metadata specific to each page. Next.js automatically deduplicates the `fetch` call so it is not made twice. Each blog post gets its own unique title and description in search results.",
@@ -191,7 +215,10 @@ export default async function BlogPost({
     category: "meta-tags",
     difficulty: "medium",
     title: "Title template in root layout",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   title: "Acme Corp",
 };
@@ -205,7 +232,8 @@ export const metadata: Metadata = {
 export const metadata: Metadata = {
   title: "Pricing | Acme Corp",
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   title: {
     default: "Acme Corp",
@@ -222,7 +250,9 @@ export const metadata: Metadata = {
 export const metadata: Metadata = {
   title: "Pricing",
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The `title.template` pattern in the root layout defines a consistent suffix for all child pages. Each page only needs to set its own unique portion. If you rebrand from 'Acme Corp' to 'Acme Inc', you change one line instead of every page.",
     explanationWrong:
@@ -236,7 +266,10 @@ export const metadata: Metadata = {
     category: "meta-tags",
     difficulty: "medium",
     title: "Metadata merging across layouts",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   title: { default: "Acme", template: "%s | Acme" },
   openGraph: {
@@ -253,7 +286,8 @@ export const metadata: Metadata = {
   },
   // Forgot siteName and images, they are gone
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   title: { default: "Acme", template: "%s | Acme" },
   openGraph: {
@@ -272,6 +306,8 @@ export const metadata: Metadata = {
     images: ["/og-default.png"],
   },
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Next.js metadata merging is shallow: when a child layout defines `openGraph`, it replaces the entire parent `openGraph` object. You must re-include fields like `siteName` and `images` that you still want. Understanding this prevents accidental data loss.",
@@ -286,7 +322,10 @@ export const metadata: Metadata = {
     category: "meta-tags",
     difficulty: "medium",
     title: "Robots meta per page",
-    badCode: `// app/internal/dashboard/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/internal/dashboard/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -297,7 +336,8 @@ export const metadata: Metadata = {
 export default function Dashboard() {
   return <main>Secret dashboard</main>;
 }`,
-    goodCode: `// app/internal/dashboard/page.tsx
+
+      right: `// app/internal/dashboard/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -311,7 +351,9 @@ export const metadata: Metadata = {
 export default function Dashboard() {
   return <main>Secret dashboard</main>;
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Setting `robots: { index: false, follow: false }` in the page metadata adds a `<meta name='robots' content='noindex, nofollow'>` tag. This is more reliable than relying solely on robots.txt because some crawlers ignore robots.txt, and the meta tag is a stronger signal to remove a page from search results.",
     explanationWrong:
@@ -325,7 +367,10 @@ export default function Dashboard() {
     category: "meta-tags",
     difficulty: "hard",
     title: "Charset and language attributes",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export default function RootLayout({
   children,
 }: {
@@ -340,7 +385,8 @@ export default function RootLayout({
     </html>
   );
 }`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   metadataBase: new URL("https://acme.com"),
 };
@@ -356,7 +402,9 @@ export default function RootLayout({
     </html>
   );
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Next.js automatically adds `<meta charset='utf-8'>` and the viewport tag, so you do not need to add them manually. What you do need is the `lang` attribute on `<html>` for accessibility and SEO, and a `metadataBase` for resolving relative URLs in metadata like OG images.",
     explanationWrong:

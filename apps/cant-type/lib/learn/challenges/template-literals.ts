@@ -6,7 +6,10 @@ export const templateLiteralChallenges: Challenge[] = [
     category: "template-literals",
     difficulty: "easy",
     title: "Event name patterns",
-    badCode: `type EventHandler = {
+    content: {
+      type: "code",
+
+      left: `type EventHandler = {
   on: (event: string, cb: () => void) => void;
 };
 
@@ -14,7 +17,8 @@ const emitter: EventHandler = getEmitter();
 emitter.on("clck", handleClick);
 // Typo not caught, handler never fires
 // No error at compile time`,
-    goodCode: `type EventName =
+
+      right: `type EventName =
   | \`on\${"Click" | "Hover" | "Focus"}\`
   | \`on\${"Key" | "Mouse"}\${"Down" | "Up"}\`;
 
@@ -26,6 +30,8 @@ const emitter: EventHandler = getEmitter();
 emitter.on("onClick", handleClick);
 // emitter.on("onClck", handleClick);
 // Error: not assignable to EventName`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Template literal types let you define string patterns the compiler enforces. By combining literal unions inside template positions, TypeScript generates all valid combinations and catches typos at compile time instead of silently failing at runtime.",
@@ -40,7 +46,10 @@ emitter.on("onClick", handleClick);
     category: "template-literals",
     difficulty: "easy",
     title: "Route path types",
-    badCode: `function navigate(path: string) {
+    content: {
+      type: "code",
+
+      left: `function navigate(path: string) {
   router.push(path);
 }
 
@@ -49,7 +58,8 @@ navigate("users/123");
 // Missing leading slash, breaks routing
 navigate("/uesrs/123");
 // Typo in segment, silent 404`,
-    goodCode: `type AppRoute =
+
+      right: `type AppRoute =
   | \`/users/\${number}\`
   | \`/posts/\${number}\`
   | \`/settings/\${"profile" | "billing"}\`;
@@ -61,6 +71,8 @@ function navigate(path: AppRoute) {
 navigate("/users/123"); // OK
 // navigate("users/123"); // Error
 // navigate("/uesrs/123"); // Error`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Template literal types can encode the structure of URL paths. The compiler checks that the path starts with a slash, uses valid segments, and has parameters of the right type. Typos and missing slashes become compile-time errors.",
@@ -75,7 +87,10 @@ navigate("/users/123"); // OK
     category: "template-literals",
     difficulty: "medium",
     title: "String manipulation types",
-    badCode: `type Getters<T> = {
+    content: {
+      type: "code",
+
+      left: `type Getters<T> = {
   [K in keyof T as \`get\${string}\`]: () => T[K];
 };
 
@@ -83,7 +98,8 @@ navigate("/users/123"); // OK
 // to the original property name.
 // get_anything would match.
 // No casing convention enforced.`,
-    goodCode: `type Getters<T> = {
+
+      right: `type Getters<T> = {
   [K in keyof T as
     \`get\${Capitalize<string & K>}\`
   ]: () => T[K];
@@ -93,6 +109,8 @@ interface Person { name: string; age: number }
 type PersonGetters = Getters<Person>;
 // { getName: () => string;
 //   getAge: () => number }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "TypeScript provides intrinsic string manipulation types: Uppercase, Lowercase, Capitalize, and Uncapitalize. Using Capitalize in a mapped type with template literals transforms property names to follow conventional getter naming (getName, getAge) while preserving the type relationship.",
@@ -107,7 +125,10 @@ type PersonGetters = Getters<Person>;
     category: "template-literals",
     difficulty: "medium",
     title: "Template unions expand combinatorially",
-    badCode: `type Color = "red" | "green" | "blue";
+    content: {
+      type: "code",
+
+      left: `type Color = "red" | "green" | "blue";
 type Shade = "light" | "dark";
 
 // Manually listing all combinations
@@ -116,7 +137,8 @@ type Theme =
   | "dark-red" | "dark-green" | "dark-blue";
 // Doesn't scale. Forgot a combo?
 // Adding a color means updating manually.`,
-    goodCode: `type Color = "red" | "green" | "blue";
+
+      right: `type Color = "red" | "green" | "blue";
 type Shade = "light" | "dark";
 
 // Template literal distributes over unions
@@ -126,6 +148,8 @@ type Theme = \`\${Shade}-\${Color}\`;
 // "light-blue" | "dark-red" |
 // "dark-green" | "dark-blue"
 // Adding a new Color auto-expands Theme`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When a template literal type contains union types, TypeScript distributes across them and generates every combination. Adding a new member to either union automatically expands the result. This removes the manual maintenance burden and eliminates the risk of missing a combination.",
@@ -140,7 +164,10 @@ type Theme = \`\${Shade}-\${Color}\`;
     category: "template-literals",
     difficulty: "hard",
     title: "Branded string types",
-    badCode: `function sendEmail(email: string) {
+    content: {
+      type: "code",
+
+      left: `function sendEmail(email: string) {
   mailer.send(email, template);
 }
 
@@ -149,7 +176,8 @@ sendEmail("user@example.com");
 sendEmail("not an email at all");
 // No way to distinguish validated
 // strings from arbitrary strings`,
-    goodCode: `type Email = string & { __brand: "Email" };
+
+      right: `type Email = string & { __brand: "Email" };
 
 function validateEmail(input: string): Email | null {
   const re = /^[^@]+@[^@]+\\.[^@]+$/;
@@ -163,6 +191,8 @@ function sendEmail(email: Email) {
 const email = validateEmail(userInput);
 if (email) sendEmail(email); // OK
 // sendEmail("raw string"); // Error`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Branded types use an intersection with a phantom property to create a nominal subtype of string. The only way to obtain an Email value is through the validateEmail function, so sendEmail can trust that its input has already been validated. The brand property exists only at the type level.",
@@ -176,7 +206,10 @@ if (email) sendEmail(email); // OK
     category: "template-literals",
     difficulty: "hard",
     title: "Key patterns with template literals",
-    badCode: `interface APIResponse {
+    content: {
+      type: "code",
+
+      left: `interface APIResponse {
   user_id: number;
   user_name: string;
   user_email: string;
@@ -191,7 +224,8 @@ interface ClientData {
   postCount: number;
   // Must update both types in sync
 }`,
-    goodCode: `type SnakeToCamel<S extends string> =
+
+      right: `type SnakeToCamel<S extends string> =
   S extends \`\${infer Head}_\${infer Tail}\`
     ? \`\${Head}\${Capitalize<SnakeToCamel<Tail>>}\`
     : S;
@@ -211,6 +245,8 @@ interface APIResponse {
 type ClientData = CamelKeys<APIResponse>;
 // { userId: number; userName: string;
 //   userEmail: string; postCount: number }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "By combining template literal types with infer, you can write a recursive type that splits a string at underscores and capitalizes each subsequent segment. The CamelKeys mapped type transforms all keys automatically, so adding a new field to APIResponse updates ClientData with zero manual effort.",

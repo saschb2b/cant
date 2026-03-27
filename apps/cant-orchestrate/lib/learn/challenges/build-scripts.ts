@@ -6,7 +6,12 @@ export const buildScriptsChallenges: Challenge[] = [
     category: "build-scripts",
     difficulty: "easy",
     title: "Makefile for container workflows",
-    badCode: `#!/bin/bash
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `#!/bin/bash
 # build.sh - hard to discover, no help
 
 docker build -t myapp:latest .
@@ -15,7 +20,8 @@ docker run --rm -p 3000:3000 myapp:latest
 # Different scripts for different tasks
 # No dependency tracking
 # No tab completion`,
-    goodCode: `# Makefile - self-documenting
+
+      right: `# Makefile - self-documenting
 .PHONY: build run test clean
 
 build: ## Build the container image
@@ -34,7 +40,8 @@ clean: ## Remove images and volumes
 help: ## Show available targets
 \t@grep -E '^[a-zA-Z_-]+:.*?##' $(MAKEFILE_LIST) | sort | \\
 \t  awk 'BEGIN {FS = ":.*?## "}; {printf "  \\033[36m%-15s\\033[0m %s\\n", $$1, $$2}'`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Makefiles provide discoverable, self-documenting commands with dependency tracking. `make run` automatically builds first if needed. The `help` target documents all available commands. Make is pre-installed on most Unix systems and supports tab completion.",
@@ -48,7 +55,12 @@ help: ## Show available targets
     category: "build-scripts",
     difficulty: "medium",
     title: "Ant build with Docker integration",
-    badCode: `<!-- build.xml - manual process -->
+    content: {
+      type: "code",
+
+      lang: "xml",
+
+      left: `<!-- build.xml - manual process -->
 <project name="myapp" default="build">
   <target name="build">
     <javac srcdir="src"
@@ -61,7 +73,8 @@ help: ## Show available targets
   <!-- Developer must manually
        docker build after ant build -->
 </project>`,
-    goodCode: `<!-- build.xml - integrated pipeline -->
+
+      right: `<!-- build.xml - integrated pipeline -->
 <project name="myapp" default="docker-build">
   <target name="compile">
     <javac srcdir="src"
@@ -86,7 +99,8 @@ help: ## Show available targets
     </exec>
   </target>
 </project>`,
-    lang: "xml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Integrating Docker commands into Ant\'s dependency chain ensures the JAR is always built before the image. `depends` enforces the order: compile, then JAR, then Docker build. `failonerror="true"` stops the pipeline if any step fails.',
@@ -100,7 +114,12 @@ help: ## Show available targets
     category: "build-scripts",
     difficulty: "medium",
     title: "Docker Compose for dev scripts",
-    badCode: `# README.md says:
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# README.md says:
 # 1. Install Node 20
 # 2. Install PostgreSQL 16
 # 3. Create database "myapp"
@@ -109,7 +128,8 @@ help: ## Show available targets
 # 6. Run npm run migrate
 # 7. Run npm run dev
 # Good luck!`,
-    goodCode: `# Makefile
+
+      right: `# Makefile
 .PHONY: dev setup test
 
 setup: ## First-time setup
@@ -127,7 +147,8 @@ test: ## Run tests
 # - PostgreSQL setup
 # - Database creation
 # - Hot reloading`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Docker Compose encapsulates the entire development environment. New developers run `make setup && make dev` instead of following a multi-step guide. Everyone gets the same versions, same database, same configuration. The setup is reproducible and version-controlled.",
@@ -141,7 +162,12 @@ test: ## Run tests
     category: "build-scripts",
     difficulty: "hard",
     title: "Gradle Jib for Java containers",
-    badCode: `# Dockerfile for Java app
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# Dockerfile for Java app
 FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 COPY . .
@@ -154,7 +180,8 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 # Needs Docker daemon
 # Rebuilds entire fat JAR layer
 # No layer optimization`,
-    goodCode: `// build.gradle.kts
+
+      right: `// build.gradle.kts
 plugins {
   id("com.google.cloud.tools.jib") version "3.4.4"
 }
@@ -172,7 +199,8 @@ jib {
 // Build: ./gradlew jib
 // No Docker daemon required
 // Optimized layer caching`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Jib builds optimized container images directly from your build tool without a Dockerfile or Docker daemon. It separates dependencies, resources, and classes into distinct layers, so code changes only rebuild the thin classes layer. Builds are faster and reproducible.",

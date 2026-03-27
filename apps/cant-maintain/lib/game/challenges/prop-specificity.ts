@@ -6,7 +6,10 @@ export const propSpecificityChallenges: Challenge[] = [
     category: "prop-specificity",
     difficulty: "easy",
     title: "Variant type definition",
-    badCode: `enum ButtonVariant {
+    content: {
+      type: "code",
+
+      left: `enum ButtonVariant {
   Primary = 'primary',
   Secondary = 'secondary',
   Danger = 'danger',
@@ -16,10 +19,13 @@ interface ButtonProps {
   label: string;
   variant: ButtonVariant;
 }`,
-    goodCode: `interface ButtonProps {
+
+      right: `interface ButtonProps {
   label: string;
   variant: 'primary' | 'secondary' | 'danger';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "String unions are preferred over enums in modern TypeScript. They're simpler, don't generate runtime code, and work naturally with string literals at call sites: `variant=\"primary\"` instead of `variant={ButtonVariant.Primary}`.",
@@ -34,16 +40,22 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "easy",
     title: "Specific collection prop names",
-    badCode: `interface UserListProps {
+    content: {
+      type: "code",
+
+      left: `interface UserListProps {
   data: User[];
   selected: string;
   onClick: (item: User) => void;
 }`,
-    goodCode: `interface UserListProps {
+
+      right: `interface UserListProps {
   users: User[];
   selectedUserId: string;
   onUserSelect: (user: User) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Every prop is specific: `users` (not generic `data`), `selectedUserId` (not ambiguous `selected`), and `onUserSelect` (specifies what event occurred). Specific names eliminate guesswork.",
@@ -57,7 +69,10 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Autocomplete prop naming",
-    badCode: `interface AutocompleteProps {
+    content: {
+      type: "code",
+
+      left: `interface AutocompleteProps {
   /** Available items. */
   items: string[];
   /** Current input value. */
@@ -69,7 +84,8 @@ interface ButtonProps {
   /** Shown when there are no results. */
   noResults: React.ReactNode;
 }`,
-    goodCode: `interface AutocompleteProps {
+
+      right: `interface AutocompleteProps {
   /** Available suggestion items. */
   items: string[];
   /** The current input value. */
@@ -81,6 +97,8 @@ interface ButtonProps {
   /** Content displayed when no items match. */
   emptyContent: React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Every prop is specific: `renderItem` (not vague `render`), `emptyContent` (not the double-negative `noResults`), `onValueChange` (not generic `onChange`), and parameter names spell out their meaning (`value` not `v`).",
@@ -94,14 +112,20 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Color prop typing",
-    badCode: `interface AvatarProps {
+    content: {
+      type: "code",
+
+      left: `interface AvatarProps {
   name: string;
   color: string;
 }`,
-    goodCode: `interface AvatarProps {
+
+      right: `interface AvatarProps {
   name: string;
   backgroundColor: \`#\${string}\` | 'currentColor';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Two improvements: `backgroundColor` specifies **which** color (not text, not border), and the template literal type narrows valid inputs to hex strings at compile time. Even just the rename from `color` to `backgroundColor` is a big clarity win.",
@@ -116,14 +140,20 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Size prop typing",
-    badCode: `interface IconProps {
+    content: {
+      type: "code",
+
+      left: `interface IconProps {
   name: string;
   size: number;
 }`,
-    goodCode: `interface IconProps {
+
+      right: `interface IconProps {
   name: string;
   size: 'sm' | 'md' | 'lg' | 'xl';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Union types for size are predictable and discoverable in IDE autocomplete. A raw `number` could be anything: pixels? rem? percentage?",
@@ -138,7 +168,10 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Accessible text prop conventions",
-    badCode: `interface AutocompleteProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface AutocompleteProps<T> {
   options: T[];
   value: T | null;
   onChange: (value: T | null) => void;
@@ -152,7 +185,8 @@ interface ButtonProps {
   /** @default "Please wait..." */
   pendingMessage?: string;
 }`,
-    goodCode: `interface AutocompleteProps<T> {
+
+      right: `interface AutocompleteProps<T> {
   options: T[];
   value: T | null;
   onChange: (value: T | null) => void;
@@ -168,6 +202,8 @@ interface ButtonProps {
   /** Text shown while loading. @default "Loading…" */
   loadingText?: React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Consistent `*Text` suffixes make the API predictable. Separate `openText`/`closeText` props (not a single `toggleLabel`) match the actual UI states. `React.ReactNode` for displayed messages allows rich formatting.\n\nMUI's Autocomplete uses this exact pattern: every interactive element and user-facing string gets a `*Text` prop with a sensible default.",
@@ -181,7 +217,10 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "hard",
     title: "Complete component API",
-    badCode: `interface TableColumn {
+    content: {
+      type: "code",
+
+      left: `interface TableColumn {
   /** Column identifier for sorting. */
   name: string;
   /** Display header text. */
@@ -208,7 +247,8 @@ interface TableProps {
   /** Whether data is loading. */
   isLoading?: boolean;
 }`,
-    goodCode: `interface TableColumn<T> {
+
+      right: `interface TableColumn<T> {
   /** Unique key matching a property of T. */
   key: keyof T;
   /** Display header label. */
@@ -231,6 +271,8 @@ interface TableProps<T extends Record<string, unknown>> {
   /** Whether data is currently being fetched. */
   isLoading?: boolean;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Generics make `columns` and callbacks type-safe: `key: keyof T` ensures column keys match the data shape, and callbacks receive typed values instead of `Function`.\n\n`isSortable` lives on each column (not the whole table), and selection/pagination use typed event callbacks, not a mix of state props and untyped setters.",

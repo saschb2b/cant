@@ -6,7 +6,10 @@ export const defaultValuesChallenges: Challenge[] = [
     category: "default-values",
     difficulty: "easy",
     title: "Default prop values",
-    badCode: `interface BadgeProps {
+    content: {
+      type: "code",
+
+      left: `interface BadgeProps {
   label: string;
   color?: string;
   size?: string;
@@ -16,7 +19,8 @@ Badge.defaultProps = {
   color: 'gray',
   size: 'md',
 };`,
-    goodCode: `interface BadgeProps {
+
+      right: `interface BadgeProps {
   label: string;
   /** @default "gray" */
   color?: 'gray' | 'blue' | 'green' | 'red';
@@ -29,6 +33,8 @@ function Badge({
   color = 'gray',
   size = 'md',
 }: BadgeProps) {`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`defaultProps` is deprecated in React 19 and will be removed. ES6 destructuring defaults are type-safe, colocated with the function, and work with TypeScript out of the box. Bonus: `@default` JSDoc tags document the defaults in IDE hover tooltips.",
@@ -43,7 +49,10 @@ function Badge({
     category: "default-values",
     difficulty: "medium",
     title: "Safe default assignment",
-    badCode: `function Slider({
+    content: {
+      type: "code",
+
+      left: `function Slider({
   min,
   max,
   value,
@@ -54,7 +63,8 @@ function Badge({
   const safeValue = value || 50;
   const safeLabel = label || 'Volume';
 }`,
-    goodCode: `function Slider({
+
+      right: `function Slider({
   min = 0,
   max = 100,
   value = 50,
@@ -63,6 +73,8 @@ function Badge({
   // min, max, value, label are
   // guaranteed to be defined here.
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Destructuring defaults only apply when the value is `undefined`, which is exactly what "not passed" means in React.\n\nThe `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
@@ -77,7 +89,10 @@ function Badge({
     category: "default-values",
     difficulty: "easy",
     title: "Defaults in signature vs body",
-    badCode: `function Avatar({
+    content: {
+      type: "code",
+
+      left: `function Avatar({
   src,
   alt,
   size,
@@ -95,7 +110,8 @@ function Badge({
     />
   );
 }`,
-    goodCode: `function Avatar({
+
+      right: `function Avatar({
   src = '/default-avatar.png',
   alt = 'User avatar',
   size = 40,
@@ -109,6 +125,8 @@ function Badge({
     />
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Destructuring defaults apply when a prop is `undefined`, which is exactly what "not passed" means in React. This eliminates the intermediate variables and makes defaults visible in the function signature. Any developer reading the code instantly sees the fallback values.',
@@ -123,7 +141,10 @@ function Badge({
     category: "default-values",
     difficulty: "medium",
     title: "Stable default object references",
-    badCode: `function DataGrid({
+    content: {
+      type: "code",
+
+      left: `function DataGrid({
   columns,
   filters = {},
   sortOrder = [],
@@ -133,7 +154,8 @@ function Badge({
     loadData({ filters, sortOrder, pagination });
   }, [filters, sortOrder, pagination]);
 }`,
-    goodCode: `const EMPTY_FILTERS: Filters = {};
+
+      right: `const EMPTY_FILTERS: Filters = {};
 const EMPTY_SORT: SortOrder[] = [];
 const DEFAULT_PAGINATION: Pagination = {
   page: 1,
@@ -150,6 +172,8 @@ function DataGrid({
     loadData({ filters, sortOrder, pagination });
   }, [filters, sortOrder, pagination]);
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Inline `= {}`, `= []`, and `= { ... }` create **new object references on every render**. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time.\n\nModule-level constants are created once and have stable references.\n\n**Caveat:** Shared constants can be mutated by code that receives them. If that's a concern, `Object.freeze()` the defaults or create per-instance stable references with `useRef`.",
@@ -164,7 +188,10 @@ function DataGrid({
     category: "default-values",
     difficulty: "hard",
     title: "Default callbacks that skip null checks",
-    badCode: `interface FormFieldProps {
+    content: {
+      type: "code",
+
+      left: `interface FormFieldProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -182,7 +209,8 @@ function FormField({
   const error = validate?.(props.value) ?? null;
   // Optional chaining at every call site
 }`,
-    goodCode: `const noop = () => {};
+
+      right: `const noop = () => {};
 const noValidation = () => null;
 
 interface FormFieldProps {
@@ -206,6 +234,8 @@ function FormField({
   const error = validate(props.value);
   // No null checks needed. Defaults handle missing callbacks.
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Default callbacks eliminate `?.()` scattered throughout the component. This is especially valuable when a callback is used in multiple places. Module-level defaults also provide stable references for dependency arrays.\n\n**Tradeoff:** If you conditionally render UI based on whether a callback was passed (e.g., showing a delete button only when `onDelete` is provided), keep it `undefined`. A `noop` default would hide that signal. Use defaults for callbacks you always want to *call*, not ones you want to *check*.",

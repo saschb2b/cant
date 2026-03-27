@@ -6,7 +6,12 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "easy",
     title: "Fluid spacing with clamp",
-    badCode: `.section {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.section {
   padding: 2rem;
 }
 
@@ -17,10 +22,12 @@ export const responsiveSpacingChallenges: Challenge[] = [
 @media (min-width: 1024px) {
   .section { padding: 6rem; }
 }`,
-    goodCode: `.section {
+
+      right: `.section {
   padding: clamp(2rem, 1rem + 4vw, 6rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`clamp()` provides smooth scaling between 2rem and 6rem based on viewport width, all in one line instead of three rules. No breakpoints, no jumps. The spacing grows proportionally with the screen.",
@@ -34,7 +41,10 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "easy",
     title: "Spacing scale with theme tokens",
-    badCode: `<Stack spacing={4}>
+    content: {
+      type: "code",
+
+      left: `<Stack spacing={4}>
   <Typography>Title</Typography>
   <Box sx={{ mt: "32px", mb: "24px" }}>
     <Content />
@@ -43,7 +53,8 @@ export const responsiveSpacingChallenges: Challenge[] = [
     <Footer />
   </Box>
 </Stack>`,
-    goodCode: `<Stack spacing={4}>
+
+      right: `<Stack spacing={4}>
   <Typography>Title</Typography>
   <Box sx={{ mt: 4, mb: 3 }}>
     <Content />
@@ -52,6 +63,8 @@ export const responsiveSpacingChallenges: Challenge[] = [
     <Footer />
   </Box>
 </Stack>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "MUI spacing units (1 unit = 8px by default) keep spacing consistent with the theme's spacing scale. `mt: 4` = 32px, `mb: 3` = 24px. If the theme's spacing factor changes, all values update together. Pixel strings bypass the system.",
@@ -65,7 +78,10 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "medium",
     title: "Responsive spacing with MUI sx",
-    badCode: `function Section({ children }: Props) {
+    content: {
+      type: "code",
+
+      left: `function Section({ children }: Props) {
   const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
@@ -74,7 +90,8 @@ export const responsiveSpacingChallenges: Challenge[] = [
     </Box>
   );
 }`,
-    goodCode: `function Section({ children }: Props) {
+
+      right: `function Section({ children }: Props) {
   return (
     <Box
       sx={{
@@ -86,6 +103,8 @@ export const responsiveSpacingChallenges: Challenge[] = [
     </Box>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "MUI's `sx` breakpoint objects compile to CSS media queries with no JavaScript hook needed. No re-renders on resize, no SSR hydration mismatch, and the responsive intent is declarative right where the styles are defined.",
@@ -100,17 +119,24 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "medium",
     title: "Logical properties for spacing",
-    badCode: `.card {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.card {
   margin-left: 1rem;
   margin-right: 1rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }`,
-    goodCode: `.card {
+
+      right: `.card {
   margin-inline: 1rem;
   padding-inline: 1.5rem;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Logical properties (`margin-inline`, `padding-inline`) automatically flip for right-to-left languages. `margin-inline` is shorthand for `margin-inline-start` + `margin-inline-end`. Fewer lines, and your layout works for RTL users without any additional CSS.",
@@ -125,7 +151,12 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "hard",
     title: "Spacing custom properties with cascade",
-    badCode: `:root {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `:root {
   --space-sm: 0.5rem;
   --space-md: 1rem;
   --space-lg: 2rem;
@@ -146,12 +177,14 @@ export const responsiveSpacingChallenges: Challenge[] = [
     --space-lg: 4rem;
   }
 }`,
-    goodCode: `:root {
+
+      right: `:root {
   --space-sm: clamp(0.5rem, 0.4rem + 0.5vw, 1rem);
   --space-md: clamp(1rem, 0.75rem + 1vw, 2rem);
   --space-lg: clamp(2rem, 1.25rem + 2.5vw, 4rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Fluid custom properties scale smoothly without breakpoints. Define them once, use everywhere. Adding a new breakpoint to the stepped approach means redefining every variable; the fluid approach needs no updates.",

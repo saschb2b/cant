@@ -6,20 +6,26 @@ export const genericsChallenges: Challenge[] = [
     category: "generics",
     difficulty: "easy",
     title: "Generic functions vs any",
-    badCode: `function first(arr: any[]): any {
+    content: {
+      type: "code",
+
+      left: `function first(arr: any[]): any {
   return arr[0];
 }
 
 const val = first([1, 2, 3]);
 // val is 'any', no autocomplete
 val.toFixed(2); // No error even if wrong`,
-    goodCode: `function first<T>(arr: T[]): T {
+
+      right: `function first<T>(arr: T[]): T {
   return arr[0];
 }
 
 const val = first([1, 2, 3]);
 // val is 'number', full autocomplete
 val.toFixed(2); // OK, checked by compiler`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A generic type parameter `T` preserves the relationship between input and output. TypeScript infers `T` as `number` from the argument, so the return type is `number` with full type safety. You get autocomplete and compile-time error checking.",
@@ -34,20 +40,26 @@ val.toFixed(2); // OK, checked by compiler`,
     category: "generics",
     difficulty: "easy",
     title: "Inference over explicit types",
-    badCode: `function identity<T>(value: T): T {
+    content: {
+      type: "code",
+
+      left: `function identity<T>(value: T): T {
   return value;
 }
 
 // Redundant: TS can infer this
 const result = identity<string>("hello");
 const num = identity<number>(42);`,
-    goodCode: `function identity<T>(value: T): T {
+
+      right: `function identity<T>(value: T): T {
   return value;
 }
 
 // Let TS infer the type parameter
 const result = identity("hello"); // string
 const num = identity(42); // number`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'TypeScript infers generic type parameters from the arguments you pass. Writing `identity("hello")` automatically infers `T` as `string`. Specifying the type explicitly is redundant noise when inference works correctly. Save explicit type arguments for cases where inference fails or gives the wrong result.',
@@ -62,12 +74,16 @@ const num = identity(42); // number`,
     category: "generics",
     difficulty: "medium",
     title: "Constraints with extends",
-    badCode: `function getLength<T>(value: T): number {
+    content: {
+      type: "code",
+
+      left: `function getLength<T>(value: T): number {
   return value.length;
   // Error: Property 'length' does not
   // exist on type 'T'
 }`,
-    goodCode: `function getLength<T extends { length: number }>(
+
+      right: `function getLength<T extends { length: number }>(
   value: T
 ): number {
   return value.length; // OK
@@ -76,6 +92,8 @@ const num = identity(42); // number`,
 getLength("hello");     // 5
 getLength([1, 2, 3]);   // 3
 getLength(42);           // Error: number has no length`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Adding `extends { length: number }` constrains `T` to types that have a `length` property. TypeScript knows `.length` is safe inside the function, and rejects arguments that lack it. Constraints let you use specific properties while keeping the function generic.",
@@ -90,7 +108,10 @@ getLength(42);           // Error: number has no length`,
     category: "generics",
     difficulty: "medium",
     title: "Generic interfaces",
-    badCode: `interface ApiResponse {
+    content: {
+      type: "code",
+
+      left: `interface ApiResponse {
   data: any;
   error: string | null;
 }
@@ -98,7 +119,8 @@ getLength(42);           // Error: number has no length`,
 const res: ApiResponse = await fetchUser();
 // res.data is 'any', no type safety
 res.data.name; // Could be anything`,
-    goodCode: `interface ApiResponse<T> {
+
+      right: `interface ApiResponse<T> {
   data: T;
   error: string | null;
 }
@@ -111,6 +133,8 @@ interface User {
 const res: ApiResponse<User> = await fetchUser();
 // res.data is User, fully typed
 res.data.name; // string, autocomplete works`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Making `ApiResponse` generic with `<T>` lets you specify the shape of `data` at each usage site. When you write `ApiResponse<User>`, the `data` field is typed as `User` with full autocompletion. One interface works for every endpoint.",
@@ -125,13 +149,17 @@ res.data.name; // string, autocomplete works`,
     category: "generics",
     difficulty: "hard",
     title: "keyof constraints",
-    badCode: `function getProperty(obj: any, key: string) {
+    content: {
+      type: "code",
+
+      left: `function getProperty(obj: any, key: string) {
   return obj[key]; // Returns any
 }
 
 const user = { name: "Alice", age: 30 };
 getProperty(user, "naem"); // No error, typo undetected`,
-    goodCode: `function getProperty<T, K extends keyof T>(
+
+      right: `function getProperty<T, K extends keyof T>(
   obj: T,
   key: K
 ): T[K] {
@@ -141,6 +169,8 @@ getProperty(user, "naem"); // No error, typo undetected`,
 const user = { name: "Alice", age: 30 };
 getProperty(user, "name");  // string
 getProperty(user, "naem");  // Error: not in keyof`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Using `K extends keyof T` constrains the key to actual properties of the object. TypeScript catches typos at compile time and infers the correct return type via `T[K]`. For `"name"`, the return type is `string`. For `"age"`, it is `number`.',
@@ -155,7 +185,10 @@ getProperty(user, "naem");  // Error: not in keyof`,
     category: "generics",
     difficulty: "hard",
     title: "Default type parameters",
-    badCode: `// Forces every caller to specify the type
+    content: {
+      type: "code",
+
+      left: `// Forces every caller to specify the type
 interface PaginatedList<T> {
   items: T[];
   page: number;
@@ -168,7 +201,8 @@ const meta: PaginatedList = {
   page: 1,
   totalPages: 10,
 };`,
-    goodCode: `// Default makes the parameter optional
+
+      right: `// Default makes the parameter optional
 interface PaginatedList<T = unknown> {
   items: T[];
   page: number;
@@ -184,6 +218,8 @@ const meta: PaginatedList = {
   page: 1,
   totalPages: 10,
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Default type parameters (like `T = unknown`) let callers omit the type argument when they do not need a specific type. This is useful for utility interfaces where some consumers care about the item type and others just need the pagination metadata.",
@@ -198,7 +234,10 @@ const meta: PaginatedList = {
     category: "generics",
     difficulty: "hard",
     title: "NoInfer to control inference sites",
-    badCode: `function createFSM<S extends string>(config: {
+    content: {
+      type: "code",
+
+      left: `function createFSM<S extends string>(config: {
   initial: S;
   states: S[];
 }) { }
@@ -208,7 +247,8 @@ createFSM({
   initial: "not-a-state",
   states: ["open", "closed"],
 });`,
-    goodCode: `function createFSM<S extends string>(config: {
+
+      right: `function createFSM<S extends string>(config: {
   initial: NoInfer<S>;
   states: S[];
 }) { }
@@ -221,6 +261,8 @@ createFSM({
 //   initial: "not-a-state", // Error
 //   states: ["open", "closed"],
 // });`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       '`NoInfer<T>` (TypeScript 5.4) marks a position as not an inference site. TypeScript infers `S` only from `states`, then checks `initial` against that inferred type. This gives you a "driver" parameter that defines the set and a "consumer" parameter that must pick from it.',
@@ -234,7 +276,10 @@ createFSM({
     category: "generics",
     difficulty: "hard",
     title: "const type parameters for literal inference",
-    badCode: `function routes<T extends Record<string, string>>(
+    content: {
+      type: "code",
+
+      left: `function routes<T extends Record<string, string>>(
   config: T
 ): T {
   return config;
@@ -246,7 +291,8 @@ const r = routes({
 });
 // Type: { home: string; about: string }
 // Literal paths are widened to string`,
-    goodCode: `function routes<const T extends Record<string, string>>(
+
+      right: `function routes<const T extends Record<string, string>>(
   config: T
 ): T {
   return config;
@@ -258,6 +304,8 @@ const r = routes({
 });
 // Type: { readonly home: "/"; readonly about: "/about" }
 // Literal paths are preserved`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Adding `const` to a type parameter (TypeScript 5.0) tells the compiler to infer the narrowest possible type from the argument. String and number literals are preserved instead of widened, and arrays become readonly tuples. Before this feature, callers had to write `as const` at every call site.",

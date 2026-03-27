@@ -6,7 +6,12 @@ export const kubernetesConfigChallenges: Challenge[] = [
     category: "kubernetes-config",
     difficulty: "easy",
     title: "ConfigMap for non-secret config",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Pod
 metadata:
   name: app
@@ -21,7 +26,8 @@ spec:
           value: "3"
         - name: CACHE_TTL
           value: "300"`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
@@ -41,7 +47,8 @@ spec:
       envFrom:
         - configMapRef:
             name: app-config`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "ConfigMaps separate configuration from Pod specs. Using `envFrom` injects all keys as environment variables automatically. You can update the ConfigMap independently, share it across Deployments, and manage it with GitOps tools.",
@@ -55,7 +62,12 @@ spec:
     category: "kubernetes-config",
     difficulty: "medium",
     title: "Resource quotas per namespace",
-    badCode: `# No quotas on namespace
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# No quotas on namespace
 # Any deployment can claim
 # unlimited resources
 
@@ -63,7 +75,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: dev-team`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Namespace
 metadata:
   name: dev-team
@@ -80,7 +93,8 @@ spec:
     limits.cpu: "8"
     limits.memory: 16Gi
     pods: "20"`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "ResourceQuotas cap the total resources a namespace can consume. This prevents one team from monopolizing cluster capacity. It also forces developers to set resource requests/limits on their Pods, since Pods without them are rejected.",
@@ -94,7 +108,12 @@ spec:
     category: "kubernetes-config",
     difficulty: "medium",
     title: "Immutable ConfigMaps and Secrets",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: ConfigMap
 metadata:
   name: feature-flags
@@ -103,7 +122,8 @@ data:
   MAX_UPLOAD_SIZE: "10mb"
   # Mutable: any kubectl edit
   # takes effect cluster-wide`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: ConfigMap
 metadata:
   name: feature-flags-v2
@@ -113,7 +133,8 @@ data:
   MAX_UPLOAD_SIZE: "10mb"
   # Immutable: changes require
   # a new ConfigMap + rollout`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Immutable ConfigMaps cannot be changed after creation. This prevents accidental edits that propagate to all consuming Pods. Changes require creating a new ConfigMap and updating Deployments, giving you a clear audit trail and the ability to roll back.",
@@ -128,7 +149,12 @@ data:
     category: "kubernetes-config",
     difficulty: "hard",
     title: "Pod topology spread constraints",
-    badCode: `apiVersion: apps/v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -147,7 +173,8 @@ spec:
           image: myapp:1.0
       # No topology constraints
       # All pods might land on one node`,
-    goodCode: `apiVersion: apps/v1
+
+      right: `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
@@ -171,7 +198,8 @@ spec:
       containers:
         - name: web
           image: myapp:1.0`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Topology spread constraints distribute Pods evenly across nodes (or zones). `maxSkew: 1` ensures the difference in Pod count between any two nodes is at most 1. If a node goes down, only a fraction of your capacity is lost.",

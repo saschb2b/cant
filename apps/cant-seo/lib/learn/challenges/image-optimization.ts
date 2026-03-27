@@ -6,7 +6,10 @@ export const imageOptimizationChallenges: Challenge[] = [
     category: "image-optimization",
     difficulty: "easy",
     title: "opengraph-image.tsx convention",
-    badCode: `// app/opengraph-image.png
+    content: {
+      type: "code",
+
+      left: `// app/opengraph-image.png
 // A static PNG file in the app directory
 // Same image for every page on the site
 
@@ -16,7 +19,8 @@ export const metadata: Metadata = {
     images: ["/opengraph-image.png"],
   },
 };`,
-    goodCode: `// app/blog/[slug]/opengraph-image.tsx
+
+      right: `// app/blog/[slug]/opengraph-image.tsx
 import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
@@ -48,6 +52,8 @@ export default async function Image({
     size
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `opengraph-image.tsx` file convention generates unique OG images per route segment. Next.js automatically wires up the `og:image` meta tag. Each blog post gets a branded, dynamic image with its title, which stands out in social feeds compared to a generic static image.",
@@ -62,7 +68,10 @@ export default async function Image({
     category: "image-optimization",
     difficulty: "easy",
     title: "Correct OG image dimensions",
-    badCode: `// app/opengraph-image.tsx
+    content: {
+      type: "code",
+
+      left: `// app/opengraph-image.tsx
 import { ImageResponse } from "next/og";
 
 export const size = { width: 600, height: 600 };
@@ -87,7 +96,8 @@ export default function Image() {
     size
   );
 }`,
-    goodCode: `// app/opengraph-image.tsx
+
+      right: `// app/opengraph-image.tsx
 import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
@@ -112,7 +122,9 @@ export default function Image() {
     size
   );
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The standard OG image size is 1200x630 pixels (1.91:1 ratio). This fits perfectly on Facebook, LinkedIn, Twitter, Slack, and Discord without cropping. Using the correct dimensions ensures your text and branding are fully visible on every platform.",
     explanationWrong:
@@ -126,7 +138,10 @@ export default function Image() {
     category: "image-optimization",
     difficulty: "medium",
     title: "next/image sizes attribute",
-    badCode: `// components/hero.tsx
+    content: {
+      type: "code",
+
+      left: `// components/hero.tsx
 import Image from "next/image";
 
 export function Hero() {
@@ -139,7 +154,8 @@ export function Hero() {
     />
   );
 }`,
-    goodCode: `// components/hero.tsx
+
+      right: `// components/hero.tsx
 import Image from "next/image";
 
 export function Hero() {
@@ -154,7 +170,9 @@ export function Hero() {
     />
   );
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Using `fill` with `sizes` tells the browser how wide the image will be at each breakpoint, so it can download the smallest appropriate version. The `sizes='100vw'` indicates a full-width image. Without `sizes`, the browser may download a larger image than needed, wasting bandwidth.",
     explanationWrong:
@@ -168,7 +186,10 @@ export function Hero() {
     category: "image-optimization",
     difficulty: "medium",
     title: "Priority prop for LCP images",
-    badCode: `// components/hero.tsx
+    content: {
+      type: "code",
+
+      left: `// components/hero.tsx
 import Image from "next/image";
 
 export function Hero() {
@@ -185,7 +206,8 @@ export function Hero() {
   // Image lazy loads by default,
   // delaying LCP
 }`,
-    goodCode: `// components/hero.tsx
+
+      right: `// components/hero.tsx
 import Image from "next/image";
 
 export function Hero() {
@@ -203,6 +225,8 @@ export function Hero() {
   // Image eagerly loads and is preloaded,
   // improving LCP
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `priority` prop disables lazy loading and adds a preload link tag for the image. This is critical for the Largest Contentful Paint (LCP) element, which is often a hero image. Preloading the LCP image can improve your LCP score by hundreds of milliseconds.",
@@ -217,7 +241,10 @@ export function Hero() {
     category: "image-optimization",
     difficulty: "medium",
     title: "Modern image formats",
-    badCode: `// components/product-card.tsx
+    content: {
+      type: "code",
+
+      left: `// components/product-card.tsx
 import Image from "next/image";
 
 export function ProductCard({
@@ -235,7 +262,8 @@ export function ProductCard({
     />
   );
 }`,
-    goodCode: `// components/product-card.tsx
+
+      right: `// components/product-card.tsx
 import Image from "next/image";
 
 export function ProductCard({
@@ -255,7 +283,9 @@ export function ProductCard({
   // Next.js serves WebP/AVIF automatically
   // based on browser Accept header
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Next.js automatically serves images in WebP or AVIF format when the browser supports them. These modern formats are 25-50% smaller than JPEG/PNG with similar quality. The `quality` prop controls compression level. Removing `unoptimized` lets the built-in image optimizer do its job.",
     explanationWrong:
@@ -268,7 +298,10 @@ export function ProductCard({
     category: "image-optimization",
     difficulty: "medium",
     title: "Blur placeholder for images",
-    badCode: `// components/gallery.tsx
+    content: {
+      type: "code",
+
+      left: `// components/gallery.tsx
 import Image from "next/image";
 
 export function Gallery({
@@ -291,7 +324,8 @@ export function Gallery({
   );
   // Images pop in abruptly as they load
 }`,
-    goodCode: `// components/gallery.tsx
+
+      right: `// components/gallery.tsx
 import Image from "next/image";
 
 export function Gallery({
@@ -316,6 +350,8 @@ export function Gallery({
   );
   // Smooth transition from blur to sharp
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `placeholder='blur'` prop shows a blurred preview while the full image loads. This prevents layout shift (improving CLS scores) and provides a smoother visual experience. For remote images, you provide a base64-encoded `blurDataURL` generated at build time or from your CMS.",
@@ -330,7 +366,12 @@ export function Gallery({
     category: "image-optimization",
     difficulty: "hard",
     title: "Art direction with picture element",
-    badCode: `// components/hero.tsx
+    content: {
+      type: "code",
+
+      lang: "html",
+
+      left: `// components/hero.tsx
 import Image from "next/image";
 
 export function Hero() {
@@ -347,7 +388,8 @@ export function Hero() {
   // Same wide landscape crop on mobile
   // Important content gets tiny
 }`,
-    goodCode: `// components/hero.tsx
+
+      right: `// components/hero.tsx
 export function Hero() {
   return (
     <picture>
@@ -370,8 +412,9 @@ export function Hero() {
   // Mobile gets a square crop focused
   // on the product
 }`,
-    lang: "html",
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Art direction uses the `<picture>` element to serve different image crops for different screen sizes. A wide landscape hero on desktop can be replaced with a tighter square crop on mobile that keeps the important subject visible. This is different from responsive sizing, which just changes resolution.",
     explanationWrong:
@@ -385,7 +428,10 @@ export function Hero() {
     category: "image-optimization",
     difficulty: "easy",
     title: "Lazy loading below-fold images",
-    badCode: `// components/testimonials.tsx
+    content: {
+      type: "code",
+
+      left: `// components/testimonials.tsx
 import Image from "next/image";
 
 export function Testimonials({
@@ -412,7 +458,8 @@ export function Testimonials({
   // All avatars are preloaded even though
   // they are far below the fold
 }`,
-    goodCode: `// components/testimonials.tsx
+
+      right: `// components/testimonials.tsx
 import Image from "next/image";
 
 export function Testimonials({
@@ -439,6 +486,8 @@ export function Testimonials({
   // Avatars load only when the section
   // scrolls into view
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Images below the fold should use lazy loading (which is the default for next/image). This defers loading until the image is about to enter the viewport. Only the LCP image should use `priority`. Lazy loading reduces initial page weight and speeds up the first meaningful paint.",

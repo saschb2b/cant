@@ -6,7 +6,12 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "easy",
     title: "Mobile-first vs desktop-first",
-    badCode: `/* Desktop-first: override down */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Desktop-first: override down */
 .container {
   display: flex;
   gap: 2rem;
@@ -18,7 +23,8 @@ export const mediaQueryChallenges: Challenge[] = [
     gap: 1rem;
   }
 }`,
-    goodCode: `/* Mobile-first: enhance up */
+
+      right: `/* Mobile-first: enhance up */
 .container {
   display: flex;
   flex-direction: column;
@@ -31,7 +37,8 @@ export const mediaQueryChallenges: Challenge[] = [
     gap: 2rem;
   }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Mobile-first (`min-width`) starts with the simplest layout and progressively adds complexity. This avoids override chains and ensures the base styles work on the smallest screens without any media query matching.",
@@ -46,16 +53,23 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "easy",
     title: "Content-based breakpoints",
-    badCode: `/* Breakpoints based on device widths */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Breakpoints based on device widths */
 @media (min-width: 375px) { /* iPhone */ }
 @media (min-width: 768px) { /* iPad */ }
 @media (min-width: 1024px) { /* laptop */ }
 @media (min-width: 1440px) { /* desktop */ }`,
-    goodCode: `/* Breakpoints based on content needs */
+
+      right: `/* Breakpoints based on content needs */
 @media (min-width: 32rem) { /* ~512px: cards need 2 columns */ }
 @media (min-width: 48rem) { /* ~768px: sidebar can appear */ }
 @media (min-width: 64rem) { /* ~1024px: full layout */ }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Breakpoints should be where *your content* needs them, not where specific devices happen to be. Using `rem` values also respects the user's font size preference, so if they increase their base font size, breakpoints shift to accommodate. Device-specific values become wrong with every new device release.",
@@ -70,21 +84,28 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "medium",
     title: "Overlapping breakpoints",
-    badCode: `@media (max-width: 768px) {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `@media (max-width: 768px) {
   .sidebar { display: none; }
 }
 
 @media (min-width: 768px) {
   .sidebar { width: 250px; }
 }`,
-    goodCode: `@media (max-width: 767.98px) {
+
+      right: `@media (max-width: 767.98px) {
   .sidebar { display: none; }
 }
 
 @media (min-width: 768px) {
   .sidebar { width: 250px; }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "At exactly 768px, both `max-width: 768px` and `min-width: 768px` match simultaneously. Using `767.98px` (or using only `min-width` in a mobile-first approach) eliminates the overlap where both rules apply and source order decides the winner.",
@@ -99,19 +120,26 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "medium",
     title: "Breakpoint ranges",
-    badCode: `/* Targeting tablets only */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Targeting tablets only */
 @media (min-width: 768px) and (max-width: 1024px) {
   .layout {
     grid-template-columns: 1fr 1fr;
   }
 }`,
-    goodCode: `/* Targeting tablets only */
+
+      right: `/* Targeting tablets only */
 @media (768px <= width < 1024px) {
   .layout {
     grid-template-columns: 1fr 1fr;
   }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Media query range syntax (`768px <= width < 1024px`) is supported in all modern browsers and reads like a math expression. The `<` makes it obvious the upper bound is exclusive, preventing overlap with the next breakpoint.",
@@ -126,21 +154,28 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "medium",
     title: "Prefer feature queries over breakpoints",
-    badCode: `/* Hide hover effects on mobile */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Hide hover effects on mobile */
 @media (max-width: 768px) {
   .card:hover {
     transform: none;
     box-shadow: none;
   }
 }`,
-    goodCode: `/* Only apply hover where supported */
+
+      right: `/* Only apply hover where supported */
 @media (hover: hover) {
   .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Screen width is a poor proxy for input method. A large tablet has no hover; a small laptop does. `@media (hover: hover)` targets the actual capability, not an assumed correlation with screen size.",
@@ -154,7 +189,12 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "hard",
     title: "Combining feature and dimension queries",
-    badCode: `@media (min-width: 1024px) {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `@media (min-width: 1024px) {
   .nav { display: flex; }
   .hamburger { display: none; }
 }
@@ -163,7 +203,8 @@ export const mediaQueryChallenges: Challenge[] = [
   .nav { display: none; }
   .hamburger { display: flex; }
 }`,
-    goodCode: `/* Base: always show hamburger */
+
+      right: `/* Base: always show hamburger */
 .nav { display: none; }
 .hamburger { display: flex; }
 
@@ -172,7 +213,8 @@ export const mediaQueryChallenges: Challenge[] = [
   .nav { display: flex; }
   .hamburger { display: none; }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Combining `min-width` with `pointer: fine` ensures the full navigation only shows on wide screens with a precise pointing device. A touch-only large tablet keeps the hamburger menu, which is more ergonomic for finger taps.",

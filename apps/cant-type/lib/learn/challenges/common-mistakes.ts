@@ -6,7 +6,10 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Overusing any defeats type safety",
-    badCode: `function processData(data: any) {
+    content: {
+      type: "code",
+
+      left: `function processData(data: any) {
   // No errors, but no safety either
   data.forEach((item: any) => {
     console.log(item.naem); // Typo
@@ -16,7 +19,8 @@ export const commonMistakeChallenges: Challenge[] = [
 
 // any spreads: anything derived from
 // an any value is also any`,
-    goodCode: `interface DataRecord {
+
+      right: `interface DataRecord {
   id: number;
   name: string;
   status: "active" | "inactive";
@@ -29,6 +33,8 @@ function processData(data: DataRecord[]) {
     updateRecord(item.id.toFixed());
   });
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Defining a proper interface for your data gives you autocomplete, catches typos, and validates operations at compile time. If you receive untyped data (from an API, for example), validate it at the boundary and type it once. Everything downstream benefits from the types.",
@@ -43,7 +49,10 @@ function processData(data: DataRecord[]) {
     category: "common-mistakes",
     difficulty: "easy",
     title: "Unnecessary type assertions",
-    badCode: `const input = document.getElementById(
+    content: {
+      type: "code",
+
+      left: `const input = document.getElementById(
   "search"
 ) as HTMLInputElement;
 
@@ -54,7 +63,8 @@ console.log(input.value);
 
 const data = JSON.parse(raw) as User;
 // No runtime validation, just a promise`,
-    goodCode: `const input = document.getElementById("search");
+
+      right: `const input = document.getElementById("search");
 
 if (input instanceof HTMLInputElement) {
   // Safely narrowed to HTMLInputElement
@@ -76,6 +86,8 @@ const parsed: unknown = JSON.parse(raw);
 if (isUser(parsed)) {
   console.log(parsed.name); // Safe
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Type assertions (as) tell TypeScript to trust you, but they perform no runtime checks. Using instanceof narrows the type safely because it actually checks the value at runtime. For parsed JSON, a type guard validates the shape before trusting the data.",
@@ -90,7 +102,10 @@ if (isUser(parsed)) {
     category: "common-mistakes",
     difficulty: "medium",
     title: "object vs Record for dictionaries",
-    badCode: `function countWords(text: string): object {
+    content: {
+      type: "code",
+
+      left: `function countWords(text: string): object {
   const counts: object = {};
   for (const word of text.split(" ")) {
     // Error: Element implicitly has an
@@ -100,7 +115,8 @@ if (isUser(parsed)) {
   }
   return counts;
 }`,
-    goodCode: `function countWords(
+
+      right: `function countWords(
   text: string
 ): Record<string, number> {
   const counts: Record<string, number> = {};
@@ -114,6 +130,8 @@ if (isUser(parsed)) {
 
 // Even better with Map:
 // const counts = new Map<string, number>();`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The object type means 'any non-primitive' but has no index signature, so you cannot use bracket notation. Record<string, number> creates an index signature that allows string keys with number values. For dynamic key-value collections, Map<K, V> is another good option.",
@@ -128,7 +146,10 @@ if (isUser(parsed)) {
     category: "common-mistakes",
     difficulty: "medium",
     title: "The {} type pitfall",
-    badCode: `// "{}" does NOT mean "empty object"
+    content: {
+      type: "code",
+
+      left: `// "{}" does NOT mean "empty object"
 function process(value: {}) {
   console.log(value);
 }
@@ -139,7 +160,8 @@ process(42);        // number
 process(true);      // boolean
 process([1, 2, 3]); // array
 // {} means "any non-nullish value"`,
-    goodCode: `// For "any non-nullish value":
+
+      right: `// For "any non-nullish value":
 function process(value: NonNullable<unknown>) {
   console.log(value);
 }
@@ -158,6 +180,8 @@ interface Config {
 function processConfig(value: Config) {
   console.log(value.debug);
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The {} type in TypeScript means 'any value that is not null or undefined.' It accepts strings, numbers, booleans, and objects. For an actual empty object, use Record<string, never>. For 'any non-nullish value', use NonNullable<unknown> which is more explicit about the intent.",
@@ -172,7 +196,10 @@ function processConfig(value: Config) {
     category: "common-mistakes",
     difficulty: "hard",
     title: "Return type annotations on public APIs",
-    badCode: `// No return type annotation
+    content: {
+      type: "code",
+
+      left: `// No return type annotation
 export function createUser(name: string) {
   return {
     id: crypto.randomUUID(),
@@ -187,7 +214,8 @@ export function createUser(name: string) {
 //    the public API type
 // 2. Error messages point to callers,
 //    not the function definition`,
-    goodCode: `interface User {
+
+      right: `interface User {
   id: string;
   name: string;
   createdAt: Date;
@@ -208,6 +236,8 @@ export function createUser(name: string): User {
 // 2. Internal changes that break the
 //    contract show errors HERE, not in
 //    every file that imports the function`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Explicit return types on exported functions create a stable public contract. If you accidentally change the return shape, the error appears at the function definition, not in every consuming file. For private/local functions, inference is fine because both the definition and usage are nearby.",
@@ -222,7 +252,10 @@ export function createUser(name: string): User {
     category: "common-mistakes",
     difficulty: "hard",
     title: "Optional vs undefined properties",
-    badCode: `interface FormData {
+    content: {
+      type: "code",
+
+      left: `interface FormData {
   name: string;
   nickname?: string;
 }
@@ -239,7 +272,8 @@ const b: FormData = {
 "nickname" in b; // true
 Object.keys(a);  // ["name"]
 Object.keys(b);  // ["name", "nickname"]`,
-    goodCode: `// Distinguish missing from explicit undefined
+
+      right: `// Distinguish missing from explicit undefined
 // with exactOptionalPropertyTypes: true
 
 interface FormData {
@@ -263,6 +297,8 @@ function applyPatch(
 ): FormData {
   return { ...data, ...patch };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Optional properties (?) and properties that accept undefined have different semantics. A missing property means 'not specified,' while an explicit undefined means 'intentionally cleared.' This distinction matters for PATCH APIs, form handling, and serialization. The exactOptionalPropertyTypes flag enforces this difference.",
@@ -277,13 +313,17 @@ function applyPatch(
     category: "common-mistakes",
     difficulty: "medium",
     title: "Type-safe Object.keys",
-    badCode: `const config = { host: "localhost", port: 3000, debug: true };
+    content: {
+      type: "code",
+
+      left: `const config = { host: "localhost", port: 3000, debug: true };
 
 Object.keys(config).forEach((key) => {
   // key is 'string', not keyof typeof config
   console.log(config[key]); // Error
 });`,
-    goodCode: `const objectKeys = <T extends object>(
+
+      right: `const objectKeys = <T extends object>(
   obj: T
 ): (keyof T)[] => {
   return Object.keys(obj) as (keyof T)[];
@@ -294,6 +334,8 @@ const config = { host: "localhost", port: 3000, debug: true };
 objectKeys(config).forEach((key) => {
   console.log(config[key]); // OK
 });`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A generic `objectKeys` wrapper returns `(keyof T)[]` instead of `string[]`. This gives you literal key types when iterating, so `config[key]` is type-safe. The `as` assertion is safe here because `Object.keys` does return the object's own keys at runtime.",
@@ -308,20 +350,26 @@ objectKeys(config).forEach((key) => {
     category: "common-mistakes",
     difficulty: "easy",
     title: "@ts-expect-error vs @ts-ignore",
-    badCode: `// @ts-ignore
+    content: {
+      type: "code",
+
+      left: `// @ts-ignore
 const port: number = "3000";
 
 // Later, someone fixes the value:
 // const port: number = 3000;
 // The @ts-ignore stays, silently hiding
 // any future error on this line`,
-    goodCode: `// @ts-expect-error: testing invalid assignment
+
+      right: `// @ts-expect-error: testing invalid assignment
 const port: number = "3000";
 
 // Later, when the line is fixed:
 // const port: number = 3000;
 // TypeScript reports: "Unused @ts-expect-error"
 // so you know to remove the directive`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`@ts-expect-error` requires the next line to have an error. If the error disappears (because someone fixed the code), TypeScript flags the unused directive. This makes it self-cleaning: you never end up with stale suppressions hiding real issues.",

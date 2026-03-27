@@ -6,14 +6,20 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "easy",
     title: "Value change handler",
-    badCode: `interface SliderProps {
+    content: {
+      type: "code",
+
+      left: `interface SliderProps {
   value: number;
   setValue: (v: number) => void;
 }`,
-    goodCode: `interface SliderProps {
+
+      right: `interface SliderProps {
   value: number;
   onValueChange: (value: number) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Child components don\'t "set" state. They signal that something changed. The `on` prefix followed by what happened (`ValueChange`) is the React convention. This mirrors native DOM events like `onChange` and `onClick`.',
@@ -27,14 +33,20 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "easy",
     title: "Delete action handler",
-    badCode: `interface TodoItemProps {
+    content: {
+      type: "code",
+
+      left: `interface TodoItemProps {
   todo: Todo;
   delete: () => void;
 }`,
-    goodCode: `interface TodoItemProps {
+
+      right: `interface TodoItemProps {
   todo: Todo;
   onDelete: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`onDelete` clearly communicates this is an event callback. The component requests deletion, and the parent performs it.",
@@ -49,14 +61,20 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "easy",
     title: "Form submission",
-    badCode: `interface SearchBarProps {
+    content: {
+      type: "code",
+
+      left: `interface SearchBarProps {
   query: string;
   search: (q: string) => void;
 }`,
-    goodCode: `interface SearchBarProps {
+
+      right: `interface SearchBarProps {
   query: string;
   onSearch: (query: string) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       '`onSearch` is an event callback that says "the user triggered a search." The parent handles the actual search logic.',
@@ -70,14 +88,20 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "medium",
     title: "Selection handler specificity",
-    badCode: `interface DropdownProps {
+    content: {
+      type: "code",
+
+      left: `interface DropdownProps {
   items: string[];
   onChange: (item: string) => void;
 }`,
-    goodCode: `interface DropdownProps {
+
+      right: `interface DropdownProps {
   items: string[];
   onItemSelect: (item: string) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`onItemSelect` tells you exactly what happened: the user selected an item. `onChange` is reserved for native `<input>` and `<select>` elements where it has established meaning.\n\nFor custom components, specific names like `onItemSelect`, `onTabChange`, or `onColorPick` describe the actual user action, which is invaluable when a component has multiple things that can change.",
@@ -92,7 +116,10 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "hard",
     title: "Close callback with reason",
-    badCode: `type CloseReason =
+    content: {
+      type: "code",
+
+      left: `type CloseReason =
   | 'backdropClick'
   | 'escapeKeyDown'
   | 'closeButton';
@@ -104,7 +131,8 @@ interface DialogProps {
   /** Set after the dialog closes. */
   lastCloseReason?: CloseReason;
 }`,
-    goodCode: `type CloseReason =
+
+      right: `type CloseReason =
   | 'backdropClick'
   | 'escapeKeyDown'
   | 'closeButton';
@@ -114,6 +142,8 @@ interface DialogProps {
   isOpen: boolean;
   onClose: (reason: CloseReason) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Passing the `reason` as a callback parameter lets the parent decide **how** to respond to each close trigger in real time. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape.\n\nMUI's Dialog uses exactly this pattern. A separate prop is reactive (updates after closing) instead of actionable (decides during closing).",
@@ -127,7 +157,10 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "hard",
     title: "Dual-level event callbacks",
-    badCode: `interface SliderProps {
+    content: {
+      type: "code",
+
+      left: `interface SliderProps {
   min: number;
   max: number;
   value: number;
@@ -140,7 +173,8 @@ interface DialogProps {
    */
   changeDebounceMs?: number;
 }`,
-    goodCode: `interface SliderProps {
+
+      right: `interface SliderProps {
   min: number;
   max: number;
   value: number;
@@ -149,6 +183,8 @@ interface DialogProps {
   /** Fires once when the user releases the thumb. */
   onChangeCommitted: (value: number) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Some interactions have two meaningful moments: the live update and the final commit. Two callbacks let the parent do different things at each moment: `onChange` for UI preview, `onChangeCommitted` for saving to the server.\n\nMUI's Slider uses exactly this pattern. A `changeDebounceMs` config forces a trade-off between responsiveness and efficiency.",
@@ -162,18 +198,24 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "medium",
     title: "Drag and drop callbacks",
-    badCode: `interface DraggableProps {
+    content: {
+      type: "code",
+
+      left: `interface DraggableProps {
   children: React.ReactNode;
   dragStart: () => void;
   dragEnd: (pos: Position) => void;
   drop: (target: string) => void;
 }`,
-    goodCode: `interface DraggableProps {
+
+      right: `interface DraggableProps {
   children: React.ReactNode;
   onDragStart: () => void;
   onDragEnd: (position: Position) => void;
   onDrop: (targetId: string) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "All three callbacks use the `on` prefix and descriptive parameter names (`position` vs `pos`, `targetId` vs `target`). Consistent naming across related events is key.",
@@ -187,7 +229,10 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "medium",
     title: "Lifecycle callback pairs",
-    badCode: `interface DrawerProps {
+    content: {
+      type: "code",
+
+      left: `interface DrawerProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
@@ -197,7 +242,8 @@ interface DialogProps {
    */
   onAnimationDone?: () => void;
 }`,
-    goodCode: `interface DrawerProps {
+
+      right: `interface DrawerProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
@@ -212,6 +258,8 @@ interface DialogProps {
    */
   onTransitionEnd?: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Processes with duration deserve callback **pairs**: `onTransitionStart` / `onTransitionEnd`. This lets the parent disable interactions during animation and clean up afterward. A single `onAnimationDone` only covers the end. What if you need to lock scrolling during the transition?\n\nThe `on` + noun + lifecycle suffix pattern (`onTransitionStart`) is self-documenting.",
@@ -226,7 +274,10 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "hard",
     title: "Promise-returning action callback",
-    badCode: `interface SubmitButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface SubmitButtonProps {
   children: React.ReactNode;
   /** Called when the button is clicked. */
   onClick: () => void;
@@ -237,7 +288,8 @@ interface DialogProps {
   /** Whether the button is disabled. */
   isDisabled?: boolean;
 }`,
-    goodCode: `interface SubmitButtonProps {
+
+      right: `interface SubmitButtonProps {
   children: React.ReactNode;
   /**
    * Called on click. Return a Promise to
@@ -249,6 +301,8 @@ interface DialogProps {
   /** Additional CSS class for the button. */
   className?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A Promise-returning callback lets the component derive loading and error states from the Promise lifecycle, so no manual `isLoading` or `errorMessage` props are needed.\n\nNaming it `onAction` (not `onClick`) signals it's async and the component will manage pending state. This is the pattern behind React 19's `useActionState` and `useTransition`.",

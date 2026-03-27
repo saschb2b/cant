@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
 import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
+import { buildContentMap } from "@cant/shared/lib/content-map";
 import { challenges } from "@/lib/game/challenges";
 
 export const metadata: Metadata = {
@@ -22,14 +23,7 @@ export default async function PlayPage({
   const { seed: defaultSeed } = await searchParams;
   const highlighter = await getHighlighter();
 
-  const highlightMap: Record<string, { goodHtml: string; badHtml: string }> =
-    {};
-  for (const challenge of challenges) {
-    highlightMap[challenge.id] = {
-      goodHtml: highlightDual(highlighter, challenge.goodCode),
-      badHtml: highlightDual(highlighter, challenge.badCode),
-    };
-  }
+  const contentMap = buildContentMap(challenges, highlighter, highlightDual);
   return (
     <Box
       sx={{
@@ -49,7 +43,7 @@ export default async function PlayPage({
       >
         <Game
           challenges={challenges}
-          highlightMap={highlightMap}
+          contentMap={contentMap}
           defaultSeed={defaultSeed}
         />
       </Container>

@@ -6,7 +6,10 @@ export const canonicalUrlsChallenges: Challenge[] = [
     category: "canonical-urls",
     difficulty: "easy",
     title: "Self-referencing canonical tag",
-    badCode: `// app/about/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/about/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +17,8 @@ export const metadata: Metadata = {
   description: "Learn about our company.",
   // No canonical URL set
 };`,
-    goodCode: `// app/about/page.tsx
+
+      right: `// app/about/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -24,6 +28,8 @@ export const metadata: Metadata = {
     canonical: "https://acme.com/about",
   },
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Every page should have a self-referencing canonical tag that points to its own URL. This tells search engines that this is the authoritative version of the page. Without it, Google may choose a canonical on its own, which could be a version with query parameters or a different protocol.",
@@ -38,7 +44,10 @@ export const metadata: Metadata = {
     category: "canonical-urls",
     difficulty: "easy",
     title: "Trailing slash consistency",
-    badCode: `// next.config.mjs
+    content: {
+      type: "code",
+
+      left: `// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // No trailingSlash config
@@ -46,7 +55,8 @@ const nextConfig = {
 };
 
 export default nextConfig;`,
-    goodCode: `// next.config.mjs
+
+      right: `// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: false,
@@ -55,7 +65,9 @@ const nextConfig = {
 };
 
 export default nextConfig;`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Setting `trailingSlash` explicitly ensures consistent URL behavior. When set to `false`, visiting `/about/` automatically redirects to `/about` (or vice versa when set to `true`). This prevents duplicate content issues where both URL variants are indexed separately.",
     explanationWrong:
@@ -69,7 +81,10 @@ export default nextConfig;`,
     category: "canonical-urls",
     difficulty: "medium",
     title: "www vs non-www canonical",
-    badCode: `// middleware.ts
+    content: {
+      type: "code",
+
+      left: `// middleware.ts
 import { NextResponse } from "next/server";
 
 export function middleware() {
@@ -78,7 +93,8 @@ export function middleware() {
   // serve the same content
   return NextResponse.next();
 }`,
-    goodCode: `// middleware.ts
+
+      right: `// middleware.ts
 import { NextRequest, NextResponse } from
   "next/server";
 
@@ -91,6 +107,8 @@ export function middleware(request: NextRequest) {
   }
   return NextResponse.next();
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Redirecting www to non-www (or vice versa) with a 301 ensures search engines consolidate all signals under one domain. A permanent redirect tells crawlers to update their index. This should also be configured at the DNS or CDN level for requests that never reach Next.js.",
@@ -105,7 +123,10 @@ export function middleware(request: NextRequest) {
     category: "canonical-urls",
     difficulty: "medium",
     title: "Canonical for paginated content",
-    badCode: `// app/blog/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/page.tsx
 export async function generateMetadata({
   searchParams,
 }: {
@@ -118,7 +139,8 @@ export async function generateMetadata({
     // All pages point canonical to page 1
   };
 }`,
-    goodCode: `// app/blog/page.tsx
+
+      right: `// app/blog/page.tsx
 export async function generateMetadata({
   searchParams,
 }: {
@@ -135,7 +157,9 @@ export async function generateMetadata({
     },
   };
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Each page of paginated content should have its own canonical URL. Page 2 has unique content (different blog posts) that deserves its own place in search results. Pointing all pages to page 1 tells Google that pages 2, 3, and beyond are duplicates, hiding their content from search.",
     explanationWrong:
@@ -149,7 +173,10 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "hard",
     title: "Cross-domain canonical",
-    badCode: `// Syndicated article on partner.com
+    content: {
+      type: "code",
+
+      left: `// Syndicated article on partner.com
 // app/syndicated/[slug]/page.tsx
 export async function generateMetadata({
   params,
@@ -163,7 +190,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// Syndicated article on partner.com
+
+      right: `// Syndicated article on partner.com
 // app/syndicated/[slug]/page.tsx
 export async function generateMetadata({
   params,
@@ -177,6 +205,8 @@ export async function generateMetadata({
     },
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When content is syndicated (republished on a partner site), the canonical should point back to the original source on your domain. This tells Google that the original lives at acme.com, so all ranking signals flow to your site instead of the partner's copy.",
@@ -191,7 +221,10 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "medium",
     title: "Next.js alternates.canonical",
-    badCode: `// app/products/[id]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/products/[id]/page.tsx
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -206,7 +239,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/products/[id]/page.tsx
+
+      right: `// app/products/[id]/page.tsx
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -221,7 +255,9 @@ export async function generateMetadata({
     },
   };
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Next.js provides the `alternates.canonical` field specifically for setting canonical URLs. It renders the proper `<link rel='canonical'>` tag in the document head. This is the idiomatic approach that integrates with the rest of the metadata system.",
     explanationWrong:
@@ -235,7 +271,10 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "hard",
     title: "Dynamic canonical from route params",
-    badCode: `// app/docs/[...slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/docs/[...slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -248,7 +287,8 @@ export async function generateMetadata({
   };
   // All nested docs pages share one canonical
 }`,
-    goodCode: `// app/docs/[...slug]/page.tsx
+
+      right: `// app/docs/[...slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -261,6 +301,8 @@ export async function generateMetadata({
     },
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Catch-all routes like `[...slug]` serve many different pages. Each one needs its own canonical URL built from the route parameters. This ensures `/docs/getting-started` and `/docs/api/reference` are recognized as distinct pages with their own search rankings.",
@@ -275,7 +317,10 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "medium",
     title: "Canonical with query parameters",
-    badCode: `// app/products/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/products/page.tsx
 export async function generateMetadata({
   searchParams,
 }: {
@@ -292,7 +337,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/products/page.tsx
+
+      right: `// app/products/page.tsx
 export async function generateMetadata({
   searchParams,
 }: {
@@ -311,7 +357,9 @@ export async function generateMetadata({
     alternates: { canonical },
   };
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Only include query parameters that produce meaningfully different content. A color filter shows different products, so it deserves its own canonical. A sort parameter shows the same products in a different order, so it should be stripped from the canonical to avoid duplicate content.",
     explanationWrong:

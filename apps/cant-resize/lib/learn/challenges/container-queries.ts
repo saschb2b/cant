@@ -6,7 +6,12 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "easy",
     title: "Component-level vs viewport-level",
-    badCode: `/* Card adapts to viewport width */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Card adapts to viewport width */
 .card {
   display: flex;
   flex-direction: column;
@@ -17,7 +22,8 @@ export const containerQueryChallenges: Challenge[] = [
     flex-direction: row;
   }
 }`,
-    goodCode: `/* Card adapts to its own container */
+
+      right: `/* Card adapts to its own container */
 .card-wrapper {
   container-type: inline-size;
 }
@@ -32,7 +38,8 @@ export const containerQueryChallenges: Challenge[] = [
     flex-direction: row;
   }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A card in a sidebar might be 300px wide even on a 1440px screen. `@container` queries let the card respond to its *own* available space, not the viewport. This makes the component truly reusable across different layout contexts.",
@@ -47,7 +54,12 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "easy",
     title: "Setting up containment",
-    badCode: `/* Missing container context */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* Missing container context */
 .sidebar {
   width: 300px;
 }
@@ -58,7 +70,8 @@ export const containerQueryChallenges: Challenge[] = [
     grid-template-columns: 1fr 1fr;
   }
 }`,
-    goodCode: `.sidebar {
+
+      right: `.sidebar {
   width: 300px;
   container-type: inline-size;
 }
@@ -69,7 +82,8 @@ export const containerQueryChallenges: Challenge[] = [
     grid-template-columns: 1fr 1fr;
   }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`@container` queries only work when an ancestor has `container-type` set. Without it, the query has no container to measure and the styles won't apply. `inline-size` is the most common value since it tracks the container's width.",
@@ -84,7 +98,12 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "medium",
     title: "Named containers",
-    badCode: `.page {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.page {
   container-type: inline-size;
 }
 
@@ -96,7 +115,8 @@ export const containerQueryChallenges: Challenge[] = [
 @container (min-width: 500px) {
   .card { flex-direction: row; }
 }`,
-    goodCode: `.page {
+
+      right: `.page {
   container-type: inline-size;
   container-name: page;
 }
@@ -109,7 +129,8 @@ export const containerQueryChallenges: Challenge[] = [
 @container sidebar (min-width: 300px) {
   .card { flex-direction: row; }
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When multiple ancestors have `container-type`, an unnamed `@container` query matches the *nearest* container ancestor. Named containers (`container-name` + `@container name`) make the intent explicit and prevent surprises when components are moved between layouts.",
@@ -124,17 +145,24 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "medium",
     title: "Container query units",
-    badCode: `.hero-title {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.hero-title {
   font-size: 5vw;
 }`,
-    goodCode: `.hero {
+
+      right: `.hero {
   container-type: inline-size;
 }
 
 .hero-title {
   font-size: clamp(1.5rem, 5cqi, 3rem);
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`cqi` (container query inline) scales relative to the container's width, not the viewport. Combined with `clamp()`, the text scales fluidly within the hero's bounds and respects min/max limits, even if the hero is in a sidebar or modal.",
@@ -149,7 +177,10 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "hard",
     title: "Container queries in React components",
-    badCode: `function ProductCard() {
+    content: {
+      type: "code",
+
+      left: `function ProductCard() {
   const ref = useRef<HTMLDivElement>(null);
   const [wide, setWide] = useState(false);
 
@@ -170,7 +201,8 @@ export const containerQueryChallenges: Challenge[] = [
     </div>
   );
 }`,
-    goodCode: `function ProductCard() {
+
+      right: `function ProductCard() {
   return (
     <Box sx={{ containerType: "inline-size" }}>
       <Stack
@@ -187,6 +219,8 @@ export const containerQueryChallenges: Challenge[] = [
     </Box>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "CSS container queries replace the need for `ResizeObserver` + state for layout changes. No JavaScript runs on resize, no re-renders, no SSR issues. MUI's `sx` prop supports `@container` queries directly as nested selectors.",

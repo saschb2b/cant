@@ -6,7 +6,10 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "medium",
     title: "Render function vs ReactNode slot",
-    badCode: `interface ComboboxProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface ComboboxProps<T> {
   options: T[];
   value: T | null;
   onChange: (value: T) => void;
@@ -19,7 +22,8 @@ export const renderPropsChallenges: Challenge[] = [
 //   options={users}
 //   optionContent={<UserCard />}
 // />`,
-    goodCode: `interface ComboboxProps<T> {
+
+      right: `interface ComboboxProps<T> {
   options: T[];
   value: T | null;
   onChange: (value: T) => void;
@@ -37,6 +41,8 @@ export const renderPropsChallenges: Challenge[] = [
 //     <UserCard user={user} highlighted={isHighlighted} />
 //   )}
 // />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A render function gives the consumer access to runtime data the component owns. Here, the Combobox knows which option is highlighted and selected. A static `ReactNode` can't receive these states, so custom options can't react to keyboard navigation or selection.\n\nThis is exactly how MUI's Autocomplete `renderOption` works.",
@@ -50,20 +56,26 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "easy",
     title: "render* vs get* function props",
-    badCode: `interface AutocompleteProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface AutocompleteProps<T> {
   options: T[];
   /** Returns the display label for an option. */
   renderLabel: (option: T) => string;
   /** Renders a custom option in the dropdown. */
   getOption: (option: T) => React.ReactNode;
 }`,
-    goodCode: `interface AutocompleteProps<T> {
+
+      right: `interface AutocompleteProps<T> {
   options: T[];
   /** Returns the display label for an option. */
   getOptionLabel: (option: T) => string;
   /** Renders a custom option in the dropdown. */
   renderOption: (option: T) => React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`render*` functions return JSX (`React.ReactNode`); they control what appears on screen. `get*` functions return data (strings, numbers, booleans); they extract or compute values.\n\nMUI follows this strictly: `renderOption` returns JSX for the dropdown, `getOptionLabel` returns a plain string for the input field. Swapping the prefixes reverses the reader's expectation.",
@@ -77,7 +89,10 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "easy",
     title: "Static slot vs unnecessary render function",
-    badCode: `interface EmptyStateProps {
+    content: {
+      type: "code",
+
+      left: `interface EmptyStateProps {
   renderIcon: () => React.ReactNode;
   renderTitle: () => React.ReactNode;
   renderAction: () => React.ReactNode;
@@ -89,7 +104,8 @@ export const renderPropsChallenges: Challenge[] = [
 //   renderTitle={() => "No results found"}
 //   renderAction={() => <Button>Reset</Button>}
 // />`,
-    goodCode: `interface EmptyStateProps {
+
+      right: `interface EmptyStateProps {
   icon?: React.ReactNode;
   title: React.ReactNode;
   action?: React.ReactNode;
@@ -101,6 +117,8 @@ export const renderPropsChallenges: Challenge[] = [
 //   title="No results found"
 //   action={<Button>Reset</Button>}
 // />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Render functions are only needed when the component passes data back to the consumer. Here, EmptyState doesn't provide any data; it just displays content. Plain `ReactNode` slots are simpler: `icon={<SearchIcon />}` vs `renderIcon={() => <SearchIcon />}`.",
@@ -115,7 +133,10 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "medium",
     title: "Error boundary fallback",
-    badCode: `interface ErrorBoundaryProps {
+    content: {
+      type: "code",
+
+      left: `interface ErrorBoundaryProps {
   children: React.ReactNode;
   fallback: React.ReactNode;
 }
@@ -126,7 +147,8 @@ export const renderPropsChallenges: Challenge[] = [
 // >
 //   <App />
 // </ErrorBoundary>`,
-    goodCode: `interface ErrorBoundaryProps {
+
+      right: `interface ErrorBoundaryProps {
   children: React.ReactNode;
   renderFallback: (
     error: Error,
@@ -143,6 +165,8 @@ export const renderPropsChallenges: Challenge[] = [
 // )}>
 //   <App />
 // </ErrorBoundary>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A render function gives the fallback access to the actual `Error` and a `reset` function. A static `ReactNode` can't show the error message or offer a retry button. Use `render*` when the component has runtime data the consumer needs.",
@@ -157,7 +181,10 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "hard",
     title: "Scoped render props vs broad state exposure",
-    badCode: `interface DataTableProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface DataTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
   /**
@@ -176,7 +203,8 @@ export const renderPropsChallenges: Challenge[] = [
     toggleRow: (id: string) => void;
   }) => React.ReactNode;
 }`,
-    goodCode: `interface DataTableProps<T> {
+
+      right: `interface DataTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
   /** Custom row rendering with row-level state. */
@@ -193,6 +221,8 @@ export const renderPropsChallenges: Challenge[] = [
     setPage: (p: number) => void;
   }) => React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Scoped render props expose only what each customization point needs. `renderRow` gets row-level state, `renderPagination` gets page state. The broad `children` callback dumps all internal state into one bag, coupling the consumer to every implementation detail.\n\nIf the table adds filtering or column resizing internally, the scoped render props don't change. The broad callback's type signature breaks.",

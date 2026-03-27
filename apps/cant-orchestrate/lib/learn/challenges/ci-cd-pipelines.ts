@@ -6,7 +6,12 @@ export const ciCdPipelinesChallenges: Challenge[] = [
     category: "ci-cd-pipelines",
     difficulty: "easy",
     title: "Cache Docker layers in CI",
-    badCode: `# GitHub Actions
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# GitHub Actions
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,7 +20,8 @@ jobs:
       - run: docker build -t myapp:latest .
       # Builds from scratch every time
       # No layer caching`,
-    goodCode: `# GitHub Actions
+
+      right: `# GitHub Actions
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,7 +35,8 @@ jobs:
           tags: myapp:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "BuildKit's GitHub Actions cache backend (`type=gha`) stores and retrieves Docker layers between CI runs. Unchanged layers are reused, dramatically reducing build times. `mode=max` caches all layers, not just the final image.",
@@ -43,14 +50,20 @@ jobs:
     category: "ci-cd-pipelines",
     difficulty: "medium",
     title: "Tag images with commit SHA",
-    badCode: `# Build and push with mutable tag
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# Build and push with mutable tag
 docker build -t registry.io/myapp:latest .
 docker push registry.io/myapp:latest
 
 # Deploy
 kubectl set image deployment/web \\
   web=registry.io/myapp:latest`,
-    goodCode: `# Build and push with immutable tag
+
+      right: `# Build and push with immutable tag
 SHA=$(git rev-parse --short HEAD)
 docker build -t registry.io/myapp:$SHA .
 docker push registry.io/myapp:$SHA
@@ -58,7 +71,8 @@ docker push registry.io/myapp:$SHA
 # Deploy with specific version
 kubectl set image deployment/web \\
   web=registry.io/myapp:$SHA`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Tagging with the commit SHA creates an immutable, traceable image. You can always determine which code is running in any environment. Rollbacks point to a specific previous SHA. Two environments running the same SHA are guaranteed to have identical code.",
@@ -73,13 +87,19 @@ kubectl set image deployment/web \\
     category: "ci-cd-pipelines",
     difficulty: "medium",
     title: "Multi-platform builds",
-    badCode: `# Only builds for CI runner's arch
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# Only builds for CI runner's arch
 docker build -t myapp:1.0 .
 docker push registry.io/myapp:1.0
 
 # Fails on ARM servers or
 # Apple Silicon dev machines`,
-    goodCode: `# Build for multiple architectures
+
+      right: `# Build for multiple architectures
 docker buildx build \\
   --platform linux/amd64,linux/arm64 \\
   --tag registry.io/myapp:1.0 \\
@@ -87,7 +107,8 @@ docker buildx build \\
 
 # Works on x86 servers, ARM servers,
 # and Apple Silicon dev machines`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`docker buildx build --platform` creates a multi-architecture manifest. Docker automatically pulls the right image for the host architecture. Your image works on x86 CI runners, ARM-based cloud instances (Graviton, Ampere), and Apple Silicon Macs.",
@@ -101,13 +122,19 @@ docker buildx build \\
     category: "ci-cd-pipelines",
     difficulty: "hard",
     title: "Scan images before deploying",
-    badCode: `# Build, push, deploy
+    content: {
+      type: "code",
+
+      lang: "bash",
+
+      left: `# Build, push, deploy
 # No security check
 docker build -t myapp:$SHA .
 docker push registry.io/myapp:$SHA
 kubectl set image deployment/web \\
   web=registry.io/myapp:$SHA`,
-    goodCode: `# Build, scan, push, deploy
+
+      right: `# Build, scan, push, deploy
 docker build -t myapp:$SHA .
 
 # Scan for vulnerabilities
@@ -119,7 +146,8 @@ docker scout cves myapp:$SHA \\
 docker push registry.io/myapp:$SHA
 kubectl set image deployment/web \\
   web=registry.io/myapp:$SHA`,
-    lang: "bash",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Scanning images before pushing to a registry catches known vulnerabilities in base images and dependencies. `--exit-code` makes the scan fail the pipeline on critical/high findings. Vulnerable images never reach production.",

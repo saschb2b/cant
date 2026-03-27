@@ -6,14 +6,20 @@ export const securityChallenges: Challenge[] = [
     category: "security",
     difficulty: "easy",
     title: "Run as non-root user",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
 
 # Runs as root by default
 CMD ["node", "server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
@@ -24,7 +30,8 @@ RUN addgroup -S appgroup && \\
 USER appuser
 
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Running as a non-root user limits what an attacker can do if they exploit a vulnerability. The `appuser` cannot install packages, modify system files, or access other users' data. This is a fundamental container security practice.",
@@ -38,7 +45,12 @@ CMD ["node", "server.js"]`,
     category: "security",
     difficulty: "easy",
     title: "Don't hardcode secrets in Dockerfiles",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 
@@ -48,7 +60,8 @@ ENV API_KEY="sk-live-abc123def456"
 
 RUN npm ci
 CMD ["node", "server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci
@@ -57,7 +70,8 @@ RUN npm ci
 # via docker run --env-file
 # or Kubernetes secrets
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Secrets should be injected at runtime via environment variables, Docker secrets, or Kubernetes Secrets. This keeps credentials out of image layers, version control, and container registries. Anyone with access to the image can extract baked-in secrets.",
@@ -71,19 +85,26 @@ CMD ["node", "server.js"]`,
     category: "security",
     difficulty: "medium",
     title: "Read-only root filesystem",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     image: myapp:1.0
     # Default: writable filesystem
     # Attacker can write malware`,
-    goodCode: `services:
+
+      right: `services:
   app:
     image: myapp:1.0
     read_only: true
     tmpfs:
       - /tmp
       - /app/cache`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A read-only root filesystem prevents attackers from writing scripts, downloading tools, or modifying application code inside the container. `tmpfs` mounts provide writable directories for legitimate temporary files without persisting anything to disk.",
@@ -98,7 +119,12 @@ CMD ["node", "server.js"]`,
     category: "security",
     difficulty: "medium",
     title: "Kubernetes secrets as volumes",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Pod
 metadata:
   name: app
@@ -111,7 +137,8 @@ spec:
         # logs, and process listing
         - name: DB_PASSWORD
           value: "s3cret-passw0rd"`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Pod
 metadata:
   name: app
@@ -125,7 +152,8 @@ spec:
             secretKeyRef:
               name: db-credentials
               key: password`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Using `secretKeyRef` reads the value from a Kubernetes Secret object. The secret is stored encrypted (at rest), access is controlled by RBAC, and the plain text value doesn't appear in the pod spec or `kubectl describe` output.",
@@ -139,7 +167,12 @@ spec:
     category: "security",
     difficulty: "hard",
     title: "Drop all capabilities",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: Pod
 metadata:
   name: app
@@ -149,7 +182,8 @@ spec:
       image: myapp:1.0
       # Default capabilities include
       # NET_RAW, SYS_CHROOT, MKNOD...`,
-    goodCode: `apiVersion: v1
+
+      right: `apiVersion: v1
 kind: Pod
 metadata:
   name: app
@@ -164,7 +198,8 @@ spec:
         capabilities:
           drop:
             - ALL`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Dropping all Linux capabilities removes permissions the container doesn't need, like raw network access (`NET_RAW`), filesystem mounting (`SYS_ADMIN`), and process tracing (`SYS_PTRACE`). Combined with `runAsNonRoot` and read-only filesystem, this creates a hardened container.",

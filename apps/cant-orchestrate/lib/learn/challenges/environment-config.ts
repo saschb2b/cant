@@ -6,7 +6,12 @@ export const environmentConfigChallenges: Challenge[] = [
     category: "environment-config",
     difficulty: "easy",
     title: "Use .env files in Compose",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     build: .
     environment:
@@ -17,7 +22,8 @@ export const environmentConfigChallenges: Challenge[] = [
       DB_PASSWORD: changeme
       DB_NAME: myapp
       REDIS_URL: redis://cache:6379`,
-    goodCode: `services:
+
+      right: `services:
   app:
     build: .
     env_file:
@@ -25,7 +31,8 @@ export const environmentConfigChallenges: Challenge[] = [
     environment:
       # Only overrides go here
       NODE_ENV: production`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "An `env_file` keeps environment variables in a separate `.env` file that can be git-ignored, swapped per environment, and shared between services. Only environment-specific overrides belong in the Compose file itself.",
@@ -40,7 +47,12 @@ export const environmentConfigChallenges: Challenge[] = [
     category: "environment-config",
     difficulty: "medium",
     title: "Kubernetes ConfigMap from file",
-    badCode: `apiVersion: v1
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
@@ -55,7 +67,8 @@ data:
         proxy_pass http://backend:8080;
       }
     }`,
-    goodCode: `# Create from file:
+
+      right: `# Create from file:
 # kubectl create configmap app-config \\
 #   --from-file=nginx.conf
 
@@ -74,7 +87,8 @@ spec:
     - name: config
       configMap:
         name: app-config`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Creating ConfigMaps from files (`--from-file`) keeps configuration in its native format where it can be linted, tested, and version-controlled independently. Mounting as a volume lets you update the config without rebuilding the image.",
@@ -88,7 +102,12 @@ spec:
     category: "environment-config",
     difficulty: "medium",
     title: "ARG vs ENV in Dockerfiles",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 
 # Available at runtime, visible in image
 ENV NPM_TOKEN=abc123
@@ -100,7 +119,8 @@ RUN echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc && \\
 # .npmrc with token persists in image
 
 CMD ["node", "server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 
 # Only available during build
 ARG NPM_TOKEN
@@ -112,7 +132,8 @@ RUN echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc && \\
     rm -f .npmrc
 
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`ARG` values are only available during build and don't persist in the final image metadata (though they remain in layer history). Removing `.npmrc` in the same `RUN` layer ensures the token isn't stored in any layer. Pass with `--build-arg NPM_TOKEN=...`.",
@@ -126,7 +147,12 @@ CMD ["node", "server.js"]`,
     category: "environment-config",
     difficulty: "hard",
     title: "Variable substitution in Compose",
-    badCode: `services:
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `services:
   app:
     image: myapp:latest
     ports:
@@ -145,7 +171,8 @@ CMD ["node", "server.js"]`,
       - "80:3000"
     environment:
       NODE_ENV: production`,
-    goodCode: `# docker-compose.yml
+
+      right: `# docker-compose.yml
 services:
   app:
     image: myapp:\${APP_TAG:-latest}
@@ -158,7 +185,8 @@ services:
 # APP_TAG=v2.1.0
 # APP_PORT=3001
 # NODE_ENV=staging`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Variable substitution with `${VAR:-default}` lets a single Compose file work across environments. Each environment provides its own `.env` file or exports variables. The `:-` syntax provides sensible defaults for local development.",

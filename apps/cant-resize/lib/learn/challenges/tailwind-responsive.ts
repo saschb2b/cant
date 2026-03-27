@@ -6,14 +6,20 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "easy",
     title: "Mobile-first utility classes",
-    badCode: `<div className="flex-row md:flex-row sm:flex-col">
+    content: {
+      type: "code",
+
+      left: `<div className="flex-row md:flex-row sm:flex-col">
   <Card />
   <Card />
 </div>`,
-    goodCode: `<div className="flex flex-col sm:flex-row">
+
+      right: `<div className="flex flex-col sm:flex-row">
   <Card />
   <Card />
 </div>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Tailwind is mobile-first: unprefixed utilities apply to all screens, `sm:` applies at 640px+. Start with the mobile layout (`flex-col`), then override for larger screens (`sm:flex-row`). The base class is the smallest screen.",
@@ -27,7 +33,10 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "easy",
     title: "Responsive hiding",
-    badCode: `function Sidebar() {
+    content: {
+      type: "code",
+
+      left: `function Sidebar() {
   const [show, setShow] = useState(
     window.innerWidth >= 768,
   );
@@ -36,9 +45,12 @@ export const tailwindResponsiveChallenges: Challenge[] = [
   if (!show) return null;
   return <nav>...</nav>;
 }`,
-    goodCode: `<nav className="hidden md:block">
+
+      right: `<nav className="hidden md:block">
   {/* Sidebar content */}
 </nav>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`hidden md:block` compiles to `display: none` by default and `display: block` at 768px+. Pure CSS, no JavaScript, no hydration issues, no resize listeners. Tailwind's responsive prefixes are the standard way to show/hide elements.",
@@ -52,16 +64,22 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "medium",
     title: "Responsive grid columns",
-    badCode: `<div className="grid grid-cols-4 gap-4">
+    content: {
+      type: "code",
+
+      left: `<div className="grid grid-cols-4 gap-4">
   {items.map((item) => (
     <ItemCard key={item.id} item={item} />
   ))}
 </div>`,
-    goodCode: `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+      right: `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
   {items.map((item) => (
     <ItemCard key={item.id} item={item} />
   ))}
 </div>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Progressive column counts: 1 on mobile, 2 on tablet, 3 on small desktop, 4 on wide screens. Each breakpoint adds a column when there's enough space. Items are always readable and properly sized for the screen.",
@@ -75,20 +93,26 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "medium",
     title: "Container queries in Tailwind",
-    badCode: `// Card responds to viewport, not parent
+    content: {
+      type: "code",
+
+      left: `// Card responds to viewport, not parent
 <div className="w-full md:w-1/3">
   <div className="flex flex-col md:flex-row gap-4">
     <img className="w-full md:w-1/3" />
     <div>...</div>
   </div>
 </div>`,
-    goodCode: `// Card responds to its container width
+
+      right: `// Card responds to its container width
 <div className="@container w-full md:w-1/3">
   <div className="flex flex-col @sm:flex-row gap-4">
     <img className="w-full @sm:w-1/3" />
     <div>...</div>
   </div>
 </div>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Tailwind's `@container` and `@sm:` prefixes generate CSS container queries. The card adapts to its parent's width, not the viewport. If this card is in a sidebar, it stays in column layout even on a wide desktop.",
@@ -103,14 +127,20 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "medium",
     title: "Responsive typography with Tailwind",
-    badCode: `<h1 className="text-4xl">
+    content: {
+      type: "code",
+
+      left: `<h1 className="text-4xl">
   Welcome
 </h1>
 
 {/* 4xl is too large on mobile */}`,
-    goodCode: `<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+
+      right: `<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
   Welcome
 </h1>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Progressive font sizing from `text-2xl` (1.5rem) on mobile up to `text-5xl` (3rem) on large screens. Each breakpoint increases the size when there's room for it. This is the standard Tailwind pattern for responsive headings.",

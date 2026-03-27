@@ -6,7 +6,10 @@ export const childrenPatternChallenges: Challenge[] = [
     category: "children-pattern",
     difficulty: "hard",
     title: "Generic list component",
-    badCode: `interface ListProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface ListProps<T> {
   /** The data to iterate. */
   data: T[];
   /** Render function for each item. */
@@ -14,7 +17,8 @@ export const childrenPatternChallenges: Challenge[] = [
   /** Empty state content. */
   empty: React.ReactNode;
 }`,
-    goodCode: `interface ListProps<T> {
+
+      right: `interface ListProps<T> {
   /** The data array to iterate over. */
   data: T[];
   /**
@@ -29,6 +33,8 @@ export const childrenPatternChallenges: Challenge[] = [
    */
   emptyState: React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`renderItem` is specific (render what? an item), the callback includes `index` for `key` assignment and alternating styles, and `emptyState` clearly describes the slot's purpose.\n\nThe `@example` in JSDoc shows the expected usage pattern. Compare `render` (of what?) and `empty` (a boolean? a message?).",
@@ -42,7 +48,10 @@ export const childrenPatternChallenges: Challenge[] = [
     category: "children-pattern",
     difficulty: "hard",
     title: "Compound component API design",
-    badCode: `interface SelectProps {
+    content: {
+      type: "code",
+
+      left: `interface SelectProps {
   options: Array<{
     value: string;
     label: string;
@@ -54,7 +63,8 @@ export const childrenPatternChallenges: Challenge[] = [
   onChange: (value: string) => void;
   placeholder?: string;
 }`,
-    goodCode: `interface SelectOptionProps {
+
+      right: `interface SelectOptionProps {
   /** The value submitted when selected. */
   value: string;
   /** Display label. Falls back to children. */
@@ -73,6 +83,8 @@ interface SelectProps {
   /** Text shown when no value is selected. */
   placeholder?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Compound components (`Select` + `SelectOption`) are more flexible than config objects. They support nesting, conditional rendering, custom content, and compose naturally with JSX. Adding icons or groups doesn't require changing the config type.\n\nThis is the pattern Radix UI, Headless UI, and React Aria all chose for Select. Note: for data-heavy, fixed-layout components (like data grids), config props can be the better choice.",
@@ -86,7 +98,10 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "medium",
     title: "Customizing sub-components",
-    badCode: `interface AutocompleteProps {
+    content: {
+      type: "code",
+
+      left: `interface AutocompleteProps {
   options: string[];
   PaperComponent?: React.ElementType;
   PaperProps?: Record<string, unknown>;
@@ -95,7 +110,8 @@ interface SelectProps {
   PopperComponent?: React.ElementType;
   PopperProps?: Record<string, unknown>;
 }`,
-    goodCode: `interface AutocompleteProps {
+
+      right: `interface AutocompleteProps {
   options: string[];
   /**
    * Override internal sub-components and their props.
@@ -112,6 +128,8 @@ interface SelectProps {
     popper?: Record<string, unknown>;
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object, not two new top-level props.\n\nThis is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
@@ -126,7 +144,10 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "medium",
     title: "Named content slots",
-    badCode: `interface CardProps {
+    content: {
+      type: "code",
+
+      left: `interface CardProps {
   title: string;
   subtitle?: string;
   iconName?: string;
@@ -134,7 +155,8 @@ interface SelectProps {
   children: React.ReactNode;
   footerText?: string;
 }`,
-    goodCode: `interface CardProps {
+
+      right: `interface CardProps {
   children: React.ReactNode;
   /** Content rendered in the card header. */
   header?: React.ReactNode;
@@ -143,6 +165,8 @@ interface SelectProps {
   /** Icon shown before the header content. */
   icon?: React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Slot props (`header`, `footer`, `icon` as `ReactNode`) let consumers pass anything: text, icons, buttons, or custom components. String-typed slots restrict you to plain text; `ReactNode` slots enable full composition.",
@@ -156,7 +180,10 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "easy",
     title: "Primary content as children",
-    badCode: `interface PanelProps {
+    content: {
+      type: "code",
+
+      left: `interface PanelProps {
   title: string;
   content: React.ReactNode;
 }
@@ -166,7 +193,8 @@ interface SelectProps {
 //   title="Settings"
 //   content={<SettingsForm />}
 // />`,
-    goodCode: `interface PanelProps {
+
+      right: `interface PanelProps {
   title: string;
   children: React.ReactNode;
 }
@@ -175,6 +203,8 @@ interface SelectProps {
 // <Panel title="Settings">
 //   <SettingsForm />
 // </Panel>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The primary content of a component should use `children`, not a named prop. This follows JSX composition conventions and lets consumers nest content naturally. Named slots like `header` or `footer` are for secondary content areas.",
@@ -189,14 +219,18 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "easy",
     title: "Composition over prop drilling",
-    badCode: `interface LayoutProps {
+    content: {
+      type: "code",
+
+      left: `interface LayoutProps {
   userName: string;
   userAvatar: string;
   userRole: string;
   navItems: NavItem[];
   children: React.ReactNode;
 }`,
-    goodCode: `interface LayoutProps {
+
+      right: `interface LayoutProps {
   /** Rendered in the sidebar area. */
   sidebar: React.ReactNode;
   /** Rendered in the top header area. */
@@ -204,6 +238,8 @@ interface SelectProps {
   /** Main content area. */
   children: React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Passing pre-rendered `ReactNode` slots avoids prop drilling. The Layout doesn't need to know about user data or nav items; it just renders whatever components the parent composes. If the sidebar design changes, only the parent's JSX changes, not the Layout props.",
@@ -218,7 +254,10 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "medium",
     title: "asChild composition pattern",
-    badCode: `interface TooltipTriggerProps {
+    content: {
+      type: "code",
+
+      left: `interface TooltipTriggerProps {
   /** The element to render as. */
   as?: React.ElementType;
   children: React.ReactNode;
@@ -231,7 +270,8 @@ interface SelectProps {
 //   className="my-btn">
 //   Hover me
 // </TooltipTrigger>`,
-    goodCode: `interface TooltipTriggerProps {
+
+      right: `interface TooltipTriggerProps {
   /**
    * Merge trigger behavior onto the child element
    * instead of wrapping in a <span>.
@@ -247,6 +287,8 @@ interface SelectProps {
 //     Hover me
 //   </Button>
 // </TooltipTrigger>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `asChild` pattern (popularized by Radix UI) merges the component's behavior onto its child element rather than creating a wrapper. This avoids the DOM nesting issues and TypeScript complexity of the `as` prop.\n\nWith `as`, you lose the child component's own props and types. With `asChild`, the child keeps full control of its props, styling, and ref.",
@@ -260,7 +302,10 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "hard",
     title: "Server Component children in client wrapper",
-    badCode: `'use client';
+    content: {
+      type: "code",
+
+      left: `'use client';
 
 interface TabPanelProps {
   /** Product data to render in each tab. */
@@ -275,7 +320,8 @@ interface TabPanelProps {
   /** @default 0 */
   defaultIndex?: number;
 }`,
-    goodCode: `'use client';
+
+      right: `'use client';
 
 interface TabPanelProps {
   /** Each child is rendered as a tab panel. */
@@ -285,6 +331,8 @@ interface TabPanelProps {
   /** @default 0 */
   defaultIndex?: number;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The Client Component (`TabPanel`) only handles tab switching logic, and the actual content stays as Server Components passed through `children`. Product data never crosses the serialization boundary.\n\nThe bad version forces all product data into the Client Component, making every spec, review, and related product part of the client bundle.",

@@ -8,6 +8,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import { ArrowRight, Check, X } from "lucide-react";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
+import { buildContentMap } from "@cant/shared/lib/content-map";
 import { codeBlockStyles } from "@/lib/code-styles";
 import { challenges } from "@/lib/learn/challenges";
 import {
@@ -26,30 +27,28 @@ export const metadata: Metadata = {
 export default async function LearnPage() {
   const highlighter = await getHighlighter();
 
+  const previewChallenges = CATEGORY_ORDER.flatMap(
+    (cat) => challenges.find((c) => c.category === cat) ?? [],
+  );
+  const previewContentMap = buildContentMap(
+    previewChallenges,
+    highlighter,
+    highlightDual,
+  );
+
   const sections = CATEGORY_ORDER.map((category) => {
-    const categoryChallenges = challenges.filter(
-      (c) => c.category === category,
-    );
-    const preview = categoryChallenges[0];
+    const count = challenges.filter((c) => c.category === category).length;
+    const preview = previewChallenges.find((c) => c.category === category);
+    const entry = preview ? previewContentMap[preview.id] : undefined;
     return {
       category,
       label: CATEGORY_LABELS[category],
       description: CATEGORY_DESCRIPTIONS[category],
-      count: categoryChallenges.length,
-      preview: preview
-        ? {
-            goodHtml: highlightDual(
-              highlighter,
-              preview.goodCode,
-              preview.lang ?? "tsx",
-            ),
-            badHtml: highlightDual(
-              highlighter,
-              preview.badCode,
-              preview.lang ?? "tsx",
-            ),
-          }
-        : null,
+      count,
+      preview:
+        entry?.type === "code"
+          ? { goodHtml: entry.goodHtml, badHtml: entry.badHtml }
+          : null,
     };
   });
 

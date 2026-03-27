@@ -6,7 +6,9 @@ export const moduleTypeChallenges: Challenge[] = [
     category: "module-types",
     difficulty: "easy",
     title: "Declaration files basics",
-    badCode: `// utils.js (no types)
+    content: {
+      type: "code",
+      left: `// utils.js (no types)
 export function slugify(text) {
   return text
     .toLowerCase()
@@ -18,7 +20,7 @@ import { slugify } from "./utils";
 // Error: Could not find a declaration
 // file for module './utils'
 // slugify is implicitly 'any'`,
-    goodCode: `// utils.d.ts
+      right: `// utils.d.ts
 export declare function slugify(
   text: string
 ): string;
@@ -33,6 +35,7 @@ export function slugify(text: string): string {
 // app.ts
 import { slugify } from "./utils";
 // slugify is typed: (text: string) => string`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Declaration files (.d.ts) describe the types for JavaScript files without containing implementation code. They let TypeScript understand the shape of JS modules. When possible, converting the source file to .ts is even better because it keeps types and implementation together.",
@@ -47,7 +50,9 @@ import { slugify } from "./utils";
     category: "module-types",
     difficulty: "easy",
     title: "Ambient module declarations",
-    badCode: `// app.ts
+    content: {
+      type: "code",
+      left: `// app.ts
 import styles from "./Button.module.css";
 // Error: Cannot find module
 // './Button.module.css' or its
@@ -55,7 +60,7 @@ import styles from "./Button.module.css";
 
 import logo from "./logo.svg";
 // Error: Cannot find module './logo.svg'`,
-    goodCode: `// global.d.ts
+      right: `// global.d.ts
 declare module "*.module.css" {
   const classes: Record<string, string>;
   export default classes;
@@ -69,6 +74,7 @@ declare module "*.svg" {
 // app.ts
 import styles from "./Button.module.css"; // OK
 import logo from "./logo.svg"; // OK`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Ambient module declarations use wildcard patterns to tell TypeScript the shape of non-TypeScript imports like CSS modules and SVG files. The declare module statement goes in a .d.ts file included in your project. Each pattern matches any import path that ends with that extension.",
@@ -83,7 +89,9 @@ import logo from "./logo.svg"; // OK`,
     category: "module-types",
     difficulty: "medium",
     title: "Module augmentation",
-    badCode: `// Want to add a custom theme color to MUI
+    content: {
+      type: "code",
+      left: `// Want to add a custom theme color to MUI
 // Wrong: re-declaring the whole interface
 interface PaletteOptions {
   primary?: PaletteColorOptions;
@@ -92,7 +100,7 @@ interface PaletteOptions {
   // Must copy ALL existing properties
   // Breaks when MUI updates
 }`,
-    goodCode: `// theme.d.ts
+      right: `// theme.d.ts
 import "@mui/material/styles";
 
 declare module "@mui/material/styles" {
@@ -106,6 +114,7 @@ declare module "@mui/material/styles" {
 
 // Now theme.palette.brand is typed
 // without overriding existing properties`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Module augmentation lets you add new properties to existing interfaces from external packages without redeclaring the entire type. TypeScript merges your additions with the original declarations. This is the officially supported way to extend library types like MUI's theme.",
@@ -120,13 +129,15 @@ declare module "@mui/material/styles" {
     category: "module-types",
     difficulty: "medium",
     title: "Global type augmentation",
-    badCode: `// Adding a property to Window
+    content: {
+      type: "code",
+      left: `// Adding a property to Window
 // Wrong: using 'any' to bypass type check
 const analytics = (window as any).analytics;
 analytics.track("page_view");
 // No autocomplete, no type safety
 // Crashes if analytics is not loaded`,
-    goodCode: `// global.d.ts
+      right: `// global.d.ts
 declare global {
   interface Window {
     analytics?: {
@@ -141,6 +152,7 @@ export {}; // Makes this a module
 // app.ts
 window.analytics?.track("page_view");
 // Full autocomplete and null safety`,
+    },
     correctSide: "right",
     explanationCorrect:
       "The declare global block augments the global scope from within a module file. By extending the Window interface, you get full type checking and autocomplete for custom global properties. The optional (?) marker ensures you handle the case where the script has not loaded.",
@@ -155,7 +167,9 @@ window.analytics?.track("page_view");
     category: "module-types",
     difficulty: "hard",
     title: "Type-only imports",
-    badCode: `// types.ts
+    content: {
+      type: "code",
+      left: `// types.ts
 export interface User {
   id: string;
   name: string;
@@ -168,7 +182,7 @@ import { User } from "./types";
 // 1. Unnecessary bundle size
 // 2. Circular dependency issues
 // 3. Side effects from module execution`,
-    goodCode: `// types.ts
+      right: `// types.ts
 export interface User {
   id: string;
   name: string;
@@ -182,6 +196,7 @@ import type { User } from "./types";
 
 // Or use inline type imports:
 import { type User, fetchUser } from "./api";`,
+    },
     correctSide: "right",
     explanationCorrect:
       "The import type syntax guarantees the import is erased during compilation and produces no runtime JavaScript. This prevents accidental side effects, reduces bundle size, and avoids circular dependency issues. TypeScript 4.5 also supports inline type imports for mixed import statements.",
@@ -196,7 +211,9 @@ import { type User, fetchUser } from "./api";`,
     category: "module-types",
     difficulty: "hard",
     title: "declare global for custom hooks",
-    badCode: `// Want to add custom matchers to Jest
+    content: {
+      type: "code",
+      left: `// Want to add custom matchers to Jest
 // Wrong: just calling it and hoping
 expect.extend({
   toBeWithinRange(received, floor, ceiling) {
@@ -210,7 +227,7 @@ expect.extend({
 expect(100).toBeWithinRange(90, 110);
 // Error: Property 'toBeWithinRange'
 // does not exist on type 'Matchers'`,
-    goodCode: `// jest.d.ts
+      right: `// jest.d.ts
 declare global {
   namespace jest {
     interface Matchers<R> {
@@ -234,6 +251,7 @@ expect.extend({
 
 // test.ts
 expect(100).toBeWithinRange(90, 110); // OK`,
+    },
     correctSide: "right",
     explanationCorrect:
       "Jest's expect().toX() methods are defined in the jest.Matchers interface. By augmenting this interface inside a declare global block, you tell TypeScript about your custom matchers. The export {} at the end is required to make the file a module, which is necessary for declare global to work.",

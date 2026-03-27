@@ -6,14 +6,18 @@ export const propOrganizationChallenges: Challenge[] = [
     category: "prop-organization",
     difficulty: "easy",
     title: "Group related data props",
-    badCode: `interface ProfileCardProps {
+    content: {
+      type: "code",
+
+      left: `interface ProfileCardProps {
   userName: string;
   userEmail: string;
   userAvatar: string;
   userRole: 'admin' | 'member' | 'viewer';
   onEdit: () => void;
 }`,
-    goodCode: `interface User {
+
+      right: `interface User {
   name: string;
   email: string;
   avatar: string;
@@ -24,6 +28,8 @@ interface ProfileCardProps {
   user: User;
   onEdit: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Four `user*` props that always travel together belong in a `User` type. The component receives one structured object instead of four loose strings. If `User` gains a `phone` field later, only the type changes, not every component that forwards user data.",
@@ -37,14 +43,18 @@ interface ProfileCardProps {
     category: "prop-organization",
     difficulty: "easy",
     title: "Remove derived props",
-    badCode: `interface ProductListProps {
+    content: {
+      type: "code",
+
+      left: `interface ProductListProps {
   products: Product[];
   productCount: number;
   hasProducts: boolean;
   isEmpty: boolean;
   onProductSelect: (product: Product) => void;
 }`,
-    goodCode: `interface ProductListProps {
+
+      right: `interface ProductListProps {
   products: Product[];
   onProductSelect: (product: Product) => void;
 }
@@ -52,6 +62,8 @@ interface ProfileCardProps {
 // Derive inside the component:
 // const isEmpty = products.length === 0;
 // const productCount = products.length;`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Three of the five props are derivable from `products`. `productCount` is `products.length`, `hasProducts` is `products.length > 0`, and `isEmpty` is its inverse. Redundant props invite bugs: what happens when `products` has 3 items but `isEmpty` is `true`?",
@@ -66,7 +78,10 @@ interface ProfileCardProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Boolean flag explosion",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   children: React.ReactNode;
   isPrimary?: boolean;
   isSecondary?: boolean;
@@ -77,7 +92,8 @@ interface ProfileCardProps {
   isLarge?: boolean;
   onClick?: () => void;
 }`,
-    goodCode: `interface ButtonProps {
+
+      right: `interface ButtonProps {
   children: React.ReactNode;
   /** @default 'primary' */
   variant?: 'primary' | 'secondary' | 'danger';
@@ -87,6 +103,8 @@ interface ProfileCardProps {
   size?: 'sm' | 'md' | 'lg';
   onClick?: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Seven booleans collapsed into three union props. Unions enforce mutual exclusivity; a button can't be both `primary` and `danger`. Booleans allow impossible combos like `<Button isPrimary isDanger isOutlined isGhost />`. Each union prop represents one independent design axis.",
@@ -101,7 +119,10 @@ interface ProfileCardProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Structure flat coordinate props",
-    badCode: `interface Coordinates {
+    content: {
+      type: "code",
+
+      left: `interface Coordinates {
   x: number;
   y: number;
 }
@@ -113,7 +134,8 @@ interface MapViewProps {
   marker?: { coords: Coordinates; text: string };
   onMapClick: (coords: Coordinates) => void;
 }`,
-    goodCode: `interface LatLng {
+
+      right: `interface LatLng {
   lat: number;
   lng: number;
 }
@@ -125,6 +147,8 @@ interface MapViewProps {
   marker?: { position: LatLng; label: string };
   onMapClick: (position: LatLng) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "**Domain-specific names** beat generic ones: `LatLng` with `lat`/`lng` is immediately clear for a map, while `Coordinates` with `x`/`y` could mean screen pixels, grid positions, or anything.\n\n`position` tells you where the marker sits; `coords` is just a synonym for the type name. `label` specifies what gets displayed; `text` is vague.",
@@ -138,7 +162,10 @@ interface MapViewProps {
     category: "prop-organization",
     difficulty: "hard",
     title: "Extract sub-component via slot",
-    badCode: `interface ArticlePageProps {
+    content: {
+      type: "code",
+
+      left: `interface ArticlePageProps {
   title: string;
   content: string;
   author: string;
@@ -151,7 +178,8 @@ interface MapViewProps {
   onBookmark?: () => void;
   onPrint?: () => void;
 }`,
-    goodCode: `interface ArticlePageProps {
+
+      right: `interface ArticlePageProps {
   title: string;
   content: string;
   author: string;
@@ -169,6 +197,8 @@ interface MapViewProps {
 //     />
 //   }
 // />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Six out of eleven original props belonged to the toolbar, not the article. Extracting the toolbar into a `ReactNode` slot cuts the interface in half.\n\nConsumers compose their own toolbar, or omit it entirely. The `ArticlePage` no longer needs to know what toolbar actions exist.",
@@ -183,7 +213,10 @@ interface MapViewProps {
     category: "prop-organization",
     difficulty: "hard",
     title: "Encapsulate internal state",
-    badCode: `interface SearchInputProps {
+    content: {
+      type: "code",
+
+      left: `interface SearchInputProps {
   query: string;
   onQueryChange: (query: string) => void;
   placeholder?: string;
@@ -195,7 +228,8 @@ interface MapViewProps {
   onHighlightChange: (index: number) => void;
   isLoading?: boolean;
 }`,
-    goodCode: `interface SearchInputProps {
+
+      right: `interface SearchInputProps {
   query: string;
   onQueryChange: (query: string) => void;
   placeholder?: string;
@@ -207,6 +241,8 @@ interface MapViewProps {
 // Dropdown open state, highlighted index, and
 // keyboard navigation are managed internally.
 // The parent controls data and selection only.`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Not every piece of state needs to be a prop. Dropdown visibility and keyboard-highlighted index are UI interaction details; the parent doesn't care which item is highlighted.\n\nExposing internal state as props forces the parent to reimplement dropdown behavior. **Keep the API to what the parent actually needs: data in, selection out.**",
@@ -221,7 +257,10 @@ interface MapViewProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Inline objects create new references",
-    badCode: `function Dashboard() {
+    content: {
+      type: "code",
+
+      left: `function Dashboard() {
   return (
     <Chart
       data={transactions}
@@ -233,7 +272,8 @@ interface MapViewProps {
     />
   );
 }`,
-    goodCode: `const CHART_MARGINS = {
+
+      right: `const CHART_MARGINS = {
   top: 20, right: 30, bottom: 20, left: 40,
 };
 const CHART_COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
@@ -248,6 +288,8 @@ function Dashboard() {
     />
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Inline objects and arrays create new references on every render, causing unnecessary re-renders of memoized children and re-runs of effects that depend on them. Module-level constants have stable references.\n\nThe callback `(point) => setSelected(point)` is equivalent to `setSelected`; the wrapper adds nothing but a new function reference each render.",
@@ -262,7 +304,10 @@ function Dashboard() {
     category: "prop-organization",
     difficulty: "medium",
     title: "Cross-cutting concern in display component",
-    badCode: `interface ProductCardProps {
+    content: {
+      type: "code",
+
+      left: `interface ProductCardProps {
   product: Product;
   onSelect: (id: string) => void;
   // Impression tracking
@@ -272,7 +317,8 @@ function Dashboard() {
   onImpression?: () => void;
   impressionId?: string;
 }`,
-    goodCode: `interface ProductCardProps {
+
+      right: `interface ProductCardProps {
   product: Product;
   onSelect: (id: string) => void;
 }
@@ -282,6 +328,8 @@ function Dashboard() {
 // <div ref={ref}>
 //   <ProductCard product={p} onSelect={...} />
 // </div>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Impression tracking is a cross-cutting concern: it could apply to any visible element (ads, articles, images), not just product cards. A custom hook like `useImpressionTracker` (built on IntersectionObserver) is reusable across every tracked element without changing any component's props.\n\nThe React docs list `useImpressionLog` as an example of a well-named custom hook for exactly this pattern.",

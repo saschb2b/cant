@@ -6,15 +6,21 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "easy",
     title: "Status-specific message props",
-    badCode: `interface StatusProps {
+    content: {
+      type: "code",
+
+      left: `interface StatusProps {
   status: 'loading' | 'error' | 'success';
   errorMessage?: string;
   successData?: string;
 }`,
-    goodCode: `type StatusProps =
+
+      right: `type StatusProps =
   | { status: 'loading' }
   | { status: 'error'; errorMessage: string }
   | { status: 'success'; data: string };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A union type ties each status to exactly the props it needs. When `status` is `'loading'`, there's no `errorMessage` to accidentally render. When `status` is `'error'`, `errorMessage` is required, not optional. TypeScript narrows the type automatically when you check `status`.",
@@ -29,7 +35,10 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "medium",
     title: "Button action variants",
-    badCode: `type ButtonProps = {
+    content: {
+      type: "code",
+
+      left: `type ButtonProps = {
   children: React.ReactNode;
 } & (
   | {
@@ -45,7 +54,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       href?: string;
     }
 );`,
-    goodCode: `type ButtonProps = {
+
+      right: `type ButtonProps = {
   children: React.ReactNode;
 } & (
   | {
@@ -63,6 +73,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       target?: never;
     }
 );`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'The `never` type blocks invalid combinations at compile time. Without it, both `onClick` and `href` appear in both variants, so the union doesn\'t actually constrain anything. With `never`, `<Button href="/about" onClick={fn} />` is a type error. Each variant is truly exclusive.',
@@ -77,7 +89,10 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "hard",
     title: "Variant-dependent props",
-    badCode: `type AlertProps =
+    content: {
+      type: "code",
+
+      left: `type AlertProps =
   | {
       /** Success state. */
       type: 'success';
@@ -111,7 +126,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       /** Auto-dismiss delay. */
       autoDismissMs?: number;
     };`,
-    goodCode: `type AlertProps =
+
+      right: `type AlertProps =
   | {
       /** Shown on successful operations. Auto-dismisses. */
       type: 'success';
@@ -138,6 +154,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       /** Called when the user dismisses the warning. */
       onDismiss: () => void;
     };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Even though both use union types, the correct version makes each variant **self-contained**: `onRetry` is required (not optional) only for errors, `autoDismissMs` only exists on success, and `onDismiss` only on warnings.\n\nThe other version duplicates every prop across all variants as optional, so a success alert can still have `onRetry`.",
@@ -152,7 +170,10 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "hard",
     title: "Controlled vs uncontrolled input",
-    badCode: `type InputProps = {
+    content: {
+      type: "code",
+
+      left: `type InputProps = {
   placeholder?: string;
 } & (
   | {
@@ -170,7 +191,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       value?: string;
     }
 );`,
-    goodCode: `type InputProps = {
+
+      right: `type InputProps = {
   placeholder?: string;
 } & (
   | {
@@ -188,6 +210,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       value?: never;
     }
 );`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'The `never` type is the key difference. Without it, both `value` and `defaultValue` are allowed in both variants, so the union doesn\'t actually prevent mixing.\n\n`defaultValue?: never` in controlled mode and `value?: never` in uncontrolled mode make TypeScript reject `<Input value="hi" defaultValue="there" />` at compile time. Tradeoff: `never` types make prop spreading and delegation harder, so this pattern works best for leaf components rather than intermediate wrappers.',
@@ -202,18 +226,24 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "easy",
     title: "Image avatar vs initials avatar",
-    badCode: `interface AvatarProps {
+    content: {
+      type: "code",
+
+      left: `interface AvatarProps {
   src?: string;
   alt?: string;
   name?: string;
   size?: 'sm' | 'md' | 'lg';
 }`,
-    goodCode: `type AvatarProps = {
+
+      right: `type AvatarProps = {
   size?: 'sm' | 'md' | 'lg';
 } & (
   | { src: string; alt: string }
   | { name: string }
 );`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "An avatar is either an image (`src` + `alt`) or initials (`name`). The union makes both variants clear and ensures an image avatar always has `alt` text for accessibility. You can't accidentally pass `src` without `alt` or pass nothing at all.",
@@ -228,7 +258,10 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "medium",
     title: "Form field type unions",
-    badCode: `interface FormFieldProps {
+    content: {
+      type: "code",
+
+      left: `interface FormFieldProps {
   type: 'text' | 'number' | 'select';
   value: string | number;
   onChange: (value: string | number) => void;
@@ -237,7 +270,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
   max?: number;
   placeholder?: string;
 }`,
-    goodCode: `type FormFieldProps =
+
+      right: `type FormFieldProps =
   | {
       type: 'text';
       value: string;
@@ -257,6 +291,8 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       onChange: (value: string) => void;
       options: Array<{ value: string; label: string }>;
     };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Each field type gets exactly the props it needs: `options` is required (not optional) for select, `min`/`max` only exist on number, and `value`/`onChange` types match the field. The discriminant `type` lets TypeScript narrow the type in a switch statement.\n\nThe flat interface allows `<FormField type="text" min={0} />`. `min` makes no sense on a text field.',

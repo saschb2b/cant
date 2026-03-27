@@ -6,7 +6,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Custom button component props",
-    badCode: `interface ButtonProps
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps
   extends React.ComponentProps<'button'> {
   /** The button text. */
   label: string;
@@ -17,7 +20,8 @@ export const extendingHtmlChallenges: Challenge[] = [
   /** Button type. @default 'button' */
   type?: 'button' | 'submit' | 'reset';
 }`,
-    goodCode: `interface ButtonProps
+
+      right: `interface ButtonProps
   extends React.ComponentProps<'button'> {
   /** The button's visible text content. */
   label: string;
@@ -26,6 +30,8 @@ export const extendingHtmlChallenges: Challenge[] = [
   /** Button size. @default 'md' */
   size?: 'sm' | 'md' | 'lg';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When you extend `ComponentProps<'button'>`, `onClick`, `disabled`, and `type` are already included with correct types. Only add props that the native element doesn't have. `label`, `variant`, and `size` are genuine additions. Re-declaring inherited props clutters the API.",
@@ -39,7 +45,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Input wrapper with custom onChange",
-    badCode: `interface TextFieldProps
+    content: {
+      type: "code",
+
+      left: `interface TextFieldProps
   extends Omit<
     React.ComponentProps<'input'>,
     'onChange' | 'value'
@@ -51,7 +60,8 @@ export const extendingHtmlChallenges: Challenge[] = [
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
 }`,
-    goodCode: `interface TextFieldProps
+
+      right: `interface TextFieldProps
   extends Omit<
     React.ComponentProps<'input'>,
     'onChange'
@@ -62,6 +72,8 @@ export const extendingHtmlChallenges: Challenge[] = [
    */
   onChange: (value: string) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`Omit` should only remove props you actually need to redefine. The native `value` on `<input>` already works fine, so omitting and re-declaring it as `string` is unnecessary.\n\nSimplifying `onChange` to pass just the string value lets consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`. Tradeoff: if consumers need the full event (e.g., `event.target.name` in multi-field forms), keep the native signature.",
@@ -76,7 +88,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "hard",
     title: "Polymorphic component typing",
-    badCode: `type CardProps<
+    content: {
+      type: "code",
+
+      left: `type CardProps<
   E extends string = 'div'
 > = {
   /** The HTML element to render as. */
@@ -86,7 +101,8 @@ export const extendingHtmlChallenges: Challenge[] = [
   React.HTMLAttributes<HTMLElement>,
   'as' | 'children'
 >;`,
-    goodCode: `type CardProps<
+
+      right: `type CardProps<
   E extends React.ElementType = 'div'
 > = {
   /** The HTML element or component to render. */
@@ -96,6 +112,8 @@ export const extendingHtmlChallenges: Challenge[] = [
   React.ComponentPropsWithoutRef<E>,
   'as' | 'children'
 >;`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       '`React.ElementType` constrains `as` to valid elements/components, and `ComponentPropsWithoutRef<E>` adapts the available props based on the element. `as="a"` enables `href`; `as="button"` enables `type`.\n\nCompare `string` + `HTMLAttributes<HTMLElement>` which accepts any string and always gives generic div-like props regardless of the element.',
@@ -109,7 +127,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "easy",
     title: "Wrapper div component props",
-    badCode: `interface CardProps {
+    content: {
+      type: "code",
+
+      left: `interface CardProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
@@ -117,10 +138,13 @@ export const extendingHtmlChallenges: Challenge[] = [
   role?: string;
   'aria-label'?: string;
 }`,
-    goodCode: `interface CardProps
+
+      right: `interface CardProps
   extends React.ComponentProps<'div'> {
   children: React.ReactNode;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Extending `React.ComponentProps<'div'>` inherits every valid div attribute: `className`, `style`, `role`, all ARIA props, event handlers, and more. Only declare custom props that don't exist on the native element.",
@@ -134,7 +158,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "easy",
     title: "Link component extending anchor",
-    badCode: `interface LinkProps {
+    content: {
+      type: "code",
+
+      left: `interface LinkProps {
   href: string;
   children: React.ReactNode;
   target?: string;
@@ -142,7 +169,8 @@ export const extendingHtmlChallenges: Challenge[] = [
   className?: string;
   onClick?: () => void;
 }`,
-    goodCode: `interface LinkProps
+
+      right: `interface LinkProps
   extends React.ComponentProps<'a'> {
   /**
    * Opens in a new tab with noopener noreferrer.
@@ -150,6 +178,8 @@ export const extendingHtmlChallenges: Challenge[] = [
    */
   isExternal?: boolean;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Extending `<a>` gives you `href`, `target`, `rel`, `download`, ARIA props, and all event handlers for free. The custom `isExternal` prop adds real value: it encapsulates the `target="_blank" rel="noopener noreferrer"` pattern into a single boolean.',
@@ -163,7 +193,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Form action prop pattern",
-    badCode: `interface FormProps extends Omit<
+    content: {
+      type: "code",
+
+      left: `interface FormProps extends Omit<
   React.ComponentProps<'form'>,
   'onSubmit'
 > {
@@ -172,7 +205,8 @@ export const extendingHtmlChallenges: Challenge[] = [
   /** Whether the form is currently submitting. */
   isSubmitting?: boolean;
 }`,
-    goodCode: `interface FormProps extends Omit<
+
+      right: `interface FormProps extends Omit<
   React.ComponentProps<'form'>,
   'action'
 > {
@@ -183,6 +217,8 @@ export const extendingHtmlChallenges: Challenge[] = [
 
 // useFormStatus() inside child components
 // provides isPending automatically.`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React 19 added native `<form action={...}>` support. Passing an async function as `action` integrates with `useFormStatus` (for pending state) and `useActionState` (for return values), so no manual `isSubmitting` prop needed.\n\nThe form resets automatically on success for uncontrolled inputs. This is the modern replacement for `onSubmit` + `preventDefault()`.",
@@ -196,7 +232,10 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "hard",
     title: "Prop spreading with override protection",
-    badCode: `interface ChipProps
+    content: {
+      type: "code",
+
+      left: `interface ChipProps
   extends React.ComponentProps<'span'> {
   label: string;
   variant?: 'filled' | 'outlined';
@@ -212,7 +251,8 @@ function Chip({ label, variant, ...rest }: ChipProps) {
     </span>
   );
 }`,
-    goodCode: `interface ChipProps
+
+      right: `interface ChipProps
   extends Omit<
     React.ComponentProps<'span'>,
     'className' | 'children'
@@ -231,6 +271,8 @@ function Chip({ label, variant, ...rest }: ChipProps) {
     </span>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Two fixes: `Omit` removes `className` and `children` from the spread so consumers can't accidentally override critical styling or content. The spread goes **before** explicit props so `className` always wins.\n\nIn the bad version, `{...rest}` comes after `className`, meaning `<Chip className=\"oops\" />` silently replaces the component's styling.",

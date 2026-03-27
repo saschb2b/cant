@@ -1,13 +1,55 @@
 export type Difficulty = "easy" | "medium" | "hard";
 
-/** Base challenge fields used by shared game components. */
+// ---------------------------------------------------------------------------
+// Content-type variants
+// ---------------------------------------------------------------------------
+
+/** Code snippet comparison (syntax-highlighted via Shiki). */
+export interface CodeContent {
+  type: "code";
+  left: string;
+  right: string;
+  lang?: string;
+}
+
+/** Static image comparison (e.g. UX screenshots). */
+export interface ImageContent {
+  type: "image";
+  left: { src: string; alt?: string };
+  right: { src: string; alt?: string };
+}
+
+/** Live rendered component comparison (references a component registry key). */
+export interface VisualContent {
+  type: "visual";
+  left: { componentId: string };
+  right: { componentId: string };
+}
+
+/** All supported content shapes. */
+export type ChallengeContent = CodeContent | ImageContent | VisualContent;
+
+// ---------------------------------------------------------------------------
+// Base challenge
+// ---------------------------------------------------------------------------
+
+/**
+ * Base challenge type used by shared game components.
+ *
+ * The `content` field is a discriminated union on `content.type`:
+ * - `"code"`   : two code snippets, syntax-highlighted via Shiki
+ * - `"image"`  : two static images (UX screenshots, diagrams)
+ * - `"visual"` : two live React components from a registry
+ *
+ * `correctSide` indicates which side of `content` is the better option.
+ * In game mode, sides are randomized at runtime.
+ */
 export interface BaseChallenge {
   id: string;
   title: string;
   category: string;
   difficulty: Difficulty;
-  goodCode: string;
-  badCode: string;
+  content: ChallengeContent;
   correctSide: "left" | "right";
   explanationCorrect: string;
   sourceUrl: string;

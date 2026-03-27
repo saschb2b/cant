@@ -6,7 +6,10 @@ export const enumsLiteralsChallenges: Challenge[] = [
     category: "enums-literals",
     difficulty: "easy",
     title: "String literals vs string enums",
-    badCode: `enum Color {
+    content: {
+      type: "code",
+
+      left: `enum Color {
   Red = "RED",
   Green = "GREEN",
   Blue = "BLUE",
@@ -17,13 +20,16 @@ export const enumsLiteralsChallenges: Challenge[] = [
 // JSON requires conversion: Color[json.color]
 function paint(color: Color) { }
 paint(Color.Red);`,
-    goodCode: `type Color = "RED" | "GREEN" | "BLUE";
+
+      right: `type Color = "RED" | "GREEN" | "BLUE";
 
 // No import needed for values
 // Zero runtime cost (erased at compile time)
 // JSON strings work directly
 function paint(color: Color) { }
 paint("RED");`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "String literal unions are erased at compile time, so they add nothing to the bundle. Plain strings from JSON or APIs match directly without conversion. You get the same autocomplete and type checking as enums, with less overhead.",
@@ -37,7 +43,10 @@ paint("RED");`,
     category: "enums-literals",
     difficulty: "easy",
     title: "Numeric enum dangers",
-    badCode: `enum Status {
+    content: {
+      type: "code",
+
+      left: `enum Status {
   Active,   // 0
   Inactive, // 1
   Pending,  // 2
@@ -48,12 +57,15 @@ function setStatus(status: Status) { }
 // Any number is accepted!
 setStatus(0);    // OK (Active)
 setStatus(999);  // No error, no such member!`,
-    goodCode: `type Status = "active" | "inactive" | "pending";
+
+      right: `type Status = "active" | "inactive" | "pending";
 
 function setStatus(status: Status) { }
 
 setStatus("active");  // OK
 setStatus("xyz");     // Error: not assignable`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "String literal unions only accept exact string values. There is no way to accidentally pass an invalid value. Numeric enums in TypeScript accept any number, which is a known design flaw that can lead to subtle bugs.",
@@ -68,7 +80,10 @@ setStatus("xyz");     // Error: not assignable`,
     category: "enums-literals",
     difficulty: "medium",
     title: "const enum pitfalls",
-    badCode: `// const enums are inlined at compile time
+    content: {
+      type: "code",
+
+      left: `// const enums are inlined at compile time
 const enum Direction {
   Up = "UP",
   Down = "DOWN",
@@ -78,7 +93,8 @@ const enum Direction {
 // Problem: can't iterate over members
 // Problem: incompatible with some bundlers
 const dir: Direction = Direction.Up;`,
-    goodCode: `// as const object: iterable, compatible, no gotchas
+
+      right: `// as const object: iterable, compatible, no gotchas
 const Direction = {
   Up: "UP",
   Down: "DOWN",
@@ -89,6 +105,8 @@ type Direction = (typeof Direction)[keyof typeof Direction];
 
 const dir: Direction = Direction.Up;
 // Can also iterate: Object.values(Direction)`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`as const` objects provide named constants like enums but without the compatibility issues. You can iterate over values with `Object.values()`, and they work with `--isolatedModules` and all bundlers. The derived union type gives you the same compile-time safety.",
@@ -103,7 +121,10 @@ const dir: Direction = Direction.Up;
     category: "enums-literals",
     difficulty: "medium",
     title: "as const objects vs enums",
-    badCode: `enum HttpMethod {
+    content: {
+      type: "code",
+
+      left: `enum HttpMethod {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",
@@ -113,7 +134,8 @@ const dir: Direction = Direction.Up;
 // Runtime: { GET: "GET", POST: "POST", ... }
 // Reverse mappings for string enums: none
 // Bundle impact: generates runtime code`,
-    goodCode: `const HttpMethod = {
+
+      right: `const HttpMethod = {
   GET: "GET",
   POST: "POST",
   PUT: "PUT",
@@ -125,6 +147,8 @@ type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
 // Same autocomplete: HttpMethod.GET
 // Same type safety: only "GET" | "POST" | "PUT" | "DELETE"
 // Bonus: works with Object.keys/values`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "An `as const` object is plain JavaScript, so it works everywhere without special TypeScript compilation. It provides the same namespace for values (`HttpMethod.GET`) and the same union type for function parameters. It also supports runtime operations like `Object.values(HttpMethod)`.",
@@ -138,7 +162,10 @@ type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
     category: "enums-literals",
     difficulty: "hard",
     title: "Union from object values",
-    badCode: `// Manually keeping the union in sync with the object
+    content: {
+      type: "code",
+
+      left: `// Manually keeping the union in sync with the object
 const ROUTES = {
   home: "/",
   about: "/about",
@@ -147,7 +174,8 @@ const ROUTES = {
 
 // Hand-written, drifts when ROUTES changes
 type Route = "/" | "/about" | "/blog";`,
-    goodCode: `const ROUTES = {
+
+      right: `const ROUTES = {
   home: "/",
   about: "/about",
   blog: "/blog",
@@ -158,6 +186,8 @@ type Route = (typeof ROUTES)[keyof typeof ROUTES];
 // "/" | "/about" | "/blog"
 
 // Add a new route? The type updates automatically.`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`(typeof ROUTES)[keyof typeof ROUTES]` extracts all values from the `as const` object as a union type. When you add or remove a route, the `Route` type updates automatically. This single-source-of-truth pattern eliminates manual synchronization.",
@@ -172,7 +202,10 @@ type Route = (typeof ROUTES)[keyof typeof ROUTES];
     category: "enums-literals",
     difficulty: "hard",
     title: "Enum vs union for API contracts",
-    badCode: `// Backend sends: { "status": "active" }
+    content: {
+      type: "code",
+
+      left: `// Backend sends: { "status": "active" }
 enum UserStatus {
   Active = "active",
   Inactive = "inactive",
@@ -182,7 +215,8 @@ enum UserStatus {
 const data = await fetch("/api/user").then(r => r.json());
 // data.status is string, not UserStatus
 // Need: UserStatus[data.status] or validation`,
-    goodCode: `// Backend sends: { "status": "active" }
+
+      right: `// Backend sends: { "status": "active" }
 type UserStatus = "active" | "inactive";
 
 interface User {
@@ -194,6 +228,8 @@ const data: User = await fetch("/api/user")
   .then(r => r.json());
 // data.status is UserStatus directly
 // JSON strings match the type naturally`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'When your API sends string values like `"active"`, a string literal union matches those values directly. No conversion step is needed between the JSON response and your TypeScript types. This makes API integration simpler and less error-prone.',
@@ -208,7 +244,10 @@ const data: User = await fetch("/api/user")
     category: "enums-literals",
     difficulty: "medium",
     title: "Erasable syntax and --erasableSyntaxOnly",
-    badCode: `// With --erasableSyntaxOnly (TS 5.8+)
+    content: {
+      type: "code",
+
+      left: `// With --erasableSyntaxOnly (TS 5.8+)
 // These features have runtime behavior
 // and are NOT erasable:
 
@@ -221,7 +260,8 @@ namespace Utils {               // Error
 class User {
   constructor(public name: string) {} // Error
 }`,
-    goodCode: `// With --erasableSyntaxOnly (TS 5.8+)
+
+      right: `// With --erasableSyntaxOnly (TS 5.8+)
 // All syntax is safely erasable:
 
 type Status = "active" | "inactive";
@@ -236,6 +276,8 @@ class User {
     this.name = name;
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'The `--erasableSyntaxOnly` flag (TypeScript 5.8) ensures all TypeScript syntax can be removed without changing runtime behavior. This is required for Node.js type stripping and the future "types as comments" proposal. Unions replace enums, plain objects replace namespaces, and explicit assignments replace parameter properties.',

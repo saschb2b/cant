@@ -6,7 +6,12 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "easy",
     title: "flex-wrap for natural reflow",
-    badCode: `.card-row {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.card-row {
   display: flex;
   gap: 1rem;
 }
@@ -16,7 +21,8 @@ export const flexboxPatternChallenges: Challenge[] = [
     flex-direction: column;
   }
 }`,
-    goodCode: `.card-row {
+
+      right: `.card-row {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -25,7 +31,8 @@ export const flexboxPatternChallenges: Challenge[] = [
 .card-row > * {
   flex: 1 1 300px;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`flex-wrap: wrap` with `flex: 1 1 300px` means each card wants to be at least 300px wide. When the container can't fit two 300px cards side by side, they automatically wrap without any breakpoint. The items also grow to fill available space.",
@@ -39,7 +46,12 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "easy",
     title: "Gap vs margin for spacing",
-    badCode: `.nav-links {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.nav-links {
   display: flex;
 }
 
@@ -50,11 +62,13 @@ export const flexboxPatternChallenges: Challenge[] = [
 .nav-links > *:last-child {
   margin-right: 0;
 }`,
-    goodCode: `.nav-links {
+
+      right: `.nav-links {
   display: flex;
   gap: 1rem;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`gap` applies spacing *between* flex children only, so there's no extra margin on the first or last item and no `:last-child` override needed. It also works correctly when items wrap: no trailing gap on the last item of each row.",
@@ -68,7 +82,12 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "medium",
     title: "flex-shrink for graceful overflow",
-    badCode: `.toolbar {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.toolbar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -84,7 +103,8 @@ export const flexboxPatternChallenges: Challenge[] = [
   display: flex;
   gap: 0.5rem;
 }`,
-    goodCode: `.toolbar {
+
+      right: `.toolbar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -103,7 +123,8 @@ export const flexboxPatternChallenges: Challenge[] = [
   display: flex;
   gap: 0.5rem;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`flex: 1 1 0%` makes the title take remaining space and shrink when needed. `min-width: 0` overrides the default `min-width: auto` so text truncation actually works. `flex-shrink: 0` on actions prevents buttons from compressing.",
@@ -117,7 +138,12 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "medium",
     title: "Holy grail layout with flexbox",
-    badCode: `.layout {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.layout {
   display: flex;
 }
 
@@ -131,7 +157,8 @@ export const flexboxPatternChallenges: Challenge[] = [
     width: 100%;
   }
 }`,
-    goodCode: `.layout {
+
+      right: `.layout {
   display: flex;
   flex-wrap: wrap;
 }
@@ -139,7 +166,8 @@ export const flexboxPatternChallenges: Challenge[] = [
 .sidebar { flex: 0 0 250px; }
 .main { flex: 1 1 600px; }
 .aside { flex: 0 0 250px; }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "With `flex-wrap: wrap`, the main content has a `flex-basis` of 600px. When the container is narrower than 250 + 600 + 250 = 1100px, items naturally wrap. No media query, no calc(), and it adapts to any container width.",
@@ -154,7 +182,10 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "hard",
     title: "Responsive alignment with margin-auto",
-    badCode: `function Header() {
+    content: {
+      type: "code",
+
+      left: `function Header() {
   const isMobile = useMediaQuery("(max-width: 640px)");
 
   return (
@@ -170,7 +201,8 @@ export const flexboxPatternChallenges: Challenge[] = [
     </Stack>
   );
 }`,
-    goodCode: `function Header() {
+
+      right: `function Header() {
   return (
     <Stack direction="row" alignItems="center">
       <Logo />
@@ -180,6 +212,8 @@ export const flexboxPatternChallenges: Challenge[] = [
     </Stack>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'A flex spacer (`flex: 1`) pushes nav and actions to the right. On mobile, nav is hidden with CSS and `ml: "auto"` pushes the actions to the far right. No `useMediaQuery`, no hydration flash, and the layout is controlled entirely with CSS.',

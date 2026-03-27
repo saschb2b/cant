@@ -1,3 +1,5 @@
+import type { ChallengeContent } from "@cant/shared/lib/game/types";
+
 /** Difficulty tier that determines when a challenge appears in the game. */
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -34,8 +36,11 @@ export type ChallengeCategory =
  *   category: "callback-naming",
  *   difficulty: "easy",
  *   title: "Click handler naming",
- *   badCode: `interface Props {\n  click: () => void;\n}`,
- *   goodCode: `interface Props {\n  onClick: () => void;\n}`,
+ *   content: {
+ *     type: "code",
+ *     left: `interface Props {\n  click: () => void;\n}`,
+ *     right: `interface Props {\n  onClick: () => void;\n}`,
+ *   },
  *   correctSide: "right",
  *   explanationCorrect: "Nice! `onClick` follows the `on` + event pattern...",
  *   explanationWrong: "`click` is ambiguous...",
@@ -50,11 +55,9 @@ export interface Challenge {
   difficulty: Difficulty;
   /** Short title shown above the code panels. */
   title: string;
-  /** The "bad" code snippet (TypeScript/TSX). */
-  badCode: string;
-  /** The "good" code snippet (TypeScript/TSX). */
-  goodCode: string;
-  /** Which side the good code should appear on - randomized at render time. */
+  /** The challenge content (code snippets, images, or visual components). */
+  content: ChallengeContent;
+  /** Which side the good content should appear on - randomized at render time. */
   correctSide: "left" | "right";
   /** Explanation shown when the user picks correctly. */
   explanationCorrect: string;

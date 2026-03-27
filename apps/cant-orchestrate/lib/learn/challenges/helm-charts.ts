@@ -6,7 +6,12 @@ export const helmChartsChallenges: Challenge[] = [
     category: "helm-charts",
     difficulty: "easy",
     title: "Values over hardcoded manifests",
-    badCode: `# templates/deployment.yaml
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,7 +26,8 @@ spec:
           resources:
             limits:
               memory: 256Mi`,
-    goodCode: `# templates/deployment.yaml
+
+      right: `# templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,7 +41,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Templating with `{{ .Values.* }}` lets you customize deployments per environment by overriding `values.yaml`. The same chart works for dev, staging, and production. `{{ .Release.Name }}` prevents name collisions when installing multiple releases.",
@@ -49,7 +56,12 @@ spec:
     category: "helm-charts",
     difficulty: "medium",
     title: "Named templates for reuse",
-    badCode: `# templates/deployment.yaml
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# templates/deployment.yaml
 metadata:
   labels:
     app.kubernetes.io/name: myapp
@@ -64,7 +76,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}`,
-    goodCode: `# templates/_helpers.tpl
+
+      right: `# templates/_helpers.tpl
 {{- define "myapp.labels" -}}
 app.kubernetes.io/name: {{ .Chart.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
@@ -81,7 +94,8 @@ metadata:
 metadata:
   labels:
     {{- include "myapp.labels" . | nindent 4 }}`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Named templates in `_helpers.tpl` define reusable snippets like standard labels and selectors. Changing the label scheme requires editing one place. The `include` function inserts the template and `nindent` handles YAML indentation correctly.",
@@ -95,7 +109,12 @@ metadata:
     category: "helm-charts",
     difficulty: "medium",
     title: "Chart hooks for migrations",
-    badCode: `# Run migration in init container
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# Run migration in init container
 # Runs on EVERY pod restart
 apiVersion: apps/v1
 kind: Deployment
@@ -109,7 +128,8 @@ spec:
       containers:
         - name: web
           image: myapp:1.0`,
-    goodCode: `# Run migration once per upgrade
+
+      right: `# Run migration once per upgrade
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -126,7 +146,8 @@ spec:
         - name: migrate
           image: myapp:1.0
           command: ["./migrate", "up"]`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Helm hooks run Jobs at specific lifecycle points. `pre-upgrade` runs the migration once before new Pods start. `hook-delete-policy: hook-succeeded` cleans up the Job after success. The migration runs exactly once per upgrade, not per Pod restart.",
@@ -140,7 +161,12 @@ spec:
     category: "helm-charts",
     difficulty: "hard",
     title: "Conditional resources with if/else",
-    badCode: `# Always creates Ingress and HPA
+    content: {
+      type: "code",
+
+      lang: "yaml",
+
+      left: `# Always creates Ingress and HPA
 # even when not needed
 
 # templates/ingress.yaml
@@ -157,7 +183,8 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Release.Name }}`,
-    goodCode: `# templates/ingress.yaml
+
+      right: `# templates/ingress.yaml
 {{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -179,7 +206,8 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Release.Name }}
 {{- end }}`,
-    lang: "yaml",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Wrapping resources in `{{- if .Values.*.enabled }}` makes them optional. Dev environments can disable Ingress and autoscaling while production enables them. The chart adapts to each environment without maintaining separate templates.",

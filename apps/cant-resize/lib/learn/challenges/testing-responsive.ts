@@ -6,7 +6,10 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "easy",
     title: "DevTools device mode vs real devices",
-    badCode: `// Only tested in Chrome DevTools device mode
+    content: {
+      type: "code",
+
+      left: `// Only tested in Chrome DevTools device mode
 // "Looks good at iPhone 14 Pro dimensions"
 
 // Issues missed:
@@ -15,7 +18,8 @@ export const testingResponsiveChallenges: Challenge[] = [
 // - Mobile browser chrome (URL bar height)
 // - Virtual keyboard behavior
 // - Scroll performance`,
-    goodCode: `// Multi-layer testing strategy:
+
+      right: `// Multi-layer testing strategy:
 // 1. Chrome DevTools for quick iteration
 // 2. Responsive viewer for side-by-side comparison
 // 3. BrowserStack/real devices for:
@@ -24,6 +28,8 @@ export const testingResponsiveChallenges: Challenge[] = [
 //    - Virtual keyboard behavior
 //    - Performance on low-end devices
 //    - Safe area inset verification`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "DevTools device mode is a viewport resizer, not a device emulator. It can't simulate touch physics, mobile browser chrome, virtual keyboards, or Safari's CSS quirks. A layered testing approach catches issues at each level before they reach production.",
@@ -37,19 +43,25 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "easy",
     title: "Testing with the responsive viewer",
-    badCode: `// Manual testing workflow:
+    content: {
+      type: "code",
+
+      left: `// Manual testing workflow:
 // 1. Open site in browser
 // 2. Drag browser window to different widths
 // 3. Try to remember what it looked like
 //    at other sizes
 // 4. Repeat for each change`,
-    goodCode: `// Responsive viewer workflow:
+
+      right: `// Responsive viewer workflow:
 // 1. Open site in responsive viewer
 // 2. Add target devices: iPhone SE, iPad, Desktop
 // 3. See all viewports simultaneously
 // 4. Scroll sync shows alignment issues
 // 5. Test URL changes across all devices
 // 6. Iterate with instant visual feedback`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A multi-device viewer shows all breakpoints at once, revealing issues you'd miss by manually resizing. Scroll sync helps verify that content alignment works across viewports. It's faster iteration and more thorough coverage.",
@@ -63,7 +75,10 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "medium",
     title: "Viewport testing in Playwright",
-    badCode: `test("shows mobile layout", async ({ page }) => {
+    content: {
+      type: "code",
+
+      left: `test("shows mobile layout", async ({ page }) => {
   await page.goto("/dashboard");
 
   const sidebar = page.locator(".sidebar");
@@ -71,7 +86,8 @@ export const testingResponsiveChallenges: Challenge[] = [
   // even when hidden with CSS display: none
   await expect(sidebar).toBeAttached();
 });`,
-    goodCode: `test("shows mobile layout", async ({ page }) => {
+
+      right: `test("shows mobile layout", async ({ page }) => {
   await page.setViewportSize({
     width: 375,
     height: 667,
@@ -87,6 +103,8 @@ export const testingResponsiveChallenges: Challenge[] = [
   await hamburger.click();
   await expect(sidebar).toBeVisible();
 });`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`setViewportSize` sets the actual viewport, triggering media queries. `toBeVisible()` checks CSS visibility (including `display: none`), while `toBeAttached()` only checks DOM presence. The test verifies the full mobile flow: hidden sidebar, visible hamburger, click to reveal.",
@@ -100,12 +118,16 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "medium",
     title: "Visual regression for responsive layouts",
-    badCode: `// Only test at one viewport width
+    content: {
+      type: "code",
+
+      left: `// Only test at one viewport width
 test("homepage looks correct", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveScreenshot("home.png");
 });`,
-    goodCode: `const viewports = [
+
+      right: `const viewports = [
   { width: 375, height: 667, name: "mobile" },
   { width: 768, height: 1024, name: "tablet" },
   { width: 1440, height: 900, name: "desktop" },
@@ -123,6 +145,8 @@ for (const vp of viewports) {
     );
   });
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Visual regression tests at multiple viewports catch breakpoint-specific bugs. A CSS change that looks fine on desktop might break the mobile layout, and testing at one size misses this. Loop over viewports to get coverage without code duplication.",
@@ -136,7 +160,10 @@ for (const vp of viewports) {
     category: "testing-responsive",
     difficulty: "hard",
     title: "Testing responsive behavior, not pixel values",
-    badCode: `test("sidebar is responsive", async ({ page }) => {
+    content: {
+      type: "code",
+
+      left: `test("sidebar is responsive", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 667 });
   await page.goto("/app");
 
@@ -147,7 +174,8 @@ for (const vp of viewports) {
   expect(box?.width).toBe(0);
   expect(box?.height).toBe(0);
 });`,
-    goodCode: `test("sidebar is responsive", async ({ page }) => {
+
+      right: `test("sidebar is responsive", async ({ page }) => {
   // Mobile: sidebar hidden, hamburger visible
   await page.setViewportSize({ width: 375, height: 667 });
   await page.goto("/app");
@@ -159,6 +187,8 @@ for (const vp of viewports) {
   await expect(page.getByRole("complementary")).toBeVisible();
   await expect(page.getByRole("button", { name: /menu/i })).not.toBeVisible();
 });`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Test the *behavior* (sidebar visible/hidden, hamburger appears/disappears) rather than pixel values. Using ARIA roles (`complementary` for sidebar) and accessible names makes the test resilient to CSS changes and meaningful because it verifies what the user actually experiences.",

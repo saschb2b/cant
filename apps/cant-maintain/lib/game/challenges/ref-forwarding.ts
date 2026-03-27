@@ -6,19 +6,25 @@ export const refForwardingChallenges: Challenge[] = [
     category: "ref-forwarding",
     difficulty: "easy",
     title: "Wrapper component swallows ref",
-    badCode: `interface ButtonProps {
+    content: {
+      type: "code",
+
+      left: `interface ButtonProps {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   onClick?: () => void;
 }`,
-    goodCode: `interface ButtonProps
+
+      right: `interface ButtonProps
   extends React.ComponentProps<'button'> {
   variant?: 'primary' | 'secondary';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Extending `ComponentProps<'button'>` gives you `ref`, `onClick`, `children`, `disabled`, ARIA props, and every other native button attribute for free. A manually defined interface with no `ref` support means consumers can't focus the button programmatically or measure its position.\n\nIn React 19, `ref` is a regular prop; extending native props is the simplest way to support it.",
@@ -32,19 +38,25 @@ export const refForwardingChallenges: Challenge[] = [
     category: "ref-forwarding",
     difficulty: "easy",
     title: "Ref typed as any",
-    badCode: `interface TextFieldProps {
+    content: {
+      type: "code",
+
+      left: `interface TextFieldProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref?: any;
 }`,
-    goodCode: `interface TextFieldProps {
+
+      right: `interface TextFieldProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   ref?: React.Ref<HTMLInputElement>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`React.Ref<HTMLInputElement>` accepts callback refs, ref objects, and `null`: all valid ref forms. It also tells TypeScript the exact element type, so `ref.current.focus()` and `.select()` autocomplete correctly.\n\n`any` bypasses all of that; consumers can pass a string, a number, or anything else without a type error.",
@@ -59,7 +71,10 @@ export const refForwardingChallenges: Challenge[] = [
     category: "ref-forwarding",
     difficulty: "medium",
     title: "Imperative handle vs raw DOM ref",
-    badCode: `interface VideoPlayerProps {
+    content: {
+      type: "code",
+
+      left: `interface VideoPlayerProps {
   /** Video source URL. */
   src: string;
   /** Poster image shown before playback. */
@@ -72,7 +87,8 @@ export const refForwardingChallenges: Challenge[] = [
    */
   ref?: React.Ref<HTMLDivElement>;
 }`,
-    goodCode: `interface VideoPlayerHandle {
+
+      right: `interface VideoPlayerHandle {
   /** Start playback. */
   play: () => void;
   /** Pause playback. */
@@ -91,6 +107,8 @@ interface VideoPlayerProps {
   /** Imperative handle for playback control. */
   ref?: React.Ref<VideoPlayerHandle>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "An imperative handle exposes only the operations consumers need: `play()`, `pause()`, `seek()`. Exposing the raw `<div>` leaks every DOM method and property; consumers could accidentally call `.remove()` or read `.innerHTML`.\n\n`useImperativeHandle` creates this focused API. The handle type also serves as documentation for what the component supports.",
@@ -104,7 +122,10 @@ interface VideoPlayerProps {
     category: "ref-forwarding",
     difficulty: "medium",
     title: "Ref targeting the wrong element",
-    badCode: `interface SearchFieldProps {
+    content: {
+      type: "code",
+
+      left: `interface SearchFieldProps {
   /** Current search query. */
   value: string;
   /** Called when the query changes. */
@@ -117,7 +138,8 @@ interface VideoPlayerProps {
    */
   ref?: React.Ref<HTMLDivElement>;
 }`,
-    goodCode: `interface SearchFieldProps {
+
+      right: `interface SearchFieldProps {
   /** Current search query. */
   value: string;
   /** Called when the query changes. */
@@ -130,6 +152,8 @@ interface VideoPlayerProps {
    */
   ref?: React.Ref<HTMLInputElement>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Consumers ref a SearchField to call `.focus()` or `.select()`; those are `HTMLInputElement` methods. A ref to the outer `<div>` wrapper can't do either. The ref should point to the element consumers actually interact with programmatically.\n\nIf consumers also need the wrapper for layout, expose that as a separate `containerRef` prop.",
@@ -144,7 +168,10 @@ interface VideoPlayerProps {
     category: "ref-forwarding",
     difficulty: "hard",
     title: "Over-exposed imperative handle",
-    badCode: `interface EditorHandle {
+    content: {
+      type: "code",
+
+      left: `interface EditorHandle {
   /** Get the current editor content. */
   getValue: () => string;
   /** Replace the editor content. */
@@ -171,7 +198,8 @@ interface EditorProps {
   /** Imperative editor API. */
   ref?: React.Ref<EditorHandle>;
 }`,
-    goodCode: `interface EditorHandle {
+
+      right: `interface EditorHandle {
   /** Move focus to the editor. */
   focus: () => void;
   /** Remove focus from the editor. */
@@ -192,6 +220,8 @@ interface EditorProps {
   /** Imperative editor API. */
   ref?: React.Ref<EditorHandle>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The imperative handle should only expose what **can't** be done through props. `getValue`/`setValue` duplicate the controlled `value`/`onChange` pair. Selection is better as controlled props (`selection`/`onSelectionChange`) so the parent can react to changes. `undo`/`redo` are internal state management.\n\nWhat remains (`focus()`, `blur()`, `scrollToLine()`) are genuine imperative operations that have no declarative equivalent.",

@@ -6,14 +6,18 @@ export const conditionalRenderingChallenges: Challenge[] = [
     category: "conditional-rendering",
     difficulty: "easy",
     title: "CSS display vs conditional render",
-    badCode: `function Nav() {
+    content: {
+      type: "code",
+
+      left: `function Nav() {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   return isMobile
     ? <MobileNav />
     : <DesktopNav />;
 }`,
-    goodCode: `function Nav() {
+
+      right: `function Nav() {
   return (
     <>
       <Box sx={{ display: { xs: "block", md: "none" } }}>
@@ -25,6 +29,8 @@ export const conditionalRenderingChallenges: Challenge[] = [
     </>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Rendering both and toggling with CSS `display` avoids the hydration flash from `useMediaQuery`. Both components exist in the DOM (good for SEO and accessibility), and the switch is instant because no JavaScript needs to run.",
@@ -38,7 +44,10 @@ export const conditionalRenderingChallenges: Challenge[] = [
     category: "conditional-rendering",
     difficulty: "easy",
     title: "When conditional rendering IS correct",
-    badCode: `function Dashboard() {
+    content: {
+      type: "code",
+
+      left: `function Dashboard() {
   return (
     <>
       <Box sx={{ display: { xs: "block", md: "none" } }}>
@@ -53,7 +62,8 @@ export const conditionalRenderingChallenges: Challenge[] = [
 
 // Both dashboards fetch data independently
 // Both run expensive chart calculations`,
-    goodCode: `"use client";
+
+      right: `"use client";
 
 function Dashboard() {
   const isDesktop = useMediaQuery("(min-width: 900px)", {
@@ -64,6 +74,8 @@ function Dashboard() {
     ? <DesktopDashboard />
     : <MobileDashboard />;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When both versions are expensive (data fetching, chart rendering, heavy DOM), rendering both wastes resources. `useMediaQuery` with `defaultMatches: true` reduces the SSR flash. For heavy components, the hydration tradeoff is worth avoiding double the work.",
@@ -78,7 +90,10 @@ function Dashboard() {
     category: "conditional-rendering",
     difficulty: "medium",
     title: "Progressive disclosure on mobile",
-    badCode: `function Filters() {
+    content: {
+      type: "code",
+
+      left: `function Filters() {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   if (isMobile) return null;
@@ -91,7 +106,8 @@ function Dashboard() {
     </Stack>
   );
 }`,
-    goodCode: `function Filters() {
+
+      right: `function Filters() {
   return (
     <>
       {/* Desktop: always visible */}
@@ -115,6 +131,8 @@ function Dashboard() {
     </>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Hiding filters entirely on mobile removes functionality users need. A drawer provides the same filters in a mobile-friendly pattern called progressive disclosure. The filters are always accessible, just presented differently.",
@@ -128,7 +146,10 @@ function Dashboard() {
     category: "conditional-rendering",
     difficulty: "medium",
     title: "Avoiding duplicate component trees",
-    badCode: `function ProductPage() {
+    content: {
+      type: "code",
+
+      left: `function ProductPage() {
   return (
     <>
       <Box sx={{ display: { xs: "none", md: "block" } }}>
@@ -145,7 +166,8 @@ function Dashboard() {
     </>
   );
 }`,
-    goodCode: `function ProductPage() {
+
+      right: `function ProductPage() {
   return (
     <>
       <Header />
@@ -166,6 +188,8 @@ function Dashboard() {
     </>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Share the component tree and use responsive props for the differences. Duplicating the entire page means every change needs updating in two places, event handlers fire twice, and the DOM is much larger. Only split when the differences are truly fundamental.",
@@ -180,7 +204,10 @@ function Dashboard() {
     category: "conditional-rendering",
     difficulty: "hard",
     title: "Dynamic import for device-specific bundles",
-    badCode: `import MobileEditor from "./MobileEditor";
+    content: {
+      type: "code",
+
+      left: `import MobileEditor from "./MobileEditor";
 import DesktopEditor from "./DesktopEditor";
 
 function EditorPage() {
@@ -189,7 +216,8 @@ function EditorPage() {
 }
 
 // Both editors are in the main bundle`,
-    goodCode: `import dynamic from "next/dynamic";
+
+      right: `import dynamic from "next/dynamic";
 
 const MobileEditor = dynamic(
   () => import("./MobileEditor"),
@@ -206,6 +234,8 @@ function EditorPage() {
 }
 
 // Only the needed editor is downloaded`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Dynamic imports with `next/dynamic` code-split each editor into its own chunk. Mobile users only download the mobile editor bundle. This is the correct use of `useMediaQuery`: when you need to avoid *loading* heavy code, not just hiding it with CSS. The hydration flash tradeoff is acceptable here because the alternative (loading both heavy bundles) is worse.",

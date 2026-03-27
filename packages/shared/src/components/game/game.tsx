@@ -22,6 +22,7 @@ interface BaseChallenge {
   title: string;
   category: string;
   difficulty: Difficulty;
+  content: { type: string };
   correctSide: "left" | "right";
   explanationCorrect: string;
   explanationWrong?: string;
@@ -30,11 +31,62 @@ interface BaseChallenge {
 }
 
 // ---------------------------------------------------------------------------
+// Content map: per-challenge pre-processed content keyed by challenge id
+// ---------------------------------------------------------------------------
+
+/** Pre-highlighted HTML for code challenges. */
+export interface CodeChallengeEntry {
+  type: "code";
+  goodHtml: string;
+  badHtml: string;
+}
+
+/** Image paths for image challenges. */
+export interface ImageChallengeEntry {
+  type: "image";
+  goodImage: string;
+  badImage: string;
+  goodImageAlt?: string;
+  badImageAlt?: string;
+}
+
+/** Component IDs for visual (live-rendered) challenges. */
+export interface VisualChallengeEntry {
+  type: "visual";
+  goodComponentId: string;
+  badComponentId: string;
+}
+
+export type ContentMapEntry =
+  | CodeChallengeEntry
+  | ImageChallengeEntry
+  | VisualChallengeEntry;
+
+// ---------------------------------------------------------------------------
 // Sub-component prop contracts
 // ---------------------------------------------------------------------------
 
 export interface CodePanelSlotProps {
   highlightedHtml: string;
+  label: string;
+  isSelectable: boolean;
+  onSelect: () => void;
+  result?: "correct" | "wrong" | null;
+  isSelected?: boolean;
+}
+
+export interface ImagePanelSlotProps {
+  imageSrc: string;
+  imageAlt: string;
+  label: string;
+  isSelectable: boolean;
+  onSelect: () => void;
+  result?: "correct" | "wrong" | null;
+  isSelected?: boolean;
+}
+
+export interface VisualPanelSlotProps {
+  componentId: string;
   label: string;
   isSelectable: boolean;
   onSelect: () => void;
@@ -128,8 +180,12 @@ export interface GameHeaderSlotProps {
 }
 
 interface GameSlots<C extends BaseChallenge> {
-  /** Code comparison panel. */
+  /** Code comparison panel (used for contentType "code" or when omitted). */
   codePanel: ComponentType<CodePanelSlotProps>;
+  /** Image comparison panel (used for contentType "image"). Optional; only needed if the app has image challenges. */
+  imagePanel?: ComponentType<ImagePanelSlotProps>;
+  /** Live component panel (used for contentType "visual"). Optional; only needed if the app has visual challenges. */
+  visualPanel?: ComponentType<VisualPanelSlotProps>;
   /** Lobby/setup screen. */
   lobby: ComponentType<LobbySlotProps>;
   /** Results screen after game ends. */
@@ -142,7 +198,14 @@ interface GameSlots<C extends BaseChallenge> {
 
 interface GameProps<C extends BaseChallenge> {
   challenges: C[];
-  highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
+  /**
+   * Pre-processed content for each challenge, keyed by challenge id.
+   *
+   * - Code challenges: `{ type: "code", goodHtml, badHtml }`
+   * - Image challenges: `{ type: "image", goodImage, badImage }`
+   * - Visual challenges: `{ type: "visual", goodComponentId, badComponentId }`
+   */
+  contentMap?: Record<string, ContentMapEntry>;
   defaultSeed?: string;
   /** Text shown below the challenge title, e.g. "Pick the better TypeScript pattern" */
   promptText: string;
@@ -165,7 +228,7 @@ interface GameProps<C extends BaseChallenge> {
 
 export function Game<C extends BaseChallenge>({
   challenges,
-  highlightMap,
+  contentMap = {},
   defaultSeed,
   promptText,
   categoryLabels,
@@ -173,6 +236,8 @@ export function Game<C extends BaseChallenge>({
   generateSeed: generateSeedFn,
   slots: {
     codePanel: CodePanelComponent,
+    imagePanel: ImagePanelComponent,
+    visualPanel: VisualPanelComponent,
     lobby: LobbyComponent,
     results: ResultsComponent,
     explanation: ExplanationComponent,
@@ -237,20 +302,57 @@ export function Game<C extends BaseChallenge>({
 
   const explanationRef = useRef<HTMLDivElement>(null);
 
-  const { leftHtml, rightHtml } = useMemo(() => {
-    if (!displayChallenge) return { leftHtml: "", rightHtml: "" };
-    const highlight = highlightMap[displayChallenge.id];
-    if (!highlight) return { leftHtml: "", rightHtml: "" };
-    const left =
-      displayChallenge.correctSide === "left"
-        ? highlight.goodHtml
-        : highlight.badHtml;
-    const right =
-      displayChallenge.correctSide === "left"
-        ? highlight.badHtml
-        : highlight.goodHtml;
-    return { leftHtml: left, rightHtml: right };
-  }, [displayChallenge, highlightMap]);
+  // Resolve per-side content based on contentType and correctSide
+  const { leftContent, rightContent, resolvedContentType } = useMemo(() => {
+    if (!displayChallenge)
+      return {
+        leftContent: null,
+        rightContent: null,
+        resolvedContentType: "code" as const,
+      };
+
+    const entry = contentMap[displayChallenge.id];
+    if (!entry)
+      return {
+        leftContent: null,
+        rightContent: null,
+        resolvedContentType: "code" as const,
+      };
+
+    const isLeftCorrect = displayChallenge.correctSide === "left";
+
+    switch (entry.type) {
+      case "code": {
+        return {
+          leftContent: isLeftCorrect ? entry.goodHtml : entry.badHtml,
+          rightContent: isLeftCorrect ? entry.badHtml : entry.goodHtml,
+          resolvedContentType: "code" as const,
+        };
+      }
+      case "image": {
+        return {
+          leftContent: isLeftCorrect
+            ? { src: entry.goodImage, alt: entry.goodImageAlt ?? "Option A" }
+            : { src: entry.badImage, alt: entry.badImageAlt ?? "Option A" },
+          rightContent: isLeftCorrect
+            ? { src: entry.badImage, alt: entry.badImageAlt ?? "Option B" }
+            : { src: entry.goodImage, alt: entry.goodImageAlt ?? "Option B" },
+          resolvedContentType: "image" as const,
+        };
+      }
+      case "visual": {
+        return {
+          leftContent: isLeftCorrect
+            ? entry.goodComponentId
+            : entry.badComponentId,
+          rightContent: isLeftCorrect
+            ? entry.badComponentId
+            : entry.goodComponentId,
+          resolvedContentType: "visual" as const,
+        };
+      }
+    }
+  }, [displayChallenge, contentMap]);
 
   const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
     if (!displayAnswer || !displayChallenge) return null;
@@ -474,14 +576,39 @@ export function Game<C extends BaseChallenge>({
           alignItems: "stretch",
         }}
       >
-        <CodePanelComponent
-          highlightedHtml={leftHtml}
-          label="A"
-          isSelectable={!isReviewing && !currentAnswer}
-          onSelect={() => submitAnswer("left")}
-          result={getResult("left")}
-          isSelected={isSelectedSide("left")}
-        />
+        {resolvedContentType === "code" && (
+          <CodePanelComponent
+            highlightedHtml={(leftContent as string) ?? ""}
+            label="A"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("left")}
+            result={getResult("left")}
+            isSelected={isSelectedSide("left")}
+          />
+        )}
+        {resolvedContentType === "image" && ImagePanelComponent && (
+          <ImagePanelComponent
+            imageSrc={(leftContent as { src: string; alt: string })?.src ?? ""}
+            imageAlt={
+              (leftContent as { src: string; alt: string })?.alt ?? "Option A"
+            }
+            label="A"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("left")}
+            result={getResult("left")}
+            isSelected={isSelectedSide("left")}
+          />
+        )}
+        {resolvedContentType === "visual" && VisualPanelComponent && (
+          <VisualPanelComponent
+            componentId={(leftContent as string) ?? ""}
+            label="A"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("left")}
+            result={getResult("left")}
+            isSelected={isSelectedSide("left")}
+          />
+        )}
 
         <Box
           sx={{
@@ -508,14 +635,39 @@ export function Game<C extends BaseChallenge>({
           </Typography>
         </Box>
 
-        <CodePanelComponent
-          highlightedHtml={rightHtml}
-          label="B"
-          isSelectable={!isReviewing && !currentAnswer}
-          onSelect={() => submitAnswer("right")}
-          result={getResult("right")}
-          isSelected={isSelectedSide("right")}
-        />
+        {resolvedContentType === "code" && (
+          <CodePanelComponent
+            highlightedHtml={(rightContent as string) ?? ""}
+            label="B"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("right")}
+            result={getResult("right")}
+            isSelected={isSelectedSide("right")}
+          />
+        )}
+        {resolvedContentType === "image" && ImagePanelComponent && (
+          <ImagePanelComponent
+            imageSrc={(rightContent as { src: string; alt: string })?.src ?? ""}
+            imageAlt={
+              (rightContent as { src: string; alt: string })?.alt ?? "Option B"
+            }
+            label="B"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("right")}
+            result={getResult("right")}
+            isSelected={isSelectedSide("right")}
+          />
+        )}
+        {resolvedContentType === "visual" && VisualPanelComponent && (
+          <VisualPanelComponent
+            componentId={(rightContent as string) ?? ""}
+            label="B"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("right")}
+            result={getResult("right")}
+            isSelected={isSelectedSide("right")}
+          />
+        )}
       </Box>
 
       <Stack spacing={2}>

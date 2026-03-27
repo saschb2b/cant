@@ -6,7 +6,10 @@ export const interfaceVsTypeChallenges: Challenge[] = [
     category: "interface-vs-type",
     difficulty: "easy",
     title: "Interface for object shapes",
-    badCode: `type User = {
+    content: {
+      type: "code",
+
+      left: `type User = {
   name: string;
   role: string;
 };
@@ -22,7 +25,8 @@ const admin: AdminUser = {
   name: "Alice",
   role: "admin", // Error: never
 };`,
-    goodCode: `interface User {
+
+      right: `interface User {
   name: string;
   role: string;
 }
@@ -41,6 +45,8 @@ const admin: AdminUser = {
   role: "admin", // OK
   permissions: ["read"],
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Interfaces are the idiomatic choice for object shapes. They support clean `extends` inheritance (which catches property conflicts at declaration), declaration merging for augmenting third-party types, and produce clearer error messages. Both types and interfaces can be extended, but interfaces make the intent more explicit.",
@@ -55,7 +61,10 @@ const admin: AdminUser = {
     category: "interface-vs-type",
     difficulty: "easy",
     title: "Type for unions",
-    badCode: `// Can't express a union with interface
+    content: {
+      type: "code",
+
+      left: `// Can't express a union with interface
 // interface Result = Success | Failure; // Syntax error
 
 // Workaround: single interface with optionals
@@ -66,7 +75,8 @@ interface Result {
 }
 
 // Not type-safe: can have both data and error`,
-    goodCode: `interface Success {
+
+      right: `interface Success {
   status: "ok";
   data: string;
 }
@@ -80,6 +90,8 @@ interface Failure {
 type Result = Success | Failure;
 
 // Type-safe: data and error are mutually exclusive`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Union types can only be expressed with the `type` keyword. Interfaces cannot be combined with `|`. Define each variant as an interface for its object shape, then use a type alias to create the union. This gives you the best of both worlds.",
@@ -94,7 +106,10 @@ type Result = Success | Failure;
     category: "interface-vs-type",
     difficulty: "medium",
     title: "Extending interfaces vs intersecting types",
-    badCode: `type Animal = {
+    content: {
+      type: "code",
+
+      left: `type Animal = {
   name: string;
   legs: number;
 };
@@ -108,7 +123,8 @@ type Dog = Animal & {
 type A = { x: number };
 type B = { x: string };
 type C = A & B; // x is 'never' (number & string)`,
-    goodCode: `interface Animal {
+
+      right: `interface Animal {
   name: string;
   legs: number;
 }
@@ -121,6 +137,8 @@ interface Dog extends Animal {
 // interface Bad extends Animal {
 //   name: number; // Error: not assignable to string
 // }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`extends` catches property type conflicts at the point of declaration. If you try to override `name` with an incompatible type, TypeScript immediately reports an error. With `&`, conflicting properties silently become `never`, which only causes errors later when you try to use the value.",
@@ -135,7 +153,10 @@ interface Dog extends Animal {
     category: "interface-vs-type",
     difficulty: "medium",
     title: "Declaration merging",
-    badCode: `// Can't merge type aliases
+    content: {
+      type: "code",
+
+      left: `// Can't merge type aliases
 type Window = {
   title: string;
 };
@@ -144,7 +165,8 @@ type Window = {
   // Error: Duplicate identifier 'Window'
   appVersion: string;
 };`,
-    goodCode: `// Interfaces merge automatically
+
+      right: `// Interfaces merge automatically
 interface Window {
   title: string;
 }
@@ -160,6 +182,8 @@ declare global {
     analytics: AnalyticsLib;
   }
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Interfaces with the same name in the same scope are automatically merged. This is essential for augmenting global types or extending third-party library types without modifying their source. Type aliases cannot be reopened, so they do not support this pattern.",
@@ -174,7 +198,10 @@ declare global {
     category: "interface-vs-type",
     difficulty: "hard",
     title: "Indexed access types",
-    badCode: `interface ApiResponse {
+    content: {
+      type: "code",
+
+      left: `interface ApiResponse {
   user: {
     id: string;
     profile: {
@@ -195,7 +222,8 @@ interface Post {
   id: string;
   title: string;
 }`,
-    goodCode: `interface ApiResponse {
+
+      right: `interface ApiResponse {
   user: {
     id: string;
     profile: {
@@ -212,6 +240,8 @@ type Profile = ApiResponse["user"]["profile"];
 
 type Post = ApiResponse["posts"][number];
 // { id: string; title: string }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Indexed access types let you extract nested types from existing types using bracket notation. `ApiResponse["user"]["profile"]` drills into the structure, and `[number]` extracts the element type from an array. Changes to the source type automatically propagate.',
@@ -226,7 +256,10 @@ type Post = ApiResponse["posts"][number];
     category: "interface-vs-type",
     difficulty: "hard",
     title: "When to use which",
-    badCode: `// Using type for everything
+    content: {
+      type: "code",
+
+      left: `// Using type for everything
 type Props = {
   children: React.ReactNode;
   onClick: () => void;
@@ -238,7 +271,8 @@ type Merge<A, B> = Omit<A, keyof B> & B;
 
 // No consistency, no reasoning about
 // when to use type vs interface`,
-    goodCode: `// Interface for object shapes and contracts
+
+      right: `// Interface for object shapes and contracts
 interface Props {
   children: React.ReactNode;
   onClick: () => void;
@@ -252,6 +286,8 @@ type Merge<A, B> = Omit<A, keyof B> & B;
 // Rule of thumb:
 // - interface: object shapes, class contracts, extendable APIs
 // - type: unions, mapped types, conditional types, computed types`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The practical rule: use `interface` for object shapes you might extend or that represent contracts (props, API responses, class shapes). Use `type` for unions, computed types, mapped types, and anything that cannot be expressed as an interface. Consistency within a codebase matters more than the choice itself.",

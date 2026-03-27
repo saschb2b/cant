@@ -1,6 +1,7 @@
 "use client";
 
 import { Game as SharedGame } from "@cant/shared/components/game/game";
+import type { ContentMapEntry } from "@cant/shared/components/game/game";
 import { GameHeader } from "@cant/shared/components/game/game-header";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
@@ -13,15 +14,15 @@ import type { Challenge } from "@/lib/game/types";
 
 interface GameProps {
   challenges: Challenge[];
-  highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
+  contentMap: Record<string, ContentMapEntry>;
   defaultSeed?: string;
 }
 
-export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
+export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
   return (
     <SharedGame
       challenges={challenges}
-      highlightMap={highlightMap}
+      contentMap={contentMap}
       defaultSeed={defaultSeed}
       promptText="Pick the better SEO pattern"
       categoryLabels={CATEGORY_LABELS}

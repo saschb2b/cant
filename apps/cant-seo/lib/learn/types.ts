@@ -1,3 +1,5 @@
+import type { ChallengeContent } from "@cant/shared/lib/game/types";
+
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -12,14 +14,11 @@ export type ChallengeCategory =
   | "image-optimization"
   | "internationalization";
 
-/** The language used for syntax highlighting a challenge's code. */
-export type CodeLanguage = "tsx" | "css" | "html";
-
 /**
  * A single SEO challenge.
  *
- * Each challenge shows a suboptimal approach (`badCode`) next to
- * the recommended approach (`goodCode`) with an explanation.
+ * Each challenge shows a suboptimal approach next to
+ * the recommended approach with an explanation.
  */
 export interface Challenge {
   /** Unique identifier, prefixed by category abbreviation (e.g. "mt-001"). */
@@ -28,13 +27,9 @@ export interface Challenge {
   difficulty: Difficulty;
   /** Short title shown above the code panels. */
   title: string;
-  /** The "bad" code snippet. */
-  badCode: string;
-  /** The "good" code snippet. */
-  goodCode: string;
-  /** Language for syntax highlighting (defaults to "tsx"). */
-  lang?: CodeLanguage;
-  /** Which side the good code appears on. Randomized at render in game mode. */
+  /** The challenge content (code snippets, images, or visual components). */
+  content: ChallengeContent;
+  /** Which side the good content appears on. Randomized at render in game mode. */
   correctSide: "left" | "right";
   /** Explanation shown when the user picks correctly (or in learn mode). */
   explanationCorrect: string;

@@ -6,7 +6,10 @@ export const openGraphChallenges: Challenge[] = [
     category: "open-graph",
     difficulty: "easy",
     title: "Setting og:title explicitly",
-    badCode: `// app/about/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/about/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +17,8 @@ export const metadata: Metadata = {
   // No openGraph defined, hoping
   // the title tag is enough
 };`,
-    goodCode: `// app/about/page.tsx
+
+      right: `// app/about/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -24,6 +28,8 @@ export const metadata: Metadata = {
     description: "Learn about Acme Corp and our team.",
   },
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "While some platforms fall back to the `<title>` tag, explicitly setting `og:title` gives you control over how the link appears when shared. You can use a shorter, cleaner title without the brand suffix that the title template adds.",
@@ -37,7 +43,10 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "easy",
     title: "OG image dimensions",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -51,7 +60,8 @@ export const metadata: Metadata = {
     ],
   },
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -66,7 +76,9 @@ export const metadata: Metadata = {
     ],
   },
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The recommended OG image size is 1200x630 pixels (1.91:1 aspect ratio). This works well across Facebook, LinkedIn, Twitter, Slack, and Discord. Including the `alt` attribute improves accessibility for screen readers and provides fallback text when the image fails to load.",
     explanationWrong:
@@ -80,7 +92,10 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "medium",
     title: "OG type for articles",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -95,7 +110,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/blog/[slug]/page.tsx
+
+      right: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -112,6 +128,8 @@ export async function generateMetadata({
     },
   };
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Blog posts should use `type: 'article'` with `publishedTime` and `authors`. This tells social platforms and search engines that the content is a dated article, not a generic webpage. Some platforms display the publish date and author in the share card.",
@@ -125,7 +143,10 @@ export async function generateMetadata({
     category: "open-graph",
     difficulty: "medium",
     title: "OG URL and canonical alignment",
-    badCode: `// app/products/[id]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/products/[id]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -140,7 +161,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/products/[id]/page.tsx
+
+      right: `// app/products/[id]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -155,7 +177,9 @@ export async function generateMetadata({
     },
   };
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "Both `og:url` and the canonical URL should be absolute URLs pointing to the same location. Using `metadataBase` in the root layout can resolve relative paths, but explicit absolute URLs are clearer and ensure consistency. The og:url tells platforms which URL to associate with shares and likes.",
     explanationWrong:
@@ -169,7 +193,10 @@ export async function generateMetadata({
     category: "open-graph",
     difficulty: "easy",
     title: "Setting og:site_name",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -179,7 +206,8 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -190,6 +218,8 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
 };`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `siteName` property adds an `og:site_name` meta tag that tells platforms the name of the overall website. This is shown separately from the page title in share cards. Facebook, for example, displays the site name in small text above or below the title.",
@@ -203,14 +233,18 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "medium",
     title: "OG locale for multilingual sites",
-    badCode: `// app/layout.tsx
+    content: {
+      type: "code",
+
+      left: `// app/layout.tsx
 export const metadata: Metadata = {
   openGraph: {
     title: "Acme Corp",
     locale: "en",
   },
 };`,
-    goodCode: `// app/layout.tsx
+
+      right: `// app/layout.tsx
 export const metadata: Metadata = {
   openGraph: {
     title: "Acme Corp",
@@ -218,7 +252,9 @@ export const metadata: Metadata = {
     alternateLocale: ["de_DE", "fr_FR"],
   },
 };`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The `og:locale` tag uses the `language_TERRITORY` format (e.g., `en_US`, not just `en`). Including `alternateLocale` tells platforms that this content is available in other languages, which helps with content discovery and prevents duplicate content issues across locales.",
     explanationWrong:
@@ -231,7 +267,10 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "hard",
     title: "Dynamic OG images with ImageResponse",
-    badCode: `// app/blog/[slug]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/blog/[slug]/page.tsx
 export async function generateMetadata({
   params,
 }: {
@@ -243,7 +282,8 @@ export async function generateMetadata({
     },
   };
 }`,
-    goodCode: `// app/blog/[slug]/opengraph-image.tsx
+
+      right: `// app/blog/[slug]/opengraph-image.tsx
 import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
@@ -273,7 +313,9 @@ export default async function OGImage({
     { ...size }
   );
 }`,
-    correctSide: "left",
+    },
+
+    correctSide: "right",
     explanationCorrect:
       "The `opengraph-image.tsx` file convention generates a unique OG image for each dynamic route. Next.js automatically sets the correct `og:image` meta tags. Each blog post gets its own branded image with the post title, which looks far more engaging in share cards.",
     explanationWrong:
@@ -287,7 +329,10 @@ export default async function OGImage({
     category: "open-graph",
     difficulty: "hard",
     title: "Passing fetched data to generateMetadata",
-    badCode: `// app/products/[id]/page.tsx
+    content: {
+      type: "code",
+
+      left: `// app/products/[id]/page.tsx
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -314,7 +359,8 @@ export default async function ProductPage({
   const product = await res.json();
   return <h1>{product.name}</h1>;
 }`,
-    goodCode: `// app/products/[id]/page.tsx
+
+      right: `// app/products/[id]/page.tsx
 import type { Metadata } from "next";
 
 async function getProduct(id: string) {
@@ -341,6 +387,8 @@ export default async function ProductPage({
   const product = await getProduct(params.id);
   return <h1>{product.name}</h1>;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Next.js automatically deduplicates `fetch` calls with the same URL and options. By extracting the fetch into a shared function, both `generateMetadata` and the page component call it, but only one network request is made. This keeps the code DRY and the data consistent.",

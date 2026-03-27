@@ -6,7 +6,10 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "easy",
     title: "Icon button missing accessible label",
-    badCode: `interface IconButtonProps
+    content: {
+      type: "code",
+
+      left: `interface IconButtonProps
   extends React.ComponentProps<'button'> {
   /** The icon to display. */
   icon: React.ReactNode;
@@ -15,7 +18,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   /** Button size. @default 'md' */
   size?: 'sm' | 'md' | 'lg';
 }`,
-    goodCode: `interface IconButtonProps
+
+      right: `interface IconButtonProps
   extends React.ComponentProps<'button'> {
   /** The icon to display. */
   icon: React.ReactNode;
@@ -26,6 +30,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   /** Button size. @default 'md' */
   size?: 'sm' | 'md' | 'lg';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Icon-only buttons have no visible text, so screen readers announce them as just "button" with no context. Making `aria-label` **required** (not optional) ensures every usage site provides accessible text.\n\nA screen reader user hears "Delete, button" instead of just "button". This is one of the most common accessibility failures in component libraries.',
@@ -40,14 +46,18 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "easy",
     title: "Image with optional alt text",
-    badCode: `interface ImageProps {
+    content: {
+      type: "code",
+
+      left: `interface ImageProps {
   src: string;
   alt?: string;
   width: number;
   height: number;
   isLazy?: boolean;
 }`,
-    goodCode: `interface ImageProps {
+
+      right: `interface ImageProps {
   src: string;
   /** Descriptive text, or "" for decorative images. */
   alt: string;
@@ -55,6 +65,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   height: number;
   isLazy?: boolean;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Making `alt` required forces a conscious decision: provide a description, or explicitly pass `""` for decorative images. Optional `alt` means consumers can simply forget it, and `undefined` alt is different from empty alt in HTML.\n\nAn `<img>` with no `alt` attribute is flagged by every accessibility audit tool. An `<img alt="">` is intentionally decorative and skipped by screen readers.',
@@ -69,7 +81,10 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "medium",
     title: "ARIA role typed as string",
-    badCode: `interface LiveRegionProps {
+    content: {
+      type: "code",
+
+      left: `interface LiveRegionProps {
   children: React.ReactNode;
   /**
    * ARIA role for the live region.
@@ -82,7 +97,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
    */
   'aria-live'?: string;
 }`,
-    goodCode: `interface LiveRegionProps {
+
+      right: `interface LiveRegionProps {
   children: React.ReactNode;
   /**
    * ARIA role for the live region.
@@ -95,6 +111,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
    */
   'aria-live'?: 'polite' | 'assertive' | 'off';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "ARIA roles and attributes have a defined vocabulary; `role=\"statis\"` (typo) silently does nothing. Union types catch typos at compile time and light up IDE autocomplete with the valid options.\n\nThe same principle applies to `aria-live`: only `'polite'`, `'assertive'`, and `'off'` are valid. A `string` type accepts anything.",
@@ -109,7 +127,10 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "medium",
     title: "Redundant aria-label vs labelledby",
-    badCode: `interface DialogProps {
+    content: {
+      type: "code",
+
+      left: `interface DialogProps {
   children: React.ReactNode;
   /** The dialog title text. */
   title: string;
@@ -121,7 +142,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   isOpen: boolean;
   onClose: () => void;
 }`,
-    goodCode: `interface DialogProps {
+
+      right: `interface DialogProps {
   children: React.ReactNode;
   /** The dialog title text. Renders as an h2. */
   title: string;
@@ -134,6 +156,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   isOpen: boolean;
   onClose: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When a visible title already exists, `aria-labelledby` points to it, so the label stays in sync automatically. `aria-label` duplicates the title text, creating a maintenance risk: update the `title` prop but forget `aria-label` and screen readers announce stale text.\n\nMUI's Dialog auto-generates the `aria-labelledby` ID from the title element, so consumers rarely need to pass it explicitly.",
@@ -148,7 +172,10 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "hard",
     title: "Custom form control accessibility",
-    badCode: `interface CustomSelectProps {
+    content: {
+      type: "code",
+
+      left: `interface CustomSelectProps {
   /** The selectable options. */
   options: Array<{ value: string; label: string }>;
   /** The currently selected value. */
@@ -164,7 +191,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   /** Whether the field is required. */
   isRequired?: boolean;
 }`,
-    goodCode: `interface CustomSelectProps {
+
+      right: `interface CustomSelectProps {
   /** The selectable options. */
   options: Array<{ value: string; label: string }>;
   /** The currently selected value. */
@@ -184,6 +212,8 @@ export const accessibilityPropsChallenges: Challenge[] = [
   /** ID of the element that describes this select. */
   'aria-describedby'?: string;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Custom form controls must replicate the accessibility contract of their native equivalents. `aria-labelledby` connects an external `<label>`, and `aria-describedby` connects help text or error messages. Without these, the select is an unlabeled, undescribed control to screen readers.\n\nThe component should internally set `aria-invalid` when `errorMessage` is present and `aria-required` when `isRequired` is `true`; consumers shouldn't have to manage these separately.",

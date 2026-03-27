@@ -6,7 +6,10 @@ export const componentNamingChallenges: Challenge[] = [
     category: "component-naming",
     difficulty: "easy",
     title: "Over-specific component name",
-    badCode: `function HomePageHeroSectionCallToActionButton({
+    content: {
+      type: "code",
+
+      left: `function HomePageHeroSectionCallToActionButton({
   children,
   onClick,
 }: {
@@ -19,7 +22,8 @@ export const componentNamingChallenges: Challenge[] = [
     </button>
   );
 }`,
-    goodCode: `function CallToActionButton({
+
+      right: `function CallToActionButton({
   children,
   onClick,
 }: {
@@ -32,6 +36,8 @@ export const componentNamingChallenges: Challenge[] = [
     </button>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The component name should describe **what it is**, not **where it lives**. `CallToActionButton` is reusable anywhere. `HomePageHeroSectionCallToActionButton` bakes in its location, which discourages reuse and makes refactors painful.\n\nIf you move this button to the pricing page, the name becomes a lie.",
@@ -46,7 +52,10 @@ export const componentNamingChallenges: Challenge[] = [
     category: "component-naming",
     difficulty: "easy",
     title: "Ambiguous generic name",
-    badCode: `function Item({
+    content: {
+      type: "code",
+
+      left: `function Item({
   title,
   description,
   image,
@@ -63,7 +72,8 @@ export const componentNamingChallenges: Challenge[] = [
     </div>
   );
 }`,
-    goodCode: `function ProductCard({
+
+      right: `function ProductCard({
   title,
   description,
   image,
@@ -80,6 +90,8 @@ export const componentNamingChallenges: Challenge[] = [
     </div>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`ProductCard` tells you exactly what domain entity it represents and what visual form it takes. `Item` is so generic it could be anything: a list item, a menu entry, a cart line.\n\nGood component names combine the **domain concept** with the **UI pattern**: `ProductCard`, `UserAvatar`, `OrderSummary`.",
@@ -93,7 +105,10 @@ export const componentNamingChallenges: Challenge[] = [
     category: "component-naming",
     difficulty: "medium",
     title: "Redundant component splitting",
-    badCode: `function UserProfileHeader({ name }: { name: string }) {
+    content: {
+      type: "code",
+
+      left: `function UserProfileHeader({ name }: { name: string }) {
   return <h2>{name}</h2>;
 }
 
@@ -109,7 +124,8 @@ function UserProfileAvatar({ src }: { src: string }) {
 <UserProfileHeader name={user.name} />
 <UserProfileAvatar src={user.avatar} />
 <UserProfileBio bio={user.bio} />`,
-    goodCode: `function UserProfile({
+
+      right: `function UserProfile({
   name,
   bio,
   avatarSrc,
@@ -133,6 +149,8 @@ function UserProfileAvatar({ src }: { src: string }) {
   bio={user.bio}
   avatarSrc={user.avatar}
 />`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "When each sub-component wraps a single HTML element and is never used independently, they add naming overhead without value. A single `UserProfile` is easier to understand, use, and maintain.\n\nSplit components when they have **independent reuse value** or **complex internal logic**, not just because the parent has multiple sections.",
@@ -147,7 +165,10 @@ function UserProfileAvatar({ src }: { src: string }) {
     category: "component-naming",
     difficulty: "easy",
     title: "Naming after implementation",
-    badCode: `function StyledFlexRow({
+    content: {
+      type: "code",
+
+      left: `function StyledFlexRow({
   children,
   gap = 8,
 }: {
@@ -167,7 +188,8 @@ function UserProfileAvatar({ src }: { src: string }) {
   <span>{user.name}</span>
   <RoleBadge role={user.role} />
 </StyledFlexRow>`,
-    goodCode: `function UserInfo({
+
+      right: `function UserInfo({
   children,
   gap = 8,
 }: {
@@ -187,6 +209,8 @@ function UserProfileAvatar({ src }: { src: string }) {
   <span>{user.name}</span>
   <RoleBadge role={user.role} />
 </UserInfo>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`UserInfo` describes **what** the component represents. `StyledFlexRow` describes **how** it's implemented: a styled div with `display: flex`. If you refactor to CSS Grid tomorrow, the name becomes a lie.\n\nName components after their **purpose in the UI**, not the CSS properties or HTML elements inside them.",
@@ -200,7 +224,10 @@ function UserProfileAvatar({ src }: { src: string }) {
     category: "component-naming",
     difficulty: "easy",
     title: "Verb-based component name",
-    badCode: `function RenderUserList({
+    content: {
+      type: "code",
+
+      left: `function RenderUserList({
   users,
 }: {
   users: User[];
@@ -213,7 +240,8 @@ function UserProfileAvatar({ src }: { src: string }) {
     </ul>
   );
 }`,
-    goodCode: `function UserList({
+
+      right: `function UserList({
   users,
 }: {
   users: User[];
@@ -226,6 +254,8 @@ function UserProfileAvatar({ src }: { src: string }) {
     </ul>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "React components are **nouns**, not **verbs**. `UserList` is a thing you place in the tree. `RenderUserList` sounds like a function you call imperatively.\n\nThe `Render` prefix is redundant since every component renders. Reserve verb prefixes like `use` for hooks and `get`/`fetch` for utility functions.",
@@ -239,7 +269,10 @@ function UserProfileAvatar({ src }: { src: string }) {
     category: "component-naming",
     difficulty: "medium",
     title: "Merging related components",
-    badCode: `function ErrorAlert({
+    content: {
+      type: "code",
+
+      left: `function ErrorAlert({
   message,
 }: {
   message: string;
@@ -262,7 +295,8 @@ function WarningAlert({
 }) {
   return <div className="alert warning">{message}</div>;
 }`,
-    goodCode: `function Alert({
+
+      right: `function Alert({
   message,
   severity,
 }: {
@@ -275,6 +309,8 @@ function WarningAlert({
     </div>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Three nearly identical components that differ only in a CSS class should be one component with a `severity` prop. `Alert` is a single concept with variants, not three separate concepts.\n\nThis mirrors how design systems work: MUI has `<Alert severity="error" />`, not `<ErrorAlert />`.',
@@ -288,7 +324,10 @@ function WarningAlert({
     category: "component-naming",
     difficulty: "hard",
     title: "Compound component naming",
-    badCode: `function Menu({ children }: { children: React.ReactNode }) {
+    content: {
+      type: "code",
+
+      left: `function Menu({ children }: { children: React.ReactNode }) {
   return <div role="menu">{children}</div>;
 }
 
@@ -316,7 +355,8 @@ function MenuSectionDividerLine() {
   <MenuSectionDividerLine />
   <MenuButtonItem label="Paste" onClick={paste} />
 </Menu>`,
-    goodCode: `function Menu({ children }: { children: React.ReactNode }) {
+
+      right: `function Menu({ children }: { children: React.ReactNode }) {
   return <div role="menu">{children}</div>;
 }
 
@@ -344,6 +384,8 @@ Menu.Divider = function MenuDivider() {
   <Menu.Divider />
   <Menu.Item label="Paste" onClick={paste} />
 </Menu>`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Dot notation (`Menu.Item`, `Menu.Divider`) makes the parent-child relationship explicit and keeps names concise. `MenuButtonItem` and `MenuSectionDividerLine` try to cram the entire hierarchy into a flat name.\n\nCompound components communicate ownership through **structure**, not through increasingly verbose prefixes.",
@@ -357,7 +399,10 @@ Menu.Divider = function MenuDivider() {
     category: "component-naming",
     difficulty: "medium",
     title: "Technical suffix pollution",
-    badCode: `function NotificationManager({
+    content: {
+      type: "code",
+
+      left: `function NotificationManager({
   notifications,
   onDismiss,
 }: {
@@ -377,7 +422,8 @@ Menu.Divider = function MenuDivider() {
     </ul>
   );
 }`,
-    goodCode: `function NotificationList({
+
+      right: `function NotificationList({
   notifications,
   onDismiss,
 }: {
@@ -397,6 +443,8 @@ Menu.Divider = function MenuDivider() {
     </ul>
   );
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`NotificationList` tells you what it renders: a list of notifications. `NotificationManager` implies business logic, state management, scheduling, lifecycle. But this component just maps over an array and renders items.\n\nSuffixes like `Manager`, `Handler`, `Controller`, and `Service` belong in backend code or hooks, not in presentational components.",

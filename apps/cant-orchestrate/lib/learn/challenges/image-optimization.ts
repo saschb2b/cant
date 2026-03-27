@@ -6,19 +6,26 @@ export const imageOptimizationChallenges: Challenge[] = [
     category: "image-optimization",
     difficulty: "easy",
     title: "Use specific base image tags",
-    badCode: `FROM node:latest
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:latest
 
 WORKDIR /app
 COPY . .
 RUN npm ci
 CMD ["node", "server.js"]`,
-    goodCode: `FROM node:20.11-alpine
+
+      right: `FROM node:20.11-alpine
 
 WORKDIR /app
 COPY . .
 RUN npm ci
 CMD ["node", "server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Pinning a specific tag like `node:20.11-alpine` ensures reproducible builds. The `-alpine` variant is significantly smaller (around 50 MB vs 1 GB for the full image). Your builds produce the same result regardless of when they run.",
@@ -33,7 +40,12 @@ CMD ["node", "server.js"]`,
     category: "image-optimization",
     difficulty: "medium",
     title: "Multi-stage builds",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 
 WORKDIR /app
 COPY package*.json ./
@@ -43,7 +55,8 @@ RUN npm run build
 
 # Build tools still in final image
 CMD ["node", "dist/server.js"]`,
-    goodCode: `FROM node:20-alpine AS build
+
+      right: `FROM node:20-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
@@ -57,7 +70,8 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
 RUN npm ci --omit=dev
 CMD ["node", "dist/server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Multi-stage builds separate the build environment from the runtime environment. The final image only contains production dependencies and compiled output, resulting in a much smaller and more secure image. Build tools, source code, and dev dependencies are left behind.",
@@ -71,7 +85,12 @@ CMD ["node", "dist/server.js"]`,
     category: "image-optimization",
     difficulty: "easy",
     title: "Copy package files first for caching",
-    badCode: `FROM node:20-alpine
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine
 WORKDIR /app
 
 # Copy everything, then install
@@ -80,7 +99,8 @@ RUN npm ci
 RUN npm run build
 
 CMD ["node", "dist/server.js"]`,
-    goodCode: `FROM node:20-alpine
+
+      right: `FROM node:20-alpine
 WORKDIR /app
 
 # Copy dependency files first
@@ -92,7 +112,8 @@ COPY . .
 RUN npm run build
 
 CMD ["node", "dist/server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Copying `package.json` and `package-lock.json` before the rest of the source code means Docker can cache the `npm ci` layer. When you change application code but not dependencies, Docker reuses the cached layer and skips the slow install step.",
@@ -106,7 +127,12 @@ CMD ["node", "dist/server.js"]`,
     category: "image-optimization",
     difficulty: "medium",
     title: "Use .dockerignore",
-    badCode: `# No .dockerignore file
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `# No .dockerignore file
 # Build context includes everything:
 # node_modules/    (500 MB)
 # .git/            (200 MB)
@@ -119,7 +145,8 @@ FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci`,
-    goodCode: `# .dockerignore
+
+      right: `# .dockerignore
 node_modules
 .git
 .env
@@ -135,7 +162,8 @@ FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "A `.dockerignore` file excludes files from the build context. This speeds up builds (smaller context to send to the daemon), prevents secrets from leaking into images, and avoids overwriting installed dependencies with stale local `node_modules`.",
@@ -150,7 +178,12 @@ RUN npm ci`,
     category: "image-optimization",
     difficulty: "hard",
     title: "Distroless runtime images",
-    badCode: `FROM node:20-alpine AS build
+    content: {
+      type: "code",
+
+      lang: "dockerfile",
+
+      left: `FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -163,7 +196,8 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 CMD ["node", "dist/server.js"]`,
-    goodCode: `FROM node:20-alpine AS build
+
+      right: `FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -176,7 +210,8 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 CMD ["dist/server.js"]`,
-    lang: "dockerfile",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Distroless images contain only the runtime and your application. No shell, no package manager, no unnecessary utilities. This drastically reduces the attack surface and image size. If an attacker exploits your app, they can't spawn a shell.",

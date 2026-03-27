@@ -6,7 +6,12 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "easy",
     title: "auto-fill vs fixed columns",
-    badCode: `.grid {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
@@ -17,13 +22,15 @@ export const gridPatternChallenges: Challenge[] = [
     grid-template-columns: 1fr;
   }
 }`,
-    goodCode: `.grid {
+
+      right: `.grid {
   display: grid;
   grid-template-columns:
     repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`auto-fill` with `minmax(250px, 1fr)` creates as many columns as fit, each at least 250px wide, growing to fill space. Three columns on desktop, two on tablet, one on mobile, all with zero media queries. The grid responds to its container, not the viewport.",
@@ -38,7 +45,12 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "easy",
     title: "auto-fill vs auto-fit",
-    badCode: `/* 2 items in a wide container */
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `/* 2 items in a wide container */
 .grid {
   display: grid;
   grid-template-columns:
@@ -46,7 +58,8 @@ export const gridPatternChallenges: Challenge[] = [
 }
 /* Creates invisible empty tracks that
    prevent items from stretching fully */`,
-    goodCode: `/* 2 items in a wide container */
+
+      right: `/* 2 items in a wide container */
 .grid {
   display: grid;
   grid-template-columns:
@@ -54,7 +67,8 @@ export const gridPatternChallenges: Challenge[] = [
 }
 /* Empty tracks collapse to 0px,
    items stretch to fill the row */`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`auto-fit` collapses empty tracks to 0px, so the remaining items stretch via `1fr` to fill the full container width. With 2 items in a 1200px container, `auto-fit` gives two ~600px items. Use `auto-fit` when you want items to expand to fill available space.",
@@ -69,7 +83,12 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "medium",
     title: "Responsive grid with subgrid",
-    badCode: `.card-grid {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.card-grid {
   display: grid;
   grid-template-columns:
     repeat(auto-fit, minmax(280px, 1fr));
@@ -86,7 +105,8 @@ export const gridPatternChallenges: Challenge[] = [
 .card-footer {
   margin-top: auto;
 }`,
-    goodCode: `.card-grid {
+
+      right: `.card-grid {
   display: grid;
   grid-template-columns:
     repeat(auto-fit, minmax(280px, 1fr));
@@ -98,7 +118,8 @@ export const gridPatternChallenges: Challenge[] = [
   grid-template-rows: subgrid;
   grid-row: span 3; /* header, body, footer */
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "`subgrid` aligns the card's internal rows (header, body, footer) across all cards in the same grid row. Every card's footer sits at the same vertical position regardless of content height. This is what `margin-top: auto` approximates but can't guarantee across siblings.",
@@ -113,7 +134,12 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "medium",
     title: "Grid areas for layout reordering",
-    badCode: `.layout {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.layout {
   display: grid;
   grid-template-columns: 240px 1fr;
 }
@@ -125,7 +151,8 @@ export const gridPatternChallenges: Challenge[] = [
   .sidebar { order: 2; }
   .main { order: 1; }
 }`,
-    goodCode: `.layout {
+
+      right: `.layout {
   display: grid;
   grid-template-areas:
     "sidebar main";
@@ -143,7 +170,8 @@ export const gridPatternChallenges: Challenge[] = [
 
 .sidebar { grid-area: sidebar; }
 .main { grid-area: main; }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Named grid areas make the layout intent readable at a glance because you can see the visual structure in the CSS. Reordering with `grid-template-areas` is explicit about the new arrangement, while `order` just shifts items without showing the full picture.",
@@ -158,7 +186,12 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "hard",
     title: "Full-bleed layout with grid",
-    badCode: `.page {
+    content: {
+      type: "code",
+
+      lang: "css",
+
+      left: `.page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
@@ -168,7 +201,8 @@ export const gridPatternChallenges: Challenge[] = [
   width: 100vw;
   margin-left: calc(-50vw + 50%);
 }`,
-    goodCode: `.page {
+
+      right: `.page {
   display: grid;
   grid-template-columns:
     1fr min(1200px, 100% - 2rem) 1fr;
@@ -181,7 +215,8 @@ export const gridPatternChallenges: Challenge[] = [
 .full-bleed {
   grid-column: 1 / -1;
 }`,
-    lang: "css",
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The 3-column grid creates automatic gutters (outer `1fr` columns) with content centered in the middle column. `.full-bleed` spans all columns. No `100vw` scrollbar issues, no negative margin hacks, and it works inside any container.",

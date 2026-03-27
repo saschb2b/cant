@@ -6,11 +6,15 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "easy",
     title: "Simple prop documentation",
-    badCode: `interface BadgeProps {
+    content: {
+      type: "code",
+
+      left: `interface BadgeProps {
   label: string;
   variant?: 'default' | 'success' | 'warning';
 }`,
-    goodCode: `interface BadgeProps {
+
+      right: `interface BadgeProps {
   /** The text displayed inside the badge. */
   label: string;
   /**
@@ -19,6 +23,8 @@ export const jsdocChallenges: Challenge[] = [
    */
   variant?: 'default' | 'success' | 'warning';
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "Even simple props benefit from JSDoc. When another developer hovers over `variant` in their IDE, they instantly see what it does and what the default is. The `@default` tag is especially useful for optional props.",
@@ -33,7 +39,10 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "medium",
     title: "Component documentation",
-    badCode: `interface TooltipProps {
+    content: {
+      type: "code",
+
+      left: `interface TooltipProps {
   /** The content. */
   content: string;
   /** The children. */
@@ -43,7 +52,8 @@ export const jsdocChallenges: Challenge[] = [
   /** The delay. */
   delay?: number;
 }`,
-    goodCode: `interface TooltipProps {
+
+      right: `interface TooltipProps {
   /** The text content displayed inside the tooltip. */
   content: string;
   /** The element that triggers the tooltip on hover. */
@@ -59,6 +69,8 @@ export const jsdocChallenges: Challenge[] = [
    */
   delay?: number;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Good JSDoc explains **what** a prop does and documents defaults. "The text content displayed inside the tooltip" is useful; "The content" just repeats the prop name.\n\nThe `@default` tags on optional props are especially valuable; no need to read the implementation to know the fallback.',
@@ -73,7 +85,10 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "medium",
     title: "Callback prop documentation",
-    badCode: `interface DataTableProps<T> {
+    content: {
+      type: "code",
+
+      left: `interface DataTableProps<T> {
   /** The data to display. */
   data: T[];
   /** Handler for row clicks. */
@@ -81,7 +96,8 @@ export const jsdocChallenges: Challenge[] = [
   /** Handler for sorting. */
   onSort?: (col: string) => void;
 }`,
-    goodCode: `interface DataTableProps<T> {
+
+      right: `interface DataTableProps<T> {
   /** The array of data objects to render as rows. */
   data: T[];
   /**
@@ -95,6 +111,8 @@ export const jsdocChallenges: Challenge[] = [
    */
   onSort?: (columnKey: string) => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Good callback documentation explains **when** the callback fires and **what** the parameters represent. "Called when a column header is clicked for sorting" tells you the trigger. The rename from `col` to `columnKey` reinforces clarity. Compare "Handler for sorting," which just restates the prop name.',
@@ -109,7 +127,10 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "hard",
     title: "Realistic JSDoc examples",
-    badCode: `/**
+    content: {
+      type: "code",
+
+      left: `/**
  * A confirmation dialog component.
  *
  * @example
@@ -134,7 +155,8 @@ interface ConfirmDialogProps {
 }
 
 function ConfirmDialog(props: ConfirmDialogProps) {`,
-    goodCode: `interface ConfirmDialogProps {
+
+      right: `interface ConfirmDialogProps {
   /** The heading text of the dialog. */
   title: string;
   /** The body message explaining the action. */
@@ -165,6 +187,8 @@ function ConfirmDialog(props: ConfirmDialogProps) {`,
  * />
  */
 function ConfirmDialog(props: ConfirmDialogProps) {`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       'Two things to notice here:\n\n**Where each comment goes:** The component description and `@example` go on the **function**, because that\'s what your IDE shows when you hover `<ConfirmDialog`. Prop descriptions go on the **interface**, because that\'s what shows in prop autocomplete. The bad side puts everything on the interface, so `<ConfirmDialog` hover shows nothing useful.\n\n**Realistic examples:** `title="Delete project?"` and `variant="danger"` paint a real scenario. Generic `title="Title"` defeats the purpose.',
@@ -178,14 +202,18 @@ function ConfirmDialog(props: ConfirmDialogProps) {`,
     category: "jsdoc",
     difficulty: "easy",
     title: "Deprecation notice in JSDoc",
-    badCode: `interface AccordionProps {
+    content: {
+      type: "code",
+
+      left: `interface AccordionProps {
   // Don't use isOpen, use expanded instead
   isOpen?: boolean;
   expanded?: boolean;
   children: React.ReactNode;
   onToggle?: () => void;
 }`,
-    goodCode: `interface AccordionProps {
+
+      right: `interface AccordionProps {
   /**
    * @deprecated Use \`isExpanded\` instead.
    * Will be removed in v3.0.
@@ -196,6 +224,8 @@ function ConfirmDialog(props: ConfirmDialogProps) {`,
   children: React.ReactNode;
   onToggle?: () => void;
 }`,
+    },
+
     correctSide: "right",
     explanationCorrect:
       "The `@deprecated` JSDoc tag triggers a visual strikethrough in most IDEs and shows a warning on hover. It's machine-readable, so linters can flag usage. A code comment is invisible at the call site and can't be enforced by tooling.",

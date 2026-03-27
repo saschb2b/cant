@@ -86,18 +86,12 @@ function ColorSchemeToggle({ size = 18 }: { size?: number }) {
   return (
     <Tooltip
       title={
-        mounted
-          ? isDark
-            ? "Switch to light mode"
-            : "Switch to dark mode"
-          : ""
+        mounted ? (isDark ? "Switch to light mode" : "Switch to dark mode") : ""
       }
     >
       <IconButton
         size="small"
-        onClick={
-          mounted ? () => setMode(isDark ? "light" : "dark") : undefined
-        }
+        onClick={mounted ? () => setMode(isDark ? "light" : "dark") : undefined}
         sx={{ color: "text.secondary" }}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       >
@@ -186,8 +180,7 @@ export function SiteHeader({
           position: "sticky",
           top: 0,
           zIndex: 1100,
-          bgcolor:
-            "rgba(var(--mui-palette-background-defaultChannel) / 0.8)",
+          bgcolor: "rgba(var(--mui-palette-background-defaultChannel) / 0.8)",
           backdropFilter: "blur(12px)",
         }}
       >
@@ -338,7 +331,10 @@ export function SiteHeader({
         <Divider />
       </Box>
 
-      {renderSearchPalette({ open: searchOpen, onClose: () => setSearchOpen(false) })}
+      {renderSearchPalette({
+        open: searchOpen,
+        onClose: () => setSearchOpen(false),
+      })}
     </>
   );
 }

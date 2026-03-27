@@ -92,8 +92,7 @@ export function CantSeriesGrid({
             p: 0,
             border: 1,
             borderColor: "primary.main",
-            bgcolor:
-              "rgba(var(--mui-palette-primary-mainChannel) / 0.04)",
+            bgcolor: "rgba(var(--mui-palette-primary-mainChannel) / 0.04)",
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
