@@ -3,7 +3,14 @@
 import type { ReactNode } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import { GraduationCap, Gamepad2 } from "lucide-react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -133,10 +140,18 @@ interface NavCtaLink {
 
 type NavItem = NavTextLink | NavCtaLink;
 
+/** Optional app-specific "gimmick" tool shown between Learn and Play. */
+interface GimmickTool {
+  href: string;
+  label: string;
+  icon: ReactNode;
+}
+
 interface SiteHeaderProps {
   title: string;
   subtitle: string;
-  navItems: NavItem[];
+  /** Optional app-specific tool (e.g. Viewer, Sandbox, Inspector). */
+  gimmick?: GimmickTool;
   /** Render the search palette. Receives open state and onClose callback. */
   renderSearchPalette: (props: {
     open: boolean;
@@ -147,11 +162,32 @@ interface SiteHeaderProps {
 export function SiteHeader({
   title,
   subtitle,
-  navItems,
+  gimmick,
   renderSearchPalette,
 }: SiteHeaderProps) {
   const trackEvent = useTrackEvent();
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const navItems = useMemo<NavItem[]>(() => {
+    const items: NavItem[] = [
+      {
+        type: "text",
+        href: "/learn",
+        label: "Learn",
+        icon: <GraduationCap size={18} />,
+      },
+    ];
+    if (gimmick) {
+      items.push({
+        type: "text",
+        href: gimmick.href,
+        label: gimmick.label,
+        icon: gimmick.icon,
+      });
+    }
+    items.push({ type: "cta", href: "/play", label: "Play" });
+    return items;
+  }, [gimmick]);
 
   const openSearch = useCallback(
     (trigger: "hotkey" | "button") => {

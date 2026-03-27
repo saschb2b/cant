@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
-import { GraduationCap, Gamepad2 } from "lucide-react";
+import { Eye } from "lucide-react";
 import { SiteHeader } from "../site-header";
 
 const meta: Meta<typeof SiteHeader> = {
@@ -15,29 +14,23 @@ const meta: Meta<typeof SiteHeader> = {
 export default meta;
 type Story = StoryObj<typeof SiteHeader>;
 
-export const Default: Story = {
+export const WithGimmick: Story = {
   args: {
     title: "Can't Resize",
     subtitle: "Learn responsive design",
-    navItems: [
-      {
-        type: "text" as const,
-        href: "/play",
-        label: "Play",
-        icon: <Gamepad2 size={18} />,
-      },
-      {
-        type: "text" as const,
-        href: "/learn",
-        label: "Learn",
-        icon: <GraduationCap size={18} />,
-      },
-      {
-        type: "cta" as const,
-        href: "/canvas",
-        label: "Open Viewer",
-      },
-    ],
+    gimmick: {
+      href: "/canvas",
+      label: "Viewer",
+      icon: <Eye size={18} />,
+    },
+    renderSearchPalette: () => null,
+  },
+};
+
+export const WithoutGimmick: Story = {
+  args: {
+    title: "Can't Maintain",
+    subtitle: "Can you spot the better API?",
     renderSearchPalette: () => null,
   },
 };
