@@ -1,6 +1,6 @@
 "use client";
 
-import { ResultsScreen as SharedResultsScreen } from "@cant/shared/components/game/results-screen";
+import { ResultsScreen as SharedResultsScreen } from "@cant/shared/components/game";
 import Typography from "@mui/material/Typography";
 import type { GameState } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";

@@ -1,6 +1,6 @@
 "use client";
 
-import { CodePanel as SharedCodePanel } from "@cant/shared/components/game/code-panel";
+import { CodePanel as SharedCodePanel } from "@cant/shared/components/game";
 import checkmarkAnimation from "./checkmark-animation.json";
 
 interface CodePanelProps {

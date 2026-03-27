@@ -1,6 +1,6 @@
 "use client";
 import { Monitor } from "lucide-react";
-import { SearchPalette as SharedSearchPalette } from "@cant/shared/components/search-palette";
+import { SearchPalette as SharedSearchPalette } from "@cant/shared/components";
 import { searchItems } from "@/lib/search-items";
 import { CATEGORY_SECTIONS } from "@/lib/learn/categories";
 

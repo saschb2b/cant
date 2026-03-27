@@ -1,7 +1,7 @@
 "use client";
 
 import Typography from "@mui/material/Typography";
-import { ResultsScreen as SharedResultsScreen } from "@cant/shared/components/game/results-screen";
+import { ResultsScreen as SharedResultsScreen } from "@cant/shared/components/game";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   getRank,

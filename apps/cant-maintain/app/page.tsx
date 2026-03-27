@@ -7,12 +7,8 @@ import { Check, X, Gamepad2, BookOpen, Zap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { LiveRibbon } from "@/components/live-ribbon";
-import { Hero } from "@cant/shared/components/hero";
-import { FeatureGrid } from "@cant/shared/components/feature-grid";
-import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
-import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
-import { codeBlockStyles } from "@cant/shared/lib/code-styles";
+import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner } from "@cant/shared/components";
+import { getHighlighter, highlightDual, codeBlockStyles } from "@cant/shared/lib";
 
 const BAD_CODE = `interface UserCardProps {
   data: User;

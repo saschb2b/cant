@@ -8,7 +8,7 @@ import { challenges } from "@/lib/game/challenges";
 import {
   buildSearchItems,
   type SearchItem,
-} from "@cant/shared/lib/search-items";
+} from "@cant/shared/lib";
 
 export type { SearchItem };
 

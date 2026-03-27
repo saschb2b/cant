@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { buildContentMap } from "@cant/shared/lib/content-map";
-import { LearnIndexPage } from "@cant/shared/components/learn-index-page";
+import { buildContentMap } from "@cant/shared/lib";
+import { LearnIndexPage } from "@cant/shared/components";
 import { codeBlockStyles } from "@/lib/code-styles";
 import { challenges } from "@/lib/learn/challenges";
 import {

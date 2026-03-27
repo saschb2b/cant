@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { codeBlockStyles } from "@cant/shared/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 
 type Highlighter = Awaited<ReturnType<typeof getHighlighter>>;

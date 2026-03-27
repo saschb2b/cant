@@ -2,7 +2,7 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { CodePanel as SharedCodePanel } from "@cant/shared/components/game/code-panel";
+import { CodePanel as SharedCodePanel } from "@cant/shared/components/game";
 import checkmarkAnimation from "./checkmark-animation.json";
 
 const SPARKLE_BURSTS = Array.from({ length: 8 }, (_, i) => {

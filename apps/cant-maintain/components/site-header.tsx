@@ -1,5 +1,5 @@
 "use client";
-import { SiteHeader as SharedSiteHeader } from "@cant/shared/components/site-header";
+import { SiteHeader as SharedSiteHeader } from "@cant/shared/components";
 import { SearchPalette } from "@/components/search-palette";
 
 export function SiteHeader() {

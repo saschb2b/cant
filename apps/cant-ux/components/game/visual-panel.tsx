@@ -1,6 +1,6 @@
 "use client";
 
-import { VisualPanel as SharedVisualPanel } from "@cant/shared/components/game/visual-panel";
+import { VisualPanel as SharedVisualPanel } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
 import checkmarkAnimation from "./checkmark-animation.json";
 

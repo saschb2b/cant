@@ -1,7 +1,7 @@
 "use client";
 
 import Typography from "@mui/material/Typography";
-import { CodePanel as SharedCodePanel } from "@cant/shared/components/game/code-panel";
+import { CodePanel as SharedCodePanel } from "@cant/shared/components/game";
 import checkmarkAnimation from "./checkmark-animation.json";
 
 const betterLabel = (

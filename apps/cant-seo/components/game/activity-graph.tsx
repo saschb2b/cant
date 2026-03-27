@@ -1,6 +1,6 @@
 "use client";
 
-import { ActivityGraph as SharedActivityGraph } from "@cant/shared/components/game/activity-graph";
+import { ActivityGraph as SharedActivityGraph } from "@cant/shared/components/game";
 import { getActivityGrid } from "@/lib/game/activity";
 
 export function ActivityGraph() {

@@ -1,4 +1,4 @@
-import { SiteFooter as SharedSiteFooter } from "@cant/shared/components/site-footer";
+import { SiteFooter as SharedSiteFooter } from "@cant/shared/components";
 
 const NAV_LINKS = [
   { href: "/inspector", label: "Inspector" },

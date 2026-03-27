@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import {
   useGame as useGameShared,
   type UseGameCallbacks,
-} from "@cant/shared/lib/game/use-game";
+} from "@cant/shared/lib/game";
 import { trackEvent } from "../analytics";
 import { recordGame } from "./history";
 import { recordActivity } from "./activity";

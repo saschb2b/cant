@@ -3,9 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
+    "./components": "./src/components/index.ts",
     "./components/*": "./src/components/*.tsx",
+    "./components/game": "./src/components/game/index.ts",
     "./components/game/*": "./src/components/game/*.tsx",
+    "./lib": "./src/lib/index.ts",
     "./lib/*": "./src/lib/*.ts",
+    "./lib/game": "./src/lib/game/index.ts",
     "./lib/game/*": "./src/lib/game/*.ts",
     "./lib/analytics-context": "./src/lib/analytics-context.tsx"
   },

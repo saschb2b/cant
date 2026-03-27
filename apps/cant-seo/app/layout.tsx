@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { ThemeProvider } from "@cant/shared/components/theme-provider";
-import { AnalyticsProviderWrapper } from "@cant/shared/components/analytics-provider-wrapper";
+import { ThemeProvider, AnalyticsProviderWrapper } from "@cant/shared/components";
 import theme from "@/lib/theme";
 
 const geist = Geist({

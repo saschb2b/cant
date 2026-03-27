@@ -1,14 +1,11 @@
 import Box from "@mui/material/Box";
 import { Gamepad2, BookOpen } from "lucide-react";
-import { Hero } from "@cant/shared/components/hero";
+import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner } from "@cant/shared/components";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
-import { FeatureGrid } from "@cant/shared/components/feature-grid";
-import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
 
 export default function LandingPage() {
   return (

@@ -4,7 +4,7 @@ import {
   encodeResults as _encodeResults,
   decodeResults as _decodeResults,
   getMissedCategoryLabels as _getMissedCategoryLabels,
-} from "@cant/shared/lib/game/share";
+} from "@cant/shared/lib/game";
 
 /** Rank thresholds based on percentage score. */
 export function getRank(percentage: number): string {
@@ -16,7 +16,7 @@ export function getRank(percentage: number): string {
 }
 
 /** Decoded results from a shared URL param. */
-export type { SharedResults } from "@cant/shared/lib/game/share";
+export type { SharedResults } from "@cant/shared/lib/game";
 
 export function encodeResults(state: GameState): string {
   return _encodeResults(state);

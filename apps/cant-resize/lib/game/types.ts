@@ -4,7 +4,7 @@
  */
 
 import type { Challenge } from "../learn/types";
-import { type GameState as SharedGameState } from "@cant/shared/lib/game/types";
+import { type GameState as SharedGameState } from "@cant/shared/lib/game";
 
 export type { Challenge, ChallengeCategory, Difficulty } from "../learn/types";
 

@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import { Game } from "@/components/game/game";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { buildContentMap } from "@cant/shared/lib/content-map";
+import { buildContentMap } from "@cant/shared/lib";
 import { challenges } from "@/lib/learn/challenges";
 
 export const metadata: Metadata = {

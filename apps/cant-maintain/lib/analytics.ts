@@ -4,7 +4,7 @@
  * @see https://umami.is/docs/tracker-functions
  */
 
-import { createTracker } from "@cant/shared/lib/analytics";
+import { createTracker } from "@cant/shared/lib";
 
 interface ChallengeAnsweredData {
   challengeId: string;

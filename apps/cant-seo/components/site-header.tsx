@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteHeader as SharedSiteHeader } from "@cant/shared/components/site-header";
+import { SiteHeader as SharedSiteHeader } from "@cant/shared/components";
 import { ScanSearch } from "lucide-react";
 import { SearchPalette } from "@/components/search-palette";
 

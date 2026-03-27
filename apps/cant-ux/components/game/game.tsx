@@ -1,8 +1,7 @@
 "use client";
 
-import { Game as SharedGame } from "@cant/shared/components/game/game";
-import type { ContentMapEntry } from "@cant/shared/components/game/game";
-import { GameHeader } from "@cant/shared/components/game/game-header";
+import { Game as SharedGame, GameHeader } from "@cant/shared/components/game";
+import type { ContentMapEntry } from "@cant/shared/components/game";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";

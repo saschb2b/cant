@@ -14,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
-import { codeBlockStyles } from "@cant/shared/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { useTypeExpander } from "@/lib/playground/use-type-expander";
 import { presets } from "@/lib/playground/presets";

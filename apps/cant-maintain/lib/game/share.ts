@@ -3,10 +3,10 @@ import { CATEGORY_LABELS } from "@/lib/game/categories";
 import {
   encodeResults,
   getMissedCategoryLabels as _getMissed,
-} from "@cant/shared/lib/game/share";
+} from "@cant/shared/lib/game";
 
-export { encodeResults, decodeResults } from "@cant/shared/lib/game/share";
-export type { SharedResults } from "@cant/shared/lib/game/share";
+export { encodeResults, decodeResults } from "@cant/shared/lib/game";
+export type { SharedResults } from "@cant/shared/lib/game";
 
 /** Rank thresholds based on percentage score. */
 export function getRank(percentage: number): string {

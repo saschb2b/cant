@@ -1,8 +1,8 @@
 "use client";
 
-import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game/lobby-screen";
-import type { GameType } from "@cant/shared/components/game/lobby-screen";
-import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
+import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game";
+import type { GameType } from "@cant/shared/components/game";
+import { CantSeriesGrid } from "@cant/shared/components";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
 import {
   decodeSeed,

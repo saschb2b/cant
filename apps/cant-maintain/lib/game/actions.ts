@@ -1,6 +1,6 @@
 "use server";
 
-import { createGameActions } from "@cant/shared/lib/game/actions";
+import { createGameActions } from "@cant/shared/lib/game";
 import { getRank } from "./share";
 import {
   addResult,

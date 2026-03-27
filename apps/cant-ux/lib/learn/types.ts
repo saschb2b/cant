@@ -1,4 +1,4 @@
-import type { ChallengeContent } from "@cant/shared/lib/game/types";
+import type { ChallengeContent } from "@cant/shared/lib/game";
 
 /** Difficulty tier for sorting and (future) game mode. */
 export type Difficulty = "easy" | "medium" | "hard";

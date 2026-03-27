@@ -3,10 +3,8 @@ import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { ExternalLink } from "lucide-react";
-import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
-import { buildContentMap } from "@cant/shared/lib/content-map";
-import { LearnCategoryPage } from "@cant/shared/components/learn-category-page";
-import { FormattedText } from "@cant/shared/components/formatted-text";
+import { getHighlighter, highlightDual, buildContentMap } from "@cant/shared/lib";
+import { LearnCategoryPage, FormattedText } from "@cant/shared/components";
 import { challenges } from "@/lib/game/challenges";
 import {
   CATEGORY_ORDER,

@@ -7,12 +7,12 @@ export {
   seedFromKey,
   getTodayKey,
   getWeekKey,
-} from "@cant/shared/lib/game/seeded-random";
+} from "@cant/shared/lib/game";
 
 import {
   encodeSeed as _encodeSeed,
   decodeSeed as _decodeSeed,
-} from "@cant/shared/lib/game/seeded-random";
+} from "@cant/shared/lib/game";
 
 export function encodeSeed(
   rawSeed: string,

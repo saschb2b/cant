@@ -1,5 +1,5 @@
-import type { ChallengeContent } from "@cant/shared/lib/game/types";
-import { type GameState as SharedGameState } from "@cant/shared/lib/game/types";
+import type { ChallengeContent } from "@cant/shared/lib/game";
+import { type GameState as SharedGameState } from "@cant/shared/lib/game";
 
 /** Difficulty tier that determines when a challenge appears in the game. */
 export type Difficulty = "easy" | "medium" | "hard";

@@ -3,16 +3,13 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Gamepad2, BookOpen, FlaskConical, Sparkles } from "lucide-react";
-import { Hero } from "@cant/shared/components/hero";
-import { FeatureGrid } from "@cant/shared/components/feature-grid";
-import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
+import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner } from "@cant/shared/components";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { codeBlockStyles } from "@cant/shared/lib/code-styles";
+import { codeBlockStyles } from "@cant/shared/lib";
 import { SparkleField } from "@/components/sparkle-field";
 
 const HERO_SPELL = `type DeepReadonly<T> = {

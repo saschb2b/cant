@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box";
 import { Monitor, Gamepad2, BookOpen } from "lucide-react";
-import { Hero } from "@cant/shared/components/hero";
-import { FeatureGrid } from "@cant/shared/components/feature-grid";
-import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { OpenSourceBanner } from "@cant/shared/components/open-source-banner";
+import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner } from "@cant/shared/components";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";

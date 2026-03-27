@@ -4,11 +4,9 @@ import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import { buildContentMap } from "@cant/shared/lib/content-map";
-import { LearnCategoryPage } from "@cant/shared/components/learn-category-page";
-import { FormattedText } from "@cant/shared/components/formatted-text";
-import { SourceLink } from "@cant/shared/components/source-link";
-import type { ContentMapEntry } from "@cant/shared/components/game/game";
+import { buildContentMap } from "@cant/shared/lib";
+import { LearnCategoryPage, FormattedText, SourceLink } from "@cant/shared/components";
+import type { ContentMapEntry } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
 import { challenges } from "@/lib/learn/challenges";
 import {

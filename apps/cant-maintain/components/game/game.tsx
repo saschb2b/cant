@@ -1,12 +1,11 @@
 "use client";
 
-import { Game as SharedGame } from "@cant/shared/components/game/game";
-import type { ContentMapEntry } from "@cant/shared/components/game/game";
+import { Game as SharedGame, GameHeader } from "@cant/shared/components/game";
+import type { ContentMapEntry } from "@cant/shared/components/game";
 import type { Challenge } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
-import { GameHeader } from "@cant/shared/components/game/game-header";
 import { CodePanel } from "./code-panel";
 import { ExplanationPanel } from "./explanation-panel";
 import { ResultsScreen } from "./results-screen";
