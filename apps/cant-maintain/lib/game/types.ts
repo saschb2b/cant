@@ -1,4 +1,5 @@
 import type { ChallengeContent } from "@cant/shared/lib/game/types";
+import { type GameState as SharedGameState } from "@cant/shared/lib/game/types";
 
 /** Difficulty tier that determines when a challenge appears in the game. */
 export type Difficulty = "easy" | "medium" | "hard";
@@ -70,32 +71,4 @@ export interface Challenge {
 }
 
 /** Snapshot of the current game state. */
-export interface GameState {
-  /** All challenges in play order (shuffled, difficulty-sorted). */
-  challenges: Challenge[];
-  /** Index of the current challenge. */
-  currentIndex: number;
-  /** Running score. */
-  score: number;
-  /** Current streak of correct answers. */
-  streak: number;
-  /** Best streak achieved this session. */
-  bestStreak: number;
-  /** Map of challenge id -> answer result and which side was chosen. */
-  answers: Record<
-    string,
-    { result: "correct" | "wrong"; side: "left" | "right" }
-  >;
-  /** Index of a previously answered challenge being reviewed, or null. */
-  reviewIndex: number | null;
-  /** Whether the game has ended. */
-  isFinished: boolean;
-  /** Timestamp game started. */
-  startedAt: number;
-  /** Timestamp game finished (set when isFinished becomes true). */
-  finishedAt: number | null;
-  /** Seed string used to generate this session's challenge order. */
-  seed: string;
-  /** How the game was started. */
-  gameType: "daily" | "weekly" | "custom";
-}
+export type GameState = SharedGameState<Challenge>;

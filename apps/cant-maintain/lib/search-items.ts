@@ -5,29 +5,21 @@ import {
   CATEGORY_SECTIONS,
 } from "@/lib/game/categories";
 import { challenges } from "@/lib/game/challenges";
-import type { ChallengeCategory } from "@/lib/game/types";
+import {
+  buildSearchItems,
+  type SearchItem,
+} from "@cant/shared/lib/search-items";
 
-export interface SearchItem {
-  type: "page" | "category" | "challenge";
-  title: string;
-  description: string;
-  /** Optional secondary line (e.g. category + difficulty for challenges). */
-  subtitle?: string;
-  /** Per-item icon key (falls back to type-based icon when absent). */
-  icon?: "play" | "learn" | "changelog";
-  /** Challenge difficulty for color coding. */
-  difficulty?: "easy" | "medium" | "hard";
-  keywords: string[];
-  href: string;
-}
+export type { SearchItem };
 
-/** Section label for a given category (used as a keyword). */
-function sectionFor(category: ChallengeCategory): string | undefined {
-  return CATEGORY_SECTIONS.find((s) => s.categories.includes(category))?.label;
-}
+const EXTRA_NOISE = new Set([
+  "HTMLAttributes",
+  "HTMLDivElement",
+  "HTMLButtonElement",
+  "ComponentProps",
+]);
 
-export const searchItems: SearchItem[] = [
-  // Top-level pages
+const pages: SearchItem[] = [
   {
     type: "page",
     title: "Play",
@@ -52,87 +44,14 @@ export const searchItems: SearchItem[] = [
     keywords: ["changelog", "updates", "releases", "version", "history"],
     href: "/changelog",
   },
-  // One entry per category
-  ...CATEGORY_ORDER.map((category) => ({
-    type: "category" as const,
-    title: CATEGORY_LABELS[category],
-    description: CATEGORY_DESCRIPTIONS[category],
-    keywords: [category, sectionFor(category), "learn", "pattern"].filter(
-      Boolean,
-    ) as string[],
-    href: `/learn/${category}`,
-  })),
-  // Individual challenges — searchable by title and code snippets
-  ...challenges.map((c) => ({
-    type: "challenge" as const,
-    title: c.title,
-    description: firstSentence(c.explanationCorrect),
-    subtitle: `${CATEGORY_LABELS[c.category]} · ${c.difficulty}`,
-    difficulty: c.difficulty,
-    keywords:
-      c.content.type === "code"
-        ? extractCodeKeywords(c.content.left, c.content.right)
-        : [],
-    href: `/learn/${c.category}#${c.id}`,
-  })),
 ];
 
-/** Extract the first sentence (up to the first period, newline, or 120 chars). */
-function firstSentence(text: string): string {
-  // Split on sentence-ending punctuation followed by whitespace, or newlines
-  const match = /^[^.\n]+[.]/.exec(text);
-  if (match) return match[0];
-  // Fallback: first line, truncated
-  const line = text.split("\n")[0] ?? text;
-  return line.length > 120 ? `${line.slice(0, 117)}...` : line;
-}
-
-/**
- * Pull identifiers out of code snippets so users can search by
- * prop names, type names, and other tokens they remember.
- */
-function extractCodeKeywords(goodCode: string, badCode: string): string[] {
-  // Match identifiers that look like prop/type names (camelCase, PascalCase)
-  const identifierRe = /\b[a-zA-Z][a-zA-Z0-9]{2,}\b/g;
-  const all = `${goodCode} ${badCode}`;
-  const matches = all.match(identifierRe) ?? [];
-
-  // Deduplicate and drop very common noise words
-  const noise = new Set([
-    "string",
-    "number",
-    "boolean",
-    "void",
-    "null",
-    "undefined",
-    "true",
-    "false",
-    "interface",
-    "type",
-    "export",
-    "import",
-    "from",
-    "const",
-    "function",
-    "return",
-    "React",
-    "ReactNode",
-    "children",
-    "Props",
-    "props",
-    "extends",
-    "HTMLAttributes",
-    "HTMLDivElement",
-    "HTMLButtonElement",
-    "ComponentProps",
-    "div",
-    "span",
-    "button",
-  ]);
-
-  const unique = new Set<string>();
-  for (const m of matches) {
-    if (!noise.has(m)) unique.add(m);
-  }
-  return [...unique];
-}
+export const searchItems: SearchItem[] = buildSearchItems({
+  pages,
+  challenges,
+  categoryOrder: CATEGORY_ORDER,
+  categoryLabels: CATEGORY_LABELS,
+  categoryDescriptions: CATEGORY_DESCRIPTIONS,
+  categorySections: CATEGORY_SECTIONS,
+  extraNoise: EXTRA_NOISE,
+});

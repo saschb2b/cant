@@ -5,29 +5,30 @@ import {
   CATEGORY_SECTIONS,
 } from "@/lib/learn/categories";
 import { challenges } from "@/lib/learn/challenges";
-import type { ChallengeCategory } from "@/lib/learn/types";
+import {
+  buildSearchItems,
+  type SearchItem,
+} from "@cant/shared/lib/search-items";
 
-export interface SearchItem {
-  type: "page" | "category" | "challenge";
-  title: string;
-  description: string;
-  /** Optional secondary line (e.g. category + difficulty for challenges). */
-  subtitle?: string;
-  /** Per-item icon key (falls back to type-based icon when absent). */
-  icon?: "learn";
-  /** Challenge difficulty for color coding. */
-  difficulty?: "easy" | "medium" | "hard";
-  keywords: string[];
-  href: string;
-}
+export type { SearchItem };
 
-/** Section label for a given category (used as a keyword). */
-function sectionFor(category: ChallengeCategory): string | undefined {
-  return CATEGORY_SECTIONS.find((s) => s.categories.includes(category))?.label;
-}
+const EXTRA_NOISE = new Set([
+  "name",
+  "the",
+  "and",
+  "for",
+  "with",
+  "this",
+  "that",
+  "run",
+  "set",
+  "get",
+  "use",
+  "echo",
+  "env",
+]);
 
-export const searchItems: SearchItem[] = [
-  // Top-level pages
+const pages: SearchItem[] = [
   {
     type: "page",
     title: "Dockerfile Explorer",
@@ -54,73 +55,14 @@ export const searchItems: SearchItem[] = [
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",
   },
-  // One entry per category
-  ...CATEGORY_ORDER.map((category) => ({
-    type: "category" as const,
-    title: CATEGORY_LABELS[category],
-    description: CATEGORY_DESCRIPTIONS[category],
-    keywords: [category, sectionFor(category), "learn", "pattern"].filter(
-      Boolean,
-    ) as string[],
-    href: `/learn/${category}`,
-  })),
-  // Individual challenges, searchable by title and code snippets
-  ...challenges.map((c) => ({
-    type: "challenge" as const,
-    title: c.title,
-    description: firstSentence(c.explanationCorrect),
-    subtitle: `${CATEGORY_LABELS[c.category]} · ${c.difficulty}`,
-    difficulty: c.difficulty,
-    keywords:
-      c.content.type === "code"
-        ? extractCodeKeywords(c.content.left, c.content.right)
-        : [],
-    href: `/learn/${c.category}#${c.id}`,
-  })),
 ];
 
-/** Extract the first sentence (up to the first period, newline, or 120 chars). */
-function firstSentence(text: string): string {
-  const match = /^[^.\n]+[.]/.exec(text);
-  if (match) return match[0];
-  const line = text.split("\n")[0] ?? text;
-  return line.length > 120 ? `${line.slice(0, 117)}...` : line;
-}
-
-/**
- * Pull identifiers out of code snippets so users can search by
- * directive names, Kubernetes kinds, Docker instructions, and other tokens.
- */
-function extractCodeKeywords(goodCode: string, badCode: string): string[] {
-  const identifierRe = /\b[a-zA-Z][a-zA-Z0-9-]{2,}\b/g;
-  const all = `${goodCode} ${badCode}`;
-  const matches = all.match(identifierRe) ?? [];
-
-  const noise = new Set([
-    "string",
-    "number",
-    "true",
-    "false",
-    "null",
-    "name",
-    "the",
-    "and",
-    "for",
-    "with",
-    "this",
-    "that",
-    "from",
-    "run",
-    "set",
-    "get",
-    "use",
-    "echo",
-    "env",
-  ]);
-
-  const unique = new Set<string>();
-  for (const m of matches) {
-    if (!noise.has(m)) unique.add(m);
-  }
-  return [...unique];
-}
+export const searchItems: SearchItem[] = buildSearchItems({
+  pages,
+  challenges,
+  categoryOrder: CATEGORY_ORDER,
+  categoryLabels: CATEGORY_LABELS,
+  categoryDescriptions: CATEGORY_DESCRIPTIONS,
+  categorySections: CATEGORY_SECTIONS,
+  extraNoise: EXTRA_NOISE,
+});
