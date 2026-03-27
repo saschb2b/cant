@@ -1,0 +1,138 @@
+import type { ComponentType } from "react";
+import {
+  TypoSizeOnlyHierarchy,
+  TypoMultiDimensionHierarchy,
+  TypoLongLines,
+  TypoOptimalWidth,
+  TypoTightLeading,
+  TypoRelaxedLeading,
+  TypoNoScale,
+  TypoHarmonicScale,
+} from "./typography";
+import {
+  SpacingRandom,
+  SpacingConsistentScale,
+  SpacingCramped,
+  SpacingGenerous,
+  SpacingNoProximity,
+  SpacingProximity,
+  SpacingBorderSeparation,
+  SpacingWhitespaceSeparation,
+} from "./spacing";
+import {
+  ColorLowContrast,
+  ColorAccessibleContrast,
+  ColorTooManyColors,
+  ColorLimitedPalette,
+  ColorGreyOnColor,
+  ColorTintedOnColor,
+  ColorPureBlackOnWhite,
+  ColorSoftContrast,
+} from "./color";
+import {
+  HierarchyFlat,
+  HierarchyClear,
+  ButtonsAllPrimary,
+  ButtonsWithHierarchy,
+  EverythingBold,
+  SelectiveEmphasis,
+  LabelSameAsValue,
+  LabelDimmedValueBold,
+} from "./hierarchy";
+import {
+  LayoutFullWidth,
+  LayoutConstrained,
+  FormSideBySide,
+  FormStacked,
+  CardLayoutUneven,
+  CardLayoutConsistent,
+  ContentLeftAligned,
+  ContentCenterAligned,
+} from "./layout";
+import {
+  FormPlaceholderLabels,
+  FormVisibleLabels,
+  FormGenericError,
+  FormSpecificError,
+  FormTinyTargets,
+  FormLargeTargets,
+  FormWallOfFields,
+  FormGroupedFields,
+} from "./forms";
+import {
+  FeedbackBlankLoading,
+  FeedbackSkeleton,
+  FeedbackEmptyBare,
+  FeedbackEmptyHelpful,
+  FeedbackTechnicalError,
+  FeedbackFriendlyError,
+  FeedbackNoConfirmation,
+  FeedbackConfirmation,
+} from "./feedback";
+
+/** Maps componentId strings to their React components. */
+export const visualRegistry: Record<string, ComponentType> = {
+  // Typography
+  TypoSizeOnlyHierarchy,
+  TypoMultiDimensionHierarchy,
+  TypoLongLines,
+  TypoOptimalWidth,
+  TypoTightLeading,
+  TypoRelaxedLeading,
+  TypoNoScale,
+  TypoHarmonicScale,
+  // Spacing
+  SpacingRandom,
+  SpacingConsistentScale,
+  SpacingCramped,
+  SpacingGenerous,
+  SpacingNoProximity,
+  SpacingProximity,
+  SpacingBorderSeparation,
+  SpacingWhitespaceSeparation,
+  // Color
+  ColorLowContrast,
+  ColorAccessibleContrast,
+  ColorTooManyColors,
+  ColorLimitedPalette,
+  ColorGreyOnColor,
+  ColorTintedOnColor,
+  ColorPureBlackOnWhite,
+  ColorSoftContrast,
+  // Hierarchy
+  HierarchyFlat,
+  HierarchyClear,
+  ButtonsAllPrimary,
+  ButtonsWithHierarchy,
+  EverythingBold,
+  SelectiveEmphasis,
+  LabelSameAsValue,
+  LabelDimmedValueBold,
+  // Layout
+  LayoutFullWidth,
+  LayoutConstrained,
+  FormSideBySide,
+  FormStacked,
+  CardLayoutUneven,
+  CardLayoutConsistent,
+  ContentLeftAligned,
+  ContentCenterAligned,
+  // Forms
+  FormPlaceholderLabels,
+  FormVisibleLabels,
+  FormGenericError,
+  FormSpecificError,
+  FormTinyTargets,
+  FormLargeTargets,
+  FormWallOfFields,
+  FormGroupedFields,
+  // Feedback
+  FeedbackBlankLoading,
+  FeedbackSkeleton,
+  FeedbackEmptyBare,
+  FeedbackEmptyHelpful,
+  FeedbackTechnicalError,
+  FeedbackFriendlyError,
+  FeedbackNoConfirmation,
+  FeedbackConfirmation,
+};

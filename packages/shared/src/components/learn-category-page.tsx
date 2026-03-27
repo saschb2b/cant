@@ -49,6 +49,15 @@ interface LearnCategoryPageProps {
    * Defaults to "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)".
    */
   panelBg?: string;
+  /**
+   * Optional custom content panel renderer. When provided, replaces the
+   * default LearnContentPanel. Useful for apps with visual challenges that
+   * need a component registry to resolve componentIds.
+   */
+  renderContentPanel?: (
+    entry: ContentMapEntry | undefined,
+    side: "good" | "bad",
+  ) => ReactNode;
 }
 
 export function LearnCategoryPage({
@@ -59,6 +68,7 @@ export function LearnCategoryPage({
   prev,
   next,
   renderExplanation,
+  renderContentPanel,
 }: LearnCategoryPageProps) {
   return (
     <>
@@ -186,10 +196,14 @@ export function LearnCategoryPage({
                       Avoid
                     </Typography>
                   </Stack>
-                  <LearnContentPanel
-                    entry={contentMap[challenge.id]}
-                    side="bad"
-                  />
+                  {renderContentPanel ? (
+                    renderContentPanel(contentMap[challenge.id], "bad")
+                  ) : (
+                    <LearnContentPanel
+                      entry={contentMap[challenge.id]}
+                      side="bad"
+                    />
+                  )}
                 </Box>
 
                 <Divider
@@ -243,10 +257,14 @@ export function LearnCategoryPage({
                       Prefer
                     </Typography>
                   </Stack>
-                  <LearnContentPanel
-                    entry={contentMap[challenge.id]}
-                    side="good"
-                  />
+                  {renderContentPanel ? (
+                    renderContentPanel(contentMap[challenge.id], "good")
+                  ) : (
+                    <LearnContentPanel
+                      entry={contentMap[challenge.id]}
+                      side="good"
+                    />
+                  )}
                 </Box>
               </Stack>
 

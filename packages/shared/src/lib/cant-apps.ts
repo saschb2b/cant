@@ -74,4 +74,15 @@ export const ALL_APPS: CantApp[] = [
     colorTo: "#1D4ED8",
     iconSvgContent: `<circle cx="72" cy="72" r="38" stroke="#FFFFFF" stroke-width="8" fill="none"/><line x1="100" y1="100" x2="140" y2="140" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/><circle cx="57" cy="57" r="7" fill="#F59E0B"/>`,
   },
+  {
+    name: "Can't UX",
+    desc: "UX design patterns. Typography, spacing, color, hierarchy, layout, and forms.",
+    href: "https://cant-ux.saschb2b.com",
+    playPitch:
+      "Think you have a good design eye? Same game, same format, visual UX patterns.",
+    tags: "Typography, spacing, color, hierarchy, forms",
+    colorFrom: "#D97706",
+    colorTo: "#B45309",
+    iconSvgContent: `<ellipse cx="90" cy="90" rx="48" ry="30" stroke="#FFFFFF" stroke-width="6" fill="none"/><circle cx="90" cy="90" r="14" fill="#FFFFFF"/>`,
+  },
 ];

@@ -27,8 +27,8 @@ type HighlightFn = (
  */
 export function buildContentMap<C extends BaseChallenge>(
   challenges: C[],
-  highlighter: Awaited<ReturnType<typeof getHighlighter>>,
-  highlight: HighlightFn,
+  highlighter?: Awaited<ReturnType<typeof getHighlighter>>,
+  highlight?: HighlightFn,
 ): Record<string, ContentMapEntry> {
   const map: Record<string, ContentMapEntry> = {};
 
@@ -38,6 +38,7 @@ export function buildContentMap<C extends BaseChallenge>(
 
     switch (ct) {
       case "code": {
+        if (!highlighter || !highlight) break;
         const { left, right, lang } = challenge.content;
         const language = lang ?? "tsx";
         const good = isRightGood ? right : left;

@@ -1,0 +1,9 @@
+import {
+  createHistoryStore,
+  formatRelativeDate,
+} from "@cant/shared/lib/game/history";
+
+const store = createHistoryStore("cant-ux:history");
+export const { getHistory, getEntryBySeed, recordGame } = store;
+export { formatRelativeDate };
+export type { HistoryEntry } from "@cant/shared/lib/game/history";
