@@ -2,7 +2,7 @@
 
 import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game/lobby-screen";
 import type { GameType } from "@cant/shared/components/game/lobby-screen";
-import { LobbyCrossPromo } from "@cant/shared/components/game/lobby-cross-promo";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
 import {
   decodeSeed,
@@ -50,7 +50,12 @@ export function LobbyScreen(props: LobbyScreenProps) {
         },
       }}
       slots={{ activityGraph: ActivityGraph }}
-      crossPromoSlot={<LobbyCrossPromo currentAppName="Can't Maintain" />}
+      crossPromoSlot={
+          <CantSeriesGrid
+            currentAppName="Can't Maintain"
+            variant="compact"
+          />
+        }
     />
   );
 }

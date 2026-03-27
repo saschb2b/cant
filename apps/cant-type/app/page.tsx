@@ -13,7 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
-import { LandingCantSeries } from "@cant/shared/components/landing-cant-series";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -337,7 +337,7 @@ export default async function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries currentAppName="Can't Type" />
+      <CantSeriesGrid currentAppName="Can't Type" />
 
       {/* Open source CTA */}
       <LandingOpenSource

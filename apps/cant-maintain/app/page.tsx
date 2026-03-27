@@ -12,7 +12,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
 import { LiveRibbon } from "@/components/live-ribbon";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
-import { LandingCantSeries } from "@cant/shared/components/landing-cant-series";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
 import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
 import { codeBlockStyles } from "@cant/shared/lib/code-styles";
@@ -311,7 +311,7 @@ export default async function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries currentAppName="Can't Maintain" />
+      <CantSeriesGrid currentAppName="Can't Maintain" />
 
       {/* Open source */}
       <LandingOpenSource githubUrl="https://github.com/saschb2b/cant-maintain" />

@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { ArrowRight, Search, Gamepad2, BookOpen } from "lucide-react";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
-import { LandingCantSeries } from "@cant/shared/components/landing-cant-series";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -195,7 +195,7 @@ export default function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries currentAppName="Can't SEO" />
+      <CantSeriesGrid currentAppName="Can't SEO" />
 
       {/* Open source CTA */}
       <LandingOpenSource

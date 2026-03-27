@@ -1,7 +1,7 @@
 "use client";
 
 import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game/lobby-screen";
-import { LobbyCrossPromo } from "@cant/shared/components/game/lobby-cross-promo";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   decodeSeed,
@@ -34,7 +34,9 @@ const config = {
   },
 };
 
-const crossPromoSlot = <LobbyCrossPromo currentAppName="Can't Resize" />;
+const crossPromoSlot = (
+  <CantSeriesGrid currentAppName="Can't Resize" variant="compact" />
+);
 
 interface LobbyScreenProps {
   onStart: (

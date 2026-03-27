@@ -11,7 +11,7 @@ import { HeroAnimation } from "@/components/hero-animation";
 import { challenges } from "@/lib/learn/challenges";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
 import { LandingFeatures } from "@cant/shared/components/landing-features";
-import { LandingCantSeries } from "@cant/shared/components/landing-cant-series";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { LandingOpenSource } from "@cant/shared/components/landing-open-source";
 
 export default function LandingPage() {
@@ -176,7 +176,7 @@ export default function LandingPage() {
       />
 
       {/* Can't series */}
-      <LandingCantSeries currentAppName="Can't Orchestrate" />
+      <CantSeriesGrid currentAppName="Can't Orchestrate" />
 
       {/* Open source CTA */}
       <LandingOpenSource

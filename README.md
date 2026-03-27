@@ -2,11 +2,13 @@
 
 Educational platforms for developers. Each app presents code challenges where you pick the better variant, with topic-specific tools and a pattern reference library.
 
-| App | Topic | Live |
-|-----|-------|------|
-| [cant-maintain](apps/cant-maintain) | React component API design | [cantmaintain.com](https://cantmaintain.com) |
-| [cant-resize](apps/cant-resize) | Responsive design patterns | [cantresize.com](https://cantresize.com) |
-| [cant-type](apps/cant-type) | TypeScript patterns | [canttype.com](https://canttype.com) |
+| App | Topic | Tool | Live |
+|-----|-------|------|------|
+| [cant-maintain](apps/cant-maintain) | React component API design | Changelog | [cant-maintain.saschb2b.com](https://cant-maintain.saschb2b.com) |
+| [cant-resize](apps/cant-resize) | Responsive design patterns | Multi-device viewer | [cant-resize.saschb2b.com](https://cant-resize.saschb2b.com) |
+| [cant-type](apps/cant-type) | TypeScript patterns | TS Playground | [cant-type.saschb2b.com](https://cant-type.saschb2b.com) |
+| [cant-orchestrate](apps/cant-orchestrate) | Container orchestration | Dockerfile explorer | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
+| [cant-seo](apps/cant-seo) | SEO for Next.js | Link inspector | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com) |
 
 ## Tech stack
 
@@ -16,7 +18,7 @@ Educational platforms for developers. Each app presents code challenges where yo
 - **Monorepo:** pnpm workspaces + Turborepo
 - **Shared components:** Storybook 10
 - **Analytics:** Umami (self-hosted)
-- **Hosting:** Coolify (self-hosted)
+- **Hosting:** Coolify (self-hosted, Docker)
 
 ## Prerequisites
 
@@ -35,12 +37,14 @@ corepack prepare pnpm@10.20.0 --activate
 pnpm install
 
 # Start a single app
-pnpm dev:maintain    # cant-maintain on :3000
-pnpm dev:resize      # cant-resize on :3000
-pnpm dev:type        # cant-type on :3000
+pnpm dev:maintain      # cant-maintain on :3000
+pnpm dev:resize        # cant-resize on :3000
+pnpm dev:type          # cant-type on :3000
+pnpm dev:orchestrate   # cant-orchestrate on :3000
+pnpm dev:seo           # cant-seo on :3000
 
 # Start Storybook for shared components
-pnpm storybook       # opens on :6006
+pnpm storybook         # opens on :6006
 ```
 
 ## Project structure
@@ -50,13 +54,16 @@ cant/
 ├── apps/
 │   ├── cant-maintain/       # React API patterns app
 │   ├── cant-resize/         # Responsive design app
-│   └── cant-type/           # TypeScript patterns app
+│   ├── cant-type/           # TypeScript patterns app
+│   ├── cant-orchestrate/    # Container orchestration app
+│   └── cant-seo/            # SEO patterns app
 ├── packages/
 │   └── shared/              # @cant/shared — shared components and utils
 │       ├── .storybook/      # Storybook config
 │       └── src/
 │           ├── components/  # UI components
 │           └── lib/         # Utilities, hooks, game logic
+├── docs/                    # Deployment and ops documentation
 ├── turbo.json               # Turborepo task config
 ├── pnpm-workspace.yaml      # Workspace definition
 └── tsconfig.base.json       # Shared TypeScript config
@@ -72,10 +79,14 @@ Run from the repo root:
 | `pnpm dev:maintain` | Start cant-maintain only |
 | `pnpm dev:resize` | Start cant-resize only |
 | `pnpm dev:type` | Start cant-type only |
+| `pnpm dev:orchestrate` | Start cant-orchestrate only |
+| `pnpm dev:seo` | Start cant-seo only |
 | `pnpm build` | Production build all apps (parallel) |
 | `pnpm build:maintain` | Build cant-maintain only |
 | `pnpm build:resize` | Build cant-resize only |
 | `pnpm build:type` | Build cant-type only |
+| `pnpm build:orchestrate` | Build cant-orchestrate only |
+| `pnpm build:seo` | Build cant-seo only |
 | `pnpm lint` | Lint all apps |
 | `pnpm typecheck` | Type-check all apps |
 | `pnpm format:check` | Check formatting |
@@ -88,25 +99,30 @@ The `packages/shared` package contains components and utilities used across all 
 
 ```tsx
 import { ThemeProvider } from "@cant/shared/components/theme-provider";
-import { GameHeader } from "@cant/shared/components/game/game-header";
+import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
 import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import { createTracker } from "@cant/shared/lib/analytics";
 ```
 
 ### What lives in shared
 
-**Components:** ThemeProvider, EmotionRegistry, FormattedText, ChallengeAnchor, SourceLink, Template, NotFound, AnalyticsProviderWrapper
+**Components:** ThemeProvider, EmotionRegistry, FormattedText, ChallengeAnchor, SourceLink, Template, NotFound, AnalyticsProviderWrapper, CantSeriesGrid, LandingFeatures, LandingOpenSource
 
-**Game UI:** GameHeader, ExplanationPanel, ActivityGraph
+**Game UI:** Game, GameHeader, LobbyScreen, ResultsScreen, CodePanel, ExplanationPanel, ActivityGraph, CategoryFilter, SeedInput
 
-**Utilities:** Shiki highlighter, code block styles, analytics (createTracker + context), game types, activity store, history store
+**Utilities:** Shiki highlighter, code block styles, analytics (createTracker + context), game types, activity store, history store, seeded random, app registry
+
+### App registry
+
+All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their name, description, theme colors, icon SVG content, and cross-promo text. The `CantSeriesGrid` component renders cross-links on landing pages (`variant="full"`) and play lobbies (`variant="compact"`).
 
 ### What stays per-app
 
 - `lib/theme.ts` — each app has its own color palette
-- `lib/shiki.ts` — cant-resize adds CSS language support, cant-type adds error decorations
+- `lib/shiki.ts` — apps add language support as needed (CSS, HTML, Dockerfile, YAML, etc.)
 - Challenge data and category definitions
-- Landing pages and app-specific features (viewer, playground, changelog)
+- Landing pages and app-specific features (viewer, playground, inspector, explorer, changelog)
+- `icon.tsx`, `apple-icon.tsx`, `public/icon.svg` — each app's branded icon
 
 ## Adding a new app
 
@@ -124,15 +140,20 @@ import { createTracker } from "@cant/shared/lib/analytics";
    - `lib/learn/categories.ts` — your challenge categories
    - `lib/learn/challenges/` — your challenge content
    - `app/page.tsx` — your landing page
+   - `app/icon.tsx`, `app/apple-icon.tsx`, `public/icon.svg` — your app icon
    - Metadata in `app/layout.tsx`
 
-4. Add root scripts to `package.json`:
+4. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content.
+
+5. Add root scripts to `package.json`:
    ```json
    "dev:newapp": "turbo dev --filter=cant-newapp",
    "build:newapp": "turbo build --filter=cant-newapp"
    ```
 
-5. Run `pnpm install` to link the workspace.
+6. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name).
+
+7. Run `pnpm install` to link the workspace.
 
 ## Contributing
 
@@ -154,10 +175,11 @@ If formatting fails, run `npx prettier --write .` from the app directory and inc
 - No em dashes in any text (user-facing, comments, JSDoc, metadata). Use commas, periods, colons, or "and" instead
 - Prefer MUI's `sx` breakpoint objects over `useMediaQuery` for responsive styling
 - Keep challenge explanations factually accurate and natural-sounding
+- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`
 
 ### Deployment
 
-See [docs/coolify-deployment.md](docs/coolify-deployment.md) for self-hosted deployment with Coolify.
+Each app deploys as a Docker container via Coolify with selective rebuilds per app. See [docs/coolify-deployment.md](docs/coolify-deployment.md) for setup, webhook configuration, and watch paths.
 
 ## License
 

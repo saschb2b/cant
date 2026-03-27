@@ -2,12 +2,14 @@
 
 ## Monorepo structure
 
-This is a pnpm + Turborepo monorepo. Three Next.js apps share code via `@cant/shared`.
+This is a pnpm + Turborepo monorepo. Five Next.js apps share code via `@cant/shared`.
 
 ```
 apps/cant-maintain    # React component API patterns
 apps/cant-resize      # Responsive design patterns
 apps/cant-type        # TypeScript patterns
+apps/cant-orchestrate # Container orchestration patterns
+apps/cant-seo         # SEO best practices for Next.js
 packages/shared       # @cant/shared - components, game logic, utilities
 ```
 
@@ -29,7 +31,7 @@ To check a single app: `pnpm turbo lint --filter=cant-maintain`
 
 ## Working with Turborepo
 
-- Use filtered commands when working on one app: `pnpm dev:maintain`, `pnpm build:resize`
+- Use filtered commands when working on one app: `pnpm dev:maintain`, `pnpm build:resize`, `pnpm dev:seo`
 - `pnpm dev` starts all apps simultaneously (resource-heavy, avoid unless needed)
 - Turbo caches builds. If you change shared code, dependent apps rebuild automatically
 - The `build` task depends on `^build` (shared package builds first)
@@ -45,7 +47,7 @@ To check a single app: `pnpm turbo lint --filter=cant-maintain`
 
 - Component uses app-specific challenge data or categories
 - File has fewer than ~3 lines of shared logic (re-export is fine, don't over-abstract)
-- Theme colors, landing pages, app-specific features (viewer, playground, changelog)
+- Theme colors, landing pages, app-specific features (viewer, playground, inspector, changelog)
 
 ### Pattern: thin wrappers
 
@@ -77,6 +79,12 @@ When adding new files to `packages/shared/src/`, check that the export pattern i
 - `./lib/game/*` maps to `./src/lib/game/*.ts`
 
 Each app's `next.config.mjs` includes `transpilePackages: ["@cant/shared"]`.
+
+### App registry
+
+All apps are registered in `packages/shared/src/lib/cant-apps.ts`. Each entry includes the app name, description, theme colors, icon SVG content, and cross-promo text. Update this file when adding a new app.
+
+The `CantSeriesGrid` component (`packages/shared/src/components/cant-series-grid.tsx`) renders the cross-links section on landing pages (`variant="full"`) and play lobbies (`variant="compact"`). It reads from the app registry.
 
 ## Working with Storybook
 
@@ -125,10 +133,12 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 ## Adding a new app
 
 1. Copy an existing app: `cp -r apps/cant-resize apps/cant-newapp`
-2. Update `package.json` name, `next.config.mjs`, metadata in `layout.tsx`
+2. Update `package.json` name, `next.config.mjs` (keep `output: "standalone"`), metadata in `layout.tsx`
 3. Customize `lib/theme.ts`, categories, challenges, and landing page
 4. Add scripts to root `package.json`: `dev:newapp`, `build:newapp`
-5. Run `pnpm install`
+5. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content
+6. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name)
+7. Run `pnpm install`
 
 ## Adding a new challenge
 
@@ -137,3 +147,12 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 3. Link to an authoritative source (React docs, MDN, TypeScript docs)
 4. Follow visual parity rules: both code sides should have similar length and structure
 5. The `correctSide` value is randomized at runtime
+
+## Deployment
+
+Each app deploys as a Docker container via Coolify. See `docs/coolify-deployment.md` for full details.
+
+Key files:
+- `apps/<name>/Dockerfile` per app
+- `.dockerignore` at repo root
+- `output: "standalone"` in each `next.config.mjs`

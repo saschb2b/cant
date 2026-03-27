@@ -12,135 +12,113 @@ Each app in this monorepo is deployed as a separate service on Coolify. This gui
 
 ```
 Git push
-  └─> Coolify watches the repo
-        ├─> cant-maintain  (cantmaintain.com)
-        ├─> cant-resize    (cantresize.com)
-        └─> cant-type      (canttype.com)
+  └─> GitHub webhook fires
+        └─> Coolify receives push event
+              └─> Each resource checks its watch paths against the commit diff
+                    ├─> cant-maintain     ← only if apps/cant-maintain/** or packages/shared/** changed
+                    ├─> cant-resize       ← only if apps/cant-resize/** changed
+                    ├─> cant-type         ← only if apps/cant-type/** changed
+                    ├─> cant-orchestrate  ← only if apps/cant-orchestrate/** changed
+                    └─> cant-seo          ← only if apps/cant-seo/** changed
 ```
 
-Each app is a separate Coolify resource pointing to the same repository but with different build configurations.
+Each app is a separate Coolify resource pointing to the same repository. A single GitHub webhook triggers all five resources, but each resource only rebuilds when its watched files actually changed.
 
-## Step 1: Enable standalone output
+## What is already in place
 
-Add `output: "standalone"` to each app's `next.config.mjs` so Next.js produces a self-contained build:
+The following files are already committed and ready to use:
 
-```js
-const nextConfig = {
-  output: "standalone",
-  experimental: {
-    viewTransition: true,
-  },
-  transpilePackages: ["@cant/shared"],
-};
-```
+- `output: "standalone"` is set in every app's `next.config.mjs`
+- Each app has its own `Dockerfile` at `apps/<app-name>/Dockerfile`
+- A `.dockerignore` exists at the repo root
 
-This is required for Docker-based deployments. The standalone output includes only the files needed to run in production, keeping the image small.
+You only need to configure Coolify (Steps 1 and 2 below).
 
-## Step 2: Add a Dockerfile per app
-
-Create a `Dockerfile` at the root of the monorepo for each app. Coolify will use the Dockerfile you point it to.
-
-### `apps/cant-maintain/Dockerfile`
-
-```dockerfile
-FROM node:20-alpine AS base
-RUN corepack enable && corepack prepare pnpm@10.20.0 --activate
-
-# --- Dependencies ---
-FROM base AS deps
-WORKDIR /app
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY packages/shared/package.json ./packages/shared/
-COPY apps/cant-maintain/package.json ./apps/cant-maintain/
-RUN pnpm install --frozen-lockfile
-
-# --- Build ---
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
-COPY --from=deps /app/apps/cant-maintain/node_modules ./apps/cant-maintain/node_modules
-COPY . .
-RUN pnpm --filter cant-maintain build
-
-# --- Production ---
-FROM node:20-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/apps/cant-maintain/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/cant-maintain/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/cant-maintain/.next/static ./apps/cant-maintain/.next/static
-
-USER nextjs
-EXPOSE 3000
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["node", "apps/cant-maintain/server.js"]
-```
-
-For the other apps, duplicate this file and replace `cant-maintain` with `cant-resize` or `cant-type`.
-
-### `apps/cant-resize/Dockerfile`
-
-Same structure, replace all occurrences of `cant-maintain` with `cant-resize`.
-
-### `apps/cant-type/Dockerfile`
-
-Same structure, replace all occurrences of `cant-maintain` with `cant-type`. Note: cant-type has a prebuild step (`node scripts/vendor-typescript.mjs`) that runs automatically as part of its `build` script, so no extra Docker config is needed.
-
-## Step 3: Configure Coolify
+## Step 1: Configure Coolify resources
 
 For each app, create a new resource in Coolify:
 
 1. **Type:** Docker (Dockerfile)
 2. **Repository:** Point to this monorepo
 3. **Branch:** `main`
-4. **Dockerfile location:** `apps/cant-maintain/Dockerfile` (adjust per app)
+4. **Dockerfile location:** `apps/<app-name>/Dockerfile` (see table below)
 5. **Build context:** `/` (repo root, so COPY commands work with the monorepo structure)
 6. **Port:** 3000
 
-### Domain configuration
+### Per-app settings
 
-| App | Domain |
-|-----|--------|
-| cant-maintain | cantmaintain.com |
-| cant-resize | cantresize.com |
-| cant-type | canttype.com |
+| App | Dockerfile location | Domain |
+|-----|---------------------|--------|
+| cant-maintain | `apps/cant-maintain/Dockerfile` | cant-maintain.saschb2b.com |
+| cant-resize | `apps/cant-resize/Dockerfile` | cant-resize.saschb2b.com |
+| cant-type | `apps/cant-type/Dockerfile` | cant-type.saschb2b.com |
+| cant-orchestrate | `apps/cant-orchestrate/Dockerfile` | cant-orchestrate.saschb2b.com |
+| cant-seo | `apps/cant-seo/Dockerfile` | cant-seo.saschb2b.com |
 
 Enable HTTPS via Coolify's built-in Let's Encrypt integration.
 
 ### Environment variables
 
-No environment variables are required for the apps themselves. Analytics is handled client-side via the Umami script tag in each app's `layout.tsx`.
+No environment variables are required. Analytics is handled client-side via the Umami script tag in each app's `layout.tsx`.
 
-If you need per-environment config in the future, add env vars in Coolify's UI and reference them in `next.config.mjs` or server components.
+## Step 2: Webhook and selective rebuilds
 
-## Step 4: Automatic deployments
+A monorepo with one webhook and five Coolify resources will, by default, rebuild all five apps on every push. This is wasteful. Coolify's "Watch Paths" feature solves this by only triggering a rebuild when the commit touches files that matter to that specific app.
 
-Coolify supports webhook-based auto-deploy:
+### 2a: Set up the GitHub webhook (once)
 
-1. In Coolify, enable "Auto Deploy" for each resource
-2. Add the Coolify webhook URL to your Git remote (GitHub Settings > Webhooks)
-3. Every push to `main` triggers a rebuild of all three services
+1. In Coolify, go to any one of the five resources and copy its **webhook URL** (Settings > Webhooks). All resources on the same repository share the same webhook endpoint.
+2. In GitHub, go to **Settings > Webhooks > Add webhook**.
+3. Paste the Coolify webhook URL.
+4. Content type: `application/json`.
+5. Events: select "Just the push event".
+6. Save.
 
-### Selective rebuilds
+One webhook is enough. Coolify routes the push event to all resources that point to the same repository.
 
-Coolify rebuilds the entire Dockerfile on every push. Since Turborepo caches builds and Docker layer caching handles dependencies, rebuilds are fast when only content changes.
+### 2b: Configure watch paths per resource
 
-If you want to skip deploying an unchanged app, you can configure Coolify's "Watch Paths" feature (if available in your version) to only trigger rebuilds when files in the relevant `apps/` directory or `packages/shared/` change.
+In each Coolify resource, go to **Settings** and set the **Watch Paths** field. This tells Coolify to compare the incoming commit's changed files against these patterns. If nothing matches, the rebuild is skipped.
 
-Suggested watch paths per app:
+| App | Watch paths |
+|-----|------------|
+| cant-maintain | `apps/cant-maintain/**`, `packages/shared/**`, `pnpm-lock.yaml` |
+| cant-resize | `apps/cant-resize/**`, `packages/shared/**`, `pnpm-lock.yaml` |
+| cant-type | `apps/cant-type/**`, `packages/shared/**`, `pnpm-lock.yaml` |
+| cant-orchestrate | `apps/cant-orchestrate/**`, `packages/shared/**`, `pnpm-lock.yaml` |
+| cant-seo | `apps/cant-seo/**`, `packages/shared/**`, `pnpm-lock.yaml` |
 
-```
-apps/cant-maintain/**
-packages/shared/**
-pnpm-lock.yaml
-```
+### How it works in practice
+
+- Commit only touches `apps/cant-seo/components/inspector/...` -> only cant-seo rebuilds.
+- Commit touches `packages/shared/src/lib/cant-apps.ts` -> all five apps rebuild (shared code changed).
+- Commit touches `apps/cant-type/...` and `apps/cant-resize/...` -> only those two rebuild.
+- Commit only touches `docs/`, `CLAUDE.md`, or `.github/` -> nothing rebuilds.
+
+### Verifying the setup
+
+After pushing a commit that only changes one app, check the Coolify dashboard. You should see:
+- One resource shows "Building" or "Deployed"
+- The other four show no new activity
+
+If all five rebuild on every push, double-check that Watch Paths are configured (not left empty). An empty Watch Paths field means "rebuild on any change".
+
+## Adding a new app
+
+When a new app is added to the monorepo:
+
+1. Add `output: "standalone"` to its `next.config.mjs`
+2. Create a `Dockerfile` by copying an existing one and replacing the app name
+3. Create a new Coolify resource with the settings from Step 1
+4. Set watch paths: `apps/<new-app>/**`, `packages/shared/**`, `pnpm-lock.yaml`
+
+No new webhook is needed. The existing GitHub webhook already covers all resources on the same repository.
 
 ## Troubleshooting
+
+### All apps rebuild on every push
+
+Watch Paths are either empty or misconfigured. In Coolify, open each resource's settings and verify the paths are set. An empty field means "always rebuild".
 
 ### Build fails with "Module not found: @cant/shared"
 
@@ -160,16 +138,8 @@ The multi-stage Dockerfile keeps the final image small (~150-200MB). If images a
 - `.dockerignore` excludes `node_modules`, `.next`, `.git`
 - The final stage only copies from the standalone output
 
-### Adding a `.dockerignore`
+### Webhook not triggering
 
-Create a `.dockerignore` at the repo root:
-
-```
-.git
-**/node_modules
-**/.next
-**/.turbo
-**/storybook-static
-```
-
-This speeds up the Docker build context transfer.
+- Verify the webhook URL in GitHub Settings > Webhooks. Check "Recent Deliveries" for response codes.
+- Coolify returns 200 even when it skips a build (watch paths didn't match). This is normal.
+- If Coolify returns 401/403, regenerate the webhook secret in Coolify and update it in GitHub.
