@@ -1,3 +1,5 @@
+export const HUB_URL = "https://cant-hub.saschb2b.com";
+
 /** Central registry of all apps in the Can't series. */
 export interface CantApp {
   name: string;

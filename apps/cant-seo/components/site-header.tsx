@@ -9,6 +9,7 @@ export function SiteHeader() {
     <SharedSiteHeader
       title="Can't SEO"
       subtitle="Learn SEO for Next.js"
+      currentAppName="Can't SEO"
       gimmick={{
         href: "/inspector",
         label: "Inspector",

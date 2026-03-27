@@ -8,6 +8,7 @@ export function SiteHeader() {
     <SharedSiteHeader
       title="Can't Orchestrate"
       subtitle="Learn orchestration patterns"
+      currentAppName="Can't Orchestrate"
       gimmick={{
         href: "/explorer",
         label: "Explorer",

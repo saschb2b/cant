@@ -9,6 +9,7 @@ export function SiteHeader() {
     <SharedSiteHeader
       title="Can't Resize"
       subtitle="Learn responsive design"
+      currentAppName="Can't Resize"
       gimmick={{ href: "/canvas", label: "Viewer", icon: <Eye size={18} /> }}
       renderSearchPalette={({ open, onClose }) => (
         <SearchPalette open={open} onClose={onClose} />

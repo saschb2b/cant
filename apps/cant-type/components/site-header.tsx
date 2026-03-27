@@ -8,6 +8,7 @@ export function SiteHeader() {
     <SharedSiteHeader
       title="Can't Type"
       subtitle="Learn TypeScript patterns"
+      currentAppName="Can't Type"
       gimmick={{
         href: "/playground",
         label: "Sandbox",

@@ -7,6 +7,7 @@ export function SiteHeader() {
     <SharedSiteHeader
       title="Can't Maintain"
       subtitle="Can you spot the better API?"
+      currentAppName="Can't Maintain"
       renderSearchPalette={({ open, onClose }) => (
         <SearchPalette open={open} onClose={onClose} />
       )}

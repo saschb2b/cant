@@ -10,18 +10,21 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { GraduationCap, Gamepad2 } from "lucide-react";
+import { GraduationCap, Compass, LayoutGrid } from "lucide-react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
 import { Search } from "lucide-react";
 import { useTrackEvent } from "../lib/analytics-context";
+import { ALL_APPS, HUB_URL } from "../lib/cant-apps";
+import { AppIcon } from "./app-icon";
 
 function ThemeIcon({ isDark, size = 18 }: { isDark: boolean; size?: number }) {
   return (
@@ -123,6 +126,137 @@ function ColorSchemeToggle({ size = 18 }: { size?: number }) {
   );
 }
 
+function AppSwitcher({ currentAppName }: { currentAppName?: string }) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  return (
+    <>
+      <Tooltip title="All apps">
+        <IconButton
+          size="small"
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{ color: "text.secondary" }}
+          aria-label="All apps"
+        >
+          <LayoutGrid size={18} />
+        </IconButton>
+      </Tooltip>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        slotProps={{
+          paper: {
+            sx: {
+              mt: 1,
+              p: 2,
+              borderRadius: 2,
+              width: 280,
+            },
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 1,
+          }}
+        >
+          {ALL_APPS.map((app) => {
+            const isCurrent = app.name === currentAppName;
+            return (
+              <Box
+                key={app.name}
+                component="a"
+                href={app.href}
+                target={isCurrent ? undefined : "_blank"}
+                rel={isCurrent ? undefined : "noopener noreferrer"}
+                onClick={() => setAnchorEl(null)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 0.75,
+                  p: 1.5,
+                  borderRadius: 1.5,
+                  textDecoration: "none",
+                  color: "inherit",
+                  transition: "background 0.15s ease",
+                  bgcolor: isCurrent
+                    ? "rgba(var(--mui-palette-primary-mainChannel) / 0.08)"
+                    : "transparent",
+                  "&:hover": {
+                    bgcolor: isCurrent
+                      ? "rgba(var(--mui-palette-primary-mainChannel) / 0.12)"
+                      : "action.hover",
+                  },
+                }}
+              >
+                <AppIcon app={app} size={36} />
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontSize: "0.6rem",
+                    fontWeight: isCurrent ? 700 : 500,
+                    textAlign: "center",
+                    lineHeight: 1.2,
+                    color: isCurrent ? "primary.main" : "text.secondary",
+                  }}
+                >
+                  {app.name.replace("Can\u2019t ", "").replace("Can't ", "")}
+                </Typography>
+              </Box>
+            );
+          })}
+        </Box>
+        <Divider sx={{ my: 1.5 }} />
+        <Box
+          component="a"
+          href={HUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setAnchorEl(null)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            p: 1,
+            borderRadius: 1.5,
+            textDecoration: "none",
+            color: "text.secondary",
+            transition: "all 0.15s ease",
+            "&:hover": {
+              bgcolor: "action.hover",
+              color: "text.primary",
+            },
+          }}
+        >
+          <Compass size={18} />
+          <Box>
+            <Typography
+              variant="caption"
+              fontWeight={700}
+              sx={{ display: "block", lineHeight: 1.2 }}
+            >
+              {"Can't Hub"}
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{ fontSize: "0.6rem", opacity: 0.7 }}
+            >
+              See all topics
+            </Typography>
+          </Box>
+        </Box>
+      </Popover>
+    </>
+  );
+}
+
 /** A text link shown on desktop, icon button on mobile. */
 interface NavTextLink {
   type: "text";
@@ -150,6 +284,8 @@ interface GimmickTool {
 interface SiteHeaderProps {
   title: string;
   subtitle: string;
+  /** Name of the current app for the app switcher highlight. */
+  currentAppName?: string;
   /** Optional app-specific tool (e.g. Viewer, Sandbox, Inspector). */
   gimmick?: GimmickTool;
   /** Render the search palette. Receives open state and onClose callback. */
@@ -162,6 +298,7 @@ interface SiteHeaderProps {
 export function SiteHeader({
   title,
   subtitle,
+  currentAppName,
   gimmick,
   renderSearchPalette,
 }: SiteHeaderProps) {
@@ -222,34 +359,37 @@ export function SiteHeader({
       >
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center" sx={{ py: 2 }}>
-            <NextLink
-              href="/"
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-              }}
-            >
-              <Image src="/icon.svg" alt="" width={28} height={28} priority />
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <Typography
-                  variant="subtitle1"
-                  fontWeight={700}
-                  lineHeight={1.2}
-                >
-                  {title}
-                </Typography>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  fontFamily="var(--font-geist-mono), monospace"
-                >
-                  {subtitle}
-                </Typography>
-              </Box>
-            </NextLink>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <AppSwitcher currentAppName={currentAppName} />
+              <NextLink
+                href="/"
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                }}
+              >
+                <Image src="/icon.svg" alt="" width={28} height={28} priority />
+                <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight={700}
+                    lineHeight={1.2}
+                  >
+                    {title}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    fontFamily="var(--font-geist-mono), monospace"
+                  >
+                    {subtitle}
+                  </Typography>
+                </Box>
+              </NextLink>
+            </Stack>
 
             <Stack
               direction="row"

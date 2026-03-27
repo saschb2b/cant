@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import { Heart, ExternalLink } from "lucide-react";
+import { Heart, ExternalLink, Compass } from "lucide-react";
+import { HUB_URL } from "../lib/cant-apps";
 
 interface NavLink {
   href: string;
@@ -67,6 +68,21 @@ export function SiteFooter({ navLinks }: SiteFooterProps) {
             </Typography>
 
             <Stack direction="row" alignItems="center" spacing={2}>
+              <Box
+                component="a"
+                href={HUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  ...linkSx,
+                }}
+              >
+                <Compass size={10} />
+                {"Can't Hub"}
+              </Box>
               {navLinks.map((link) =>
                 link.external ? (
                   <Box
