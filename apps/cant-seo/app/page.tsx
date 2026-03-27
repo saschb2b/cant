@@ -23,7 +23,7 @@ export default function LandingPage() {
         titleLine2="Every platform."
         subtitle="Paste any URL and see how it appears on LinkedIn, Twitter/X, Slack, Teams, and more. Plus 64 SEO challenges and a pattern library for Next.js."
         caption="free &middot; no signup &middot; instant previews"
-        gimmick={{ href: "/inspector", label: "Open Inspector" }}
+        gimmick={{ href: "/inspector", label: "Inspector" }}
         visual={<HeroAnimation />}
       />
 

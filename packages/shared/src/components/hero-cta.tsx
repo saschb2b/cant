@@ -3,20 +3,20 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { ArrowRight } from "lucide-react";
 
-/** Optional app-specific "gimmick" tool shown as outlined secondary button. */
+/** Optional app-specific tool shown as outlined secondary button. */
 interface GimmickAction {
   href: string;
   label: string;
 }
 
 interface HeroCtaProps {
-  /** Optional app-specific tool (e.g. "Open Viewer", "Open Inspector"). */
+  /** Optional app-specific tool (e.g. "Viewer", "Inspector"). */
   gimmick?: GimmickAction;
 }
 
 /**
  * Renders the hero CTA button row in a fixed order:
- *   Start Playing (contained) | Gimmick? (outlined) | Browse Patterns (text)
+ *   Play (contained) | Gimmick? (outlined) | Learn (text)
  */
 export function HeroCta({ gimmick }: HeroCtaProps) {
   return (
@@ -37,7 +37,7 @@ export function HeroCta({ gimmick }: HeroCtaProps) {
             fontSize: { xs: "0.9rem", md: "1.05rem" },
           }}
         >
-          Start Playing
+          Play
         </Button>
       </NextLink>
       {gimmick && (
@@ -65,7 +65,7 @@ export function HeroCta({ gimmick }: HeroCtaProps) {
             fontSize: { xs: "0.9rem", md: "1.05rem" },
           }}
         >
-          Browse Patterns
+          Learn
         </Button>
       </NextLink>
     </Stack>

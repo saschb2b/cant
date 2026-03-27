@@ -31,7 +31,7 @@ export default function LandingPage() {
           </>
         }
         caption="free &middot; no signup &middot; takes 3 min"
-        gimmick={{ href: "/explorer", label: "Open Explorer" }}
+        gimmick={{ href: "/explorer", label: "Explorer" }}
         visual={<HeroAnimation />}
       />
 

@@ -180,7 +180,7 @@ export default async function LandingPage() {
           </>
         }
         caption="free &middot; no signup &middot; takes 3 min"
-        gimmick={{ href: "/playground", label: "Open Sandbox" }}
+        gimmick={{ href: "/playground", label: "Sandbox" }}
         visual={
           <HeroCodeVisual spellHtml={spellHtml} revealHtml={revealHtml} />
         }

@@ -23,7 +23,7 @@ export default function LandingPage() {
         titleLine2="Every screen."
         subtitle="Preview your site on every device at once, test your knowledge with quick-fire challenges, and study 128 responsive patterns side by side."
         caption="free &middot; no signup &middot; works with localhost"
-        gimmick={{ href: "/canvas", label: "Open Viewer" }}
+        gimmick={{ href: "/canvas", label: "Viewer" }}
         visual={<HeroAnimation />}
       />
 
