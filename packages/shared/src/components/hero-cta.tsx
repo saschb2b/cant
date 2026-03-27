@@ -31,40 +31,19 @@ export function HeroCta({ gimmick }: HeroCtaProps) {
           variant="contained"
           size="large"
           endIcon={<ArrowRight size={18} />}
-          sx={{
-            px: { xs: 3, md: 5 },
-            py: { xs: 1, md: 1.5 },
-            fontSize: { xs: "0.9rem", md: "1.05rem" },
-          }}
         >
           Play
         </Button>
       </NextLink>
       {gimmick && (
         <NextLink href={gimmick.href} style={{ textDecoration: "none" }}>
-          <Button
-            variant="outlined"
-            size="large"
-            sx={{
-              px: { xs: 2, md: 3 },
-              py: { xs: 1, md: 1.5 },
-              fontSize: { xs: "0.9rem", md: "1.05rem" },
-            }}
-          >
+          <Button variant="outlined" size="large">
             {gimmick.label}
           </Button>
         </NextLink>
       )}
       <NextLink href="/learn" style={{ textDecoration: "none" }}>
-        <Button
-          variant="text"
-          size="large"
-          sx={{
-            px: { xs: 2, md: 3 },
-            py: { xs: 1, md: 1.5 },
-            fontSize: { xs: "0.9rem", md: "1.05rem" },
-          }}
-        >
+        <Button variant="text" size="large">
           Learn
         </Button>
       </NextLink>

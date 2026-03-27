@@ -35,17 +35,7 @@ export default function LandingPage() {
         {/* Color spectrum bar */}
         <ColorBar colors={ALL_APPS.map((a) => a.colorFrom)} />
 
-        <Typography
-          variant="h2"
-          component="h1"
-          fontWeight={800}
-          sx={{
-            mt: 3,
-            lineHeight: 1.1,
-            fontSize: { xs: "2.25rem", sm: "3rem", md: "3.75rem" },
-            letterSpacing: "-0.03em",
-          }}
-        >
+        <Typography variant="h2" component="h1" sx={{ mt: 3 }}>
           {"The Can't Series"}
         </Typography>
 
@@ -57,19 +47,12 @@ export default function LandingPage() {
             mb: 1.5,
             maxWidth: 520,
             mx: "auto",
-            lineHeight: 1.7,
-            fontSize: { xs: "1rem", md: "1.1rem" },
           }}
         >
           {`${String(ALL_APPS.length)} topics, ${String(TOTAL_CHALLENGES)} challenges. Pick the better pattern from two side-by-side options, then learn why it matters.`}
         </Typography>
 
-        <Typography
-          variant="caption"
-          color="text.disabled"
-          fontFamily="var(--font-geist-mono), monospace"
-          sx={{ fontSize: "0.75rem" }}
-        >
+        <Typography variant="caption" color="text.disabled">
           free &middot; no signup &middot; open source
         </Typography>
       </Container>

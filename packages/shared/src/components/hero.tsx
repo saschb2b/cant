@@ -75,17 +75,7 @@ export function Hero({
               textAlign: { xs: "center", md: "left" },
             }}
           >
-            <Typography
-              variant="h2"
-              component="h1"
-              fontWeight={800}
-              sx={{
-                lineHeight: 1.1,
-                mb: 2.5,
-                fontSize: { xs: "2.25rem", sm: "3rem", md: "3.5rem" },
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <Typography variant="h2" component="h1" fontWeight="bold" sx={{ mb: 2.5 }}>
               {titleLine1}
               <br />
               <Box component="span" sx={{ color: "primary.main" }}>
@@ -96,11 +86,9 @@ export function Hero({
               variant="body1"
               color="text.secondary"
               sx={{
-                lineHeight: 1.7,
                 mb: 4,
                 maxWidth: 420,
                 mx: { xs: "auto", md: 0 },
-                fontSize: { xs: "1rem", md: "1.1rem" },
               }}
             >
               {subtitle}
@@ -110,7 +98,6 @@ export function Hero({
             <Typography
               variant="caption"
               color="text.secondary"
-              fontFamily="var(--font-geist-mono), monospace"
               sx={{
                 mt: 2,
                 display: "block",
