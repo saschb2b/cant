@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createRecentResultsStore } from "@cant/shared/lib/game";
+import { createRecentResultsStore } from "@cant/shared/lib/game/recent-results-store";
 
 const store = createRecentResultsStore("cant-maintain:recent-results");
 

@@ -3,7 +3,6 @@ export { createActivityStore } from "./activity";
 export type { ActivityMap } from "./activity";
 export { createHistoryStore, formatRelativeDate } from "./history";
 export type { HistoryEntry } from "./history";
-export { createRecentResultsStore } from "./recent-results-store";
 export type { RecentResult } from "./recent-results-store";
 export { generateAnonymousName } from "./anonymous-names";
 export {
