@@ -6,8 +6,9 @@ import Divider from "@mui/material/Divider";
 import { Check, X, Gamepad2, BookOpen, Zap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { LiveRibbon } from "@/components/live-ribbon";
 import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner } from "@cant/shared/components";
+import { LiveRibbon } from "@cant/shared/components/game";
+import { fetchRecentResults } from "@/lib/game/actions";
 import { getHighlighter, highlightDual, codeBlockStyles } from "@cant/shared/lib";
 
 const BAD_CODE = `interface UserCardProps {
@@ -179,7 +180,7 @@ export default async function LandingPage() {
       }}
     >
       <SiteHeader />
-      <LiveRibbon />
+      <LiveRibbon fetchResults={fetchRecentResults} />
 
       <Hero
         titleLine1="One component."

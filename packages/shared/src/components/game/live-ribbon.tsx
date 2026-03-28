@@ -6,8 +6,7 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Zap } from "lucide-react";
-import type { RecentResult } from "@/lib/game/recent-results-store";
-import { fetchRecentResults } from "@/lib/game/actions";
+import type { RecentResult } from "../../lib/game/recent-results-store";
 
 function formatTimeAgo(timestamp: number): string {
   const diff = Date.now() - timestamp;
@@ -83,16 +82,21 @@ function Dot() {
   );
 }
 
-export function LiveRibbon() {
+export interface LiveRibbonProps {
+  /** Server action that returns recent game results. */
+  fetchResults: () => Promise<RecentResult[]>;
+}
+
+export function LiveRibbon({ fetchResults }: LiveRibbonProps) {
   const [results, setResults] = useState<RecentResult[]>([]);
 
   useEffect(() => {
-    void fetchRecentResults().then(setResults);
+    void fetchResults().then(setResults);
     const interval = setInterval(() => {
-      void fetchRecentResults().then(setResults);
+      void fetchResults().then(setResults);
     }, 30_000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchResults]);
 
   // Duplicate items for seamless infinite scroll
   const items = results.length > 0 ? [...results, ...results] : [];

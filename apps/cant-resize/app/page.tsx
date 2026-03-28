@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import { Monitor, Gamepad2, BookOpen } from "lucide-react";
 import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner } from "@cant/shared/components";
+import { LiveRibbon } from "@cant/shared/components/game";
+import { fetchRecentResults } from "@/lib/game/actions";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
@@ -17,6 +19,7 @@ export default function LandingPage() {
       }}
     >
       <SiteHeader />
+      <LiveRibbon fetchResults={fetchRecentResults} />
 
       <Hero
         titleLine1="One site."

@@ -8,6 +8,8 @@ export { Game } from "./game";
 export type { ContentMapEntry, ExplanationSlotProps } from "./game";
 export { GameHeader } from "./game-header";
 export { ImagePanel } from "./image-panel";
+export { LiveRibbon } from "./live-ribbon";
+export type { LiveRibbonProps } from "./live-ribbon";
 export { LobbyScreen } from "./lobby-screen";
 export type { GameType } from "./lobby-screen";
 export { ResultsScreen } from "./results-screen";
