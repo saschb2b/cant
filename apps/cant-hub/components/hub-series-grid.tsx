@@ -40,6 +40,10 @@ const SERIES_META: Record<string, SeriesMeta> = {
     challenges: 28,
     categories: 7,
   },
+  "Can't Explode": {
+    challenges: 55,
+    categories: 15,
+  },
 };
 
 function AppIcon({ app, size = 48 }: { app: CantApp; size?: number }) {

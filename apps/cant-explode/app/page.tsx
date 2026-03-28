@@ -29,7 +29,7 @@ export default function LandingPage() {
       <Hero
         titleLine1="Two molecules."
         titleLine2="One survives."
-        subtitle="Compare molecular stability, acid strength, bond energy, and more. 28 chemistry challenges across 8 categories, all side by side."
+        subtitle="Compare molecular stability, acid strength, bond energy, and more. 55 chemistry challenges across 15 categories, all side by side."
         caption="free &middot; no signup &middot; learn chemistry"
         visual={<HeroAnimation />}
       />
@@ -53,7 +53,7 @@ export default function LandingPage() {
           {
             icon: <BookOpen size={20} />,
             title: "Learn",
-            desc: "28 comparisons across 8 categories. Each shows the weaker option, the stronger one, and why it matters.",
+            desc: "55 comparisons across 15 categories. Each shows the weaker option, the stronger one, and why it matters.",
             href: "/learn",
           },
         ]}
