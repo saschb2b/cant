@@ -11,6 +11,7 @@ import {
   SourceLink,
 } from "@cant/shared/components";
 import type { ContentMapEntry } from "@cant/shared/components/game";
+import { LearnContentPanel } from "@cant/shared/components";
 import { visualRegistry } from "@/components/visual/registry";
 import { challenges } from "@/lib/learn/challenges";
 import {
@@ -28,7 +29,9 @@ function renderVisualContentPanel(
   entry: ContentMapEntry | undefined,
   side: "good" | "bad",
 ): ReactNode {
-  if (entry?.type !== "visual") return null;
+  if (entry?.type !== "visual") {
+    return <LearnContentPanel entry={entry} side={side} />;
+  }
   const componentId =
     side === "good" ? entry.goodComponentId : entry.badComponentId;
   const Component = visualRegistry[componentId] as ComponentType | undefined;
