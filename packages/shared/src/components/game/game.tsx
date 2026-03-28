@@ -57,10 +57,28 @@ export interface VisualChallengeEntry {
   badComponentId: string;
 }
 
+/** Molecule data for chemistry challenges. */
+export interface MoleculeChallengeEntry {
+  type: "molecule";
+  goodMolecule: {
+    name: string;
+    formula: string;
+    smiles?: string;
+    properties?: Record<string, string>;
+  };
+  badMolecule: {
+    name: string;
+    formula: string;
+    smiles?: string;
+    properties?: Record<string, string>;
+  };
+}
+
 export type ContentMapEntry =
   | CodeChallengeEntry
   | ImageChallengeEntry
-  | VisualChallengeEntry;
+  | VisualChallengeEntry
+  | MoleculeChallengeEntry;
 
 // ---------------------------------------------------------------------------
 // Sub-component prop contracts
@@ -87,6 +105,20 @@ export interface ImagePanelSlotProps {
 
 export interface VisualPanelSlotProps {
   componentId: string;
+  label: string;
+  isSelectable: boolean;
+  onSelect: () => void;
+  result?: "correct" | "wrong" | null;
+  isSelected?: boolean;
+}
+
+export interface MoleculePanelSlotProps {
+  molecule: {
+    name: string;
+    formula: string;
+    smiles?: string;
+    properties?: Record<string, string>;
+  };
   label: string;
   isSelectable: boolean;
   onSelect: () => void;
@@ -186,6 +218,8 @@ interface GameSlots<C extends BaseChallenge> {
   imagePanel?: ComponentType<ImagePanelSlotProps>;
   /** Live component panel (used for contentType "visual"). Optional; only needed if the app has visual challenges. */
   visualPanel?: ComponentType<VisualPanelSlotProps>;
+  /** Molecule panel (used for contentType "molecule"). Optional; only needed if the app has chemistry challenges. */
+  moleculePanel?: ComponentType<MoleculePanelSlotProps>;
   /** Lobby/setup screen. */
   lobby: ComponentType<LobbySlotProps>;
   /** Results screen after game ends. */
@@ -238,6 +272,7 @@ export function Game<C extends BaseChallenge>({
     codePanel: CodePanelComponent,
     imagePanel: ImagePanelComponent,
     visualPanel: VisualPanelComponent,
+    moleculePanel: MoleculePanelComponent,
     lobby: LobbyComponent,
     results: ResultsComponent,
     explanation: ExplanationComponent,
@@ -349,6 +384,17 @@ export function Game<C extends BaseChallenge>({
             ? entry.badComponentId
             : entry.goodComponentId,
           resolvedContentType: "visual" as const,
+        };
+      }
+      case "molecule": {
+        return {
+          leftContent: isLeftCorrect
+            ? entry.goodMolecule
+            : entry.badMolecule,
+          rightContent: isLeftCorrect
+            ? entry.badMolecule
+            : entry.goodMolecule,
+          resolvedContentType: "molecule" as const,
         };
       }
     }
@@ -537,13 +583,6 @@ export function Game<C extends BaseChallenge>({
             color: "text.primary",
             fontSize: "0.7rem",
             height: 22,
-            filter: displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
-            opacity: displayAnswer || isReviewing ? 1 : 0.6,
-            transition:
-              displayAnswer || isReviewing
-                ? "filter 0.4s ease, opacity 0.4s ease"
-                : "none",
-            userSelect: displayAnswer || isReviewing ? "auto" : "none",
           }}
         />
         <Typography
@@ -609,6 +648,16 @@ export function Game<C extends BaseChallenge>({
             isSelected={isSelectedSide("left")}
           />
         )}
+        {resolvedContentType === "molecule" && MoleculePanelComponent && (
+          <MoleculePanelComponent
+            molecule={(leftContent as MoleculeChallengeEntry["goodMolecule"]) ?? { name: "", formula: "" }}
+            label="A"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("left")}
+            result={getResult("left")}
+            isSelected={isSelectedSide("left")}
+          />
+        )}
 
         <Box
           sx={{
@@ -661,6 +710,16 @@ export function Game<C extends BaseChallenge>({
         {resolvedContentType === "visual" && VisualPanelComponent && (
           <VisualPanelComponent
             componentId={(rightContent as string) ?? ""}
+            label="B"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => submitAnswer("right")}
+            result={getResult("right")}
+            isSelected={isSelectedSide("right")}
+          />
+        )}
+        {resolvedContentType === "molecule" && MoleculePanelComponent && (
+          <MoleculePanelComponent
+            molecule={(rightContent as MoleculeChallengeEntry["goodMolecule"]) ?? { name: "", formula: "" }}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("right")}
