@@ -5,7 +5,12 @@ export { ContentCard } from "./content-card";
 export { ExplanationPanel } from "./explanation-panel";
 export { FeatureCard } from "./feature-card";
 export { Game } from "./game";
-export type { ContentMapEntry, ExplanationSlotProps } from "./game";
+export type {
+  ContentMapEntry,
+  ExplanationSlotProps,
+  MoleculePanelSlotProps,
+  MoleculeChallengeEntry,
+} from "./game";
 export { GameHeader } from "./game-header";
 export { ImagePanel } from "./image-panel";
 export { LiveRibbon } from "./live-ribbon";

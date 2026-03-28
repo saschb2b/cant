@@ -95,4 +95,15 @@ export const ALL_APPS: CantApp[] = [
     colorTo: "#B45309",
     iconSvgContent: `<ellipse cx="90" cy="90" rx="48" ry="30" stroke="#FFFFFF" stroke-width="6" fill="none"/><circle cx="90" cy="90" r="14" fill="#FFFFFF"/>`,
   },
+  {
+    name: "Can't Explode",
+    desc: "Chemistry challenges. Molecular stability, acid strength, bond energy, and electronegativity.",
+    href: appUrl("https://cant-explode.saschb2b.com", 3007),
+    playPitch:
+      "Think you know chemistry? Test your instincts with molecule comparisons across 8 categories.",
+    tags: "Stability, acids, bonds, electronegativity",
+    colorFrom: "#1B5E20",
+    colorTo: "#2E7D32",
+    iconSvgContent: `<circle cx="90" cy="70" r="20" stroke="#FFFFFF" stroke-width="6" fill="none"/><circle cx="60" cy="120" r="16" stroke="#FFFFFF" stroke-width="5" fill="none"/><circle cx="120" cy="120" r="16" stroke="#FFFFFF" stroke-width="5" fill="none"/><line x1="78" y1="84" x2="68" y2="107" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="102" y1="84" x2="112" y2="107" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>`,
+  },
 ];

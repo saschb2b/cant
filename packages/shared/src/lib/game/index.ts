@@ -24,6 +24,8 @@ export type {
   CodeContent,
   ImageContent,
   VisualContent,
+  MoleculeContent,
+  MoleculeData,
 } from "./types";
 export { useGame } from "./use-game";
 export type { UseGameCallbacks } from "./use-game";

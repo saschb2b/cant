@@ -74,6 +74,17 @@ export function buildContentMap<C extends BaseChallenge>(
         };
         break;
       }
+      case "molecule": {
+        const { left, right } = challenge.content;
+        const goodSide = isRightGood ? right : left;
+        const badSide = isRightGood ? left : right;
+        map[challenge.id] = {
+          type: "molecule",
+          goodMolecule: goodSide,
+          badMolecule: badSide,
+        };
+        break;
+      }
     }
   }
 

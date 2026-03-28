@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import type { ContentMapEntry } from "./game/game";
 import { codeBlockStyles } from "../lib/code-styles";
 
@@ -16,6 +18,7 @@ interface LearnContentPanelProps {
  * For code challenges this outputs syntax-highlighted HTML (same as before).
  * For image challenges it renders a responsive `next/image`.
  * For visual challenges it renders a placeholder (apps provide their own registry).
+ * For molecule challenges it renders a styled chemistry card.
  */
 export function LearnContentPanel({ entry, side }: LearnContentPanelProps) {
   if (!entry) return null;
@@ -63,6 +66,75 @@ export function LearnContentPanel({ entry, side }: LearnContentPanelProps) {
         >
           {/* Apps mount their component registry here via a wrapper */}
           Visual component: {componentId}
+        </Box>
+      );
+    }
+    case "molecule": {
+      const molecule =
+        side === "good" ? entry.goodMolecule : entry.badMolecule;
+      return (
+        <Box
+          sx={{
+            p: 3,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 200,
+            gap: 1.5,
+          }}
+        >
+          <Typography
+            variant="h5"
+            fontWeight={700}
+            sx={{ textAlign: "center", color: "text.primary" }}
+          >
+            {molecule.name}
+          </Typography>
+          <Typography
+            variant="h6"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{
+              textAlign: "center",
+              color: "text.secondary",
+              letterSpacing: "0.05em",
+            }}
+          >
+            {molecule.formula}
+          </Typography>
+          {molecule.properties &&
+            Object.keys(molecule.properties).length > 0 && (
+              <Stack spacing={0.5} sx={{ mt: 1, width: "100%" }}>
+                {Object.entries(molecule.properties).map(([key, value]) => (
+                  <Box
+                    key={key}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      px: 2,
+                      py: 0.5,
+                      bgcolor: "action.hover",
+                      borderRadius: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      color="text.secondary"
+                    >
+                      {key}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="text.primary"
+                    >
+                      {value}
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
+            )}
         </Box>
       );
     }

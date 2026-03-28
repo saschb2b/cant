@@ -12,7 +12,7 @@ importers:
         specifier: ^2.5.4
         version: 2.8.20
 
-  apps/cant-hub:
+  apps/cant-explode:
     dependencies:
       '@cant/shared':
         specifier: workspace:*
@@ -29,6 +29,21 @@ importers:
       '@mui/material':
         specifier: ^7.3.8
         version: 7.3.9(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@shikijs/core':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/engine-javascript':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/langs':
+        specifier: ^4.0.2
+        version: 4.0.2
+      '@shikijs/themes':
+        specifier: ^4.0.2
+        version: 4.0.2
+      fuse.js:
+        specifier: ^7.1.0
+        version: 7.1.0
       lottie-react:
         specifier: ^2.4.1
         version: 2.4.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -37,7 +52,7 @@ importers:
         version: 0.564.0(react@19.2.4)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -66,6 +81,73 @@ importers:
       eslint-config-next:
         specifier: ^16.1.6
         version: 16.2.1(eslint@9.39.4)(typescript@5.7.3)
+      eslint-config-prettier:
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.39.4)
+      prettier:
+        specifier: ^3.8.1
+        version: 3.8.1
+      typescript:
+        specifier: 5.7.3
+        version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.56.1
+        version: 8.57.2(eslint@9.39.4)(typescript@5.7.3)
+
+  apps/cant-hub:
+    dependencies:
+      '@cant/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@emotion/cache':
+        specifier: ^11.14.0
+        version: 11.14.0
+      '@emotion/react':
+        specifier: ^11.14.0
+        version: 11.14.0(@types/react@19.2.14)(react@19.2.4)
+      '@emotion/styled':
+        specifier: ^11.14.1
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4)
+      '@mui/material':
+        specifier: ^7.3.8
+        version: 7.3.9(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      lottie-react:
+        specifier: ^2.4.1
+        version: 2.4.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      lucide-react:
+        specifier: ^0.564.0
+        version: 0.564.0(react@19.2.4)
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.3
+        version: 9.39.4
+      '@types/node':
+        specifier: ^22
+        version: 22.19.15
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      eslint:
+        specifier: ^9.39.3
+        version: 9.39.4
+      eslint-config-next:
+        specifier: ^16.1.6
+        version: 16.2.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint@9.39.4)(typescript@5.7.3)
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.4)
@@ -150,7 +232,7 @@ importers:
         version: 9.39.4
       eslint-config-next:
         specifier: ^16.2.1
-        version: 16.2.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint@9.39.4)(typescript@6.0.2)
+        version: 16.2.1(eslint@9.39.4)(typescript@6.0.2)
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.4)
@@ -204,7 +286,7 @@ importers:
         version: 0.564.0(react@19.2.4)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -286,7 +368,7 @@ importers:
         version: 0.564.0(react@19.2.4)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -371,7 +453,7 @@ importers:
         version: 0.564.0(react@19.2.4)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -453,7 +535,7 @@ importers:
         version: 0.564.0(react@19.2.4)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -535,7 +617,7 @@ importers:
         version: 0.564.0(react@19.2.4)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -5727,20 +5809,20 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-next@16.2.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint@9.39.4)(typescript@6.0.2):
+  eslint-config-next@16.2.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint@9.39.4)(typescript@5.7.3):
     dependencies:
       '@next/eslint-plugin-next': 16.2.1
       eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4)
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4)
       eslint-plugin-react: 7.37.5(eslint@9.39.4)
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.4)
       globals: 16.4.0
-      typescript-eslint: 8.57.2(eslint@9.39.4)(typescript@6.0.2)
+      typescript-eslint: 8.57.2(eslint@9.39.4)(typescript@5.7.3)
     optionalDependencies:
-      typescript: 6.0.2
+      typescript: 5.7.3
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-webpack
@@ -5761,6 +5843,26 @@ snapshots:
       typescript-eslint: 8.57.2(eslint@9.39.4)(typescript@5.7.3)
     optionalDependencies:
       typescript: 5.7.3
+    transitivePeerDependencies:
+      - '@typescript-eslint/parser'
+      - eslint-import-resolver-webpack
+      - eslint-plugin-import-x
+      - supports-color
+
+  eslint-config-next@16.2.1(eslint@9.39.4)(typescript@6.0.2):
+    dependencies:
+      '@next/eslint-plugin-next': 16.2.1
+      eslint: 9.39.4
+      eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4)
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
+      eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4)
+      eslint-plugin-react: 7.37.5(eslint@9.39.4)
+      eslint-plugin-react-hooks: 7.0.1(eslint@9.39.4)
+      globals: 16.4.0
+      typescript-eslint: 8.57.2(eslint@9.39.4)(typescript@6.0.2)
+    optionalDependencies:
+      typescript: 6.0.2
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-webpack
@@ -5794,18 +5896,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.57.2(eslint@9.39.4)(typescript@6.0.2)
+      '@typescript-eslint/parser': 8.57.2(eslint@9.39.4)(typescript@5.7.3)
       eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -5816,7 +5918,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -5828,7 +5930,7 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.57.2(eslint@9.39.4)(typescript@6.0.2)
+      '@typescript-eslint/parser': 8.57.2(eslint@9.39.4)(typescript@5.7.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -5845,7 +5947,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@6.0.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -6518,7 +6620,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next@16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       '@next/env': 16.1.6
       '@swc/helpers': 0.5.15

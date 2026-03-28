@@ -1,0 +1,54 @@
+import type { Metadata } from "next";
+import { buildContentMap } from "@cant/shared/lib";
+import { LearnIndexPage } from "@cant/shared/components";
+import { challenges } from "@/lib/learn/challenges";
+import {
+  CATEGORY_ORDER,
+  CATEGORY_LABELS,
+  CATEGORY_DESCRIPTIONS,
+  LEARNING_PATH,
+} from "@/lib/learn/categories";
+
+export const metadata: Metadata = {
+  title: "Learn",
+  description:
+    "Learn chemistry concepts across 8 categories. Side-by-side molecule comparisons with explanations.",
+};
+
+export default function LearnPage() {
+  const previewChallenges = CATEGORY_ORDER.flatMap(
+    (cat) => challenges.find((c) => c.category === cat) ?? [],
+  );
+  const previewContentMap = buildContentMap(previewChallenges);
+
+  const sections = CATEGORY_ORDER.map((category) => {
+    const count = challenges.filter((c) => c.category === category).length;
+    const preview = previewChallenges.find((c) => c.category === category);
+    const entry = preview ? previewContentMap[preview.id] : undefined;
+    return {
+      category,
+      label: CATEGORY_LABELS[category],
+      description: CATEGORY_DESCRIPTIONS[category],
+      count,
+      preview:
+        entry?.type === "code"
+          ? { goodHtml: entry.goodHtml, badHtml: entry.badHtml }
+          : null,
+    };
+  });
+
+  return (
+    <LearnIndexPage
+      title="Learn Chemistry"
+      subtitle="Learn chemistry concepts across 8 categories. Side-by-side molecule comparisons with explanations."
+      totalChallenges={challenges.length}
+      totalCategories={CATEGORY_ORDER.length}
+      sections={sections}
+      learningPath={LEARNING_PATH.map((cat) => ({
+        category: cat,
+        label: CATEGORY_LABELS[cat],
+      }))}
+      learningPathDescription="New to chemistry? Follow these five categories in order to build a solid foundation."
+    />
+  );
+}
