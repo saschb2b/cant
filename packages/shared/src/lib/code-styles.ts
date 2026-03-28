@@ -1,5 +1,8 @@
 /** Shared sx styles for Shiki-highlighted code blocks. */
 export const codeBlockStyles = {
+  "& .shiki": {
+    bgcolor: "transparent !important",
+  },
   "& pre": {
     m: 0,
     p: 2,
