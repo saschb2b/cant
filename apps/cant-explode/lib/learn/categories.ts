@@ -82,18 +82,11 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
 
 /** Recommended category order for newcomers starting from scratch. */
 export const LEARNING_PATH: ChallengeCategory[] = [
-  "electronegativity",
-  "bond-energy",
-  "molecular-stability",
-  "acid-strength",
-  "solubility",
-  "structural-formulas",
-  "molecular-geometry",
   "periodic-trends",
   "electron-configuration",
-  "energy-diagrams",
-  "stereochemistry",
-  "electrostatic-maps",
+  "structural-formulas",
+  "electronegativity",
+  "bond-energy",
 ];
 
 /** Short description for each category, shown on the learn overview. */
