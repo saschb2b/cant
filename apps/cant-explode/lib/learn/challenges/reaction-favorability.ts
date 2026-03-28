@@ -2,41 +2,6 @@ import type { Challenge } from "../types";
 
 export const reactionFavorabilityChallenges: Challenge[] = [
   {
-    id: "rf-001",
-    category: "reaction-favorability",
-    difficulty: "easy",
-    title: "Exothermic vs endothermic reaction",
-    prompt: "Which reaction is thermodynamically favorable?",
-    content: {
-      type: "molecule",
-      left: {
-        name: "Combustion of hydrogen",
-        formula: "2H₂ + O₂ → 2H₂O",
-        properties: {
-          "Delta H": "-572 kJ/mol",
-          Type: "Exothermic",
-          "Delta G": "-457 kJ/mol",
-        },
-      },
-      right: {
-        name: "Decomposition of water",
-        formula: "2H₂O → 2H₂ + O₂",
-        properties: {
-          "Delta H": "+572 kJ/mol",
-          Type: "Endothermic",
-          "Delta G": "+457 kJ/mol",
-        },
-      },
-    },
-    correctSide: "left",
-    explanationCorrect:
-      "The combustion of hydrogen is thermodynamically favorable with a large negative Gibbs free energy (Delta G = -457 kJ/mol). The reaction releases energy because the O-H bonds formed in water are stronger than the H-H and O=O bonds broken.",
-    explanationWrong:
-      "The decomposition of water is thermodynamically unfavorable under standard conditions. It requires a continuous input of energy (such as electrolysis) because the reaction has a large positive Delta G.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Hydrogen#Combustion",
-    sourceLabel: "Wikipedia: Hydrogen combustion",
-  },
-  {
     id: "rf-002",
     category: "reaction-favorability",
     difficulty: "hard",

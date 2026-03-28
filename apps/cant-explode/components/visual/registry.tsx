@@ -77,6 +77,24 @@ import {
   HFCovalent,
 } from "./electrostatic-maps";
 
+import {
+  CarboxylicAcidStructure,
+  AlcoholStructure,
+  AldehydeStructure,
+  KetoneStructure,
+  AmineStructure,
+  AmideStructure,
+} from "./functional-groups";
+
+import {
+  BenzeneAromatic,
+  CyclohexadieneNonAromatic,
+  TertButylCation,
+  MethylCation,
+  CyclohexaneRing,
+  CyclopropaneRing,
+} from "./molecular-stability";
+
 export const visualRegistry: Record<string, ComponentType> = {
   // Structural Formulas
   BenzeneKekule,
@@ -147,4 +165,20 @@ export const visualRegistry: Record<string, ComponentType> = {
   H2ONetDipole,
   NaClIonic,
   HFCovalent,
+
+  // Functional Groups
+  CarboxylicAcidStructure,
+  AlcoholStructure,
+  AldehydeStructure,
+  KetoneStructure,
+  AmineStructure,
+  AmideStructure,
+
+  // Molecular Stability
+  BenzeneAromatic,
+  CyclohexadieneNonAromatic,
+  TertButylCation,
+  MethylCation,
+  CyclohexaneRing,
+  CyclopropaneRing,
 };

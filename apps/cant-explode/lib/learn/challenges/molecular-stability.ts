@@ -8,25 +8,9 @@ export const molecularStabilityChallenges: Challenge[] = [
     title: "Aromatic vs non-aromatic stability",
     prompt: "Which cyclic molecule is more thermodynamically stable?",
     content: {
-      type: "molecule",
-      left: {
-        name: "Benzene",
-        formula: "C₆H₆",
-        smiles: "c1ccccc1",
-        properties: {
-          "Resonance energy": "~150 kJ/mol",
-          Type: "Aromatic",
-        },
-      },
-      right: {
-        name: "1,3-Cyclohexadiene",
-        formula: "C₆H₈",
-        smiles: "C1CC=CC=C1",
-        properties: {
-          "Resonance energy": "~0 kJ/mol",
-          Type: "Non-aromatic",
-        },
-      },
+      type: "visual",
+      left: { componentId: "BenzeneAromatic" },
+      right: { componentId: "CyclohexadieneNonAromatic" },
     },
     correctSide: "left",
     explanationCorrect:
@@ -37,67 +21,15 @@ export const molecularStabilityChallenges: Challenge[] = [
     sourceLabel: "Wikipedia: Aromaticity",
   },
   {
-    id: "ms-002",
-    category: "molecular-stability",
-    difficulty: "easy",
-    title: "Trans vs cis alkene stability",
-    prompt: "Which geometric isomer has lower energy?",
-    content: {
-      type: "molecule",
-      left: {
-        name: "Cis-2-butene",
-        formula: "C₄H₈",
-        smiles: "C/C=C\\C",
-        properties: {
-          "Heat of hydrogenation": "~120 kJ/mol",
-          Configuration: "Cis (Z)",
-        },
-      },
-      right: {
-        name: "Trans-2-butene",
-        formula: "C₄H₈",
-        smiles: "C/C=C/C",
-        properties: {
-          "Heat of hydrogenation": "~115 kJ/mol",
-          Configuration: "Trans (E)",
-        },
-      },
-    },
-    correctSide: "right",
-    explanationCorrect:
-      "Trans-2-butene is more stable because its methyl groups are on opposite sides of the double bond, minimizing steric strain. This is confirmed by its lower heat of hydrogenation compared to the cis isomer.",
-    explanationWrong:
-      "Cis-2-butene has its methyl groups on the same side of the double bond, creating steric repulsion that raises the molecule's energy. The higher heat of hydrogenation (~120 vs ~115 kJ/mol) confirms it is less stable.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Cis%E2%80%93trans_isomerism#Stability",
-    sourceLabel: "Wikipedia: Cis-trans isomerism, Stability",
-  },
-  {
     id: "ms-003",
     category: "molecular-stability",
     difficulty: "medium",
     title: "Tertiary vs primary carbocation stability",
     prompt: "Which carbocation is more stable in solution?",
     content: {
-      type: "molecule",
-      left: {
-        name: "Tert-butyl cation",
-        formula: "(CH₃)₃C⁺",
-        smiles: "CC(C)([CH2+])",
-        properties: {
-          Type: "Tertiary carbocation",
-          "Stabilization mechanism": "Hyperconjugation",
-        },
-      },
-      right: {
-        name: "Methyl cation",
-        formula: "CH₃⁺",
-        smiles: "[CH3+]",
-        properties: {
-          Type: "Primary carbocation",
-          "Stabilization mechanism": "None",
-        },
-      },
+      type: "visual",
+      left: { componentId: "TertButylCation" },
+      right: { componentId: "MethylCation" },
     },
     correctSide: "left",
     explanationCorrect:
@@ -114,27 +46,11 @@ export const molecularStabilityChallenges: Challenge[] = [
     title: "Ring strain comparison",
     prompt: "Which cycloalkane has less ring strain?",
     content: {
-      type: "molecule",
-      left: {
-        name: "Cyclopropane",
-        formula: "C₃H₆",
-        smiles: "C1CC1",
-        properties: {
-          "Ring strain": "~115 kJ/mol",
-          "Bond angle": "60°",
-        },
-      },
-      right: {
-        name: "Cyclohexane",
-        formula: "C₆H₁₂",
-        smiles: "C1CCCCC1",
-        properties: {
-          "Ring strain": "~0 kJ/mol",
-          "Bond angle": "~111°",
-        },
-      },
+      type: "visual",
+      left: { componentId: "CyclohexaneRing" },
+      right: { componentId: "CyclopropaneRing" },
     },
-    correctSide: "right",
+    correctSide: "left",
     explanationCorrect:
       "Cyclohexane is nearly strain-free because its chair conformation allows bond angles close to the ideal tetrahedral angle of 109.5 degrees. It has essentially zero ring strain.",
     explanationWrong:

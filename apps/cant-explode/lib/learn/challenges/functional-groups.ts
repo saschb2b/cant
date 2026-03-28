@@ -8,27 +8,9 @@ export const functionalGroupsChallenges: Challenge[] = [
     title: "Reactivity with NaOH",
     prompt: "Which compound reacts more readily with NaOH?",
     content: {
-      type: "molecule",
-      left: {
-        name: "Acetic acid (carboxylic acid)",
-        formula: "CH₃COOH",
-        smiles: "CC(=O)O",
-        properties: {
-          "Functional group": "Carboxylic acid (-COOH)",
-          pKa: "4.76",
-          "Reaction with NaOH": "Acid-base neutralization",
-        },
-      },
-      right: {
-        name: "Ethanol (alcohol)",
-        formula: "C₂H₅OH",
-        smiles: "CCO",
-        properties: {
-          "Functional group": "Alcohol (-OH)",
-          pKa: "~16",
-          "Reaction with NaOH": "Very slow, if at all",
-        },
-      },
+      type: "visual",
+      left: { componentId: "CarboxylicAcidStructure" },
+      right: { componentId: "AlcoholStructure" },
     },
     correctSide: "left",
     explanationCorrect:
@@ -45,27 +27,9 @@ export const functionalGroupsChallenges: Challenge[] = [
     title: "Nucleophilic addition susceptibility",
     prompt: "Which carbonyl is more reactive with nucleophiles?",
     content: {
-      type: "molecule",
-      left: {
-        name: "Acetaldehyde (aldehyde)",
-        formula: "CH₃CHO",
-        smiles: "CC=O",
-        properties: {
-          "Functional group": "Aldehyde (-CHO)",
-          "Steric environment": "One H on carbonyl carbon",
-          Electrophilicity: "Higher",
-        },
-      },
-      right: {
-        name: "Acetone (ketone)",
-        formula: "(CH₃)₂CO",
-        smiles: "CC(=O)C",
-        properties: {
-          "Functional group": "Ketone (R₂C=O)",
-          "Steric environment": "Two alkyl groups on carbonyl",
-          Electrophilicity: "Lower",
-        },
-      },
+      type: "visual",
+      left: { componentId: "AldehydeStructure" },
+      right: { componentId: "KetoneStructure" },
     },
     correctSide: "left",
     explanationCorrect:
@@ -83,27 +47,9 @@ export const functionalGroupsChallenges: Challenge[] = [
     title: "Basicity of nitrogen compounds",
     prompt: "Which nitrogen compound is a stronger base?",
     content: {
-      type: "molecule",
-      left: {
-        name: "Methylamine (primary amine)",
-        formula: "CH₃NH₂",
-        smiles: "CN",
-        properties: {
-          "Functional group": "Primary amine (-NH₂)",
-          pKb: "3.36",
-          "Lone pair availability": "High",
-        },
-      },
-      right: {
-        name: "Acetamide (amide)",
-        formula: "CH₃CONH₂",
-        smiles: "CC(=O)N",
-        properties: {
-          "Functional group": "Amide (-CONH₂)",
-          pKb: "~14",
-          "Lone pair availability": "Low (resonance)",
-        },
-      },
+      type: "visual",
+      left: { componentId: "AmineStructure" },
+      right: { componentId: "AmideStructure" },
     },
     correctSide: "left",
     explanationCorrect:

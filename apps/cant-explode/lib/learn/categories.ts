@@ -7,17 +7,17 @@ export const CATEGORY_ORDER: ChallengeCategory[] = [
   "acid-strength",
   "bond-energy",
   "electronegativity",
+  "periodic-trends",
+  "electron-configuration",
   // Reactions & Properties
   "reaction-favorability",
   "solubility",
   "oxidation-reduction",
   "functional-groups",
-  // Visual Chemistry
+  "energy-diagrams",
+  // Structure & Bonding
   "structural-formulas",
   "molecular-geometry",
-  "periodic-trends",
-  "electron-configuration",
-  "energy-diagrams",
   "stereochemistry",
   "electrostatic-maps",
 ];
@@ -55,6 +55,8 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "acid-strength",
       "bond-energy",
       "electronegativity",
+      "periodic-trends",
+      "electron-configuration",
     ],
   },
   {
@@ -64,16 +66,14 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "solubility",
       "oxidation-reduction",
       "functional-groups",
+      "energy-diagrams",
     ],
   },
   {
-    label: "Visual Chemistry",
+    label: "Structure & Bonding",
     categories: [
       "structural-formulas",
       "molecular-geometry",
-      "periodic-trends",
-      "electron-configuration",
-      "energy-diagrams",
       "stereochemistry",
       "electrostatic-maps",
     ],
