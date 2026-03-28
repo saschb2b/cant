@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getHighlighter, highlightDual, buildContentMap, codeBlockStyles } from "@cant/shared/lib";
+import { getHighlighter, highlightDual, buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
 import { challenges } from "@/lib/game/challenges";
 import {
@@ -49,7 +49,6 @@ export default async function LearnPage() {
       totalChallenges={challenges.length}
       totalCategories={CATEGORY_ORDER.length}
       sections={sections}
-      codeBlockSx={codeBlockStyles}
     />
   );
 }

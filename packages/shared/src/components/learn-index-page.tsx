@@ -1,4 +1,3 @@
-import type { SxProps } from "@mui/material";
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -7,6 +6,7 @@ import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import { ArrowRight, Check, X } from "lucide-react";
+import { codeBlockStyles } from "../lib/code-styles";
 
 interface LearnSection {
   category: string;
@@ -31,8 +31,6 @@ interface LearnIndexPageProps {
   learningPath?: { category: string; label: string }[];
   /** Short text for the learning path section, e.g. "New to responsive design? Follow these five categories in order." */
   learningPathDescription?: string;
-  /** SX overrides for the code block styles in preview panels. Apps pass their own codeBlockStyles. */
-  codeBlockSx?: SxProps;
 }
 
 export function LearnIndexPage({
@@ -43,7 +41,6 @@ export function LearnIndexPage({
   sections,
   learningPath,
   learningPathDescription,
-  codeBlockSx,
 }: LearnIndexPageProps) {
   return (
     <>
@@ -235,7 +232,7 @@ export function LearnIndexPage({
                     </Stack>
                     <Box
                       sx={{
-                        ...((codeBlockSx as Record<string, unknown>) ?? {}),
+                        ...codeBlockStyles,
                         "& pre": {
                           fontSize: "0.75rem",
                           p: 1.5,
@@ -282,7 +279,7 @@ export function LearnIndexPage({
                     </Stack>
                     <Box
                       sx={{
-                        ...((codeBlockSx as Record<string, unknown>) ?? {}),
+                        ...codeBlockStyles,
                         "& pre": {
                           fontSize: "0.75rem",
                           p: 1.5,

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import { buildContentMap, codeBlockStyles } from "@cant/shared/lib";
+import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
 import { challenges } from "@/lib/learn/challenges";
 import {
@@ -56,7 +56,6 @@ export default async function LearnPage() {
         label: CATEGORY_LABELS[cat],
       }))}
       learningPathDescription="New to TypeScript? Follow these five categories in order."
-      codeBlockSx={codeBlockStyles}
     />
   );
 }
