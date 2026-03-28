@@ -353,7 +353,6 @@ export function SiteHeader({
           position: "sticky",
           top: 0,
           zIndex: 1100,
-          bgcolor: "rgba(var(--mui-palette-background-defaultChannel) / 0.8)",
           backdropFilter: "blur(12px)",
         }}
       >
