@@ -6,6 +6,7 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "easy",
     title: "Icon button missing accessible label",
+    prompt: "Which API better supports screen readers?",
     content: {
       type: "code",
 
@@ -46,6 +47,7 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "easy",
     title: "Image with optional alt text",
+    prompt: "Which interface enforces alt text correctly?",
     content: {
       type: "code",
 
@@ -81,6 +83,7 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "medium",
     title: "ARIA role typed as string",
+    prompt: "Which typing catches invalid ARIA values?",
     content: {
       type: "code",
 
@@ -127,6 +130,7 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "medium",
     title: "Redundant aria-label vs labelledby",
+    prompt: "Which approach keeps the label in sync?",
     content: {
       type: "code",
 
@@ -172,6 +176,7 @@ export const accessibilityPropsChallenges: Challenge[] = [
     category: "accessibility-props",
     difficulty: "hard",
     title: "Custom form control accessibility",
+    prompt: "Which select is accessible to screen readers?",
     content: {
       type: "code",
 

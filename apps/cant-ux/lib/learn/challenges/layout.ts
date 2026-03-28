@@ -6,6 +6,7 @@ export const layoutChallenges: Challenge[] = [
     category: "layout",
     difficulty: "easy",
     title: "Content width",
+    prompt: "Which content width is more readable?",
     content: {
       type: "visual",
       left: { componentId: "LayoutFullWidth" },
@@ -24,6 +25,7 @@ export const layoutChallenges: Challenge[] = [
     category: "layout",
     difficulty: "easy",
     title: "Form layout",
+    prompt: "Which form layout is faster to complete?",
     content: {
       type: "visual",
       left: { componentId: "FormSideBySide" },
@@ -42,6 +44,7 @@ export const layoutChallenges: Challenge[] = [
     category: "layout",
     difficulty: "medium",
     title: "Card consistency",
+    prompt: "Which card grid looks more polished?",
     content: {
       type: "visual",
       left: { componentId: "CardLayoutUneven" },
@@ -60,6 +63,7 @@ export const layoutChallenges: Challenge[] = [
     category: "layout",
     difficulty: "medium",
     title: "Text alignment",
+    prompt: "Which text alignment is easier to read?",
     content: {
       type: "visual",
       left: { componentId: "ContentCenterAligned" },

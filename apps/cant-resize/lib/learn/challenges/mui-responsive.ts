@@ -6,6 +6,7 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "easy",
     title: "Responsive sx values",
+    prompt: "Which is SSR-safe for responsive font size?",
     content: {
       type: "code",
 
@@ -42,6 +43,7 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "easy",
     title: "Grid responsive columns",
+    prompt: "Which grid adapts its columns per breakpoint?",
     content: {
       type: "code",
 
@@ -77,6 +79,7 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "medium",
     title: "Responsive Stack direction",
+    prompt: "Which Stack changes direction without a hook?",
     content: {
       type: "code",
 
@@ -121,6 +124,7 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "medium",
     title: "Dialog to full-screen on mobile",
+    prompt: "Which dialog adapts to small screens?",
     content: {
       type: "code",
 
@@ -173,6 +177,7 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "medium",
     title: "Theme breakpoints in sx",
+    prompt: "Which stays in sync with the MUI theme?",
     content: {
       type: "code",
 
@@ -209,6 +214,7 @@ export const muiResponsiveChallenges: Challenge[] = [
     category: "mui-responsive",
     difficulty: "hard",
     title: "Responsive Drawer pattern",
+    prompt: "Which drawer pattern avoids a hydration flash?",
     content: {
       type: "code",
 

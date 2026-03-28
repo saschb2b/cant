@@ -20,7 +20,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 interface BaseChallenge {
   id: string;
   title: string;
-  prompt?: string;
+  prompt: string;
   category: string;
   difficulty: Difficulty;
   content: { type: string };
@@ -242,9 +242,7 @@ interface GameProps<C extends BaseChallenge> {
    */
   contentMap?: Record<string, ContentMapEntry>;
   defaultSeed?: string;
-  /** Text shown below the challenge title. Receives the category label so apps can interpolate it, e.g. `(cat) => \`Pick the better ${cat} pattern\`` */
-  promptText: string | ((categoryLabel: string) => string);
-  /** Category label map for the blurred category chip. */
+  /** Category label map for the category chip. */
   categoryLabels: Record<string, string>;
   /** Hook that provides game state. */
   useGame: (
@@ -265,7 +263,6 @@ export function Game<C extends BaseChallenge>({
   challenges,
   contentMap = {},
   defaultSeed,
-  promptText,
   categoryLabels,
   useGame: useGameHook,
   generateSeed: generateSeedFn,
@@ -596,14 +593,7 @@ export function Game<C extends BaseChallenge>({
         <Typography variant="body2" color="text.secondary">
           {isReviewing
             ? "Reviewing your previous answer"
-            : (displayChallenge as BaseChallenge).prompt
-              ? (displayChallenge as BaseChallenge).prompt
-              : typeof promptText === "function"
-                ? promptText(
-                    categoryLabels[displayChallenge.category] ??
-                      displayChallenge.category,
-                  )
-                : promptText}
+            : displayChallenge.prompt}
         </Typography>
       </Box>
 

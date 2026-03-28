@@ -6,6 +6,7 @@ export const twitterCardsChallenges: Challenge[] = [
     category: "twitter-cards",
     difficulty: "easy",
     title: "Summary vs summary_large_image",
+    prompt: "Which card type shows images best?",
     content: {
       type: "code",
 
@@ -62,6 +63,7 @@ export async function generateMetadata({
     category: "twitter-cards",
     difficulty: "easy",
     title: "Twitter image aspect ratio",
+    prompt: "Which image dimensions fit Twitter cards?",
     content: {
       type: "code",
 
@@ -109,6 +111,7 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "medium",
     title: "twitter:site vs twitter:creator",
+    prompt: "Which Twitter attribution is correct?",
     content: {
       type: "code",
 
@@ -160,6 +163,7 @@ export async function generateMetadata({
     category: "twitter-cards",
     difficulty: "medium",
     title: "Twitter card fallback to Open Graph",
+    prompt: "Which config avoids redundant tags?",
     content: {
       type: "code",
 
@@ -211,6 +215,7 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "medium",
     title: "Twitter title length",
+    prompt: "Which title length fits Twitter's limits?",
     content: {
       type: "code",
 
@@ -261,6 +266,7 @@ export async function generateMetadata({
     category: "twitter-cards",
     difficulty: "medium",
     title: "Dedicated twitter metadata in Next.js",
+    prompt: "Which setup looks best on every platform?",
     content: {
       type: "code",
 
@@ -313,6 +319,7 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "easy",
     title: "Image alt text for Twitter cards",
+    prompt: "Which image config is more accessible?",
     content: {
       type: "code",
 
@@ -362,6 +369,7 @@ export const metadata: Metadata = {
     category: "twitter-cards",
     difficulty: "hard",
     title: "Validating Twitter cards before launch",
+    prompt: "Which setup avoids broken card previews?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const kubernetesConfigChallenges: Challenge[] = [
     category: "kubernetes-config",
     difficulty: "easy",
     title: "ConfigMap for non-secret config",
+    prompt: "Which config approach is easier to manage?",
     content: {
       type: "code",
 
@@ -62,6 +63,7 @@ spec:
     category: "kubernetes-config",
     difficulty: "medium",
     title: "Resource quotas per namespace",
+    prompt: "Which namespace setup prevents resource abuse?",
     content: {
       type: "code",
 
@@ -108,6 +110,7 @@ spec:
     category: "kubernetes-config",
     difficulty: "medium",
     title: "Immutable ConfigMaps and Secrets",
+    prompt: "Which ConfigMap is safer against accidental edits?",
     content: {
       type: "code",
 
@@ -149,6 +152,7 @@ data:
     category: "kubernetes-config",
     difficulty: "hard",
     title: "Pod topology spread constraints",
+    prompt: "Which deployment spreads pods more evenly?",
     content: {
       type: "code",
 

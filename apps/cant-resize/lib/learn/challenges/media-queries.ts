@@ -6,6 +6,7 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "easy",
     title: "Mobile-first vs desktop-first",
+    prompt: "Which media query strategy scales better?",
     content: {
       type: "code",
 
@@ -53,6 +54,7 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "easy",
     title: "Content-based breakpoints",
+    prompt: "Which breakpoints are more future-proof?",
     content: {
       type: "code",
 
@@ -84,6 +86,7 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "medium",
     title: "Overlapping breakpoints",
+    prompt: "Which avoids conflicting styles at 768px?",
     content: {
       type: "code",
 
@@ -120,6 +123,7 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "medium",
     title: "Breakpoint ranges",
+    prompt: "Which range syntax is clearer and safer?",
     content: {
       type: "code",
 
@@ -154,6 +158,7 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "medium",
     title: "Feature queries vs breakpoints",
+    prompt: "Which correctly detects hover capability?",
     content: {
       type: "code",
 
@@ -189,6 +194,7 @@ export const mediaQueryChallenges: Challenge[] = [
     category: "media-queries",
     difficulty: "hard",
     title: "Combining feature and dimension queries",
+    prompt: "Which nav approach considers input method?",
     content: {
       type: "code",
 

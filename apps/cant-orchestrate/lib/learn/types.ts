@@ -35,6 +35,8 @@ export interface Challenge {
   difficulty: Difficulty;
   /** Short title shown above the code panels. */
   title: string;
+  /** Contextual question telling the player what they are evaluating. */
+  prompt: string;
   /** The challenge content (code snippets, images, or visual components). */
   content: ChallengeContent;
   /** Which side the good content appears on. Randomized at render in game mode. */

@@ -6,6 +6,7 @@ export const formsChallenges: Challenge[] = [
     category: "forms",
     difficulty: "easy",
     title: "Input labels",
+    prompt: "Which form labeling approach is clearer?",
     content: {
       type: "visual",
       left: { componentId: "FormPlaceholderLabels" },
@@ -24,6 +25,7 @@ export const formsChallenges: Challenge[] = [
     category: "forms",
     difficulty: "easy",
     title: "Error messages",
+    prompt: "Which error feedback helps users more?",
     content: {
       type: "visual",
       left: { componentId: "FormGenericError" },
@@ -43,6 +45,7 @@ export const formsChallenges: Challenge[] = [
     category: "forms",
     difficulty: "medium",
     title: "Touch targets",
+    prompt: "Which buttons are easier to tap?",
     content: {
       type: "visual",
       left: { componentId: "FormTinyTargets" },
@@ -61,6 +64,7 @@ export const formsChallenges: Challenge[] = [
     category: "forms",
     difficulty: "medium",
     title: "Form organization",
+    prompt: "Which form structure is easier to fill?",
     content: {
       type: "visual",
       left: { componentId: "FormWallOfFields" },

@@ -37,6 +37,7 @@ export type ChallengeCategory =
  *   category: "callback-naming",
  *   difficulty: "easy",
  *   title: "Click handler naming",
+ *   prompt: "Which callback name follows React conventions?",
  *   content: {
  *     type: "code",
  *     left: `interface Props {\n  click: () => void;\n}`,
@@ -56,6 +57,8 @@ export interface Challenge {
   difficulty: Difficulty;
   /** Short title shown above the code panels. */
   title: string;
+  /** Contextual question telling the player what to evaluate. */
+  prompt: string;
   /** The challenge content (code snippets, images, or visual components). */
   content: ChallengeContent;
   /** Which side the good content should appear on - randomized at render time. */

@@ -6,6 +6,7 @@ export const functionTypeChallenges: Challenge[] = [
     category: "function-types",
     difficulty: "easy",
     title: "Callback typing",
+    prompt: "Which callback type catches property errors?",
     content: {
       type: "code",
       left: `// Callback typed as Function
@@ -47,6 +48,7 @@ fetchData((data) => {
     category: "function-types",
     difficulty: "easy",
     title: "void vs undefined return",
+    prompt: "Which return type works for callbacks?",
     content: {
       type: "code",
       left: `// Forces callbacks to return undefined explicitly
@@ -81,6 +83,7 @@ const c: Handler = () => "hello";`,
     category: "function-types",
     difficulty: "medium",
     title: "Generic function parameters",
+    prompt: "Which merge function preserves property types?",
     content: {
       type: "code",
       left: `function merge(a: object, b: object): object {
@@ -121,6 +124,7 @@ result.age;  // number`,
     category: "function-types",
     difficulty: "medium",
     title: "Overloads vs unions",
+    prompt: "Which signature is simpler here?",
     content: {
       type: "code",
       left: `// Overloads for something simple
@@ -157,6 +161,7 @@ function parse(input: string | number): Date {
     category: "function-types",
     difficulty: "hard",
     title: "Inferred return types",
+    prompt: "Which avoids duplicating the return shape?",
     content: {
       type: "code",
       left: `// Explicit return type duplicates the logic
@@ -206,6 +211,7 @@ type NewUser = ReturnType<typeof createUser>;`,
     category: "function-types",
     difficulty: "hard",
     title: "Rest params with tuples",
+    prompt: "Which validates arguments against the function?",
     content: {
       type: "code",
       left: `// Loses argument structure

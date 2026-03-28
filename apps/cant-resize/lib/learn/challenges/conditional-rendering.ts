@@ -6,6 +6,7 @@ export const conditionalRenderingChallenges: Challenge[] = [
     category: "conditional-rendering",
     difficulty: "easy",
     title: "CSS display vs conditional render",
+    prompt: "Which avoids a hydration flash on mobile?",
     content: {
       type: "code",
 
@@ -44,6 +45,7 @@ export const conditionalRenderingChallenges: Challenge[] = [
     category: "conditional-rendering",
     difficulty: "easy",
     title: "When conditional rendering IS correct",
+    prompt: "Which is better for expensive components?",
     content: {
       type: "code",
 
@@ -90,6 +92,7 @@ function Dashboard() {
     category: "conditional-rendering",
     difficulty: "medium",
     title: "Progressive disclosure on mobile",
+    prompt: "Which preserves functionality on mobile?",
     content: {
       type: "code",
 
@@ -146,6 +149,7 @@ function Dashboard() {
     category: "conditional-rendering",
     difficulty: "medium",
     title: "Duplicate vs shared component trees",
+    prompt: "Which avoids duplicating the component tree?",
     content: {
       type: "code",
 
@@ -204,6 +208,7 @@ function Dashboard() {
     category: "conditional-rendering",
     difficulty: "hard",
     title: "Dynamic import for device-specific bundles",
+    prompt: "Which reduces the JavaScript bundle size?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const dockerSwarmChallenges: Challenge[] = [
     category: "docker-swarm",
     difficulty: "easy",
     title: "Services vs standalone containers",
+    prompt: "Which approach manages replicas better?",
     content: {
       type: "code",
 
@@ -48,6 +49,7 @@ docker service create \\
     category: "docker-swarm",
     difficulty: "medium",
     title: "Swarm secrets for credentials",
+    prompt: "Which credential management is more secure?",
     content: {
       type: "code",
 
@@ -100,6 +102,7 @@ secrets:
     category: "docker-swarm",
     difficulty: "medium",
     title: "Rolling updates in Swarm",
+    prompt: "Which update strategy minimizes downtime?",
     content: {
       type: "code",
 
@@ -136,6 +139,7 @@ secrets:
     category: "docker-swarm",
     difficulty: "hard",
     title: "Placement constraints for scheduling",
+    prompt: "Which scheduling approach places workloads wisely?",
     content: {
       type: "code",
 

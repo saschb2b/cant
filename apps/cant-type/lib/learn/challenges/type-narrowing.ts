@@ -6,6 +6,7 @@ export const typeNarrowingChallenges: Challenge[] = [
     category: "type-narrowing",
     difficulty: "easy",
     title: "typeof guards",
+    prompt: "Which handles both string and number input?",
     content: {
       type: "code",
 
@@ -40,6 +41,7 @@ double("hello"); // "hellohello"`,
     category: "type-narrowing",
     difficulty: "easy",
     title: "Truthiness narrowing",
+    prompt: "Which handles the undefined case gracefully?",
     content: {
       type: "code",
 
@@ -74,6 +76,7 @@ greet(); // "Hello, stranger!"`,
     category: "type-narrowing",
     difficulty: "medium",
     title: "Discriminated unions",
+    prompt: "Which gives safe access to variant fields?",
     content: {
       type: "code",
 
@@ -116,6 +119,7 @@ function area(shape: Shape) {
     category: "type-narrowing",
     difficulty: "medium",
     title: "The in operator",
+    prompt: "Which checks properties before calling them?",
     content: {
       type: "code",
 
@@ -156,6 +160,7 @@ function move(animal: Fish | Bird) {
     category: "type-narrowing",
     difficulty: "hard",
     title: "instanceof narrowing",
+    prompt: "Which handles both Error and string values?",
     content: {
       type: "code",
 
@@ -190,6 +195,7 @@ function move(animal: Fish | Bird) {
     category: "type-narrowing",
     difficulty: "hard",
     title: "User-defined type guards",
+    prompt: "Which propagates narrowing to the caller?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const openGraphChallenges: Challenge[] = [
     category: "open-graph",
     difficulty: "easy",
     title: "Explicit vs inherited og:title",
+    prompt: "Which OG title setup gives more control?",
     content: {
       type: "code",
 
@@ -43,6 +44,7 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "easy",
     title: "OG image dimensions",
+    prompt: "Which OG image config works across platforms?",
     content: {
       type: "code",
 
@@ -92,6 +94,7 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "medium",
     title: "OG type for articles",
+    prompt: "Which OG type fits a blog post?",
     content: {
       type: "code",
 
@@ -143,6 +146,7 @@ export async function generateMetadata({
     category: "open-graph",
     difficulty: "medium",
     title: "OG URL and canonical alignment",
+    prompt: "Which URL format is correct for og:url?",
     content: {
       type: "code",
 
@@ -193,6 +197,7 @@ export async function generateMetadata({
     category: "open-graph",
     difficulty: "easy",
     title: "og:site_name configuration",
+    prompt: "Which OG setup identifies the site properly?",
     content: {
       type: "code",
 
@@ -233,6 +238,7 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "medium",
     title: "OG locale for multilingual sites",
+    prompt: "Which locale format follows the OG spec?",
     content: {
       type: "code",
 
@@ -267,6 +273,7 @@ export const metadata: Metadata = {
     category: "open-graph",
     difficulty: "hard",
     title: "Dynamic OG images with ImageResponse",
+    prompt: "Which OG image strategy is more engaging?",
     content: {
       type: "code",
 
@@ -329,6 +336,7 @@ export default async function OGImage({
     category: "open-graph",
     difficulty: "hard",
     title: "Passing fetched data to generateMetadata",
+    prompt: "Which data fetching pattern avoids duplication?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const propSpecificityChallenges: Challenge[] = [
     category: "prop-specificity",
     difficulty: "easy",
     title: "Variant type definition",
+    prompt: "Which variant typing is simpler at call sites?",
     content: {
       type: "code",
 
@@ -40,6 +41,7 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "easy",
     title: "Specific collection prop names",
+    prompt: "Which prop names are self-documenting?",
     content: {
       type: "code",
 
@@ -69,6 +71,7 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Autocomplete prop naming",
+    prompt: "Which naming eliminates guesswork?",
     content: {
       type: "code",
 
@@ -112,6 +115,7 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Color prop typing",
+    prompt: "Which color prop is less ambiguous?",
     content: {
       type: "code",
 
@@ -140,6 +144,7 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Size prop typing",
+    prompt: "Which size prop is more discoverable?",
     content: {
       type: "code",
 
@@ -168,6 +173,7 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "medium",
     title: "Accessible text prop conventions",
+    prompt: "Which text prop naming is more consistent?",
     content: {
       type: "code",
 
@@ -217,6 +223,7 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "hard",
     title: "Complete component API",
+    prompt: "Which table API is more type-safe?",
     content: {
       type: "code",
 

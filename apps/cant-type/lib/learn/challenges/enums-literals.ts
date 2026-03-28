@@ -6,6 +6,7 @@ export const enumsLiteralsChallenges: Challenge[] = [
     category: "enums-literals",
     difficulty: "easy",
     title: "String literals vs string enums",
+    prompt: "Which has less runtime overhead?",
     content: {
       type: "code",
 
@@ -43,6 +44,7 @@ paint("RED");`,
     category: "enums-literals",
     difficulty: "easy",
     title: "Numeric enum dangers",
+    prompt: "Which rejects invalid values?",
     content: {
       type: "code",
 
@@ -80,6 +82,7 @@ setStatus("xyz");     // Error: not assignable`,
     category: "enums-literals",
     difficulty: "medium",
     title: "const enum pitfalls",
+    prompt: "Which is compatible with all bundlers?",
     content: {
       type: "code",
 
@@ -121,6 +124,7 @@ const dir: Direction = Direction.Up;
     category: "enums-literals",
     difficulty: "medium",
     title: "as const objects vs enums",
+    prompt: "Which pattern is more versatile?",
     content: {
       type: "code",
 
@@ -162,6 +166,7 @@ type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
     category: "enums-literals",
     difficulty: "hard",
     title: "Union from object values",
+    prompt: "Which keeps the type in sync automatically?",
     content: {
       type: "code",
 
@@ -202,6 +207,7 @@ type Route = (typeof ROUTES)[keyof typeof ROUTES];
     category: "enums-literals",
     difficulty: "hard",
     title: "Enum vs union for API contracts",
+    prompt: "Which works naturally with JSON data?",
     content: {
       type: "code",
 
@@ -244,6 +250,7 @@ const data: User = await fetch("/api/user")
     category: "enums-literals",
     difficulty: "medium",
     title: "Erasable syntax and --erasableSyntaxOnly",
+    prompt: "Which syntax can be safely type-stripped?",
     content: {
       type: "code",
 

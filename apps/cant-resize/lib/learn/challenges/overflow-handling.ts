@@ -6,6 +6,7 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "easy",
     title: "Text truncation in flex containers",
+    prompt: "Which makes text ellipsis work in flexbox?",
     content: {
       type: "code",
 
@@ -50,6 +51,7 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "easy",
     title: "Responsive table with horizontal scroll",
+    prompt: "Which table stays readable on small screens?",
     content: {
       type: "code",
 
@@ -86,6 +88,7 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "medium",
     title: "Long words and URLs breaking layout",
+    prompt: "Which prevents long URLs from overflowing?",
     content: {
       type: "code",
 
@@ -116,6 +119,7 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "medium",
     title: "Preventing code blocks from overflowing",
+    prompt: "Which code block handles long lines properly?",
     content: {
       type: "code",
 
@@ -152,6 +156,7 @@ export const overflowHandlingChallenges: Challenge[] = [
     category: "overflow-handling",
     difficulty: "hard",
     title: "Nested scroll containers",
+    prompt: "Which modal scroll pattern is clearer to use?",
     content: {
       type: "code",
 

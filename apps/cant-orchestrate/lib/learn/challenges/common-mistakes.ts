@@ -6,6 +6,7 @@ export const commonMistakesChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Image tag strategies for production",
+    prompt: "Which image tag strategy is safer for production?",
     content: {
       type: "code",
 
@@ -51,6 +52,7 @@ spec:
     category: "common-mistakes",
     difficulty: "easy",
     title: "Container user configuration",
+    prompt: "Which container runs with better security?",
     content: {
       type: "code",
 
@@ -91,6 +93,7 @@ CMD ["python", "app.py"]`,
     category: "common-mistakes",
     difficulty: "medium",
     title: "State management in containers",
+    prompt: "Which approach handles container state correctly?",
     content: {
       type: "code",
 
@@ -135,6 +138,7 @@ volumes:
     category: "common-mistakes",
     difficulty: "medium",
     title: "Build context filtering",
+    prompt: "Which build context setup is cleaner?",
     content: {
       type: "code",
 
@@ -183,6 +187,7 @@ Dockerfile`,
     category: "common-mistakes",
     difficulty: "hard",
     title: "Graceful shutdown handling",
+    prompt: "Which container shuts down gracefully?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const buildScriptsChallenges: Challenge[] = [
     category: "build-scripts",
     difficulty: "easy",
     title: "Makefile for container workflows",
+    prompt: "Which approach organizes container tasks better?",
     content: {
       type: "code",
 
@@ -55,6 +56,7 @@ help: ## Show available targets
     category: "build-scripts",
     difficulty: "medium",
     title: "Ant build with Docker integration",
+    prompt: "Which Ant build integrates Docker correctly?",
     content: {
       type: "code",
 
@@ -114,6 +116,7 @@ help: ## Show available targets
     category: "build-scripts",
     difficulty: "medium",
     title: "Docker Compose for dev scripts",
+    prompt: "Which onboarding approach is more reliable?",
     content: {
       type: "code",
 
@@ -162,6 +165,7 @@ test: ## Run tests
     category: "build-scripts",
     difficulty: "hard",
     title: "Gradle Jib for Java containers",
+    prompt: "Which Java container build is more efficient?",
     content: {
       type: "code",
 

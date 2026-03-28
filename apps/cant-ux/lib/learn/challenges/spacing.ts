@@ -6,6 +6,7 @@ export const spacingChallenges: Challenge[] = [
     category: "spacing",
     difficulty: "easy",
     title: "Spacing consistency",
+    prompt: "Which spacing system looks more polished?",
     content: {
       type: "visual",
       left: { componentId: "SpacingRandom" },
@@ -24,6 +25,7 @@ export const spacingChallenges: Challenge[] = [
     category: "spacing",
     difficulty: "easy",
     title: "Whitespace",
+    prompt: "Which layout uses space better?",
     content: {
       type: "visual",
       left: { componentId: "SpacingCramped" },
@@ -42,6 +44,7 @@ export const spacingChallenges: Challenge[] = [
     category: "spacing",
     difficulty: "medium",
     title: "Proximity grouping",
+    prompt: "Which grouping is easier to understand?",
     content: {
       type: "visual",
       left: { componentId: "SpacingNoProximity" },
@@ -60,6 +63,7 @@ export const spacingChallenges: Challenge[] = [
     category: "spacing",
     difficulty: "medium",
     title: "Borders vs whitespace",
+    prompt: "Which separation method feels cleaner?",
     content: {
       type: "visual",
       left: { componentId: "SpacingBorderSeparation" },

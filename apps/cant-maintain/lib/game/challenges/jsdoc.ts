@@ -6,6 +6,7 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "easy",
     title: "Simple prop documentation",
+    prompt: "Which interface is easier to use without docs?",
     content: {
       type: "code",
 
@@ -39,6 +40,7 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "medium",
     title: "Component documentation",
+    prompt: "Which JSDoc is actually helpful on hover?",
     content: {
       type: "code",
 
@@ -85,6 +87,7 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "medium",
     title: "Callback prop documentation",
+    prompt: "Which documents when callbacks fire?",
     content: {
       type: "code",
 
@@ -127,6 +130,7 @@ export const jsdocChallenges: Challenge[] = [
     category: "jsdoc",
     difficulty: "hard",
     title: "Realistic JSDoc examples",
+    prompt: "Which places JSDoc where IDEs surface it?",
     content: {
       type: "code",
 
@@ -202,6 +206,7 @@ function ConfirmDialog(props: ConfirmDialogProps) {`,
     category: "jsdoc",
     difficulty: "easy",
     title: "Deprecation notice in JSDoc",
+    prompt: "Which deprecation notice is tooling-aware?",
     content: {
       type: "code",
 

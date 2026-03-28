@@ -6,6 +6,7 @@ export const feedbackChallenges: Challenge[] = [
     category: "feedback",
     difficulty: "easy",
     title: "Loading states",
+    prompt: "Which loading experience feels faster?",
     content: {
       type: "visual",
       left: { componentId: "FeedbackBlankLoading" },
@@ -24,6 +25,7 @@ export const feedbackChallenges: Challenge[] = [
     category: "feedback",
     difficulty: "easy",
     title: "Empty states",
+    prompt: "Which empty state guides the user better?",
     content: {
       type: "visual",
       left: { componentId: "FeedbackEmptyBare" },
@@ -42,6 +44,7 @@ export const feedbackChallenges: Challenge[] = [
     category: "feedback",
     difficulty: "medium",
     title: "Error presentation",
+    prompt: "Which error message is more helpful?",
     content: {
       type: "visual",
       left: { componentId: "FeedbackTechnicalError" },
@@ -60,6 +63,7 @@ export const feedbackChallenges: Challenge[] = [
     category: "feedback",
     difficulty: "medium",
     title: "Destructive confirmations",
+    prompt: "Which delete flow is safer for users?",
     content: {
       type: "visual",
       left: { componentId: "FeedbackNoConfirmation" },

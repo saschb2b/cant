@@ -6,6 +6,7 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "easy",
     title: "Component-level vs viewport-level",
+    prompt: "Which query responds to a component's space?",
     content: {
       type: "code",
 
@@ -54,6 +55,7 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "easy",
     title: "Setting up containment",
+    prompt: "Which correctly sets up a container query?",
     content: {
       type: "code",
 
@@ -98,6 +100,7 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "medium",
     title: "Named containers",
+    prompt: "Which avoids ambiguous container matching?",
     content: {
       type: "code",
 
@@ -145,6 +148,7 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "medium",
     title: "Container query units",
+    prompt: "Which scales text relative to its container?",
     content: {
       type: "code",
 
@@ -177,6 +181,7 @@ export const containerQueryChallenges: Challenge[] = [
     category: "container-queries",
     difficulty: "hard",
     title: "Container queries in React components",
+    prompt: "Which adapts layout without JavaScript?",
     content: {
       type: "code",
 

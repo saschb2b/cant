@@ -6,6 +6,7 @@ export const moduleTypeChallenges: Challenge[] = [
     category: "module-types",
     difficulty: "easy",
     title: "Declaration files basics",
+    prompt: "Which provides types for JS modules?",
     content: {
       type: "code",
       left: `// utils.js (no types)
@@ -50,6 +51,7 @@ import { slugify } from "./utils";
     category: "module-types",
     difficulty: "easy",
     title: "Ambient module declarations",
+    prompt: "Which handles CSS and SVG imports?",
     content: {
       type: "code",
       left: `// app.ts
@@ -89,6 +91,7 @@ import logo from "./logo.svg"; // OK`,
     category: "module-types",
     difficulty: "medium",
     title: "Module augmentation",
+    prompt: "Which extends a library type cleanly?",
     content: {
       type: "code",
       left: `// Want to add a custom theme color to MUI
@@ -129,6 +132,7 @@ declare module "@mui/material/styles" {
     category: "module-types",
     difficulty: "medium",
     title: "Global type augmentation",
+    prompt: "Which adds Window properties type-safely?",
     content: {
       type: "code",
       left: `// Adding a property to Window
@@ -167,6 +171,7 @@ window.analytics?.track("page_view");
     category: "module-types",
     difficulty: "hard",
     title: "Type-only imports",
+    prompt: "Which import is guaranteed to be erased?",
     content: {
       type: "code",
       left: `// types.ts
@@ -211,6 +216,7 @@ import { type User, fetchUser } from "./api";`,
     category: "module-types",
     difficulty: "hard",
     title: "declare global for custom hooks",
+    prompt: "Which makes custom matchers type-safe?",
     content: {
       type: "code",
       left: `// Want to add custom matchers to Jest

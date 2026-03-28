@@ -6,6 +6,7 @@ export const childrenPatternChallenges: Challenge[] = [
     category: "children-pattern",
     difficulty: "hard",
     title: "Generic list component",
+    prompt: "Which list API is more self-documenting?",
     content: {
       type: "code",
 
@@ -48,6 +49,7 @@ export const childrenPatternChallenges: Challenge[] = [
     category: "children-pattern",
     difficulty: "hard",
     title: "Compound component API design",
+    prompt: "Which Select API is more flexible?",
     content: {
       type: "code",
 
@@ -98,6 +100,7 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "medium",
     title: "Customizing sub-components",
+    prompt: "Which pattern for sub-component overrides scales?",
     content: {
       type: "code",
 
@@ -144,6 +147,7 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "medium",
     title: "Named content slots",
+    prompt: "Which card API supports richer content?",
     content: {
       type: "code",
 
@@ -180,6 +184,7 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "easy",
     title: "Primary content as children",
+    prompt: "Which pattern is more natural for primary content?",
     content: {
       type: "code",
 
@@ -218,7 +223,8 @@ interface SelectProps {
     id: "cp-006",
     category: "children-pattern",
     difficulty: "easy",
-    title: "Composition over prop drilling",
+    title: "Nested component dependencies",
+    prompt: "Which layout API avoids prop drilling?",
     content: {
       type: "code",
 
@@ -254,6 +260,7 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "medium",
     title: "asChild composition pattern",
+    prompt: "Which composition pattern avoids DOM nesting?",
     content: {
       type: "code",
 
@@ -302,6 +309,7 @@ interface SelectProps {
     category: "children-pattern",
     difficulty: "hard",
     title: "Server Component children in client wrapper",
+    prompt: "Which keeps data off the client bundle?",
     content: {
       type: "code",
 

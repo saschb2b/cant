@@ -6,6 +6,7 @@ export const kubernetesPodsChallenges: Challenge[] = [
     category: "kubernetes-pods",
     difficulty: "easy",
     title: "Deployment vs bare Pod",
+    prompt: "Which way of running pods is more resilient?",
     content: {
       type: "code",
 
@@ -57,6 +58,7 @@ spec:
     category: "kubernetes-pods",
     difficulty: "easy",
     title: "Resource requests and limits",
+    prompt: "Which pod spec manages resources properly?",
     content: {
       type: "code",
 
@@ -115,6 +117,7 @@ spec:
     category: "kubernetes-pods",
     difficulty: "medium",
     title: "Rolling update strategy",
+    prompt: "Which deployment strategy avoids downtime?",
     content: {
       type: "code",
 
@@ -172,6 +175,7 @@ spec:
     category: "kubernetes-pods",
     difficulty: "hard",
     title: "Pod disruption budgets",
+    prompt: "Which setup protects availability during drains?",
     content: {
       type: "code",
 

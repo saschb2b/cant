@@ -6,6 +6,7 @@ export const canonicalUrlsChallenges: Challenge[] = [
     category: "canonical-urls",
     difficulty: "easy",
     title: "Canonical tag reference strategy",
+    prompt: "Which canonical tag approach is correct?",
     content: {
       type: "code",
 
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
     category: "canonical-urls",
     difficulty: "easy",
     title: "Trailing slash consistency",
+    prompt: "Which trailing slash config prevents duplicates?",
     content: {
       type: "code",
 
@@ -81,6 +83,7 @@ export default nextConfig;`,
     category: "canonical-urls",
     difficulty: "medium",
     title: "www vs non-www canonical",
+    prompt: "Which middleware handles www correctly?",
     content: {
       type: "code",
 
@@ -123,6 +126,7 @@ export function middleware(request: NextRequest) {
     category: "canonical-urls",
     difficulty: "medium",
     title: "Canonical for paginated content",
+    prompt: "Which pagination canonical strategy is correct?",
     content: {
       type: "code",
 
@@ -173,6 +177,7 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "hard",
     title: "Cross-domain canonical",
+    prompt: "Which canonical handles syndicated content?",
     content: {
       type: "code",
 
@@ -221,6 +226,7 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "medium",
     title: "Next.js alternates.canonical",
+    prompt: "Which API sets the canonical URL properly?",
     content: {
       type: "code",
 
@@ -271,6 +277,7 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "hard",
     title: "Dynamic canonical from route params",
+    prompt: "Which catch-all canonical approach is better?",
     content: {
       type: "code",
 
@@ -317,6 +324,7 @@ export async function generateMetadata({
     category: "canonical-urls",
     difficulty: "medium",
     title: "Canonical with query parameters",
+    prompt: "Which query parameter handling is better?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const unionIntersectionChallenges: Challenge[] = [
     category: "union-intersection",
     difficulty: "easy",
     title: "Union for variants",
+    prompt: "Which catches invalid status values?",
     content: {
       type: "code",
 
@@ -43,6 +44,7 @@ setStatus("banana");  // Error: not a valid Status`,
     category: "union-intersection",
     difficulty: "easy",
     title: "Discriminated unions with switch",
+    prompt: "Which guarantees data exists when needed?",
     content: {
       type: "code",
 
@@ -89,6 +91,7 @@ function handle(result: Result) {
     category: "union-intersection",
     difficulty: "medium",
     title: "Exhaustive checks with never",
+    prompt: "Which catches missing switch cases at build?",
     content: {
       type: "code",
 
@@ -137,6 +140,7 @@ function area(shape: Shape) {
     category: "union-intersection",
     difficulty: "medium",
     title: "Narrowing unions",
+    prompt: "Which safely accesses variant-specific fields?",
     content: {
       type: "code",
 
@@ -176,6 +180,7 @@ function showPermissions(user: User) {
     category: "union-intersection",
     difficulty: "hard",
     title: "Intersection for composition",
+    prompt: "Which keeps type pieces reusable?",
     content: {
       type: "code",
 
@@ -223,6 +228,7 @@ type User = Identity & Timestamps & Trackable;`,
     category: "union-intersection",
     difficulty: "hard",
     title: "Union vs enum",
+    prompt: "Which adds zero bytes to the bundle?",
     content: {
       type: "code",
 
@@ -261,6 +267,7 @@ move("UP");`,
     category: "union-intersection",
     difficulty: "hard",
     title: "Loose autocomplete with string unions",
+    prompt: "Which preserves autocomplete suggestions?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const imageOptimizationChallenges: Challenge[] = [
     category: "image-optimization",
     difficulty: "easy",
     title: "Base image tag strategies",
+    prompt: "Which base image choice is more reproducible?",
     content: {
       type: "code",
 
@@ -40,6 +41,7 @@ CMD ["node", "server.js"]`,
     category: "image-optimization",
     difficulty: "medium",
     title: "Multi-stage builds",
+    prompt: "Which Dockerfile produces a leaner image?",
     content: {
       type: "code",
 
@@ -85,6 +87,7 @@ CMD ["node", "dist/server.js"]`,
     category: "image-optimization",
     difficulty: "easy",
     title: "Copy package files first for caching",
+    prompt: "Which COPY order caches dependencies better?",
     content: {
       type: "code",
 
@@ -127,6 +130,7 @@ CMD ["node", "dist/server.js"]`,
     category: "image-optimization",
     difficulty: "medium",
     title: "Build context with .dockerignore",
+    prompt: "Which setup keeps the build context small?",
     content: {
       type: "code",
 
@@ -178,6 +182,7 @@ RUN npm ci`,
     category: "image-optimization",
     difficulty: "hard",
     title: "Distroless runtime images",
+    prompt: "Which runtime image has a smaller attack surface?",
     content: {
       type: "code",
 

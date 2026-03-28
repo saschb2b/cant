@@ -6,6 +6,7 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "easy",
     title: "Fluid spacing with clamp",
+    prompt: "Which spacing scales smoothly with the screen?",
     content: {
       type: "code",
 
@@ -41,6 +42,7 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "easy",
     title: "Spacing scale with theme tokens",
+    prompt: "Which uses the MUI spacing system correctly?",
     content: {
       type: "code",
 
@@ -78,6 +80,7 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "medium",
     title: "Responsive spacing with MUI sx",
+    prompt: "Which adjusts spacing without a hook?",
     content: {
       type: "code",
 
@@ -119,6 +122,7 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "medium",
     title: "Logical properties for spacing",
+    prompt: "Which spacing works for RTL languages too?",
     content: {
       type: "code",
 
@@ -151,6 +155,7 @@ export const responsiveSpacingChallenges: Challenge[] = [
     category: "responsive-spacing",
     difficulty: "hard",
     title: "Spacing custom properties with cascade",
+    prompt: "Which spacing tokens need less maintenance?",
     content: {
       type: "code",
 

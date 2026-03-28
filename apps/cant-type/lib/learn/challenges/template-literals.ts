@@ -6,6 +6,7 @@ export const templateLiteralChallenges: Challenge[] = [
     category: "template-literals",
     difficulty: "easy",
     title: "Event name patterns",
+    prompt: "Which catches typos in event names?",
     content: {
       type: "code",
 
@@ -46,6 +47,7 @@ emitter.on("onClick", handleClick);
     category: "template-literals",
     difficulty: "easy",
     title: "Route path types",
+    prompt: "Which validates route path structure?",
     content: {
       type: "code",
 
@@ -87,6 +89,7 @@ navigate("/users/123"); // OK
     category: "template-literals",
     difficulty: "medium",
     title: "String manipulation types",
+    prompt: "Which produces proper camelCase getters?",
     content: {
       type: "code",
 
@@ -125,6 +128,7 @@ type PersonGetters = Getters<Person>;
     category: "template-literals",
     difficulty: "medium",
     title: "Template unions expand combinatorially",
+    prompt: "Which generates all combinations for you?",
     content: {
       type: "code",
 
@@ -164,6 +168,7 @@ type Theme = \`\${Shade}-\${Color}\`;
     category: "template-literals",
     difficulty: "hard",
     title: "Branded string types",
+    prompt: "Which ensures strings are validated first?",
     content: {
       type: "code",
 
@@ -206,6 +211,7 @@ if (email) sendEmail(email); // OK
     category: "template-literals",
     difficulty: "hard",
     title: "Key patterns with template literals",
+    prompt: "Which converts snake_case keys automatically?",
     content: {
       type: "code",
 

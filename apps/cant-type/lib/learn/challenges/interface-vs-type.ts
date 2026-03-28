@@ -6,6 +6,7 @@ export const interfaceVsTypeChallenges: Challenge[] = [
     category: "interface-vs-type",
     difficulty: "easy",
     title: "Interface for object shapes",
+    prompt: "Which catches property conflicts earlier?",
     content: {
       type: "code",
 
@@ -61,6 +62,7 @@ const admin: AdminUser = {
     category: "interface-vs-type",
     difficulty: "easy",
     title: "Type for unions",
+    prompt: "Which models mutually exclusive states?",
     content: {
       type: "code",
 
@@ -106,6 +108,7 @@ type Result = Success | Failure;
     category: "interface-vs-type",
     difficulty: "medium",
     title: "Extending interfaces vs intersecting types",
+    prompt: "Which extension style reports conflicts?",
     content: {
       type: "code",
 
@@ -153,6 +156,7 @@ interface Dog extends Animal {
     category: "interface-vs-type",
     difficulty: "medium",
     title: "Declaration merging",
+    prompt: "Which supports augmenting third-party types?",
     content: {
       type: "code",
 
@@ -198,6 +202,7 @@ declare global {
     category: "interface-vs-type",
     difficulty: "hard",
     title: "Indexed access types",
+    prompt: "Which avoids duplicating nested types?",
     content: {
       type: "code",
 
@@ -256,6 +261,7 @@ type Post = ApiResponse["posts"][number];
     category: "interface-vs-type",
     difficulty: "hard",
     title: "When to use which",
+    prompt: "Which follows the conventional split?",
     content: {
       type: "code",
 

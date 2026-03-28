@@ -6,6 +6,7 @@ export const genericPropsChallenges: Challenge[] = [
     category: "generic-props",
     difficulty: "easy",
     title: "Generic list callback typing",
+    prompt: "Which keeps item types consistent across props?",
     content: {
       type: "code",
 
@@ -35,6 +36,7 @@ export const genericPropsChallenges: Challenge[] = [
     category: "generic-props",
     difficulty: "easy",
     title: "Select component type safety",
+    prompt: "Which constrains values to valid options?",
     content: {
       type: "code",
 
@@ -74,6 +76,7 @@ export const genericPropsChallenges: Challenge[] = [
     category: "generic-props",
     difficulty: "medium",
     title: "Constrained generic props",
+    prompt: "Which catches invalid column keys at build time?",
     content: {
       type: "code",
 
@@ -112,6 +115,7 @@ export const genericPropsChallenges: Challenge[] = [
     category: "generic-props",
     difficulty: "medium",
     title: "Inferred generic from render prop",
+    prompt: "Which adapts to the consumer's data type?",
     content: {
       type: "code",
 
@@ -153,6 +157,7 @@ export const genericPropsChallenges: Challenge[] = [
     category: "generic-props",
     difficulty: "hard",
     title: "Generic form field component",
+    prompt: "Which catches field name typos at compile time?",
     content: {
       type: "code",
 

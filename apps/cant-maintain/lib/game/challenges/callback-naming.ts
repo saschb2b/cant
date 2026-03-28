@@ -6,6 +6,7 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "easy",
     title: "Value change handler",
+    prompt: "Which callback name follows React conventions?",
     content: {
       type: "code",
 
@@ -33,6 +34,7 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "easy",
     title: "Delete action handler",
+    prompt: "Which prop signals an event callback?",
     content: {
       type: "code",
 
@@ -61,6 +63,7 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "easy",
     title: "Form submission",
+    prompt: "Which naming clarifies the parent-child role?",
     content: {
       type: "code",
 
@@ -88,6 +91,7 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "medium",
     title: "Selection handler specificity",
+    prompt: "Which callback name is more descriptive?",
     content: {
       type: "code",
 
@@ -116,6 +120,7 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "hard",
     title: "Close callback with reason",
+    prompt: "Which API lets the parent react to close reasons?",
     content: {
       type: "code",
 
@@ -157,6 +162,7 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "hard",
     title: "Dual-level event callbacks",
+    prompt: "Which slider API handles live and final updates?",
     content: {
       type: "code",
 
@@ -198,6 +204,7 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "medium",
     title: "Drag and drop callbacks",
+    prompt: "Which naming convention is more consistent?",
     content: {
       type: "code",
 
@@ -229,6 +236,7 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "medium",
     title: "Lifecycle callback pairs",
+    prompt: "Which covers the full transition lifecycle?",
     content: {
       type: "code",
 
@@ -274,6 +282,7 @@ interface DialogProps {
     category: "callback-naming",
     difficulty: "hard",
     title: "Promise-returning action callback",
+    prompt: "Which button API manages async state better?",
     content: {
       type: "code",
 

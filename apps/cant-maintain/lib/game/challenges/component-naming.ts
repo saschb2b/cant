@@ -6,6 +6,7 @@ export const componentNamingChallenges: Challenge[] = [
     category: "component-naming",
     difficulty: "easy",
     title: "Over-specific component name",
+    prompt: "Which component name is more reusable?",
     content: {
       type: "code",
 
@@ -52,6 +53,7 @@ export const componentNamingChallenges: Challenge[] = [
     category: "component-naming",
     difficulty: "easy",
     title: "Ambiguous generic name",
+    prompt: "Which name tells you what it renders?",
     content: {
       type: "code",
 
@@ -105,6 +107,7 @@ export const componentNamingChallenges: Challenge[] = [
     category: "component-naming",
     difficulty: "medium",
     title: "Redundant component splitting",
+    prompt: "Which decomposition is easier to maintain?",
     content: {
       type: "code",
 
@@ -165,6 +168,7 @@ function UserProfileAvatar({ src }: { src: string }) {
     category: "component-naming",
     difficulty: "easy",
     title: "Naming after implementation",
+    prompt: "Which name describes purpose, not layout?",
     content: {
       type: "code",
 
@@ -224,6 +228,7 @@ function UserProfileAvatar({ src }: { src: string }) {
     category: "component-naming",
     difficulty: "easy",
     title: "Verb-based component name",
+    prompt: "Which follows React naming conventions?",
     content: {
       type: "code",
 
@@ -268,7 +273,8 @@ function UserProfileAvatar({ src }: { src: string }) {
     id: "cn-006",
     category: "component-naming",
     difficulty: "medium",
-    title: "Merging related components",
+    title: "Related component boundaries",
+    prompt: "Which approach scales to more variants?",
     content: {
       type: "code",
 
@@ -324,6 +330,7 @@ function WarningAlert({
     category: "component-naming",
     difficulty: "hard",
     title: "Compound component naming",
+    prompt: "Which naming makes the hierarchy clear?",
     content: {
       type: "code",
 
@@ -399,6 +406,7 @@ Menu.Divider = function MenuDivider() {
     category: "component-naming",
     difficulty: "medium",
     title: "Technical suffix pollution",
+    prompt: "Which name matches what the component does?",
     content: {
       type: "code",
 

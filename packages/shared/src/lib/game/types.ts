@@ -70,8 +70,8 @@ export type ChallengeContent =
 export interface BaseChallenge {
   id: string;
   title: string;
-  /** Optional question shown as the game prompt, e.g. "Which molecule is the stronger base?" When omitted, the Game component falls back to its `promptText` prop. */
-  prompt?: string;
+  /** Question shown as the game prompt, e.g. "Which molecule is the stronger base?" */
+  prompt: string;
   category: string;
   difficulty: Difficulty;
   content: ChallengeContent;

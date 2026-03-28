@@ -6,6 +6,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "easy",
     title: "Button size: booleans vs enum",
+    prompt: "Which size API prevents conflicting values?",
     content: {
       type: "code",
 
@@ -35,6 +36,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "easy",
     title: "Alert severity levels",
+    prompt: "Which enforces exactly one severity?",
     content: {
       type: "code",
 
@@ -66,6 +68,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "medium",
     title: "Chip visual variants",
+    prompt: "Which separates independent visual dimensions?",
     content: {
       type: "code",
 
@@ -103,6 +106,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "easy",
     title: "Text alignment prop",
+    prompt: "Which alignment API is more concise?",
     content: {
       type: "code",
 
@@ -134,6 +138,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "medium",
     title: "Loading state representation",
+    prompt: "Which models async state as a state machine?",
     content: {
       type: "code",
 
@@ -166,6 +171,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "hard",
     title: "Icon position variants",
+    prompt: "Which handles icon-only buttons correctly?",
     content: {
       type: "code",
 
@@ -202,6 +208,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "medium",
     title: "Spacing scale vs arbitrary numbers",
+    prompt: "Which enforces design system consistency?",
     content: {
       type: "code",
 
@@ -235,6 +242,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     category: "enumerated-variants",
     difficulty: "hard",
     title: "Multi-dimensional boolean explosion",
+    prompt: "Which eliminates invalid combinations?",
     content: {
       type: "code",
 

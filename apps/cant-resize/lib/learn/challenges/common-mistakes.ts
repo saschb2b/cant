@@ -6,6 +6,7 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Fixed width containers",
+    prompt: "Which container sizing adapts to any screen?",
     content: {
       type: "code",
 
@@ -35,6 +36,7 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Touch target size",
+    prompt: "Which button is more touch-friendly?",
     content: {
       type: "code",
 
@@ -67,6 +69,7 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "medium",
     title: "Forgetting the viewport meta tag",
+    prompt: "Which head setup enables responsive design?",
     content: {
       type: "code",
 
@@ -99,6 +102,7 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "medium",
     title: "Landscape orientation",
+    prompt: "Which handles landscape orientation correctly?",
     content: {
       type: "code",
 
@@ -139,6 +143,7 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "hard",
     title: "Pixel assumptions in responsive design",
+    prompt: "Which avoids hardcoded device assumptions?",
     content: {
       type: "code",
 

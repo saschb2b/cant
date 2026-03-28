@@ -6,6 +6,7 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "easy",
     title: "Preventing layout shift with aspect ratio",
+    prompt: "Which image tag prevents layout shift?",
     content: {
       type: "code",
 
@@ -38,6 +39,7 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "easy",
     title: "Native img vs Next.js image component",
+    prompt: "Which serves optimized images automatically?",
     content: {
       type: "code",
 
@@ -72,6 +74,7 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "medium",
     title: "Art direction with picture element",
+    prompt: "Which serves different crops per screen size?",
     content: {
       type: "code",
 
@@ -121,6 +124,7 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "medium",
     title: "Correct sizes attribute",
+    prompt: "Which sizes attribute saves bandwidth?",
     content: {
       type: "code",
 
@@ -159,6 +163,7 @@ export const responsiveImageChallenges: Challenge[] = [
     category: "responsive-images",
     difficulty: "hard",
     title: "Responsive background images",
+    prompt: "Which serves appropriate background images?",
     content: {
       type: "code",
 

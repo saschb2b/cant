@@ -6,6 +6,7 @@ export const internationalizationChallenges: Challenge[] = [
     category: "internationalization",
     difficulty: "easy",
     title: "hreflang tags for language variants",
+    prompt: "Which setup helps Google serve the right language?",
     content: {
       type: "code",
 
@@ -48,6 +49,7 @@ export const metadata: Metadata = {
     category: "internationalization",
     difficulty: "medium",
     title: "x-default hreflang",
+    prompt: "Which hreflang setup covers all users?",
     content: {
       type: "code",
 
@@ -99,6 +101,7 @@ export async function generateMetadata({
     category: "internationalization",
     difficulty: "medium",
     title: "Next.js alternates.languages per page",
+    prompt: "Which hreflang scope is more accurate?",
     content: {
       type: "code",
 
@@ -153,6 +156,7 @@ export async function generateMetadata({
     category: "internationalization",
     difficulty: "easy",
     title: "Locale in URL path",
+    prompt: "Which locale routing is crawlable?",
     content: {
       type: "code",
 
@@ -202,6 +206,7 @@ export function middleware(request: NextRequest) {
     category: "internationalization",
     difficulty: "hard",
     title: "Domain-based locale routing",
+    prompt: "Which domain strategy is stronger for geo SEO?",
     content: {
       type: "code",
 
@@ -251,6 +256,7 @@ export function middleware(request: NextRequest) {
     category: "internationalization",
     difficulty: "medium",
     title: "Translated metadata",
+    prompt: "Which metadata approach fits localized pages?",
     content: {
       type: "code",
 
@@ -307,6 +313,7 @@ export async function generateMetadata({
     category: "internationalization",
     difficulty: "easy",
     title: "lang attribute on html element",
+    prompt: "Which layout sets the page language correctly?",
     content: {
       type: "code",
 
@@ -353,6 +360,7 @@ export default function LocaleLayout({
     category: "internationalization",
     difficulty: "hard",
     title: "Right-to-left language support",
+    prompt: "Which layout supports RTL languages?",
     content: {
       type: "code",
 

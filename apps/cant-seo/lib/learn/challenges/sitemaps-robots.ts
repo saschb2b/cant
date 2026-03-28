@@ -6,6 +6,7 @@ export const sitemapsRobotsChallenges: Challenge[] = [
     category: "sitemaps-robots",
     difficulty: "easy",
     title: "Next.js sitemap.ts file",
+    prompt: "Which sitemap approach stays in sync?",
     content: {
       type: "code",
 
@@ -59,6 +60,7 @@ export default function sitemap():
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "Dynamic sitemap from database",
+    prompt: "Which sitemap handles new content better?",
     content: {
       type: "code",
 
@@ -115,6 +117,7 @@ export default async function sitemap():
     category: "sitemaps-robots",
     difficulty: "easy",
     title: "robots.ts allow and disallow",
+    prompt: "Which robots config protects crawl budget?",
     content: {
       type: "code",
 
@@ -152,6 +155,7 @@ export default function robots():
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "noindex vs disallow difference",
+    prompt: "Which method truly removes a page from search?",
     content: {
       type: "code",
 
@@ -208,6 +212,7 @@ export default function robots():
     category: "sitemaps-robots",
     difficulty: "hard",
     title: "Sitemap index for large sites",
+    prompt: "Which sitemap setup handles 100k+ URLs?",
     content: {
       type: "code",
 
@@ -269,6 +274,7 @@ export default async function sitemap({
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "Robots meta tag per page",
+    prompt: "Which approach keeps staging out of search?",
     content: {
       type: "code",
 
@@ -312,6 +318,7 @@ export const metadata: Metadata = {
     category: "sitemaps-robots",
     difficulty: "medium",
     title: "Accurate lastModified dates",
+    prompt: "Which lastModified value helps crawlers more?",
     content: {
       type: "code",
 
@@ -350,6 +357,7 @@ export default async function sitemap():
     category: "sitemaps-robots",
     difficulty: "hard",
     title: "Sitemap priority values",
+    prompt: "Which priority assignment is more meaningful?",
     content: {
       type: "code",
 

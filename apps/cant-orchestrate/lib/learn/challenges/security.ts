@@ -6,6 +6,7 @@ export const securityChallenges: Challenge[] = [
     category: "security",
     difficulty: "easy",
     title: "Container user privileges",
+    prompt: "Which container has least-privilege access?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ CMD ["node", "server.js"]`,
     category: "security",
     difficulty: "easy",
     title: "Secret management in Dockerfiles",
+    prompt: "Which Dockerfile keeps secrets out of layers?",
     content: {
       type: "code",
 
@@ -85,6 +87,7 @@ CMD ["node", "server.js"]`,
     category: "security",
     difficulty: "medium",
     title: "Read-only root filesystem",
+    prompt: "Which filesystem setup limits attacker damage?",
     content: {
       type: "code",
 
@@ -119,6 +122,7 @@ CMD ["node", "server.js"]`,
     category: "security",
     difficulty: "medium",
     title: "Kubernetes secrets as volumes",
+    prompt: "Which approach protects secrets in pod specs?",
     content: {
       type: "code",
 
@@ -167,6 +171,7 @@ spec:
     category: "security",
     difficulty: "hard",
     title: "Linux capabilities in containers",
+    prompt: "Which security context hardens the container?",
     content: {
       type: "code",
 

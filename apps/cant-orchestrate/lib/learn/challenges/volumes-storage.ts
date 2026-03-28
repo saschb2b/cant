@@ -6,6 +6,7 @@ export const volumesStorageChallenges: Challenge[] = [
     category: "volumes-storage",
     difficulty: "easy",
     title: "Named volumes vs anonymous volumes",
+    prompt: "Which volume type is easier to manage?",
     content: {
       type: "code",
 
@@ -42,6 +43,7 @@ volumes:
     category: "volumes-storage",
     difficulty: "medium",
     title: "Bind mounts for development",
+    prompt: "Which bind mount preserves container dependencies?",
     content: {
       type: "code",
 
@@ -76,6 +78,7 @@ volumes:
     category: "volumes-storage",
     difficulty: "medium",
     title: "Read-only bind mounts",
+    prompt: "Which mount option protects host files?",
     content: {
       type: "code",
 
@@ -112,6 +115,7 @@ volumes:
     category: "volumes-storage",
     difficulty: "hard",
     title: "tmpfs for sensitive temp data",
+    prompt: "Which storage keeps temp data out of disk?",
     content: {
       type: "code",
 

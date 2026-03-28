@@ -6,6 +6,7 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "easy",
     title: "flex-wrap for natural reflow",
+    prompt: "Which wraps items based on available space?",
     content: {
       type: "code",
 
@@ -46,6 +47,7 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "easy",
     title: "Gap vs margin for spacing",
+    prompt: "Which spacing method is cleaner in flexbox?",
     content: {
       type: "code",
 
@@ -82,6 +84,7 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "medium",
     title: "flex-shrink for graceful overflow",
+    prompt: "Which toolbar handles overflow gracefully?",
     content: {
       type: "code",
 
@@ -138,6 +141,7 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "medium",
     title: "Holy grail layout with flexbox",
+    prompt: "Which layout adapts without media queries?",
     content: {
       type: "code",
 
@@ -182,6 +186,7 @@ export const flexboxPatternChallenges: Challenge[] = [
     category: "flexbox-patterns",
     difficulty: "hard",
     title: "Responsive alignment with margin-auto",
+    prompt: "Which header alignment avoids useMediaQuery?",
     content: {
       type: "code",
 

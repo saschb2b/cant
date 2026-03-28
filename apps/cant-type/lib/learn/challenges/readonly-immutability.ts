@@ -6,6 +6,7 @@ export const readonlyImmutabilityChallenges: Challenge[] = [
     category: "readonly-immutability",
     difficulty: "easy",
     title: "Readonly properties prevent accidental mutation",
+    prompt: "Which prevents accidental reassignment?",
     content: {
       type: "code",
 
@@ -52,6 +53,7 @@ const config: Config = {
     category: "readonly-immutability",
     difficulty: "easy",
     title: "Readonly<T> utility type",
+    prompt: "Which signals the function only reads data?",
     content: {
       type: "code",
 
@@ -101,6 +103,7 @@ function promoteUser(user: User) {
     category: "readonly-immutability",
     difficulty: "medium",
     title: "ReadonlyArray prevents mutations",
+    prompt: "Which avoids mutating the original array?",
     content: {
       type: "code",
 
@@ -149,6 +152,7 @@ const top3 = getTopScores(allScores);
     category: "readonly-immutability",
     difficulty: "medium",
     title: "as const for tuple inference",
+    prompt: "Which produces a useful union type?",
     content: {
       type: "code",
 
@@ -193,6 +197,7 @@ setColor("red");    // OK
     category: "readonly-immutability",
     difficulty: "hard",
     title: "Deep readonly for nested objects",
+    prompt: "Which protects nested properties too?",
     content: {
       type: "code",
 
@@ -256,6 +261,7 @@ const state: DeepReadonly<AppState> = {
     category: "readonly-immutability",
     difficulty: "hard",
     title: "Readonly function parameters",
+    prompt: "Which keeps the caller's data untouched?",
     content: {
       type: "code",
 

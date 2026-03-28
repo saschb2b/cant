@@ -6,6 +6,7 @@ export const helmChartsChallenges: Challenge[] = [
     category: "helm-charts",
     difficulty: "easy",
     title: "Values over hardcoded manifests",
+    prompt: "Which Helm template is more reusable?",
     content: {
       type: "code",
 
@@ -56,6 +57,7 @@ spec:
     category: "helm-charts",
     difficulty: "medium",
     title: "Named templates for reuse",
+    prompt: "Which label management avoids duplication?",
     content: {
       type: "code",
 
@@ -109,6 +111,7 @@ metadata:
     category: "helm-charts",
     difficulty: "medium",
     title: "Chart hooks for migrations",
+    prompt: "Which migration strategy runs at the right time?",
     content: {
       type: "code",
 
@@ -161,6 +164,7 @@ spec:
     category: "helm-charts",
     difficulty: "hard",
     title: "Conditional resources with if/else",
+    prompt: "Which chart adapts to different environments?",
     content: {
       type: "code",
 

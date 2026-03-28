@@ -6,6 +6,7 @@ export const metaTagsChallenges: Challenge[] = [
     category: "meta-tags",
     difficulty: "easy",
     title: "Page title via metadata API",
+    prompt: "Which way of setting the page title is correct?",
     content: {
       type: "code",
 
@@ -55,6 +56,7 @@ export default function AboutPage() {
     category: "meta-tags",
     difficulty: "easy",
     title: "Meta description length",
+    prompt: "Which meta description is more effective?",
     content: {
       type: "code",
 
@@ -91,6 +93,7 @@ export const metadata: Metadata = {
     category: "meta-tags",
     difficulty: "easy",
     title: "Viewport meta tag",
+    prompt: "Which viewport configuration is correct?",
     content: {
       type: "code",
 
@@ -156,6 +159,7 @@ export default function RootLayout({
     category: "meta-tags",
     difficulty: "medium",
     title: "Dynamic metadata with generateMetadata",
+    prompt: "Which metadata approach fits dynamic routes?",
     content: {
       type: "code",
 
@@ -215,6 +219,7 @@ export default async function BlogPost({
     category: "meta-tags",
     difficulty: "medium",
     title: "Title template in root layout",
+    prompt: "Which title pattern scales better across pages?",
     content: {
       type: "code",
 
@@ -266,6 +271,7 @@ export const metadata: Metadata = {
     category: "meta-tags",
     difficulty: "medium",
     title: "Metadata merging across layouts",
+    prompt: "Which layout preserves OG fields correctly?",
     content: {
       type: "code",
 
@@ -322,6 +328,7 @@ export const metadata: Metadata = {
     category: "meta-tags",
     difficulty: "medium",
     title: "Robots meta per page",
+    prompt: "Which approach blocks indexing more reliably?",
     content: {
       type: "code",
 
@@ -367,6 +374,7 @@ export default function Dashboard() {
     category: "meta-tags",
     difficulty: "hard",
     title: "Charset and language attributes",
+    prompt: "Which root layout setup is more complete?",
     content: {
       type: "code",
 

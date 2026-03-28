@@ -6,6 +6,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "easy",
     title: "Toggle component API",
+    prompt: "Which toggle API mirrors native HTML?",
     content: {
       type: "code",
 
@@ -34,6 +35,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "easy",
     title: "Default value naming",
+    prompt: "Which naming follows uncontrolled conventions?",
     content: {
       type: "code",
 
@@ -66,6 +68,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "medium",
     title: "Dual-mode component API",
+    prompt: "Which supports both controlled and uncontrolled?",
     content: {
       type: "code",
 
@@ -103,6 +106,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "medium",
     title: "Multi-value controlled pattern",
+    prompt: "Which controlled API handles all mutations?",
     content: {
       type: "code",
 
@@ -139,6 +143,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "hard",
     title: "Multiple controlled dimensions",
+    prompt: "Which naming is predictable across dimensions?",
     content: {
       type: "code",
 
@@ -186,6 +191,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "medium",
     title: "Resetting uncontrolled state",
+    prompt: "Which resets internal state more cleanly?",
     content: {
       type: "code",
 
@@ -226,6 +232,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
     category: "controlled-uncontrolled",
     difficulty: "easy",
     title: "Resetting state on prop change",
+    prompt: "Which avoids stale state when the user changes?",
     content: {
       type: "code",
 

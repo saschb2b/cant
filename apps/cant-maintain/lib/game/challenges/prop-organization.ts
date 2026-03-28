@@ -5,7 +5,8 @@ export const propOrganizationChallenges: Challenge[] = [
     id: "po-001",
     category: "prop-organization",
     difficulty: "easy",
-    title: "Group related data props",
+    title: "Related data prop structure",
+    prompt: "Which organizes related props better?",
     content: {
       type: "code",
 
@@ -42,7 +43,8 @@ interface ProfileCardProps {
     id: "po-002",
     category: "prop-organization",
     difficulty: "easy",
-    title: "Remove derived props",
+    title: "Derived vs source props",
+    prompt: "Which avoids redundant sources of truth?",
     content: {
       type: "code",
 
@@ -78,6 +80,7 @@ interface ProfileCardProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Boolean flag explosion",
+    prompt: "Which prevents conflicting style combinations?",
     content: {
       type: "code",
 
@@ -119,6 +122,7 @@ interface ProfileCardProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Structure flat coordinate props",
+    prompt: "Which uses domain-specific naming?",
     content: {
       type: "code",
 
@@ -161,7 +165,8 @@ interface MapViewProps {
     id: "po-005",
     category: "prop-organization",
     difficulty: "hard",
-    title: "Extract sub-component via slot",
+    title: "Complex prop dependencies",
+    prompt: "Which keeps the component API focused?",
     content: {
       type: "code",
 
@@ -213,6 +218,7 @@ interface MapViewProps {
     category: "prop-organization",
     difficulty: "hard",
     title: "Encapsulate internal state",
+    prompt: "Which hides UI interaction details from parents?",
     content: {
       type: "code",
 
@@ -257,6 +263,7 @@ interface MapViewProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Inline objects create new references",
+    prompt: "Which avoids unnecessary re-renders?",
     content: {
       type: "code",
 
@@ -304,6 +311,7 @@ function Dashboard() {
     category: "prop-organization",
     difficulty: "medium",
     title: "Cross-cutting concern in display component",
+    prompt: "Which separates tracking from display logic?",
     content: {
       type: "code",
 

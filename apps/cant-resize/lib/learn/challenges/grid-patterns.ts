@@ -6,6 +6,7 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "easy",
     title: "auto-fill vs fixed columns",
+    prompt: "Which grid adjusts columns automatically?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "easy",
     title: "auto-fill vs auto-fit",
+    prompt: "Which lets items stretch to fill the row?",
     content: {
       type: "code",
 
@@ -83,6 +85,7 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "medium",
     title: "Responsive grid with subgrid",
+    prompt: "Which aligns card footers across a row?",
     content: {
       type: "code",
 
@@ -134,6 +137,7 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "medium",
     title: "Grid areas for layout reordering",
+    prompt: "Which reorders layout more readably?",
     content: {
       type: "code",
 
@@ -186,6 +190,7 @@ export const gridPatternChallenges: Challenge[] = [
     category: "grid-patterns",
     difficulty: "hard",
     title: "Full-bleed layout with grid",
+    prompt: "Which full-bleed approach avoids scrollbar bugs?",
     content: {
       type: "code",
 

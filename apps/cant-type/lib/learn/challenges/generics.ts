@@ -6,6 +6,7 @@ export const genericsChallenges: Challenge[] = [
     category: "generics",
     difficulty: "easy",
     title: "Generic functions vs any",
+    prompt: "Which preserves the element type?",
     content: {
       type: "code",
 
@@ -40,6 +41,7 @@ val.toFixed(2); // OK, checked by compiler`,
     category: "generics",
     difficulty: "easy",
     title: "Inference over explicit types",
+    prompt: "Which call style is less redundant?",
     content: {
       type: "code",
 
@@ -74,6 +76,7 @@ const num = identity(42); // number`,
     category: "generics",
     difficulty: "medium",
     title: "Constraints with extends",
+    prompt: "Which allows safe access to .length?",
     content: {
       type: "code",
 
@@ -108,6 +111,7 @@ getLength(42);           // Error: number has no length`,
     category: "generics",
     difficulty: "medium",
     title: "Generic interfaces",
+    prompt: "Which response type gives full autocomplete?",
     content: {
       type: "code",
 
@@ -149,6 +153,7 @@ res.data.name; // string, autocomplete works`,
     category: "generics",
     difficulty: "hard",
     title: "keyof constraints",
+    prompt: "Which catches typos in property names?",
     content: {
       type: "code",
 
@@ -185,6 +190,7 @@ getProperty(user, "naem");  // Error: not in keyof`,
     category: "generics",
     difficulty: "hard",
     title: "Default type parameters",
+    prompt: "Which lets callers omit the type argument?",
     content: {
       type: "code",
 
@@ -234,6 +240,7 @@ const meta: PaginatedList = {
     category: "generics",
     difficulty: "hard",
     title: "NoInfer to control inference sites",
+    prompt: "Which restricts initial to valid states?",
     content: {
       type: "code",
 
@@ -276,6 +283,7 @@ createFSM({
     category: "generics",
     difficulty: "hard",
     title: "const type parameters for literal inference",
+    prompt: "Which preserves literal string values?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "easy",
     title: "DevTools device mode vs real devices",
+    prompt: "Which testing strategy catches more bugs?",
     content: {
       type: "code",
 
@@ -43,6 +44,7 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "easy",
     title: "Testing with the responsive viewer",
+    prompt: "Which workflow gives faster visual feedback?",
     content: {
       type: "code",
 
@@ -75,6 +77,7 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "medium",
     title: "Viewport testing in Playwright",
+    prompt: "Which test verifies mobile layout correctly?",
     content: {
       type: "code",
 
@@ -118,6 +121,7 @@ export const testingResponsiveChallenges: Challenge[] = [
     category: "testing-responsive",
     difficulty: "medium",
     title: "Visual regression for responsive layouts",
+    prompt: "Which catches breakpoint-specific regressions?",
     content: {
       type: "code",
 
@@ -160,6 +164,7 @@ for (const vp of viewports) {
     category: "testing-responsive",
     difficulty: "hard",
     title: "Testing responsive behavior, not pixel values",
+    prompt: "Which test is more resilient to CSS changes?",
     content: {
       type: "code",
 

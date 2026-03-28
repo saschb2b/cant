@@ -6,6 +6,7 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "easy",
     title: "Container DNS resolution",
+    prompt: "Which service hostname approach is more reliable?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "easy",
     title: "Bind to specific interface",
+    prompt: "Which port binding is safer for development?",
     content: {
       type: "code",
 
@@ -78,6 +80,7 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "medium",
     title: "Expose vs ports",
+    prompt: "Which config limits unnecessary port exposure?",
     content: {
       type: "code",
 
@@ -123,6 +126,7 @@ export const networkingChallenges: Challenge[] = [
     category: "networking",
     difficulty: "hard",
     title: "Custom bridge network for isolation",
+    prompt: "Which network setup provides better isolation?",
     content: {
       type: "code",
 

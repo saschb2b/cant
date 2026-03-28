@@ -6,6 +6,7 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "easy",
     title: "Mobile-first utility classes",
+    prompt: "Which applies Tailwind prefixes correctly?",
     content: {
       type: "code",
 
@@ -33,6 +34,7 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "easy",
     title: "Responsive hiding",
+    prompt: "Which hides an element without JavaScript?",
     content: {
       type: "code",
 
@@ -64,6 +66,7 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "medium",
     title: "Responsive grid columns",
+    prompt: "Which grid is usable on all screen sizes?",
     content: {
       type: "code",
 
@@ -93,6 +96,7 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "medium",
     title: "Container queries in Tailwind",
+    prompt: "Which responds to the parent's width?",
     content: {
       type: "code",
 
@@ -127,6 +131,7 @@ export const tailwindResponsiveChallenges: Challenge[] = [
     category: "tailwind-responsive",
     difficulty: "medium",
     title: "Responsive typography with Tailwind",
+    prompt: "Which heading size adapts across breakpoints?",
     content: {
       type: "code",
 

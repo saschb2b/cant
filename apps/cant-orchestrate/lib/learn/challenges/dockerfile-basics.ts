@@ -6,6 +6,7 @@ export const dockerfileBasicsChallenges: Challenge[] = [
     category: "dockerfile-basics",
     difficulty: "easy",
     title: "COPY vs ADD",
+    prompt: "Which instruction copies files more predictably?",
     content: {
       type: "code",
 
@@ -44,6 +45,7 @@ CMD ["node", "server.js"]`,
     category: "dockerfile-basics",
     difficulty: "easy",
     title: "CMD exec form vs shell form",
+    prompt: "Which CMD form handles signals correctly?",
     content: {
       type: "code",
 
@@ -79,6 +81,7 @@ CMD ["npm", "start"]`,
     category: "dockerfile-basics",
     difficulty: "medium",
     title: "ENTRYPOINT + CMD",
+    prompt: "Which setup allows flexible runtime arguments?",
     content: {
       type: "code",
 
@@ -116,6 +119,7 @@ CMD ["--port", "8080"]`,
     category: "dockerfile-basics",
     difficulty: "medium",
     title: "Minimize RUN layers",
+    prompt: "Which RUN instruction produces a smaller image?",
     content: {
       type: "code",
 
@@ -153,6 +157,7 @@ RUN apt-get update && \\
     category: "dockerfile-basics",
     difficulty: "hard",
     title: "WORKDIR vs cd in RUN",
+    prompt: "Which approach sets the working directory properly?",
     content: {
       type: "code",
 

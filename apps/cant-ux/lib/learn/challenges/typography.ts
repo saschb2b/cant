@@ -6,6 +6,7 @@ export const typographyChallenges: Challenge[] = [
     category: "typography",
     difficulty: "easy",
     title: "Size-only hierarchy",
+    prompt: "Which heading hierarchy works better?",
     content: {
       type: "visual",
       left: { componentId: "TypoSizeOnlyHierarchy" },
@@ -24,6 +25,7 @@ export const typographyChallenges: Challenge[] = [
     category: "typography",
     difficulty: "easy",
     title: "Line length",
+    prompt: "Which line length is more comfortable?",
     content: {
       type: "visual",
       left: { componentId: "TypoLongLines" },
@@ -42,6 +44,7 @@ export const typographyChallenges: Challenge[] = [
     category: "typography",
     difficulty: "easy",
     title: "Line height",
+    prompt: "Which paragraph spacing reads better?",
     content: {
       type: "visual",
       left: { componentId: "TypoTightLeading" },
@@ -60,6 +63,7 @@ export const typographyChallenges: Challenge[] = [
     category: "typography",
     difficulty: "medium",
     title: "Type scale",
+    prompt: "Which type scale feels more harmonious?",
     content: {
       type: "visual",
       left: { componentId: "TypoNoScale" },

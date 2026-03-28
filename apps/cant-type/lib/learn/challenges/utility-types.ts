@@ -6,6 +6,7 @@ export const utilityTypeChallenges: Challenge[] = [
     category: "utility-types",
     difficulty: "easy",
     title: "Partial for updates",
+    prompt: "Which lets callers update a single field?",
     content: {
       type: "code",
       left: `interface User {
@@ -50,6 +51,7 @@ updateUser("1", { name: "Alice" }); // OK`,
     category: "utility-types",
     difficulty: "easy",
     title: "Pick for subsets",
+    prompt: "Which derives the subset from the source?",
     content: {
       type: "code",
       left: `interface User {
@@ -91,6 +93,7 @@ type UserPreview = Pick<User, "id" | "name" | "email">;`,
     category: "utility-types",
     difficulty: "medium",
     title: "Omit for exclusion",
+    prompt: "Which excludes sensitive fields automatically?",
     content: {
       type: "code",
       left: `interface DbUser {
@@ -130,6 +133,7 @@ type PublicUser = Omit<DbUser, "passwordHash">;`,
     category: "utility-types",
     difficulty: "medium",
     title: "Record for maps",
+    prompt: "Which enforces that all keys are present?",
     content: {
       type: "code",
       left: `// Using a plain object with index signature
@@ -167,6 +171,7 @@ themes.forest; // Error: not in Theme`,
     category: "utility-types",
     difficulty: "hard",
     title: "Extract and Exclude for unions",
+    prompt: "Which filters union members automatically?",
     content: {
       type: "code",
       left: `type Event =
@@ -203,6 +208,7 @@ type NonMouseEvent = Exclude<AppEvent, { type: "click" }>;
     category: "utility-types",
     difficulty: "hard",
     title: "ReturnType and Parameters",
+    prompt: "Which derives types from the function?",
     content: {
       type: "code",
       left: `// Manually typing what the function returns
@@ -238,6 +244,7 @@ type CreateArgs = Parameters<typeof createUser>;
     category: "utility-types",
     difficulty: "medium",
     title: "Prettify intersections for readability",
+    prompt: "Which shows a clean type on hover?",
     content: {
       type: "code",
       left: `type User = { name: string } &
@@ -275,6 +282,7 @@ type User = Prettify<
     category: "utility-types",
     difficulty: "medium",
     title: "Array element type with indexed access",
+    prompt: "Which keeps the array and type in sync?",
     content: {
       type: "code",
       left: `const ROLES = ["admin", "editor", "viewer"] as const;

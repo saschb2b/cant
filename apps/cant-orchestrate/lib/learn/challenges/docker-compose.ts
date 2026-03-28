@@ -6,6 +6,7 @@ export const dockerComposeChallenges: Challenge[] = [
     category: "docker-compose",
     difficulty: "easy",
     title: "depends_on with health checks",
+    prompt: "Which service dependency setup is more reliable?",
     content: {
       type: "code",
 
@@ -54,6 +55,7 @@ export const dockerComposeChallenges: Challenge[] = [
     category: "docker-compose",
     difficulty: "easy",
     title: "Named volumes for persistence",
+    prompt: "Which database setup preserves data on restart?",
     content: {
       type: "code",
 
@@ -91,6 +93,7 @@ volumes:
     category: "docker-compose",
     difficulty: "medium",
     title: "Managing optional services",
+    prompt: "Which Compose setup handles optional services?",
     content: {
       type: "code",
 
@@ -149,6 +152,7 @@ volumes:
     category: "docker-compose",
     difficulty: "medium",
     title: "Explicit network isolation",
+    prompt: "Which network layout isolates services properly?",
     content: {
       type: "code",
 

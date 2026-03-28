@@ -6,6 +6,7 @@ export const booleanNamingChallenges: Challenge[] = [
     category: "boolean-naming",
     difficulty: "easy",
     title: "Loading state prop",
+    prompt: "Which boolean prop name is less ambiguous?",
     content: {
       type: "code",
 
@@ -33,6 +34,7 @@ export const booleanNamingChallenges: Challenge[] = [
     category: "boolean-naming",
     difficulty: "easy",
     title: "Visibility toggle",
+    prompt: "Which modal API follows React conventions?",
     content: {
       type: "code",
 
@@ -62,6 +64,7 @@ export const booleanNamingChallenges: Challenge[] = [
     category: "boolean-naming",
     difficulty: "medium",
     title: "Opt-out boolean naming",
+    prompt: "Which prefix is clearer for opt-out booleans?",
     content: {
       type: "code",
 
@@ -101,6 +104,7 @@ export const booleanNamingChallenges: Challenge[] = [
     category: "boolean-naming",
     difficulty: "medium",
     title: "Intent-specific boolean prefixes",
+    prompt: "Which prefixes better express intent?",
     content: {
       type: "code",
 
@@ -142,6 +146,7 @@ export const booleanNamingChallenges: Challenge[] = [
     category: "boolean-naming",
     difficulty: "hard",
     title: "Complex boolean props",
+    prompt: "Which naming makes boolean types obvious?",
     content: {
       type: "code",
 
@@ -197,6 +202,7 @@ export const booleanNamingChallenges: Challenge[] = [
     category: "boolean-naming",
     difficulty: "medium",
     title: "Native HTML booleans vs custom booleans",
+    prompt: "Which handles native vs custom booleans right?",
     content: {
       type: "code",
 

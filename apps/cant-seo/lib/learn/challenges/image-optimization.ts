@@ -6,6 +6,7 @@ export const imageOptimizationChallenges: Challenge[] = [
     category: "image-optimization",
     difficulty: "easy",
     title: "opengraph-image.tsx convention",
+    prompt: "Which OG image approach is more effective?",
     content: {
       type: "code",
 
@@ -68,6 +69,7 @@ export default async function Image({
     category: "image-optimization",
     difficulty: "easy",
     title: "Correct OG image dimensions",
+    prompt: "Which OG image size is recommended?",
     content: {
       type: "code",
 
@@ -138,6 +140,7 @@ export default function Image() {
     category: "image-optimization",
     difficulty: "medium",
     title: "next/image sizes attribute",
+    prompt: "Which hero image setup is more responsive?",
     content: {
       type: "code",
 
@@ -186,6 +189,7 @@ export function Hero() {
     category: "image-optimization",
     difficulty: "medium",
     title: "LCP image loading strategies",
+    prompt: "Which loading strategy improves LCP?",
     content: {
       type: "code",
 
@@ -241,6 +245,7 @@ export function Hero() {
     category: "image-optimization",
     difficulty: "medium",
     title: "Modern image formats",
+    prompt: "Which image optimization config is better?",
     content: {
       type: "code",
 
@@ -298,6 +303,7 @@ export function ProductCard({
     category: "image-optimization",
     difficulty: "medium",
     title: "Blur placeholder for images",
+    prompt: "Which image loading experience is smoother?",
     content: {
       type: "code",
 
@@ -366,6 +372,7 @@ export function Gallery({
     category: "image-optimization",
     difficulty: "hard",
     title: "Art direction with picture element",
+    prompt: "Which approach serves better crops per device?",
     content: {
       type: "code",
 
@@ -428,6 +435,7 @@ export function Hero() {
     category: "image-optimization",
     difficulty: "easy",
     title: "Lazy loading below-fold images",
+    prompt: "Which loading strategy saves more bandwidth?",
     content: {
       type: "code",
 

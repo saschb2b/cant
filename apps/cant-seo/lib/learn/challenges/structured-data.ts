@@ -6,6 +6,7 @@ export const structuredDataChallenges: Challenge[] = [
     category: "structured-data",
     difficulty: "easy",
     title: "JSON-LD in Next.js via script tag",
+    prompt: "Which JSON-LD approach is recommended?",
     content: {
       type: "code",
 
@@ -61,6 +62,7 @@ export default function Home() {
     category: "structured-data",
     difficulty: "medium",
     title: "Article schema for blog posts",
+    prompt: "Which Article schema qualifies for rich results?",
     content: {
       type: "code",
 
@@ -151,6 +153,7 @@ export default async function BlogPost({
     category: "structured-data",
     difficulty: "medium",
     title: "FAQ schema markup",
+    prompt: "Which FAQ page can trigger rich results?",
     content: {
       type: "code",
 
@@ -227,6 +230,7 @@ export default function FAQPage() {
     category: "structured-data",
     difficulty: "medium",
     title: "BreadcrumbList schema",
+    prompt: "Which breadcrumb shows labels in search results?",
     content: {
       type: "code",
 
@@ -302,6 +306,7 @@ export function Breadcrumbs({
     category: "structured-data",
     difficulty: "easy",
     title: "Organization schema in root layout",
+    prompt: "Which layout helps build a Knowledge Panel?",
     content: {
       type: "code",
 
@@ -380,6 +385,7 @@ export default function RootLayout({
     category: "structured-data",
     difficulty: "hard",
     title: "Multiple schemas per page",
+    prompt: "Which way of combining schemas is cleaner?",
     content: {
       type: "code",
 
@@ -437,6 +443,7 @@ const breadcrumbJsonLd = {
     category: "structured-data",
     difficulty: "hard",
     title: "Validating structured data",
+    prompt: "Which Product schema is valid for rich results?",
     content: {
       type: "code",
 
@@ -482,6 +489,7 @@ const jsonLd = {
     category: "structured-data",
     difficulty: "hard",
     title: "Dynamic JSON-LD from component props",
+    prompt: "Which event page is discoverable via search?",
     content: {
       type: "code",
 

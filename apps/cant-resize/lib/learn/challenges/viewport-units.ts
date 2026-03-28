@@ -6,6 +6,7 @@ export const viewportUnitChallenges: Challenge[] = [
     category: "viewport-units",
     difficulty: "easy",
     title: "The mobile 100vh trap",
+    prompt: "Which fills the visible screen on mobile?",
     content: {
       type: "code",
 
@@ -33,6 +34,7 @@ export const viewportUnitChallenges: Challenge[] = [
     category: "viewport-units",
     difficulty: "easy",
     title: "Choosing the right viewport unit",
+    prompt: "Which unit is stable for fixed elements?",
     content: {
       type: "code",
 
@@ -67,6 +69,7 @@ export const viewportUnitChallenges: Challenge[] = [
     category: "viewport-units",
     difficulty: "medium",
     title: "Viewport width for layout constraints",
+    prompt: "Which respects parent container width?",
     content: {
       type: "code",
 
@@ -96,6 +99,7 @@ export const viewportUnitChallenges: Challenge[] = [
     category: "viewport-units",
     difficulty: "medium",
     title: "Scroll-linked layout with vh",
+    prompt: "Which avoids a horizontal scrollbar?",
     content: {
       type: "code",
 
@@ -134,6 +138,7 @@ export const viewportUnitChallenges: Challenge[] = [
     category: "viewport-units",
     difficulty: "easy",
     title: "Viewport units with fallbacks",
+    prompt: "Which supports older browsers gracefully?",
     content: {
       type: "code",
 

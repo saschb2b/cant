@@ -6,6 +6,7 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "easy",
     title: "clamp() vs breakpoint steps",
+    prompt: "Which scales font size smoothly?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "easy",
     title: "Pure vw vs clamped font sizing",
+    prompt: "Which font sizing has safe min and max bounds?",
     content: {
       type: "code",
 
@@ -73,6 +75,7 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "medium",
     title: "Fluid type scale with custom properties",
+    prompt: "Which type scale needs less maintenance?",
     content: {
       type: "code",
 
@@ -118,6 +121,7 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "medium",
     title: "Line height for fluid text",
+    prompt: "Which line height works with fluid fonts?",
     content: {
       type: "code",
 
@@ -148,6 +152,7 @@ export const fluidTypographyChallenges: Challenge[] = [
     category: "fluid-typography",
     difficulty: "hard",
     title: "Accessible fluid typography",
+    prompt: "Which respects the user's font size preference?",
     content: {
       type: "code",
 

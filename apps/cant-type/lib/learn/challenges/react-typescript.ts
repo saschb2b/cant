@@ -6,6 +6,7 @@ export const reactTypescriptChallenges: Challenge[] = [
     category: "react-typescript",
     difficulty: "easy",
     title: "Component props typing",
+    prompt: "Which catches missing and misspelled props?",
     content: {
       type: "code",
 
@@ -56,6 +57,7 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
     category: "react-typescript",
     difficulty: "easy",
     title: "Event handler types",
+    prompt: "Which gives typed access to event targets?",
     content: {
       type: "code",
 
@@ -107,6 +109,7 @@ function UserCard({ name, email, role = "user" }: UserCardProps) {
     category: "react-typescript",
     difficulty: "medium",
     title: "forwardRef with generics",
+    prompt: "Which types the ref and props correctly?",
     content: {
       type: "code",
 
@@ -158,6 +161,7 @@ Input.displayName = "Input";`,
     category: "react-typescript",
     difficulty: "medium",
     title: "Children typing",
+    prompt: "Which accepts only renderable children?",
     content: {
       type: "code",
 
@@ -206,6 +210,7 @@ function Layout({ children }: LayoutProps) {
     category: "react-typescript",
     difficulty: "hard",
     title: "Discriminated prop unions",
+    prompt: "Which enforces correct props per variant?",
     content: {
       type: "code",
 
@@ -269,6 +274,7 @@ function Button(props: ButtonProps) {
     category: "react-typescript",
     difficulty: "hard",
     title: "Polymorphic 'as' prop",
+    prompt: "Which validates element-specific props?",
     content: {
       type: "code",
 
@@ -324,6 +330,7 @@ function Text<T extends React.ElementType = "p">({
     category: "react-typescript",
     difficulty: "easy",
     title: "ComponentProps for wrapper components",
+    prompt: "Which includes all native HTML attributes?",
     content: {
       type: "code",
 

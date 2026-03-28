@@ -6,6 +6,7 @@ export const colorChallenges: Challenge[] = [
     category: "color",
     difficulty: "easy",
     title: "Text contrast",
+    prompt: "Which text has better contrast?",
     content: {
       type: "visual",
       left: { componentId: "ColorLowContrast" },
@@ -24,6 +25,7 @@ export const colorChallenges: Challenge[] = [
     category: "color",
     difficulty: "easy",
     title: "Color palette",
+    prompt: "Which color palette is more effective?",
     content: {
       type: "visual",
       left: { componentId: "ColorTooManyColors" },
@@ -42,6 +44,7 @@ export const colorChallenges: Challenge[] = [
     category: "color",
     difficulty: "medium",
     title: "Text on colored backgrounds",
+    prompt: "Which secondary text looks better?",
     content: {
       type: "visual",
       left: { componentId: "ColorGreyOnColor" },
@@ -60,6 +63,7 @@ export const colorChallenges: Challenge[] = [
     category: "color",
     difficulty: "medium",
     title: "Black vs dark grey",
+    prompt: "Which text color is easier to read?",
     content: {
       type: "visual",
       left: { componentId: "ColorPureBlackOnWhite" },

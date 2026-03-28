@@ -6,6 +6,7 @@ export const hierarchyChallenges: Challenge[] = [
     category: "hierarchy",
     difficulty: "easy",
     title: "Visual hierarchy",
+    prompt: "Which layout is easier to scan?",
     content: {
       type: "visual",
       left: { componentId: "HierarchyFlat" },
@@ -25,6 +26,7 @@ export const hierarchyChallenges: Challenge[] = [
     category: "hierarchy",
     difficulty: "easy",
     title: "Button hierarchy",
+    prompt: "Which button set guides users better?",
     content: {
       type: "visual",
       left: { componentId: "ButtonsAllPrimary" },
@@ -43,6 +45,7 @@ export const hierarchyChallenges: Challenge[] = [
     category: "hierarchy",
     difficulty: "medium",
     title: "Emphasis",
+    prompt: "Which text emphasis is more effective?",
     content: {
       type: "visual",
       left: { componentId: "EverythingBold" },
@@ -61,6 +64,7 @@ export const hierarchyChallenges: Challenge[] = [
     category: "hierarchy",
     difficulty: "medium",
     title: "Label vs value styling",
+    prompt: "Which data display is quicker to scan?",
     content: {
       type: "visual",
       left: { componentId: "LabelSameAsValue" },

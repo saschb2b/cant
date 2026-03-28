@@ -6,6 +6,7 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "medium",
     title: "Render function vs ReactNode slot",
+    prompt: "Which gives options access to runtime state?",
     content: {
       type: "code",
 
@@ -55,7 +56,8 @@ export const renderPropsChallenges: Challenge[] = [
     id: "rp-002",
     category: "render-props",
     difficulty: "easy",
-    title: "render* vs get* function props",
+    title: "Function prop naming prefix",
+    prompt: "Which uses the correct prefix convention?",
     content: {
       type: "code",
 
@@ -89,6 +91,7 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "easy",
     title: "Static slot vs unnecessary render function",
+    prompt: "Which avoids needless render function wrappers?",
     content: {
       type: "code",
 
@@ -133,6 +136,7 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "medium",
     title: "Error boundary fallback",
+    prompt: "Which fallback can show the error message?",
     content: {
       type: "code",
 
@@ -181,6 +185,7 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "hard",
     title: "Scoped render props vs broad state exposure",
+    prompt: "Which render API is more stable over time?",
     content: {
       type: "code",
 

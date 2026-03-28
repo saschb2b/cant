@@ -6,6 +6,7 @@ export const healthChecksChallenges: Challenge[] = [
     category: "health-checks",
     difficulty: "easy",
     title: "Dockerfile HEALTHCHECK",
+    prompt: "Which container monitors app health properly?",
     content: {
       type: "code",
 
@@ -44,6 +45,7 @@ CMD ["node", "server.js"]`,
     category: "health-checks",
     difficulty: "medium",
     title: "Kubernetes liveness vs readiness",
+    prompt: "Which probe configuration is more accurate?",
     content: {
       type: "code",
 
@@ -107,6 +109,7 @@ spec:
     category: "health-checks",
     difficulty: "medium",
     title: "Startup probe for slow apps",
+    prompt: "Which probe setup handles slow startups better?",
     content: {
       type: "code",
 
@@ -164,6 +167,7 @@ spec:
     category: "health-checks",
     difficulty: "hard",
     title: "Health check with dependency awareness",
+    prompt: "Which health endpoint detects real failures?",
     content: {
       type: "code",
 

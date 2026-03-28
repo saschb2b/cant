@@ -6,6 +6,7 @@ export const strictModeChallenges: Challenge[] = [
     category: "strict-mode",
     difficulty: "easy",
     title: "strictNullChecks prevents null crashes",
+    prompt: "Which catches missing null checks?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ if (user) {
     category: "strict-mode",
     difficulty: "easy",
     title: "noUncheckedIndexedAccess for arrays",
+    prompt: "Which handles out-of-bounds access safely?",
     content: {
       type: "code",
 
@@ -81,6 +83,7 @@ if (third !== undefined) {
     category: "strict-mode",
     difficulty: "medium",
     title: "Strict property initialization",
+    prompt: "Which ensures properties are always set?",
     content: {
       type: "code",
 
@@ -132,6 +135,7 @@ if (third !== undefined) {
     category: "strict-mode",
     difficulty: "medium",
     title: "exactOptionalPropertyTypes",
+    prompt: "Which distinguishes missing from undefined?",
     content: {
       type: "code",
 
@@ -178,6 +182,7 @@ settings.theme = undefined;
     category: "strict-mode",
     difficulty: "hard",
     title: "useUnknownInCatchVariables",
+    prompt: "Which forces narrowing before property access?",
     content: {
       type: "code",
 
@@ -219,6 +224,7 @@ try {
     category: "strict-mode",
     difficulty: "hard",
     title: "Enabling strict mode incrementally",
+    prompt: "Which adoption strategy is more practical?",
     content: {
       type: "code",
 
@@ -262,6 +268,7 @@ try {
     category: "strict-mode",
     difficulty: "easy",
     title: "TypeScript 6.0 strict defaults",
+    prompt: "Which uses the recommended TS 6.0 defaults?",
     content: {
       type: "code",
 

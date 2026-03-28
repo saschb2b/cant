@@ -6,6 +6,7 @@ export const refForwardingChallenges: Challenge[] = [
     category: "ref-forwarding",
     difficulty: "easy",
     title: "Wrapper component swallows ref",
+    prompt: "Which supports ref forwarding out of the box?",
     content: {
       type: "code",
 
@@ -38,6 +39,7 @@ export const refForwardingChallenges: Challenge[] = [
     category: "ref-forwarding",
     difficulty: "easy",
     title: "Ref typed as any",
+    prompt: "Which ref typing enables autocomplete?",
     content: {
       type: "code",
 
@@ -71,6 +73,7 @@ export const refForwardingChallenges: Challenge[] = [
     category: "ref-forwarding",
     difficulty: "medium",
     title: "Imperative handle vs raw DOM ref",
+    prompt: "Which exposes a safer, focused API?",
     content: {
       type: "code",
 
@@ -122,6 +125,7 @@ interface VideoPlayerProps {
     category: "ref-forwarding",
     difficulty: "medium",
     title: "Ref targeting the wrong element",
+    prompt: "Which ref target supports .focus()?",
     content: {
       type: "code",
 
@@ -168,6 +172,7 @@ interface VideoPlayerProps {
     category: "ref-forwarding",
     difficulty: "hard",
     title: "Over-exposed imperative handle",
+    prompt: "Which handle avoids duplicating prop APIs?",
     content: {
       type: "code",
 

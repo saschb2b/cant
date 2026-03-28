@@ -6,6 +6,7 @@ export const ciCdPipelinesChallenges: Challenge[] = [
     category: "ci-cd-pipelines",
     difficulty: "easy",
     title: "Cache Docker layers in CI",
+    prompt: "Which CI build configuration is faster?",
     content: {
       type: "code",
 
@@ -50,6 +51,7 @@ jobs:
     category: "ci-cd-pipelines",
     difficulty: "medium",
     title: "Tag images with commit SHA",
+    prompt: "Which image tagging strategy is more traceable?",
     content: {
       type: "code",
 
@@ -87,6 +89,7 @@ kubectl set image deployment/web \\
     category: "ci-cd-pipelines",
     difficulty: "medium",
     title: "Multi-platform builds",
+    prompt: "Which build handles multiple architectures?",
     content: {
       type: "code",
 
@@ -122,6 +125,7 @@ docker buildx build \\
     category: "ci-cd-pipelines",
     difficulty: "hard",
     title: "Scan images before deploying",
+    prompt: "Which CI pipeline is more secure?",
     content: {
       type: "code",
 

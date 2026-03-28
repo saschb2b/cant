@@ -6,6 +6,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Custom button component props",
+    prompt: "Which avoids re-declaring inherited props?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Input wrapper with custom onChange",
+    prompt: "Which Omit usage is more targeted?",
     content: {
       type: "code",
 
@@ -88,6 +90,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "hard",
     title: "Polymorphic component typing",
+    prompt: "Which adapts props to the rendered element?",
     content: {
       type: "code",
 
@@ -127,6 +130,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "easy",
     title: "Wrapper div component props",
+    prompt: "Which inherits all valid HTML attributes?",
     content: {
       type: "code",
 
@@ -158,6 +162,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "easy",
     title: "Link component extending anchor",
+    prompt: "Which link API is more complete?",
     content: {
       type: "code",
 
@@ -192,7 +197,8 @@ export const extendingHtmlChallenges: Challenge[] = [
     id: "eh-006",
     category: "extending-html",
     difficulty: "medium",
-    title: "Form action prop pattern",
+    title: "Form submission prop design",
+    prompt: "Which form API works with React 19 actions?",
     content: {
       type: "code",
 
@@ -232,6 +238,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "hard",
     title: "Prop spreading with override protection",
+    prompt: "Which prevents accidental style overrides?",
     content: {
       type: "code",
 

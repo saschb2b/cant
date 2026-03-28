@@ -6,6 +6,7 @@ export const commonMistakeChallenges: Challenge[] = [
     category: "common-mistakes",
     difficulty: "easy",
     title: "Overusing any defeats type safety",
+    prompt: "Which approach handles data more safely?",
     content: {
       type: "code",
 
@@ -49,6 +50,7 @@ function processData(data: DataRecord[]) {
     category: "common-mistakes",
     difficulty: "easy",
     title: "Unnecessary type assertions",
+    prompt: "Which way to access DOM elements is safer?",
     content: {
       type: "code",
 
@@ -102,6 +104,7 @@ if (isUser(parsed)) {
     category: "common-mistakes",
     difficulty: "medium",
     title: "object vs Record for dictionaries",
+    prompt: "Which type works for key-value collections?",
     content: {
       type: "code",
 
@@ -146,6 +149,7 @@ if (isUser(parsed)) {
     category: "common-mistakes",
     difficulty: "medium",
     title: "The {} type pitfall",
+    prompt: "Which expresses the intended constraint?",
     content: {
       type: "code",
 
@@ -196,6 +200,7 @@ function processConfig(value: Config) {
     category: "common-mistakes",
     difficulty: "hard",
     title: "Return type annotations on public APIs",
+    prompt: "Which function signature is more maintainable?",
     content: {
       type: "code",
 
@@ -252,6 +257,7 @@ export function createUser(name: string): User {
     category: "common-mistakes",
     difficulty: "hard",
     title: "Optional vs undefined properties",
+    prompt: "Which models missing vs cleared values?",
     content: {
       type: "code",
 
@@ -313,6 +319,7 @@ function applyPatch(
     category: "common-mistakes",
     difficulty: "medium",
     title: "Type-safe Object.keys",
+    prompt: "Which gives type-safe key iteration?",
     content: {
       type: "code",
 
@@ -350,6 +357,7 @@ objectKeys(config).forEach((key) => {
     category: "common-mistakes",
     difficulty: "easy",
     title: "@ts-expect-error vs @ts-ignore",
+    prompt: "Which directive is self-cleaning?",
     content: {
       type: "code",
 

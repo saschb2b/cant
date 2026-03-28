@@ -6,6 +6,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "easy",
     title: "Status-specific message props",
+    prompt: "Which prevents impossible prop combinations?",
     content: {
       type: "code",
 
@@ -35,6 +36,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "medium",
     title: "Button action variants",
+    prompt: "Which enforces link vs button exclusivity?",
     content: {
       type: "code",
 
@@ -89,6 +91,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "hard",
     title: "Variant-dependent props",
+    prompt: "Which restricts props to their variant?",
     content: {
       type: "code",
 
@@ -170,6 +173,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "hard",
     title: "Controlled vs uncontrolled input",
+    prompt: "Which blocks mixing value and defaultValue?",
     content: {
       type: "code",
 
@@ -226,6 +230,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "easy",
     title: "Image avatar vs initials avatar",
+    prompt: "Which ensures each avatar variant is complete?",
     content: {
       type: "code",
 
@@ -258,6 +263,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "medium",
     title: "Form field type unions",
+    prompt: "Which ties field type to its specific props?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const responsivePropsChallenges: Challenge[] = [
     category: "responsive-props",
     difficulty: "easy",
     title: "Breakpoint-aware direction prop",
+    prompt: "Which avoids a re-render on breakpoint change?",
     content: {
       type: "code",
 
@@ -43,6 +44,7 @@ export const responsivePropsChallenges: Challenge[] = [
     category: "responsive-props",
     difficulty: "easy",
     title: "Responsive Typography variant",
+    prompt: "Which keeps heading semantics intact?",
     content: {
       type: "code",
 
@@ -84,6 +86,7 @@ export const responsivePropsChallenges: Challenge[] = [
     category: "responsive-props",
     difficulty: "medium",
     title: "Designing responsive component APIs",
+    prompt: "Which component API handles responsiveness?",
     content: {
       type: "code",
 
@@ -160,6 +163,7 @@ function Page() {
     category: "responsive-props",
     difficulty: "medium",
     title: "Responsive visibility prop",
+    prompt: "Which visibility API is more flexible?",
     content: {
       type: "code",
 
@@ -206,6 +210,7 @@ function Section({
     category: "responsive-props",
     difficulty: "hard",
     title: "Responsive columns prop",
+    prompt: "Which grid API scales to any breakpoint?",
     content: {
       type: "code",
 

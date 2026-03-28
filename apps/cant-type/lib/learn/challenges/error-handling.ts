@@ -6,6 +6,7 @@ export const errorHandlingChallenges: Challenge[] = [
     category: "error-handling",
     difficulty: "easy",
     title: "unknown vs any in catch blocks",
+    prompt: "Which catch block handles all thrown values?",
     content: {
       type: "code",
 
@@ -48,6 +49,7 @@ export const errorHandlingChallenges: Challenge[] = [
     category: "error-handling",
     difficulty: "easy",
     title: "Type narrowing errors safely",
+    prompt: "Which extracts an error message safely?",
     content: {
       type: "code",
 
@@ -94,6 +96,7 @@ export const errorHandlingChallenges: Challenge[] = [
     category: "error-handling",
     difficulty: "medium",
     title: "Result type pattern",
+    prompt: "Which makes failure visible in the types?",
     content: {
       type: "code",
 
@@ -151,6 +154,7 @@ if (result.ok) {
     category: "error-handling",
     difficulty: "medium",
     title: "Assertion functions",
+    prompt: "Which preserves type narrowing in the caller?",
     content: {
       type: "code",
 
@@ -207,6 +211,7 @@ function process(order: Order | null) {
     category: "error-handling",
     difficulty: "hard",
     title: "Custom error classes with instanceof",
+    prompt: "Which distinguishes error types reliably?",
     content: {
       type: "code",
 
@@ -269,6 +274,7 @@ try {
     category: "error-handling",
     difficulty: "hard",
     title: "Exhaustive error handling",
+    prompt: "Which catches unhandled error cases at build?",
     content: {
       type: "code",
 

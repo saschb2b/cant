@@ -6,6 +6,7 @@ export const kubernetesServicesChallenges: Challenge[] = [
     category: "kubernetes-services",
     difficulty: "easy",
     title: "ClusterIP for internal services",
+    prompt: "Which service type fits an internal backend?",
     content: {
       type: "code",
 
@@ -52,6 +53,7 @@ spec:
     category: "kubernetes-services",
     difficulty: "medium",
     title: "Ingress for HTTP routing",
+    prompt: "Which approach routes HTTP traffic more efficiently?",
     content: {
       type: "code",
 
@@ -122,6 +124,7 @@ spec:
     category: "kubernetes-services",
     difficulty: "medium",
     title: "Label selectors for routing",
+    prompt: "Which selector targets the right pods?",
     content: {
       type: "code",
 
@@ -165,6 +168,7 @@ spec:
     category: "kubernetes-services",
     difficulty: "hard",
     title: "Headless service for StatefulSets",
+    prompt: "Which service gives stable per-pod DNS names?",
     content: {
       type: "code",
 

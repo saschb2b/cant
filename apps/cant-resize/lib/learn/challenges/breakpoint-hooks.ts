@@ -6,6 +6,7 @@ export const breakpointHooksChallenges: Challenge[] = [
     category: "breakpoint-hooks",
     difficulty: "easy",
     title: "Layout shift and useMediaQuery",
+    prompt: "Which approach avoids a layout flash on load?",
     content: {
       type: "code",
 
@@ -45,6 +46,7 @@ export const breakpointHooksChallenges: Challenge[] = [
     category: "breakpoint-hooks",
     difficulty: "easy",
     title: "CSS vs JavaScript for responsive logic",
+    prompt: "Which handles responsive styles more efficiently?",
     content: {
       type: "code",
 
@@ -95,6 +97,7 @@ export const breakpointHooksChallenges: Challenge[] = [
     category: "breakpoint-hooks",
     difficulty: "medium",
     title: "Custom breakpoint hook with SSR safety",
+    prompt: "Which hook implementation is SSR-safe?",
     content: {
       type: "code",
 
@@ -146,6 +149,7 @@ export const breakpointHooksChallenges: Challenge[] = [
     category: "breakpoint-hooks",
     difficulty: "medium",
     title: "Debouncing resize vs matchMedia",
+    prompt: "Which breakpoint detection is more performant?",
     content: {
       type: "code",
 
@@ -218,6 +222,7 @@ export const breakpointHooksChallenges: Challenge[] = [
     category: "breakpoint-hooks",
     difficulty: "hard",
     title: "Server component with responsive fallback",
+    prompt: "Which works in a React Server Component?",
     content: {
       type: "code",
 

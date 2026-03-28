@@ -6,6 +6,7 @@ export const defaultValuesChallenges: Challenge[] = [
     category: "default-values",
     difficulty: "easy",
     title: "Default prop values",
+    prompt: "Which approach to defaults is modern React?",
     content: {
       type: "code",
 
@@ -48,7 +49,8 @@ function Badge({
     id: "dv-002",
     category: "default-values",
     difficulty: "medium",
-    title: "Safe default assignment",
+    title: "Default value assignment",
+    prompt: "Which handles falsy values like 0 correctly?",
     content: {
       type: "code",
 
@@ -89,6 +91,7 @@ function Badge({
     category: "default-values",
     difficulty: "easy",
     title: "Defaults in signature vs body",
+    prompt: "Which makes defaults easier to discover?",
     content: {
       type: "code",
 
@@ -140,7 +143,8 @@ function Badge({
     id: "dv-004",
     category: "default-values",
     difficulty: "medium",
-    title: "Stable default object references",
+    title: "Default object references",
+    prompt: "Which avoids unnecessary effect re-runs?",
     content: {
       type: "code",
 
@@ -188,6 +192,7 @@ function DataGrid({
     category: "default-values",
     difficulty: "hard",
     title: "Default callbacks that skip null checks",
+    prompt: "Which reduces optional chaining clutter?",
     content: {
       type: "code",
 

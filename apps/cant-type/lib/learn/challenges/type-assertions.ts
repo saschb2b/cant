@@ -6,6 +6,7 @@ export const typeAssertionChallenges: Challenge[] = [
     category: "type-assertions",
     difficulty: "easy",
     title: "satisfies vs as",
+    prompt: "Which keeps the inferred literal types?",
     content: {
       type: "code",
 
@@ -46,6 +47,7 @@ palette.oops;       // Error: property doesn't exist`,
     category: "type-assertions",
     difficulty: "easy",
     title: "as const for literals",
+    prompt: "Which narrows values to their exact types?",
     content: {
       type: "code",
 
@@ -84,6 +86,7 @@ palette.oops;       // Error: property doesn't exist`,
     category: "type-assertions",
     difficulty: "medium",
     title: "Type predicates with is",
+    prompt: "Which narrows the type in the caller?",
     content: {
       type: "code",
 
@@ -128,6 +131,7 @@ if (isFish(pet)) {
     category: "type-assertions",
     difficulty: "medium",
     title: "Assertion functions",
+    prompt: "Which avoids repeated null checks?",
     content: {
       type: "code",
 
@@ -170,6 +174,7 @@ console.log(config.host); // OK`,
     category: "type-assertions",
     difficulty: "hard",
     title: "Avoiding double assertions",
+    prompt: "Which validates the data shape at runtime?",
     content: {
       type: "code",
 
@@ -214,6 +219,7 @@ if (isUser(data)) {
     category: "type-assertions",
     difficulty: "hard",
     title: "Non-null assertion vs optional chaining",
+    prompt: "Which is safe when the value is missing?",
     content: {
       type: "code",
 
@@ -258,6 +264,7 @@ function getCity(user: User): string | undefined {
     category: "type-assertions",
     difficulty: "hard",
     title: "Branded types for type-safe IDs",
+    prompt: "Which prevents mixing up ID types?",
     content: {
       type: "code",
 

@@ -6,6 +6,7 @@ export const mappedTypeChallenges: Challenge[] = [
     category: "mapped-types",
     difficulty: "easy",
     title: "Basic mapped types",
+    prompt: "Which stays in sync when the source changes?",
     content: {
       type: "code",
       left: `interface User {
@@ -50,6 +51,7 @@ type AlsoPartialUser = Partial<User>;
     category: "mapped-types",
     difficulty: "easy",
     title: "Key remapping with as",
+    prompt: "Which generates setter names automatically?",
     content: {
       type: "code",
       left: `interface Config {
@@ -95,6 +97,7 @@ type ConfigSetters = Setters<Config>;
     category: "mapped-types",
     difficulty: "medium",
     title: "Conditional types for filtering",
+    prompt: "Which extracts string fields automatically?",
     content: {
       type: "code",
       left: `interface User {
@@ -143,6 +146,7 @@ type UserStrings = Pick<User, UserStringKeys>;
     category: "mapped-types",
     difficulty: "medium",
     title: "Extracting types with infer",
+    prompt: "Which derives the type from the function?",
     content: {
       type: "code",
       left: `// Manually defining return types
@@ -191,6 +195,7 @@ type FetchedUser = UnwrapPromise<
     category: "mapped-types",
     difficulty: "hard",
     title: "Distributive conditional types",
+    prompt: "Which removes null from every nested level?",
     content: {
       type: "code",
       left: `type NonNullableFields<T> = {
@@ -241,6 +246,7 @@ type Clean = DeepNonNullable<Form>;
     category: "mapped-types",
     difficulty: "hard",
     title: "Recursive types for nested paths",
+    prompt: "Which computes all valid dot-paths?",
     content: {
       type: "code",
       left: `interface Config {

@@ -6,6 +6,7 @@ export const stylingApiChallenges: Challenge[] = [
     category: "styling-api",
     difficulty: "easy",
     title: "Variants vs style overrides",
+    prompt: "Which API ensures visual consistency?",
     content: {
       type: "code",
 
@@ -40,6 +41,7 @@ export const stylingApiChallenges: Challenge[] = [
     category: "styling-api",
     difficulty: "easy",
     title: "className pass-through",
+    prompt: "Which allows consumer style overrides?",
     content: {
       type: "code",
 
@@ -84,6 +86,7 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Inline style prop vs className",
+    prompt: "Which supports responsive and pseudo styles?",
     content: {
       type: "code",
 
@@ -116,6 +119,7 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Design tokens vs arbitrary color props",
+    prompt: "Which color API prevents typos and drift?",
     content: {
       type: "code",
 
@@ -147,7 +151,8 @@ function Card({ children, variant, className }: CardProps) {
     id: "sa-005",
     category: "styling-api",
     difficulty: "medium",
-    title: "Slot classNames for sub-elements",
+    title: "Styling dialog sub-elements",
+    prompt: "Which groups sub-element styles cleanly?",
     content: {
       type: "code",
 
@@ -189,6 +194,7 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "CSS variables vs style props",
+    prompt: "Which keeps styling decisions centralized?",
     content: {
       type: "code",
 
@@ -231,6 +237,7 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "hard",
     title: "Responsive prop values",
+    prompt: "Which scales to more breakpoints cleanly?",
     content: {
       type: "code",
 
@@ -267,6 +274,7 @@ function Card({ children, variant, className }: CardProps) {
     category: "styling-api",
     difficulty: "medium",
     title: "Exposing internal layout props",
+    prompt: "Which abstracts away CSS implementation?",
     content: {
       type: "code",
 

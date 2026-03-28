@@ -6,6 +6,7 @@ export const environmentConfigChallenges: Challenge[] = [
     category: "environment-config",
     difficulty: "easy",
     title: "Environment variable management in Compose",
+    prompt: "Which way of managing env vars scales better?",
     content: {
       type: "code",
 
@@ -47,6 +48,7 @@ export const environmentConfigChallenges: Challenge[] = [
     category: "environment-config",
     difficulty: "medium",
     title: "Kubernetes ConfigMap from file",
+    prompt: "Which ConfigMap approach is easier to maintain?",
     content: {
       type: "code",
 
@@ -102,6 +104,7 @@ spec:
     category: "environment-config",
     difficulty: "medium",
     title: "ARG vs ENV in Dockerfiles",
+    prompt: "Which approach keeps build-time secrets safe?",
     content: {
       type: "code",
 
@@ -147,6 +150,7 @@ CMD ["node", "server.js"]`,
     category: "environment-config",
     difficulty: "hard",
     title: "Variable substitution in Compose",
+    prompt: "Which Compose file works across environments?",
     content: {
       type: "code",
 

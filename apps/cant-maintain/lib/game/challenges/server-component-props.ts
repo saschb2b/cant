@@ -5,7 +5,8 @@ export const serverComponentPropsChallenges: Challenge[] = [
     id: "sc-001",
     category: "server-component-props",
     difficulty: "easy",
-    title: "Serializable callback props",
+    title: "Callback props across the boundary",
+    prompt: "Which passes functions across the server boundary?",
     content: {
       type: "code",
 
@@ -44,6 +45,7 @@ import { saveForm } from './actions';
     category: "server-component-props",
     difficulty: "easy",
     title: "Passing server content to client wrappers",
+    prompt: "Which keeps article data server-rendered?",
     content: {
       type: "code",
 
@@ -77,6 +79,7 @@ import { saveForm } from './actions';
     category: "server-component-props",
     difficulty: "medium",
     title: "Form action vs onSubmit",
+    prompt: "Which form pattern auto-manages pending state?",
     content: {
       type: "code",
 
@@ -117,6 +120,7 @@ interface ContactFormProps {
     category: "server-component-props",
     difficulty: "medium",
     title: "Non-serializable prop types",
+    prompt: "Which props survive server-client serialization?",
     content: {
       type: "code",
 
@@ -161,6 +165,7 @@ interface ClientEditorProps {
     category: "server-component-props",
     difficulty: "hard",
     title: "Avoiding unnecessary client boundaries",
+    prompt: "Which pushes the client boundary down further?",
     content: {
       type: "code",
 
