@@ -58,6 +58,10 @@ interface LearnCategoryPageProps {
     entry: ContentMapEntry | undefined,
     side: "good" | "bad",
   ) => ReactNode;
+  /** Label for the "bad" panel header. Defaults to "Avoid". */
+  badLabel?: string;
+  /** Label for the "good" panel header. Defaults to "Prefer". */
+  goodLabel?: string;
 }
 
 export function LearnCategoryPage({
@@ -69,6 +73,8 @@ export function LearnCategoryPage({
   next,
   renderExplanation,
   renderContentPanel,
+  badLabel = "Avoid",
+  goodLabel = "Prefer",
 }: LearnCategoryPageProps) {
   return (
     <>
@@ -193,7 +199,7 @@ export function LearnCategoryPage({
                       fontFamily="var(--font-geist-mono), monospace"
                       color="error.main"
                     >
-                      Avoid
+                      {badLabel}
                     </Typography>
                   </Stack>
                   {renderContentPanel ? (
@@ -254,7 +260,7 @@ export function LearnCategoryPage({
                       fontFamily="var(--font-geist-mono), monospace"
                       color="success.main"
                     >
-                      Prefer
+                      {goodLabel}
                     </Typography>
                   </Stack>
                   {renderContentPanel ? (

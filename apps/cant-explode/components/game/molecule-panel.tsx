@@ -137,12 +137,12 @@ export function MoleculePanel({
         </Typography>
         <Fade in={result === "correct"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="success.main">
-            Better
+            Correct
           </Typography>
         </Fade>
         <Fade in={result === "wrong"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="error.main">
-            Worse
+            Incorrect
           </Typography>
         </Fade>
       </Box>

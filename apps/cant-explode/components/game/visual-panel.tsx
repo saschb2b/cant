@@ -25,6 +25,8 @@ export function VisualPanelWrapper(props: VisualPanelWrapperProps) {
       result={props.result}
       isSelected={props.isSelected}
       checkmarkAnimation={checkmarkAnimation}
+      betterLabel="Correct"
+      worseLabel="Incorrect"
     />
   );
 }

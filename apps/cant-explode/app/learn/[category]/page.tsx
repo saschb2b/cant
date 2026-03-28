@@ -117,6 +117,8 @@ export default async function CategoryPage({ params }: PageProps) {
           : undefined
       }
       panelBg="background.paper"
+      badLabel="Incorrect"
+      goodLabel="Correct"
       renderContentPanel={renderVisualContentPanel}
       renderExplanation={(challenge) => (
         <>
@@ -143,7 +145,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 color="error.main"
                 fontFamily="var(--font-geist-mono), monospace"
               >
-                Why avoid
+                Why it's wrong
               </Typography>
               <Box
                 sx={{
@@ -177,7 +179,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 color="success.main"
                 fontFamily="var(--font-geist-mono), monospace"
               >
-                Why prefer
+                Why it's correct
               </Typography>
               <Box
                 sx={{
