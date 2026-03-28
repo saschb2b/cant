@@ -23,7 +23,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       challenges={challenges}
       contentMap={contentMap}
       defaultSeed={defaultSeed}
-      promptText="Pick the better responsive pattern"
+      promptText={(cat) => `Pick the better ${cat} pattern`}
       categoryLabels={CATEGORY_LABELS}
       useGame={useGame}
       generateSeed={generateSeed}

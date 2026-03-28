@@ -5,7 +5,7 @@ export const canonicalUrlsChallenges: Challenge[] = [
     id: "cu-001",
     category: "canonical-urls",
     difficulty: "easy",
-    title: "Self-referencing canonical tag",
+    title: "Canonical tag reference strategy",
     content: {
       type: "code",
 

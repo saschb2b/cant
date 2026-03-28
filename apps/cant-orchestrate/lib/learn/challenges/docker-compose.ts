@@ -90,7 +90,7 @@ volumes:
     id: "dc-003",
     category: "docker-compose",
     difficulty: "medium",
-    title: "Use profiles for optional services",
+    title: "Managing optional services",
     content: {
       type: "code",
 

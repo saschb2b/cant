@@ -20,6 +20,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 interface BaseChallenge {
   id: string;
   title: string;
+  prompt?: string;
   category: string;
   difficulty: Difficulty;
   content: { type: string };
@@ -241,8 +242,8 @@ interface GameProps<C extends BaseChallenge> {
    */
   contentMap?: Record<string, ContentMapEntry>;
   defaultSeed?: string;
-  /** Text shown below the challenge title, e.g. "Pick the better TypeScript pattern" */
-  promptText: string;
+  /** Text shown below the challenge title. Receives the category label so apps can interpolate it, e.g. `(cat) => \`Pick the better ${cat} pattern\`` */
+  promptText: string | ((categoryLabel: string) => string);
   /** Category label map for the blurred category chip. */
   categoryLabels: Record<string, string>;
   /** Hook that provides game state. */
@@ -588,22 +589,21 @@ export function Game<C extends BaseChallenge>({
         <Typography
           variant="h6"
           fontWeight={600}
-          sx={{
-            filter: displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
-            opacity: displayAnswer || isReviewing ? 1 : 0.6,
-            transform:
-              displayAnswer || isReviewing ? "scale(1)" : "scale(0.97)",
-            transition:
-              displayAnswer || isReviewing
-                ? "filter 0.4s ease, opacity 0.4s ease, transform 0.3s ease"
-                : "none",
-            userSelect: displayAnswer || isReviewing ? "auto" : "none",
-          }}
+          sx={{}}
         >
           {displayChallenge.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {isReviewing ? "Reviewing your previous answer" : promptText}
+          {isReviewing
+            ? "Reviewing your previous answer"
+            : (displayChallenge as BaseChallenge).prompt
+              ? (displayChallenge as BaseChallenge).prompt
+              : typeof promptText === "function"
+                ? promptText(
+                    categoryLabels[displayChallenge.category] ??
+                      displayChallenge.category,
+                  )
+                : promptText}
         </Typography>
       </Box>
 

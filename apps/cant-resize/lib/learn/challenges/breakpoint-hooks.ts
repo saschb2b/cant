@@ -5,7 +5,7 @@ export const breakpointHooksChallenges: Challenge[] = [
     id: "bh-001",
     category: "breakpoint-hooks",
     difficulty: "easy",
-    title: "Avoiding layout shift with useMediaQuery",
+    title: "Layout shift and useMediaQuery",
     content: {
       type: "code",
 

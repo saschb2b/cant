@@ -56,7 +56,7 @@ spec:
     id: "kp-002",
     category: "kubernetes-pods",
     difficulty: "easy",
-    title: "Set resource requests and limits",
+    title: "Resource requests and limits",
     content: {
       type: "code",
 

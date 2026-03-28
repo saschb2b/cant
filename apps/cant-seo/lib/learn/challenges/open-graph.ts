@@ -5,7 +5,7 @@ export const openGraphChallenges: Challenge[] = [
     id: "og-001",
     category: "open-graph",
     difficulty: "easy",
-    title: "Setting og:title explicitly",
+    title: "Explicit vs inherited og:title",
     content: {
       type: "code",
 
@@ -192,7 +192,7 @@ export async function generateMetadata({
     id: "og-005",
     category: "open-graph",
     difficulty: "easy",
-    title: "Setting og:site_name",
+    title: "og:site_name configuration",
     content: {
       type: "code",
 

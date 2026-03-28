@@ -5,7 +5,7 @@ export const networkingChallenges: Challenge[] = [
     id: "nw-001",
     category: "networking",
     difficulty: "easy",
-    title: "Use service names for DNS",
+    title: "Container DNS resolution",
     content: {
       type: "code",
 

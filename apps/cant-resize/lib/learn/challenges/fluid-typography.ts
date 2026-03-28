@@ -44,7 +44,7 @@ export const fluidTypographyChallenges: Challenge[] = [
     id: "ft-002",
     category: "fluid-typography",
     difficulty: "easy",
-    title: "Avoid pure vw for font size",
+    title: "Pure vw vs clamped font sizing",
     content: {
       type: "code",
 

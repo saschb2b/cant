@@ -153,7 +153,7 @@ export const mediaQueryChallenges: Challenge[] = [
     id: "mq-005",
     category: "media-queries",
     difficulty: "medium",
-    title: "Prefer feature queries over breakpoints",
+    title: "Feature queries vs breakpoints",
     content: {
       type: "code",
 

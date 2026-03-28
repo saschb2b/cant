@@ -37,7 +37,7 @@ export const responsiveImageChallenges: Challenge[] = [
     id: "ri-002",
     category: "responsive-images",
     difficulty: "easy",
-    title: "next/image for automatic optimization",
+    title: "Native img vs Next.js image component",
     content: {
       type: "code",
 

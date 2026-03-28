@@ -5,7 +5,7 @@ export const environmentConfigChallenges: Challenge[] = [
     id: "ec-001",
     category: "environment-config",
     difficulty: "easy",
-    title: "Use .env files in Compose",
+    title: "Environment variable management in Compose",
     content: {
       type: "code",
 

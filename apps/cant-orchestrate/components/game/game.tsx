@@ -23,7 +23,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       challenges={challenges}
       contentMap={contentMap}
       defaultSeed={defaultSeed}
-      promptText="Pick the better orchestration pattern"
+      promptText={(cat) => `Pick the better ${cat} pattern`}
       categoryLabels={CATEGORY_LABELS as Record<string, string>}
       useGame={useGame}
       generateSeed={generateSeed}

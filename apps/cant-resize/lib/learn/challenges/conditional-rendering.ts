@@ -145,7 +145,7 @@ function Dashboard() {
     id: "cr-004",
     category: "conditional-rendering",
     difficulty: "medium",
-    title: "Avoiding duplicate component trees",
+    title: "Duplicate vs shared component trees",
     content: {
       type: "code",
 

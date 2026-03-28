@@ -5,7 +5,7 @@ export const securityChallenges: Challenge[] = [
     id: "sc-001",
     category: "security",
     difficulty: "easy",
-    title: "Run as non-root user",
+    title: "Container user privileges",
     content: {
       type: "code",
 
@@ -44,7 +44,7 @@ CMD ["node", "server.js"]`,
     id: "sc-002",
     category: "security",
     difficulty: "easy",
-    title: "Don't hardcode secrets in Dockerfiles",
+    title: "Secret management in Dockerfiles",
     content: {
       type: "code",
 
@@ -166,7 +166,7 @@ spec:
     id: "sc-005",
     category: "security",
     difficulty: "hard",
-    title: "Drop all capabilities",
+    title: "Linux capabilities in containers",
     content: {
       type: "code",
 

@@ -5,7 +5,7 @@ export const imageOptimizationChallenges: Challenge[] = [
     id: "io-001",
     category: "image-optimization",
     difficulty: "easy",
-    title: "Use specific base image tags",
+    title: "Base image tag strategies",
     content: {
       type: "code",
 
@@ -126,7 +126,7 @@ CMD ["node", "dist/server.js"]`,
     id: "io-004",
     category: "image-optimization",
     difficulty: "medium",
-    title: "Use .dockerignore",
+    title: "Build context with .dockerignore",
     content: {
       type: "code",
 

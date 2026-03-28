@@ -185,7 +185,7 @@ export function Hero() {
     id: "io-004",
     category: "image-optimization",
     difficulty: "medium",
-    title: "Priority prop for LCP images",
+    title: "LCP image loading strategies",
     content: {
       type: "code",
 

@@ -5,7 +5,7 @@ export const commonMistakesChallenges: Challenge[] = [
     id: "cm-001",
     category: "common-mistakes",
     difficulty: "easy",
-    title: "Don't use latest in production",
+    title: "Image tag strategies for production",
     content: {
       type: "code",
 
@@ -50,7 +50,7 @@ spec:
     id: "cm-002",
     category: "common-mistakes",
     difficulty: "easy",
-    title: "Don't run as root",
+    title: "Container user configuration",
     content: {
       type: "code",
 
@@ -90,7 +90,7 @@ CMD ["python", "app.py"]`,
     id: "cm-003",
     category: "common-mistakes",
     difficulty: "medium",
-    title: "Don't store state in containers",
+    title: "State management in containers",
     content: {
       type: "code",
 
@@ -134,7 +134,7 @@ volumes:
     id: "cm-004",
     category: "common-mistakes",
     difficulty: "medium",
-    title: "Use .dockerignore consistently",
+    title: "Build context filtering",
     content: {
       type: "code",
 

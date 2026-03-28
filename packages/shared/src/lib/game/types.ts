@@ -26,8 +26,31 @@ export interface VisualContent {
   right: { componentId: string };
 }
 
+/** Data describing a single molecule for display. */
+export interface MoleculeData {
+  /** Display name of the molecule (e.g. "Benzene"). */
+  name: string;
+  /** Chemical formula using Unicode subscripts (e.g. "C₆H₆"). */
+  formula: string;
+  /** SMILES notation for 2D structure rendering. */
+  smiles?: string;
+  /** Key-value properties shown below the structure (e.g. { "pKa": "4.75" }). */
+  properties?: Record<string, string>;
+}
+
+/** Chemical molecule comparison (two molecules side by side). */
+export interface MoleculeContent {
+  type: "molecule";
+  left: MoleculeData;
+  right: MoleculeData;
+}
+
 /** All supported content shapes. */
-export type ChallengeContent = CodeContent | ImageContent | VisualContent;
+export type ChallengeContent =
+  | CodeContent
+  | ImageContent
+  | VisualContent
+  | MoleculeContent;
 
 // ---------------------------------------------------------------------------
 // Base challenge
@@ -47,6 +70,8 @@ export type ChallengeContent = CodeContent | ImageContent | VisualContent;
 export interface BaseChallenge {
   id: string;
   title: string;
+  /** Optional question shown as the game prompt, e.g. "Which molecule is the stronger base?" When omitted, the Game component falls back to its `promptText` prop. */
+  prompt?: string;
   category: string;
   difficulty: Difficulty;
   content: ChallengeContent;
