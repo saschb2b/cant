@@ -12,6 +12,7 @@ function use3DmolViewer(
     if (!containerRef.current) return;
     let viewer: any;
     let cancelled = false;
+    let spinInterval: ReturnType<typeof setInterval> | null = null;
 
     import("3dmol").then(($3Dmol) => {
       if (cancelled || !containerRef.current) return;
@@ -23,12 +24,27 @@ function use3DmolViewer(
         {},
         { stick: { radius: 0.15 }, sphere: { scale: 0.3 } },
       );
-      viewer.zoomTo();
+      viewer.zoomTo(undefined, undefined, undefined, 0.5);
       viewer.render();
+
+      // Gentle auto-rotation via manual increments to avoid 3dmol's
+      // internal spin which crashes on cleanup
+      spinInterval = setInterval(() => {
+        if (viewer) {
+          try {
+            viewer.rotate(2, "y");
+            viewer.rotate(0.5, "x");
+            viewer.render();
+          } catch {
+            // viewer may be disposed
+          }
+        }
+      }, 30);
     });
 
     return () => {
       cancelled = true;
+      if (spinInterval) clearInterval(spinInterval);
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
       }
@@ -67,7 +83,7 @@ export function WaterBent() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         H₂O bent (104.5°)
@@ -91,7 +107,7 @@ export function WaterLinear() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         H₂O linear (180°)
@@ -135,7 +151,7 @@ export function MethaneTetrahedral() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         CH₄ tetrahedral
@@ -159,7 +175,7 @@ export function MethaneSquarePlanar() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         CH₄ square planar
@@ -201,7 +217,7 @@ export function AmmoniaPyramidal() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         NH₃ trigonal pyramidal
@@ -225,7 +241,7 @@ export function AmmoniaPlanar() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         NH₃ trigonal planar
@@ -273,7 +289,7 @@ export function SF6Octahedral() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         SF₆ octahedral
@@ -297,7 +313,7 @@ export function SF6Trigonal() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         SF₆ trigonal prismatic

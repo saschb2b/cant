@@ -13,6 +13,7 @@ function useChargeViewer(
     if (!containerRef.current) return;
     let viewer: any;
     let cancelled = false;
+    let spinInterval: ReturnType<typeof setInterval> | null = null;
 
     import("3dmol").then(($3Dmol) => {
       if (cancelled || !containerRef.current) return;
@@ -32,12 +33,25 @@ function useChargeViewer(
         );
       }
 
-      viewer.zoomTo();
+      viewer.zoomTo(undefined, undefined, undefined, 0.5);
       viewer.render();
+
+      spinInterval = setInterval(() => {
+        if (viewer) {
+          try {
+            viewer.rotate(2, "y");
+            viewer.rotate(0.5, "x");
+            viewer.render();
+          } catch {
+            // viewer may be disposed
+          }
+        }
+      }, 30);
     });
 
     return () => {
       cancelled = true;
+      if (spinInterval) clearInterval(spinInterval);
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
       }
@@ -88,7 +102,7 @@ export function WaterChargeMap() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         H₂O: O is δ⁻ (red), H is δ⁺ (blue)
@@ -112,7 +126,7 @@ export function MethaneChargeMap() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         CH₄: uniform charge (nonpolar)
@@ -159,7 +173,7 @@ export function HClPolarBond() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         HCl: polar bond (H δ⁺, Cl δ⁻)
@@ -183,7 +197,7 @@ export function Cl2NoPolar() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         Cl₂: nonpolar bond (equal sharing)
@@ -233,7 +247,7 @@ export function CO2NoNetDipole() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         CO₂: symmetric, no net dipole
@@ -257,7 +271,7 @@ export function H2ONetDipole() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         H₂O: bent, net dipole moment
@@ -305,7 +319,7 @@ export function NaClIonic() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         NaCl: full charge separation (ionic)
@@ -329,7 +343,7 @@ export function HFCovalent() {
     >
       <Box
         ref={containerRef}
-        sx={{ width: 280, height: 220, position: "relative" }}
+        sx={{ width: "100%", height: 280, position: "relative" }}
       />
       <Typography variant="caption" color="text.secondary">
         HF: partial charge (polar covalent)
