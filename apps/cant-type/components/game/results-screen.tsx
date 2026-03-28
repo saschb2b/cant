@@ -17,7 +17,7 @@ const config = {
   getShareUrl,
   encodeResults,
   getMissedCategoryLabels,
-  githubUrl: "https://github.com/saschb2b/cant-type",
+  githubUrl: "https://github.com/saschb2b/cant",
   categoryLabels: CATEGORY_LABELS as Record<string, string>,
 };
 

@@ -5,7 +5,7 @@ const NAV_LINKS = [
   { href: "/play", label: "Play" },
   { href: "/learn", label: "Learn" },
   {
-    href: "https://github.com/saschb2b/cant-resize",
+    href: "https://github.com/saschb2b/cant",
     label: "GitHub",
     external: true,
   },

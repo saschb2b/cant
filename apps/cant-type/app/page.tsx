@@ -223,7 +223,7 @@ export default async function LandingPage() {
       <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
-        githubUrl="https://github.com/saschb2b/cant-type"
+        githubUrl="https://github.com/saschb2b/cant"
       />
 
       <SiteFooter />

@@ -225,7 +225,7 @@ export default async function LandingPage() {
       <CantSeriesGrid currentAppName="Can't Maintain" />
 
       {/* Open source */}
-      <OpenSourceBanner githubUrl="https://github.com/saschb2b/cant-maintain" />
+      <OpenSourceBanner githubUrl="https://github.com/saschb2b/cant" />
 
       <SiteFooter />
     </Box>

@@ -23,7 +23,7 @@ export function ResultsScreen(props: ResultsScreenProps) {
       {...props}
       config={{
         shareSubject: "React component APIs",
-        githubUrl: "https://github.com/saschb2b/cant-maintain",
+        githubUrl: "https://github.com/saschb2b/cant",
         categoryLabels: CATEGORY_LABELS,
         getShareUrl,
         getMissedCategoryLabels,

@@ -16,7 +16,7 @@ const config = {
   getShareUrl,
   encodeResults,
   getMissedCategoryLabels,
-  githubUrl: "https://github.com/saschb2b/cant-resize",
+  githubUrl: "https://github.com/saschb2b/cant",
   categoryLabels: CATEGORY_LABELS,
 };
 

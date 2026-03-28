@@ -56,7 +56,7 @@ export default function LandingPage() {
       <OpenSourceBanner
         title="Open source"
         description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
-        githubUrl="https://github.com/saschb2b/cant-ux"
+        githubUrl="https://github.com/saschb2b/cant"
       />
 
       <SiteFooter />

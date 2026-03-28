@@ -5,7 +5,7 @@ const NAV_LINKS = [
   { href: "/learn", label: "Learn" },
   { href: "/playground", label: "Sandbox" },
   {
-    href: "https://github.com/saschb2b/cant-type",
+    href: "https://github.com/saschb2b/cant",
     label: "GitHub",
     external: true,
   },

@@ -4,7 +4,7 @@ const NAV_LINKS = [
   { href: "/learn", label: "Learn" },
   { href: "/changelog", label: "Changelog" },
   {
-    href: "https://github.com/saschb2b/cant-maintain",
+    href: "https://github.com/saschb2b/cant",
     label: "GitHub",
     external: true,
   },

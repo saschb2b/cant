@@ -6,8 +6,8 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 ```bash
 # Clone the repo
-git clone https://github.com/saschb2b/cant-maintain.git
-cd cant-maintain
+git clone https://github.com/saschb2b/cant.git
+cd cant
 
 # Install dependencies
 pnpm install
