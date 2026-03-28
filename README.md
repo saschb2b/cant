@@ -9,6 +9,8 @@ Educational platforms for developers. Each app presents code challenges where yo
 | [cant-type](apps/cant-type) | TypeScript patterns | TS Playground | [cant-type.saschb2b.com](https://cant-type.saschb2b.com) |
 | [cant-orchestrate](apps/cant-orchestrate) | Container orchestration | Dockerfile explorer | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
 | [cant-seo](apps/cant-seo) | SEO for Next.js | Link inspector | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com) |
+| [cant-ux](apps/cant-ux) | UX design patterns | Visual comparisons | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com) |
+| [cant-hub](apps/cant-hub) | Series hub / landing | App directory | [cant-hub.saschb2b.com](https://cant-hub.saschb2b.com) |
 
 ## Tech stack
 
@@ -36,16 +38,23 @@ corepack prepare pnpm@10.20.0 --activate
 # Install all dependencies
 pnpm install
 
-# Start a single app
-pnpm dev:maintain      # cant-maintain on :3000
-pnpm dev:resize        # cant-resize on :3000
-pnpm dev:type          # cant-type on :3000
-pnpm dev:orchestrate   # cant-orchestrate on :3000
-pnpm dev:seo           # cant-seo on :3000
+# Start all apps at once (cross-app links work between them)
+pnpm dev
+
+# Or start a single app
+pnpm dev:hub           # cant-hub on :3000
+pnpm dev:maintain      # cant-maintain on :3001
+pnpm dev:resize        # cant-resize on :3002
+pnpm dev:type          # cant-type on :3003
+pnpm dev:orchestrate   # cant-orchestrate on :3004
+pnpm dev:seo           # cant-seo on :3005
+pnpm dev:ux            # cant-ux on :3006
 
 # Start Storybook for shared components
 pnpm storybook         # opens on :6006
 ```
+
+Each app has a fixed dev port. When running `pnpm dev`, all apps start simultaneously and cross-app links (header, footer, series grid) automatically point to `localhost:<port>` instead of the production URLs.
 
 ## Project structure
 
@@ -56,7 +65,9 @@ cant/
 │   ├── cant-resize/         # Responsive design app
 │   ├── cant-type/           # TypeScript patterns app
 │   ├── cant-orchestrate/    # Container orchestration app
-│   └── cant-seo/            # SEO patterns app
+│   ├── cant-seo/            # SEO patterns app
+│   ├── cant-ux/             # UX design patterns app
+│   └── cant-hub/            # Series hub / landing page
 ├── packages/
 │   └── shared/              # @cant/shared — shared components and utils
 │       ├── .storybook/      # Storybook config
@@ -75,12 +86,14 @@ Run from the repo root:
 
 | Script | Description |
 |--------|-------------|
-| `pnpm dev` | Start all apps (resource-heavy, use filtered scripts instead) |
-| `pnpm dev:maintain` | Start cant-maintain only |
-| `pnpm dev:resize` | Start cant-resize only |
-| `pnpm dev:type` | Start cant-type only |
-| `pnpm dev:orchestrate` | Start cant-orchestrate only |
-| `pnpm dev:seo` | Start cant-seo only |
+| `pnpm dev` | Start all apps with cross-app linking |
+| `pnpm dev:hub` | Start cant-hub only (:3000) |
+| `pnpm dev:maintain` | Start cant-maintain only (:3001) |
+| `pnpm dev:resize` | Start cant-resize only (:3002) |
+| `pnpm dev:type` | Start cant-type only (:3003) |
+| `pnpm dev:orchestrate` | Start cant-orchestrate only (:3004) |
+| `pnpm dev:seo` | Start cant-seo only (:3005) |
+| `pnpm dev:ux` | Start cant-ux only (:3006) |
 | `pnpm build` | Production build all apps (parallel) |
 | `pnpm build:maintain` | Build cant-maintain only |
 | `pnpm build:resize` | Build cant-resize only |
@@ -100,7 +113,6 @@ The `packages/shared` package contains components and utilities used across all 
 ```tsx
 import { ThemeProvider } from "@cant/shared/components/theme-provider";
 import { CantSeriesGrid } from "@cant/shared/components/cant-series-grid";
-import { codeBlockStyles } from "@cant/shared/lib/code-styles";
 import { createTracker } from "@cant/shared/lib/analytics";
 ```
 
