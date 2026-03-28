@@ -2,6 +2,9 @@
 export const codeBlockStyles = {
   display: "flex",
   flexDirection: "column",
+  "& .shiki": {
+    bgcolor: "transparent !important",
+  },
   "& pre": {
     m: 0,
     p: 2,
