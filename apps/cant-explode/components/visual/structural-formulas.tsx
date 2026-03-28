@@ -1,16 +1,36 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 const CANVAS_WIDTH = 300;
 const CANVAS_HEIGHT = 250;
 
+function useColorScheme() {
+  const [isDark, setIsDark] = useState(() =>
+    typeof document !== "undefined"
+      ? document.documentElement.classList.contains("dark")
+      : false,
+  );
+
+  useEffect(() => {
+    const el = document.documentElement;
+    const observer = new MutationObserver(() => {
+      setIsDark(el.classList.contains("dark"));
+    });
+    observer.observe(el, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  return isDark;
+}
+
 function useSmilesDrawer(
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
   smiles: string,
 ) {
+  const isDark = useColorScheme();
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -32,8 +52,6 @@ function useSmilesDrawer(
       if (cancelled) return;
       const SmilesDrawer =
         (mod.default as typeof import("smiles-drawer") | undefined) ?? mod;
-      const isDark = document.documentElement.classList.contains("dark");
-      const bondColor = isDark ? "#ffffff" : "#000000";
       const drawer = new SmilesDrawer.Drawer({
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
@@ -81,7 +99,7 @@ function useSmilesDrawer(
     return () => {
       cancelled = true;
     };
-  }, [canvasRef, smiles]);
+  }, [canvasRef, smiles, isDark]);
 }
 
 // ---------------------------------------------------------------------------
