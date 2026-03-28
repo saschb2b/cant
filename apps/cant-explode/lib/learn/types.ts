@@ -12,7 +12,14 @@ export type ChallengeCategory =
   | "reaction-favorability"
   | "solubility"
   | "oxidation-reduction"
-  | "functional-groups";
+  | "functional-groups"
+  | "structural-formulas"
+  | "molecular-geometry"
+  | "periodic-trends"
+  | "electron-configuration"
+  | "energy-diagrams"
+  | "stereochemistry"
+  | "electrostatic-maps";
 
 /**
  * A single chemistry challenge.

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ComponentType, ReactNode } from "react";
 import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,6 +10,8 @@ import {
   FormattedText,
   SourceLink,
 } from "@cant/shared/components";
+import type { ContentMapEntry } from "@cant/shared/components/game";
+import { visualRegistry } from "@/components/visual/registry";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -20,6 +23,30 @@ import type {
   Difficulty,
   Challenge,
 } from "@/lib/learn/types";
+
+function renderVisualContentPanel(
+  entry: ContentMapEntry | undefined,
+  side: "good" | "bad",
+): ReactNode {
+  if (entry?.type !== "visual") return null;
+  const componentId =
+    side === "good" ? entry.goodComponentId : entry.badComponentId;
+  const Component = visualRegistry[componentId] as ComponentType | undefined;
+  if (!Component) return null;
+  return (
+    <Box
+      sx={{
+        p: 2,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: 200,
+      }}
+    >
+      <Component />
+    </Box>
+  );
+}
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 
@@ -87,6 +114,7 @@ export default async function CategoryPage({ params }: PageProps) {
           : undefined
       }
       panelBg="background.paper"
+      renderContentPanel={renderVisualContentPanel}
       renderExplanation={(challenge) => (
         <>
           <Stack
