@@ -344,7 +344,7 @@ const LAVA_ELEMENTS = new Set(["lava"]);
  * This is the only way clouds gain water - real steam from real water.
  */
 function absorbSteam(atmo: Atmosphere, grid: Grid): void {
-  const absorptionZone = Math.floor(grid.height / 3);
+  const absorptionZone = Math.floor(grid.height / 2);
   for (let y = 0; y < absorptionZone; y++) {
     for (let x = 0; x < grid.width; x++) {
       const cell = getCell(grid, x, y);

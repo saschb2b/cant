@@ -5,13 +5,13 @@ import { getSkyColor, getAmbientSparkle, getCloudPixel, getCelestialPixel } from
 /** Elements that render translucent (blended with background). */
 const TRANSLUCENT: Record<string, number> = {
   smoke: 0.4,
-  steam: 0.3,
+  steam: 0.12,
   co2: 0.25,
   hydrogen: 0.2,
   oxygen: 0.2,
   chlorine: 0.5,
   methane: 0.15,
-  pollen: 0.6,
+  pollen: 0.2,
 };
 
 /**
@@ -102,6 +102,14 @@ export function renderGrid(
         if (particle.element === "pollen") {
           r = Math.min(255, r + 15);
           g = Math.min(255, g + 10);
+        }
+
+        // Bee: bright yellow-black stripe effect
+        if (particle.element === "bee") {
+          const stripe = ((gx + gy) % 2 === 0);
+          r = stripe ? 230 : 40;
+          g = stripe ? 190 : 30;
+          b = stripe ? 20 : 10;
         }
 
         // Leaf: subtle canopy depth shimmer

@@ -373,6 +373,23 @@ export const REACTIONS: ReactionRule[] = [
     group: "Organic",
   },
 
+  // Creatures
+  {
+    a: "fire", b: "worm", produceA: null, produceB: "ash", probability: 0.8,
+    desc: "Fire kills worms",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "bee", produceA: null, produceB: "smoke", probability: 0.9,
+    desc: "Fire kills bees",
+    group: "Organic",
+  },
+  {
+    a: "acid", b: "worm", produceA: null, produceB: null, probability: 0.5,
+    desc: "Acid kills worms",
+    group: "Organic",
+  },
+
   // Engineered
   {
     a: "fire", b: "wax", produceA: "fire", produceB: "oil", probability: 0.1,

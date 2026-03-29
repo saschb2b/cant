@@ -364,9 +364,9 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
   // Only decay if disconnected from the tree (no stem/plant nearby)
   const connected = countNearbyAny(grid, x, y, ["stem", "plant", "leaf"], 1) >= 2;
   if (!connected && particle.lifetime > 100 && Math.random() < 0.003) {
-    const soil = createParticle("soil");
-    soil.updated = true;
-    setCell(grid, x, y, soil);
+    const compost = createParticle("compost");
+    compost.updated = true;
+    setCell(grid, x, y, compost);
     return;
   }
 
@@ -418,7 +418,7 @@ function updateFlower(grid: Grid, x: number, y: number, particle: Particle): voi
   // Flowers only wilt if disconnected from the plant
   const flowerConnected = hasAnyNeighbor(grid, x, y, ["stem", "leaf", "plant"]);
   if (!flowerConnected && particle.lifetime > 150 && Math.random() < 0.003) {
-    const ash = createParticle("soil");
+    const ash = createParticle("compost");
     ash.updated = true;
     setCell(grid, x, y, ash);
     return;
@@ -431,10 +431,21 @@ function updateFlower(grid: Grid, x: number, y: number, particle: Particle): voi
   if (Math.random() > 0.01) return;
 
   // Release pollen upward
-  const dirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, -2], [0, -2], [1, -2]];
-  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  const pollenDirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, -2], [0, -2], [1, -2]];
+  const dir = pollenDirs[Math.floor(Math.random() * pollenDirs.length)];
   if (dir && isEmpty(grid, x + dir[0], y + dir[1])) {
     spawnAt(grid, x + dir[0], y + dir[1], "pollen");
+  }
+
+  // Flowers attract bees (rare spawn)
+  if (particle.lifetime > 40 && Math.random() < 0.0004) {
+    // Spawn bee above flower if space is available
+    for (const [bx, by] of [[-1, -1], [0, -2], [1, -1]] as [number, number][]) {
+      if (isEmpty(grid, x + bx, y + by)) {
+        spawnAt(grid, x + bx, y + by, "bee");
+        break;
+      }
+    }
   }
 }
 
@@ -445,9 +456,9 @@ function updateGrass(grid: Grid, x: number, y: number, particle: Particle): void
   // Grass only decays if isolated (no other grass, stem, or soil nearby)
   const grassConnected = hasAnyNeighbor(grid, x, y, ["grass", "stem", "plant", "soil"]);
   if (!grassConnected && particle.lifetime > 200 && Math.random() < 0.003) {
-    const soil = createParticle("soil");
-    soil.updated = true;
-    setCell(grid, x, y, soil);
+    const compost = createParticle("compost");
+    compost.updated = true;
+    setCell(grid, x, y, compost);
     return;
   }
 
@@ -616,6 +627,18 @@ function updateSoil(grid: Grid, x: number, y: number): void {
     const seed = createParticle("seed");
     seed.updated = true;
     setCell(grid, x, y - 1, seed);
+    return;
+  }
+
+  // Worms spawn in wet soil (rare, underground life)
+  if (Math.random() < 0.0002) {
+    // Worms prefer to spawn below ground (soil below too)
+    const below = getCell(grid, x, y + 1);
+    if (below && (below.element === "soil" || below.element === "sand")) {
+      const worm = createParticle("worm");
+      worm.updated = true;
+      setCell(grid, x, y, worm);
+    }
   }
 }
 
@@ -692,6 +715,140 @@ function updatePollen(grid: Grid, x: number, y: number, particle: Particle): voi
 }
 
 // ===== Fuse: catches fire slowly from neighbor fire, burns along its length =====
+// ===== Compost: intermediate decay state, slowly becomes soil =====
+function updateCompost(grid: Grid, x: number, y: number, particle: Particle): void {
+  updatePowder(grid, x, y);
+  particle.lifetime++;
+
+  // Compost slowly becomes soil
+  if (particle.lifetime > 100 && Math.random() < 0.005) {
+    const soil = createParticle("soil");
+    soil.updated = true;
+    setCell(grid, x, y, soil);
+    return;
+  }
+
+  // Wet compost converts faster
+  if (countNearby(grid, x, y, "water", 2) > 0 && Math.random() < 0.01) {
+    const soil = createParticle("soil");
+    soil.updated = true;
+    setCell(grid, x, y, soil);
+    return;
+  }
+
+  // Worms can spawn in compost near soil
+  if (particle.lifetime > 50 && hasNeighbor(grid, x, y, "soil") && Math.random() < 0.0005) {
+    if (isEmpty(grid, x, y - 1)) {
+      spawnAt(grid, x, y - 1, "worm");
+    }
+  }
+}
+
+// ===== Worm: burrows through soil, enriches it, spawns from wet soil =====
+function updateWorm(grid: Grid, x: number, y: number, particle: Particle): void {
+  particle.lifetime--;
+  if (particle.lifetime <= 0) {
+    // Worm dies, becomes compost
+    const compost = createParticle("compost");
+    compost.updated = true;
+    setCell(grid, x, y, compost);
+    return;
+  }
+
+  // Worms move through soil, compost, and ash (burrowing)
+  const burrowable = ["soil", "compost", "ash", "sand"];
+  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, 1], [1, 1]];
+
+  // Prefer downward and sideways movement
+  if (Math.random() < 0.3) {
+    const dir = dirs[Math.floor(Math.random() * dirs.length)];
+    if (!dir) return;
+    const nx = x + dir[0];
+    const ny = y + dir[1];
+    const target = getCell(grid, nx, ny);
+    if (target && burrowable.includes(target.element)) {
+      // Swap with the soil/compost (burrow through it)
+      swapCells(grid, x, y, nx, ny);
+      const moved = getCell(grid, nx, ny);
+      if (moved) moved.updated = true;
+
+      // Enrichment: soil the worm passes through becomes more fertile
+      // Convert sand/ash/compost to soil as the worm passes
+      const left = getCell(grid, x, y);
+      if (left && (left.element === "sand" || left.element === "ash" || left.element === "compost")) {
+        const soil = createParticle("soil");
+        soil.updated = true;
+        setCell(grid, x, y, soil);
+      }
+      return;
+    }
+
+    // If in open air, fall
+    if (!target) {
+      tryMove(grid, x, y, nx, ny);
+      return;
+    }
+  }
+
+  // If somehow in open air, act like powder (fall)
+  const below = getCell(grid, x, y + 1);
+  if (!below) {
+    tryMove(grid, x, y, x, y + 1);
+  }
+}
+
+// ===== Bee: flies between flowers, boosts pollination =====
+function updateBee(grid: Grid, x: number, y: number, particle: Particle): void {
+  particle.lifetime--;
+  if (particle.lifetime <= 0) {
+    setCell(grid, x, y, null);
+    return;
+  }
+
+  // If adjacent to a flower, "visit" it - boost pollen production
+  if (hasNeighbor(grid, x, y, "flower")) {
+    // Pollinate: occasionally spawn pollen near the flower
+    if (Math.random() < 0.01) {
+      const dirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [0, -2]];
+      const dir = dirs[Math.floor(Math.random() * dirs.length)];
+      if (dir && isEmpty(grid, x + dir[0], y + dir[1])) {
+        spawnAt(grid, x + dir[0], y + dir[1], "pollen");
+      }
+    }
+    // Extend bee lifetime when feeding on flowers
+    particle.lifetime = Math.min(particle.lifetime + 2, 800);
+  }
+
+  // Movement: purposeful flight toward flowers, with random wandering
+  if (Math.random() < 0.5) return; // Don't move every tick (calmer)
+
+  // Look for nearby flowers (within 6 cells) to fly toward
+  let targetDx = 0;
+  let targetDy = 0;
+  let foundFlower = false;
+  for (let dy = -6; dy <= 6 && !foundFlower; dy++) {
+    for (let dx = -6; dx <= 6; dx++) {
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && cell.element === "flower") {
+        targetDx = dx > 0 ? 1 : dx < 0 ? -1 : 0;
+        targetDy = dy > 0 ? 1 : dy < 0 ? -1 : 0;
+        foundFlower = true;
+        break;
+      }
+    }
+  }
+
+  if (foundFlower) {
+    // Fly toward flower
+    tryMove(grid, x, y, x + targetDx, y + targetDy);
+  } else {
+    // Random wandering flight
+    const dx = Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 1 : 0;
+    const dy = Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 1 : 0;
+    tryMove(grid, x, y, x + dx, y + dy);
+  }
+}
+
 function updateFuse(grid: Grid, x: number, y: number, _particle: Particle): void {
   if (!hasAnyNeighbor(grid, x, y, ["fire", "spark", "lava"])) return;
   if (Math.random() > 0.08) return; // Slow burn rate = suspense
@@ -869,6 +1026,8 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
           } else if (particle.element === "soil") {
             updatePowder(grid, x, y);
             updateSoil(grid, x, y);
+          } else if (particle.element === "compost") {
+            updateCompost(grid, x, y, particle);
           } else if (particle.element === "ash" || particle.element === "charcoal") {
             updatePowder(grid, x, y);
             // Wet ash/charcoal decomposes into soil
@@ -883,6 +1042,15 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
           break;
         case "liquid":
           updateLiquid(grid, x, y);
+          // Solar evaporation: exposed water slowly becomes steam during the day
+          if (particle.element === "water" && currentDaylight > 0.3) {
+            const exposed = isEmpty(grid, x, y - 1);
+            if (exposed && Math.random() < 0.0015 * currentDaylight) {
+              const steam = createParticle("steam");
+              steam.updated = true;
+              setCell(grid, x, y, steam);
+            }
+          }
           break;
         case "gas":
           if (particle.element === "pollen") {
@@ -905,6 +1073,13 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
           break;
         case "explosive":
           updateExplosive(grid, x, y, particle);
+          break;
+        case "critter":
+          if (particle.element === "worm") {
+            updateWorm(grid, x, y, particle);
+          } else if (particle.element === "bee") {
+            updateBee(grid, x, y, particle);
+          }
           break;
         case "static":
           switch (particle.element) {

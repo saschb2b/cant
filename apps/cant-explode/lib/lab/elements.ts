@@ -38,7 +38,7 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   hydrogen: { behavior: "gas", baseColor: [200, 200, 255], density: 0, flammable: true, lifetime: 120 },
   oxygen: { behavior: "gas", baseColor: [180, 210, 255], density: 0, flammable: false, lifetime: 120 },
   smoke: { behavior: "gas", baseColor: [160, 160, 160], density: 0, flammable: false, lifetime: 60 },
-  steam: { behavior: "gas", baseColor: [200, 220, 255], density: 0, flammable: false, lifetime: 80 },
+  steam: { behavior: "gas", baseColor: [200, 220, 255], density: 0, flammable: false, lifetime: 200 },
   co2: { behavior: "gas", baseColor: [180, 180, 170], density: 0, flammable: false, lifetime: 80 },
   methane: { behavior: "gas", baseColor: [160, 180, 140], density: 0, flammable: true, lifetime: 200 },
 
@@ -60,6 +60,11 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   mushroom: { behavior: "static", baseColor: [180, 150, 120], density: 99, flammable: true },
   pollen: { behavior: "gas", baseColor: [240, 220, 80], density: 0, flammable: true, lifetime: 300 },
   soil: { behavior: "powder", baseColor: [90, 60, 30], density: 3, flammable: false },
+  compost: { behavior: "powder", baseColor: [65, 50, 25], density: 2, flammable: false },
+
+  // --- Creatures ---
+  worm: { behavior: "critter", baseColor: [160, 100, 80], density: 3, flammable: false, lifetime: 800 },
+  bee: { behavior: "critter", baseColor: [220, 190, 40], density: 0, flammable: false, lifetime: 600 },
 
   // --- Engineered ---
   fuse: { behavior: "fuse", baseColor: [160, 120, 80], density: 99, flammable: false },

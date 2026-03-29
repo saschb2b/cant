@@ -51,6 +51,10 @@ export type ElementType =
   | "mushroom"
   | "pollen"
   | "soil"
+  | "compost"
+  // Creatures
+  | "worm"
+  | "bee"
   // Engineered
   | "fuse"
   | "tnt"
@@ -66,7 +70,8 @@ export type Behavior =
   | "plant"
   | "vine"
   | "fuse"
-  | "explosive";
+  | "explosive"
+  | "critter";
 
 export interface ElementDef {
   behavior: Behavior;
