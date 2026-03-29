@@ -24,7 +24,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/apps/cant-seo/public ./public
+COPY --from=builder /app/apps/cant-seo/public ./apps/cant-seo/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/cant-seo/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/cant-seo/.next/static ./apps/cant-seo/.next/static
 
