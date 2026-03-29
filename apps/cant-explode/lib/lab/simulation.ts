@@ -260,8 +260,10 @@ function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void 
 }
 
 // ===== Plant (growth engine): the active tip that builds the tree =====
-// The plant particle IS the growing tip. It moves upward, leaving stem
-// behind, then expands a canopy of leaves at the top.
+// Each tree's "DNA" is encoded in the particle's initial color values:
+//   r: trunk height (6-13), lean direction, branch tendency
+//   g: canopy width/shape
+//   b: branching frequency
 function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void {
   if (currentDaylight < 0.1) return;
 
@@ -274,13 +276,27 @@ function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void
   particle.lifetime++;
   const stage = particle.lifetime;
 
-  // Trunk height varies per tree (determined by initial color hash)
-  const trunkHeight = 6 + (particle.r % 8); // 6-13 cells tall
+  // Tree DNA from initial color values
+  const trunkHeight = 5 + (particle.r % 10);           // 5-14 cells tall
+  const lean = ((particle.r % 3) - 1);                  // -1, 0, or 1 lean direction
+  const leanChance = 0.15 + (particle.g % 10) * 0.03;   // 0.15-0.42 lean probability
+  const branchFreq = 0.08 + (particle.b % 8) * 0.03;    // 0.08-0.29 branch probability
+  const canopyWidth = 4 + (particle.g % 5);              // 4-8 canopy radius
 
-  // Growing phase: move upward, leave stem below
+  // ---- Trunk growing phase ----
   if (stage <= trunkHeight) {
-    const above = getCell(grid, x, y - 1);
+    // Determine growth direction: mostly up, sometimes lean
+    let dx = 0;
+    const dy = -1;
+    if (stage > 2 && Math.random() < leanChance) {
+      dx = lean;
+    }
+
+    const tx = x + dx;
+    const ty = y + dy;
+    const above = getCell(grid, tx, ty);
     const canGrow = !above || above.element === "leaf" || above.element === "grass" || above.element === "water";
+
     if (canGrow) {
       consumeWater(grid, x, y);
       // Leave a stem where we were
@@ -288,40 +304,54 @@ function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void
       stem.lifetime = 100;
       stem.updated = true;
       setCell(grid, x, y, stem);
-      // Move the plant tip upward (replace whatever is above)
+      // Move the plant tip
       particle.updated = true;
-      setCell(grid, x, y - 1, particle);
+      setCell(grid, tx, ty, particle);
+
+      // Branching: occasionally spawn a new growth tip sideways
+      if (stage > 3 && Math.random() < branchFreq) {
+        const branchDir = lean === 0 ? (randomBool() ? -1 : 1) : -lean;
+        const bx = x + branchDir;
+        const by = y - 1;
+        const branchTarget = getCell(grid, bx, by);
+        if (!branchTarget || branchTarget.element === "water") {
+          // Create a branch tip with shorter trunk height
+          const branch = createParticle("plant");
+          branch.lifetime = Math.max(stage, trunkHeight - 3);
+          // Inherit DNA but with smaller canopy
+          branch.r = particle.r;
+          branch.g = Math.max(0, particle.g - 30);
+          branch.b = Math.max(0, particle.b - 20);
+          branch.updated = true;
+          setCell(grid, bx, by, branch);
+        }
+      }
     }
-    // If blocked by something solid, skip ahead to canopy phase
-    // (don't return - fall through to canopy code)
     if (canGrow) return;
   }
 
-  // Canopy phase: expand leaves outward and upward from the treetop
+  // ---- Canopy phase ----
   const canopyAge = stage - trunkHeight;
-  const radius = Math.min(canopyAge, 7);
+  const radius = Math.min(canopyAge, canopyWidth);
   let grew = false;
 
-  for (let attempt = 0; attempt < 4; attempt++) {
-    // Canopy shape: wider than tall, dome-like
-    const dx = Math.floor(Math.random() * (radius * 2 + 1)) - radius;
-    const maxUp = Math.floor(radius * 0.7) + 1;
-    const dy = -Math.floor(Math.random() * maxUp);
-    const tx = x + dx;
-    const ty = y + dy;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    // Canopy shape: dome, wider than tall
+    const cdx = Math.floor(Math.random() * (radius * 2 + 1)) - radius;
+    const maxUp = Math.floor(radius * 0.6) + 1;
+    const cdy = -Math.floor(Math.random() * maxUp);
+    const tx = x + cdx;
+    const ty = y + cdy;
 
-    // Can grow into empty cells or displace water
     const target = getCell(grid, tx, ty);
     if (target && target.element !== "water") continue;
 
-    // Must connect to existing tree
     const support = countNearbyAny(grid, tx, ty, ["stem", "leaf", "plant"], 2);
     if (support === 0) continue;
 
-    // What to place
-    const dist = Math.abs(dx) + Math.abs(dy);
+    const dist = Math.abs(cdx) + Math.abs(cdy);
     let element: Particle["element"];
-    if (dist >= radius - 1 && Math.random() < 0.15) {
+    if (dist >= radius - 1 && Math.random() < 0.12) {
       element = "flower";
     } else {
       element = "leaf";
@@ -334,8 +364,7 @@ function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void
     grew = true;
   }
 
-  // Mature: become a leaf (canopy is done)
-  if (canopyAge > 12 || (!grew && canopyAge > 6)) {
+  if (canopyAge > 14 || (!grew && canopyAge > 7)) {
     const leaf = createParticle("leaf");
     leaf.updated = true;
     setCell(grid, x, y, leaf);

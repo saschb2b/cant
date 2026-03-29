@@ -4,32 +4,32 @@ import { createParticle } from "./simulation";
 
 type RGB = [number, number, number];
 
+/** Cloud types for visual variety. */
+type CloudType = "cumulus" | "cirrus" | "stratus";
+
 /** A single puff (sub-blob) within a cloud. */
 interface Puff {
-  /** Offset from cloud center x. */
   ox: number;
-  /** Offset from cloud center y. */
   oy: number;
-  /** Radius of this puff. */
   r: number;
+  /** Noise seed for unique edge shape per puff. */
+  seed: number;
 }
 
 /** A single cloud made of overlapping puffs. */
 interface Cloud {
-  /** Center x position in grid coordinates (fractional for smooth drift). */
   x: number;
-  /** Center y position in the cloud band. */
   y: number;
-  /** Moisture level 0-1. At high levels the cloud darkens and rains. */
   moisture: number;
-  /** Horizontal drift speed (grid cells per frame). */
   drift: number;
-  /** Billowy sub-blobs that compose the cloud shape. */
   puffs: Puff[];
-  /** Bounding half-width for quick rejection. */
   halfW: number;
-  /** Bounding half-height for quick rejection. */
   halfH: number;
+  type: CloudType;
+  /** Age in frames, used for slow morphing. */
+  age: number;
+  /** Vertical drift speed for height variation. */
+  driftY: number;
 }
 
 export interface Atmosphere {
@@ -82,7 +82,7 @@ const MOON_GLOW_RADIUS = 7;
 const HORIZON_Y = 50;
 
 /** Maximum number of clouds at once. */
-const MAX_CLOUDS = 6;
+const MAX_CLOUDS = 8;
 /** Cloud band: clouds live in the top portion of the grid. */
 const CLOUD_Y_MIN = 2;
 const CLOUD_Y_MAX = 12;
@@ -356,36 +356,80 @@ function absorbSteam(atmo: Atmosphere, grid: Grid): void {
   }
 }
 
-/**
- * Generate billowy puffs for a cloud. Creates overlapping circles
- * that form a natural cumulus shape: flat bottom, rounded bumpy top.
- */
-function generatePuffs(scale: number): { puffs: Puff[]; halfW: number; halfH: number } {
+/** Generate a cumulus cloud: puffy, tall, flat bottom, billowy top. */
+function generateCumulus(scale: number): Puff[] {
   const puffs: Puff[] = [];
-  const numPuffs = 4 + Math.floor(Math.random() * 5);
+  const numPuffs = 5 + Math.floor(Math.random() * 4);
 
-  // Main body puffs along the horizontal axis
+  // Flat bottom row
   for (let i = 0; i < numPuffs; i++) {
-    const t = (i / (numPuffs - 1)) * 2 - 1; // -1 to 1
-    const r = (2 + Math.random() * 2) * scale;
-    // Flat bottom: puffs sit on a baseline, bulge upward
-    const ox = t * scale * 4 * (0.8 + Math.random() * 0.4);
-    // Upward bias: center puffs are higher, edge puffs lower
-    const heightBias = (1 - t * t) * scale * 2;
+    const t = (i / (numPuffs - 1)) * 2 - 1;
+    const r = (2.5 + Math.random() * 2) * scale;
+    const ox = t * scale * 5 * (0.8 + Math.random() * 0.4);
+    const heightBias = (1 - t * t) * scale * 2.5;
     const oy = -(heightBias + Math.random() * scale * 0.5);
-    puffs.push({ ox, oy, r });
+    puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
   }
 
-  // Extra top puffs for billowy peaks
-  const peaks = 1 + Math.floor(Math.random() * 3);
+  // Billowy peaks on top
+  const peaks = 2 + Math.floor(Math.random() * 3);
   for (let i = 0; i < peaks; i++) {
     const ox = (Math.random() * 2 - 1) * scale * 3;
-    const oy = -(scale * 2 + Math.random() * scale * 2);
-    const r = (1.5 + Math.random() * 1.5) * scale;
-    puffs.push({ ox, oy, r });
+    const oy = -(scale * 3 + Math.random() * scale * 2.5);
+    const r = (2 + Math.random() * 2) * scale;
+    puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
   }
 
-  // Compute bounding box
+  return puffs;
+}
+
+/** Generate a cirrus cloud: thin, wispy, high altitude streaks. */
+function generateCirrus(scale: number): Puff[] {
+  const puffs: Puff[] = [];
+  const streaks = 2 + Math.floor(Math.random() * 3);
+
+  for (let s = 0; s < streaks; s++) {
+    const baseX = (Math.random() * 2 - 1) * scale * 3;
+    const baseY = -(Math.random() * scale * 1.5);
+    const length = 3 + Math.floor(Math.random() * 4);
+
+    for (let i = 0; i < length; i++) {
+      const ox = baseX + i * scale * 1.8 + (Math.random() - 0.5) * scale;
+      const oy = baseY + (Math.random() - 0.5) * scale * 0.5;
+      const r = (0.8 + Math.random() * 0.8) * scale;
+      puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
+    }
+  }
+
+  return puffs;
+}
+
+/** Generate a stratus cloud: wide, flat, layered. */
+function generateStratus(scale: number): Puff[] {
+  const puffs: Puff[] = [];
+  const width = 8 + Math.floor(Math.random() * 6);
+
+  for (let i = 0; i < width; i++) {
+    const t = (i / (width - 1)) * 2 - 1;
+    const ox = t * scale * 7;
+    // Very flat: minimal vertical variation
+    const oy = (Math.random() - 0.5) * scale * 0.8;
+    const r = (1.5 + Math.random() * 1) * scale;
+    puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
+  }
+
+  return puffs;
+}
+
+/** Generate puffs for a given cloud type. */
+function generateCloud(type: CloudType, scale: number): { puffs: Puff[]; halfW: number; halfH: number } {
+  let puffs: Puff[];
+  switch (type) {
+    case "cumulus": puffs = generateCumulus(scale); break;
+    case "cirrus": puffs = generateCirrus(scale); break;
+    case "stratus": puffs = generateStratus(scale); break;
+  }
+
   let maxX = 0;
   let maxY = 0;
   for (const p of puffs) {
@@ -424,15 +468,40 @@ function trySpawnCloud(atmo: Atmosphere, gridWidth: number): void {
 
   atmo.steamBuffer -= STEAM_THRESHOLD;
 
-  const scale = 0.6 + Math.random() * 0.6;
-  const { puffs, halfW, halfH } = generatePuffs(scale);
+  // Pick a cloud type with weighted randomness
+  const roll = Math.random();
+  let type: CloudType;
+  if (roll < 0.45) {
+    type = "cumulus"; // Puffy (most common)
+  } else if (roll < 0.75) {
+    type = "cirrus"; // Wispy (high altitude)
+  } else {
+    type = "stratus"; // Flat (wide)
+  }
 
-  // Spawn from left or right edge
+  // Scale varies by type
+  const scale = type === "cirrus" ? 0.5 + Math.random() * 0.3
+    : type === "stratus" ? 0.5 + Math.random() * 0.4
+    : 0.6 + Math.random() * 0.7;
+
+  const { puffs, halfW, halfH } = generateCloud(type, scale);
+
   const fromLeft = Math.random() < 0.5;
   const x = fromLeft ? -halfW : gridWidth + halfW;
-  const drift = (fromLeft ? 1 : -1) * (0.03 + Math.random() * 0.08);
-  // Vertical position within cloud band
-  const y = CLOUD_Y_MIN + 3 + Math.random() * (CLOUD_Y_MAX - CLOUD_Y_MIN - 4);
+
+  // Speed varies by type: cirrus fast, stratus slow, cumulus medium
+  const baseSpeed = type === "cirrus" ? 0.06 : type === "stratus" ? 0.02 : 0.04;
+  const drift = (fromLeft ? 1 : -1) * (baseSpeed + Math.random() * 0.04);
+
+  // Height varies by type: cirrus high, stratus mid, cumulus varies
+  let y: number;
+  if (type === "cirrus") {
+    y = CLOUD_Y_MIN + 1 + Math.random() * 3;
+  } else if (type === "stratus") {
+    y = CLOUD_Y_MIN + 4 + Math.random() * 4;
+  } else {
+    y = CLOUD_Y_MIN + 2 + Math.random() * (CLOUD_Y_MAX - CLOUD_Y_MIN - 4);
+  }
 
   atmo.clouds.push({
     x,
@@ -442,6 +511,9 @@ function trySpawnCloud(atmo: Atmosphere, gridWidth: number): void {
     puffs,
     halfW,
     halfH,
+    type,
+    age: 0,
+    driftY: (Math.random() - 0.5) * 0.005,
   });
 }
 
@@ -454,8 +526,21 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
   for (let i = 0; i < atmo.clouds.length; i++) {
     const cloud = atmo.clouds[i]!;
 
-    // Drift
+    // Drift horizontally and slightly vertically
     cloud.x += cloud.drift;
+    cloud.y += cloud.driftY;
+    cloud.y = Math.max(CLOUD_Y_MIN, Math.min(CLOUD_Y_MAX, cloud.y));
+    cloud.age++;
+
+    // Slow morphing: puffs gently shift over time
+    if (cloud.age % 60 === 0) {
+      for (const puff of cloud.puffs) {
+        puff.ox += (Math.random() - 0.5) * 0.3;
+        puff.oy += (Math.random() - 0.5) * 0.2;
+        puff.r += (Math.random() - 0.5) * 0.1;
+        puff.r = Math.max(0.5, puff.r);
+      }
+    }
 
     // Remove if fully off-screen
     if (cloud.drift > 0 && cloud.x - cloud.halfW > grid.width + 5) {
@@ -663,8 +748,19 @@ export function getSkyColor(atmo: Atmosphere, row: number, totalRows: number): R
 }
 
 /** Simple hash for noise. */
+/** Better hash with multiple mixing rounds to avoid visible patterns. */
 function hash(x: number, y: number): number {
-  const h = ((x * 374761393 + y * 668265263) ^ (x * 1274126177)) >>> 0;
+  let h = (x * 374761393) ^ (y * 668265263);
+  h = ((h ^ (h >>> 13)) * 1274126177) >>> 0;
+  h = ((h ^ (h >>> 16)) * 2654435769) >>> 0;
+  return (h % 10000) / 10000;
+}
+
+/** Hash with a third seed for extra variation. */
+function hash3(x: number, y: number, s: number): number {
+  let h = (x * 374761393) ^ (y * 668265263) ^ (s * 1013904223);
+  h = ((h ^ (h >>> 13)) * 1274126177) >>> 0;
+  h = ((h ^ (h >>> 16)) * 2654435769) >>> 0;
   return (h % 10000) / 10000;
 }
 
@@ -697,23 +793,30 @@ export function getCloudPixel(
       const dist = Math.sqrt(px * px + py * py);
       if (dist >= puff.r) continue;
 
-      // Smooth falloff from puff center
       const t = dist / puff.r;
+
+      // Multi-octave noise for organic wispy edges
+      const n1 = hash(gx + Math.floor(puff.seed), gy + Math.floor(puff.seed * 3));
+      const n2 = hash(gx * 2 + Math.floor(puff.seed * 7), gy * 2 + Math.floor(puff.seed * 11));
+      const noiseVal = n1 * 0.6 + n2 * 0.4;
+
+      // Cirrus clouds have wispier edges, cumulus have harder edges
+      const edgeHardness = cloud.type === "cirrus" ? 0.15 : cloud.type === "stratus" ? 0.35 : 0.25;
+      const edgeCutoff = edgeHardness + noiseVal * 0.5;
+      if (t > edgeCutoff && t > 0.5) continue;
+
+      // Smooth falloff
       const falloff = 1 - t * t;
 
-      // Wispy noise at edges for organic shape
-      const noise = hash(gx + Math.floor(puff.ox * 100), gy + Math.floor(puff.oy * 100));
-      const edgeCutoff = 0.3 + noise * 0.4;
-      if (t > edgeCutoff && falloff < 0.3) continue;
+      // Opacity varies by cloud type
+      const baseOpacity = cloud.type === "cirrus" ? 0.25 : cloud.type === "stratus" ? 0.4 : 0.5;
+      const puffOpacity = falloff * baseOpacity;
 
-      const puffOpacity = falloff * 0.5;
+      // Top-lit with noise variation for internal texture
+      const verticalPos = py / puff.r;
+      const internalNoise = hash(gx + Math.floor(puff.seed * 5), gy + Math.floor(puff.seed * 13)) * 0.15;
+      const lighting = 0.5 - verticalPos * 0.35 + internalNoise;
 
-      // Top-lit: pixels near the top of a puff are brighter, bottom darker
-      // py < 0 means above puff center (brighter), py > 0 means below (shadow)
-      const verticalPos = py / puff.r; // -1 (top) to 1 (bottom)
-      const lighting = 0.5 - verticalPos * 0.4; // 0.9 at top, 0.1 at bottom
-
-      // Accumulate overlapping puffs (layered transparency)
       cloudOpacity = cloudOpacity + puffOpacity * (1 - cloudOpacity);
       cloudBrightness = Math.max(cloudBrightness, lighting);
     }
@@ -778,98 +881,107 @@ export function getAmbientSparkle(
   // Stars: visible at night, fade during day
   const nightness = Math.max(0, 1 - atmo.daylight * 1.5);
   if (nightness > 0.05 && gy < 100) {
-    // Deterministic star field with multiple layers
-    const h1 = ((gx * 7919 + gy * 104729) >>> 0) % 10000;
-    const h2 = ((gx * 13337 + gy * 56093) >>> 0) % 10000;
-    const h3 = ((gx * 3571 + gy * 71993) >>> 0) % 10000;
+    // Use hash3 with different seeds per layer to break all patterns
+    const h1 = hash3(gx, gy, 1);
+    const h2 = hash3(gx, gy, 2);
+    const h3 = hash3(gx, gy, 3);
 
-    // Layer 1: Bright stars (rare, large twinkle)
-    if (h1 < 8) {
-      const twinkle = Math.sin((atmo.frame + gx * 17 + gy * 31) * 0.02) * 0.4 + 0.6;
+    // Layer 1: Bright stars (rare, varied colors, slow twinkle)
+    if (h1 < 0.0008) {
+      // Each star has a unique twinkle phase based on its position hash
+      const phase = hash3(gx, gy, 17) * 6.28;
+      const twinkle = Math.sin(atmo.frame * 0.018 + phase) * 0.35 + 0.65;
       const brightness = twinkle * nightness;
-      // Star color based on hash: white, blue-white, yellow, orange-red
-      const colorType = h1 % 4;
+      // Star color: use hash for type so each star has consistent color
+      const colorVal = hash3(gx, gy, 42);
       let sr = 255, sg = 255, sb = 255;
-      if (colorType === 1) { sr = 200; sg = 220; sb = 255; } // Blue-white
-      else if (colorType === 2) { sr = 255; sg = 240; sb = 180; } // Yellow
-      else if (colorType === 3) { sr = 255; sg = 200; sb = 160; } // Orange
+      if (colorVal < 0.2) { sr = 190; sg = 210; sb = 255; }       // Blue-white
+      else if (colorVal < 0.35) { sr = 255; sg = 235; sb = 170; } // Yellow
+      else if (colorVal < 0.45) { sr = 255; sg = 190; sb = 140; } // Orange
+      else if (colorVal < 0.5) { sr = 255; sg = 160; sb = 130; }  // Red
       return [
-        Math.round(bg[0] + (sr - bg[0]) * brightness * 0.8),
-        Math.round(bg[1] + (sg - bg[1]) * brightness * 0.8),
-        Math.round(bg[2] + (sb - bg[2]) * brightness * 0.7),
+        Math.round(bg[0] + (sr - bg[0]) * brightness * 0.85),
+        Math.round(bg[1] + (sg - bg[1]) * brightness * 0.85),
+        Math.round(bg[2] + (sb - bg[2]) * brightness * 0.75),
       ];
     }
 
-    // Layer 2: Medium stars (more common, gentler twinkle)
-    if (h2 < 25) {
-      const twinkle = Math.sin((atmo.frame + gx * 11 + gy * 23) * 0.015) * 0.3 + 0.5;
+    // Layer 2: Medium stars (gentler, mostly white)
+    if (h2 < 0.003) {
+      const phase = hash3(gx, gy, 29) * 6.28;
+      const twinkle = Math.sin(atmo.frame * 0.012 + phase) * 0.25 + 0.5;
       const brightness = twinkle * nightness * 0.5;
-      if (brightness > 0.15) {
+      if (brightness > 0.12) {
+        const tint = hash3(gx, gy, 53);
         return [
-          Math.round(bg[0] + (240 - bg[0]) * brightness),
-          Math.round(bg[1] + (245 - bg[1]) * brightness),
-          Math.round(bg[2] + (255 - bg[2]) * brightness),
+          Math.round(bg[0] + (230 + tint * 25 - bg[0]) * brightness),
+          Math.round(bg[1] + (235 + tint * 15 - bg[1]) * brightness),
+          Math.round(bg[2] + (250 - bg[2]) * brightness),
         ];
       }
     }
 
-    // Layer 3: Dim stars (many, faint, no twinkle - star dust)
-    if (h3 < 40 && gy < 70) {
-      const brightness = nightness * 0.2;
-      if (brightness > 0.08) {
+    // Layer 3: Dim star dust (faint, dense in upper sky, no twinkle)
+    if (h3 < 0.005 && gy < 70) {
+      // Density falls off toward the horizon
+      const heightFade = 1 - gy / 70;
+      const brightness = nightness * 0.18 * heightFade;
+      if (brightness > 0.05) {
         return [
-          Math.round(bg[0] + (200 - bg[0]) * brightness),
-          Math.round(bg[1] + (210 - bg[1]) * brightness),
+          Math.round(bg[0] + (195 - bg[0]) * brightness),
+          Math.round(bg[1] + (205 - bg[1]) * brightness),
+          Math.round(bg[2] + (225 - bg[2]) * brightness),
+        ];
+      }
+    }
+
+    // Milky Way: curved band with noise-based density
+    const bandAngle = 0.6;
+    const bandCenter = gy * bandAngle + gx * (1 - bandAngle);
+    const bandDist = Math.abs(bandCenter - 50);
+    if (bandDist < 14 && gy < 65) {
+      const bandNoise = hash3(gx, gy, 77);
+      const bandFade = (1 - bandDist / 14);
+      // Dense star clusters within the band
+      if (bandNoise < 0.06 * bandFade) {
+        const brightness = nightness * 0.22 * bandFade;
+        const tint = hash3(gx, gy, 88);
+        return [
+          Math.round(bg[0] + (200 + tint * 20 - bg[0]) * brightness),
+          Math.round(bg[1] + (205 + tint * 15 - bg[1]) * brightness),
           Math.round(bg[2] + (230 - bg[2]) * brightness),
         ];
       }
-    }
-
-    // Milky Way band: subtle lighter streak across the upper sky
-    // Diagonal band from top-left to mid-right
-    const bandCenter = gy * 0.8 + gx * 0.3;
-    const bandDist = Math.abs(bandCenter - 45);
-    if (bandDist < 12 && gy < 60) {
-      const bandHash = ((gx * 9871 + gy * 6271) >>> 0) % 1000;
-      const bandIntensity = (1 - bandDist / 12) * nightness * 0.08;
-      // Extra stars in the milky way
-      if (bandHash < 60) {
-        const brightness = nightness * 0.25;
+      // Nebula glow (very subtle)
+      const glowIntensity = bandFade * nightness * 0.05;
+      if (glowIntensity > 0.008 && bandNoise > 0.7) {
         return [
-          Math.round(bg[0] + (210 - bg[0]) * brightness),
-          Math.round(bg[1] + (215 - bg[1]) * brightness),
-          Math.round(bg[2] + (235 - bg[2]) * brightness),
-        ];
-      }
-      // Nebula glow
-      if (bandIntensity > 0.01) {
-        return [
-          Math.round(bg[0] + (60 - bg[0]) * bandIntensity),
-          Math.round(bg[1] + (50 - bg[1]) * bandIntensity),
-          Math.round(bg[2] + (80 - bg[2]) * bandIntensity),
+          Math.round(bg[0] + (45 - bg[0]) * glowIntensity),
+          Math.round(bg[1] + (35 - bg[1]) * glowIntensity),
+          Math.round(bg[2] + (65 - bg[2]) * glowIntensity),
         ];
       }
     }
 
-    // Shooting stars: very rare, brief streak
-    const shootFrame = Math.floor(atmo.frame / 120); // Changes every ~2 seconds
-    const shootHash = ((shootFrame * 4919) >>> 0) % 200;
-    if (shootHash === 0) {
-      // Active shooting star this period
-      const progress = (atmo.frame % 120) / 120;
-      if (progress < 0.3) {
-        const sx = 30 + (shootFrame * 7) % 140;
-        const sy = 5 + (shootFrame * 13) % 30;
-        const streakX = sx + Math.floor(progress * 25);
-        const streakY = sy + Math.floor(progress * 12);
+    // Shooting stars
+    const shootFrame = Math.floor(atmo.frame / 150);
+    const shootRoll = hash3(shootFrame, 0, 99);
+    if (shootRoll < 0.005) {
+      const progress = (atmo.frame % 150) / 150;
+      if (progress < 0.25) {
+        const sx = Math.floor(hash3(shootFrame, 1, 99) * 160) + 20;
+        const sy = Math.floor(hash3(shootFrame, 2, 99) * 30) + 5;
+        const angle = 0.3 + hash3(shootFrame, 3, 99) * 0.5;
+        const streakX = sx + Math.floor(progress * 30);
+        const streakY = sy + Math.floor(progress * 30 * angle);
         const dist = Math.abs(gx - streakX) + Math.abs(gy - streakY);
         if (dist < 2) {
-          const fade = 1 - progress / 0.3;
+          const fade = 1 - progress / 0.25;
           const brightness = fade * nightness * 0.9;
           return [
             Math.round(bg[0] + (255 - bg[0]) * brightness),
             Math.round(bg[1] + (255 - bg[1]) * brightness),
-            Math.round(bg[2] + (240 - bg[2]) * brightness),
+            Math.round(bg[2] + (235 - bg[2]) * brightness),
           ];
         }
       }
