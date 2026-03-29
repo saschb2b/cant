@@ -3,6 +3,9 @@ import { ELEMENTS, variedColor } from "./elements";
 import { getCell, setCell, swapCells, inBounds } from "./grid";
 import { REACTIONS } from "./reactions";
 
+/** Current daylight level for this tick (0=night, 1=day). Set by tickSimulation. */
+let currentDaylight = 1;
+
 export function createParticle(element: Particle["element"]): Particle {
   const def = ELEMENTS[element];
   const [r, g, b] = variedColor(def.baseColor, element);
@@ -224,11 +227,14 @@ function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void 
 
 // ===== Plant (growth engine): grows stems upward, branches into leaves =====
 function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void {
+  // Plants need sunlight to grow
+  if (currentDaylight < 0.1) return;
+
   const waterNearby = countNearby(grid, x, y, "water", 3);
   if (waterNearby === 0) return;
 
-  // Growth speed scales with water availability
-  const growChance = Math.min(0.15, 0.03 * waterNearby);
+  // Growth speed scales with water and sunlight
+  const growChance = Math.min(0.15, 0.03 * waterNearby) * currentDaylight;
   if (Math.random() > growChance) return;
 
   consumeWater(grid, x, y);
@@ -295,9 +301,10 @@ function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void
 
 // ===== Stem: structural trunk, can sprout branches =====
 function updateStem(grid: Grid, x: number, y: number, particle: Particle): void {
+  if (currentDaylight < 0.1) return;
   const waterNearby = countNearby(grid, x, y, "water", 2);
   if (waterNearby === 0) return;
-  if (Math.random() > 0.04) return;
+  if (Math.random() > 0.04 * currentDaylight) return;
 
   consumeWater(grid, x, y);
   particle.lifetime++;
@@ -329,7 +336,7 @@ function updateStem(grid: Grid, x: number, y: number, particle: Particle): void 
 
 // ===== Leaf: can spread to adjacent empty cells, occasionally flowers or fruit =====
 function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void {
-  particle.lifetime++;
+  if (currentDaylight > 0.1) particle.lifetime++;
 
   const waterNearby = countNearby(grid, x, y, "water", 3);
 
@@ -371,12 +378,12 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
   }
 }
 
-// ===== Flower: occasionally releases pollen into the air =====
+// ===== Flower: occasionally releases pollen during daytime =====
 function updateFlower(grid: Grid, x: number, y: number, particle: Particle): void {
-  particle.lifetime++;
+  if (currentDaylight > 0.1) particle.lifetime++;
 
-  // Only release pollen from mature flowers near water
-  if (particle.lifetime < 30) return;
+  // Only release pollen from mature flowers near water, during the day
+  if (particle.lifetime < 30 || currentDaylight < 0.3) return;
   const waterNearby = countNearby(grid, x, y, "water", 4);
   if (waterNearby === 0 && Math.random() > 0.0005) return;
   if (Math.random() > 0.005) return;
@@ -391,6 +398,7 @@ function updateFlower(grid: Grid, x: number, y: number, particle: Particle): voi
 
 // ===== Grass: spreads horizontally along soil =====
 function updateGrass(grid: Grid, x: number, y: number): void {
+  if (currentDaylight < 0.1) return;
   if (!hasAnyNeighbor(grid, x, y, ["grass", "stem", "plant", "soil"])) return;
   const waterNearby = countNearby(grid, x, y, "water", 2);
   if (waterNearby === 0 && Math.random() > 0.002) return;
@@ -738,7 +746,9 @@ function checkReactions(grid: Grid, x: number, y: number): void {
   }
 }
 
-export function tickSimulation(grid: Grid, tick: number): void {
+export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): void {
+  currentDaylight = daylight;
+
   // Reset updated flags
   for (let i = 0; i < grid.cells.length; i++) {
     const cell = grid.cells[i];

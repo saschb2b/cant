@@ -38,7 +38,7 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   hydrogen: { behavior: "gas", baseColor: [200, 200, 255], density: 0, flammable: true, lifetime: 120 },
   oxygen: { behavior: "gas", baseColor: [180, 210, 255], density: 0, flammable: false, lifetime: 120 },
   smoke: { behavior: "gas", baseColor: [160, 160, 160], density: 0, flammable: false, lifetime: 60 },
-  steam: { behavior: "gas", baseColor: [200, 220, 255], density: 0, flammable: false, lifetime: 40 },
+  steam: { behavior: "gas", baseColor: [200, 220, 255], density: 0, flammable: false, lifetime: 80 },
   co2: { behavior: "gas", baseColor: [180, 180, 170], density: 0, flammable: false, lifetime: 80 },
   methane: { behavior: "gas", baseColor: [160, 180, 140], density: 0, flammable: true, lifetime: 200 },
 

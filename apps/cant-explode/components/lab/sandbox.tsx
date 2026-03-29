@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { useColorScheme } from "@mui/material/styles";
 import type { ElementType, Grid } from "@/lib/lab/types";
 import { createGrid, clearGrid, setCell, getCell } from "@/lib/lab/grid";
 import { createParticle, tickSimulation } from "@/lib/lab/simulation";
@@ -28,12 +27,7 @@ export function Sandbox() {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 600;
   const [brushSize, setBrushSize] = useState(isMobile ? 3 : 2);
 
-  const { mode, systemMode } = useColorScheme();
-  const resolvedMode = mode === "system" ? systemMode : mode;
-  const isDark = resolvedMode === "dark";
-  const atmoRef = useRef(createAtmosphere(isDark));
-  const isDarkRef = useRef(isDark);
-  isDarkRef.current = isDark;
+  const atmoRef = useRef(createAtmosphere());
 
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
@@ -74,7 +68,7 @@ export function Sandbox() {
   const handleReset = useCallback(() => {
     clearGrid(gridRef.current);
     tickRef.current = 0;
-    atmoRef.current = createAtmosphere(isDarkRef.current);
+    atmoRef.current = createAtmosphere();
   }, []);
 
   const handleTogglePause = useCallback(() => {
@@ -94,11 +88,11 @@ export function Sandbox() {
   useEffect(() => {
     function loop() {
       if (!pausedRef.current) {
-        tickSimulation(gridRef.current, tickRef.current);
+        tickSimulation(gridRef.current, tickRef.current, atmoRef.current.daylight);
         tickRef.current++;
       }
 
-      updateAtmosphere(atmoRef.current, gridRef.current, isDarkRef.current);
+      updateAtmosphere(atmoRef.current, gridRef.current);
 
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");

@@ -1,6 +1,6 @@
 import type { Grid } from "./types";
 import type { Atmosphere } from "./atmosphere";
-import { getSkyColor, getAmbientSparkle } from "./atmosphere";
+import { getSkyColor, getAmbientSparkle, getCloudPixel } from "./atmosphere";
 
 /** Elements that render translucent (blended with background). */
 const TRANSLUCENT: Record<string, number> = {
@@ -35,6 +35,7 @@ export function renderGrid(
     skyColors.push(getSkyColor(atmo, gy, grid.height));
   }
 
+
   for (let gy = 0; gy < grid.height; gy++) {
     const bg = skyColors[gy]!;
 
@@ -59,16 +60,18 @@ export function renderGrid(
           b = Math.round(b * opacity + bg[2] * inv);
         }
 
-        // Fire glow
+        // Fire glow: brighter at night
         if (particle.element === "fire") {
-          r = Math.min(255, r + 40);
-          g = Math.min(255, g + 15);
+          const nightBoost = Math.floor((1 - atmo.daylight) * 25);
+          r = Math.min(255, r + 40 + nightBoost);
+          g = Math.min(255, g + 15 + Math.floor(nightBoost * 0.4));
         }
 
-        // Lava glow: pulsing warmth
+        // Lava glow: brighter at night
         if (particle.element === "lava") {
-          r = Math.min(255, r + 20);
-          g = Math.min(255, g + 5);
+          const nightBoost = Math.floor((1 - atmo.daylight) * 15);
+          r = Math.min(255, r + 20 + nightBoost);
+          g = Math.min(255, g + 5 + Math.floor(nightBoost * 0.3));
         }
 
         // Spark: bright white-yellow flash
@@ -116,16 +119,27 @@ export function renderGrid(
           b = Math.round(b * algaeOpacity + bg[2] * inv);
         }
       } else {
-        // Empty cell: check for ambient sparkle effects
-        const sparkle = getAmbientSparkle(atmo, gx, gy, bg);
+        // Empty cell: start with sky gradient
+        r = bg[0];
+        g = bg[1];
+        b = bg[2];
+
+        // Clouds: blend per-pixel cloud color over sky
+        const cloudPx = getCloudPixel(atmo, gx, gy);
+        if (cloudPx) {
+          const alpha = cloudPx[3];
+          const inv = 1 - alpha;
+          r = Math.round(cloudPx[0] * alpha + r * inv);
+          g = Math.round(cloudPx[1] * alpha + g * inv);
+          b = Math.round(cloudPx[2] * alpha + b * inv);
+        }
+
+        // Ambient sparkle effects (stars, fireflies, embers)
+        const sparkle = getAmbientSparkle(atmo, gx, gy, [r, g, b]);
         if (sparkle) {
           r = sparkle[0];
           g = sparkle[1];
           b = sparkle[2];
-        } else {
-          r = bg[0];
-          g = bg[1];
-          b = bg[2];
         }
       }
 
