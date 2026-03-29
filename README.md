@@ -1,6 +1,6 @@
 # Can't Series Monorepo
 
-Educational platforms for developers. Each app presents code challenges where you pick the better variant, with topic-specific tools and a pattern reference library.
+Educational platforms where you pick the better option in side-by-side comparisons, covering code patterns, design, chemistry, and more.
 
 | App | Topic | Tool | Live |
 |-----|-------|------|------|
@@ -10,6 +10,7 @@ Educational platforms for developers. Each app presents code challenges where yo
 | [cant-orchestrate](apps/cant-orchestrate) | Container orchestration | Dockerfile explorer | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
 | [cant-seo](apps/cant-seo) | SEO for Next.js | Link inspector | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com) |
 | [cant-ux](apps/cant-ux) | UX design patterns | Visual comparisons | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com) |
+| [cant-explode](apps/cant-explode) | Chemistry and biochemistry | 3D molecule viewer | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com) |
 | [cant-hub](apps/cant-hub) | Series hub / landing | App directory | [cant-hub.saschb2b.com](https://cant-hub.saschb2b.com) |
 
 ## Tech stack
@@ -17,6 +18,7 @@ Educational platforms for developers. Each app presents code challenges where yo
 - **Framework:** Next.js 16 (App Router, Turbopack)
 - **UI:** MUI 7, Emotion, Lucide icons
 - **Syntax highlighting:** Shiki
+- **3D molecular viewer:** 3Dmol.js (cant-explode)
 - **Monorepo:** pnpm workspaces + Turborepo
 - **Shared components:** Storybook 10
 - **Analytics:** Umami (self-hosted)
@@ -49,6 +51,7 @@ pnpm dev:type          # cant-type on :3003
 pnpm dev:orchestrate   # cant-orchestrate on :3004
 pnpm dev:seo           # cant-seo on :3005
 pnpm dev:ux            # cant-ux on :3006
+pnpm dev:explode       # cant-explode on :3007
 
 # Start Storybook for shared components
 pnpm storybook         # opens on :6006
@@ -67,6 +70,7 @@ cant/
 │   ├── cant-orchestrate/    # Container orchestration app
 │   ├── cant-seo/            # SEO patterns app
 │   ├── cant-ux/             # UX design patterns app
+│   ├── cant-explode/        # Chemistry and biochemistry app
 │   └── cant-hub/            # Series hub / landing page
 ├── packages/
 │   └── shared/              # @cant/shared — shared components and utils
@@ -94,12 +98,16 @@ Run from the repo root:
 | `pnpm dev:orchestrate` | Start cant-orchestrate only (:3004) |
 | `pnpm dev:seo` | Start cant-seo only (:3005) |
 | `pnpm dev:ux` | Start cant-ux only (:3006) |
+| `pnpm dev:explode` | Start cant-explode only (:3007) |
 | `pnpm build` | Production build all apps (parallel) |
 | `pnpm build:maintain` | Build cant-maintain only |
 | `pnpm build:resize` | Build cant-resize only |
 | `pnpm build:type` | Build cant-type only |
 | `pnpm build:orchestrate` | Build cant-orchestrate only |
 | `pnpm build:seo` | Build cant-seo only |
+| `pnpm build:ux` | Build cant-ux only |
+| `pnpm build:hub` | Build cant-hub only |
+| `pnpm build:explode` | Build cant-explode only |
 | `pnpm lint` | Lint all apps |
 | `pnpm typecheck` | Type-check all apps |
 | `pnpm format:check` | Check formatting |
@@ -120,9 +128,68 @@ import { createTracker } from "@cant/shared/lib/analytics";
 
 **Components:** ThemeProvider, EmotionRegistry, FormattedText, ChallengeAnchor, SourceLink, Template, NotFound, AnalyticsProviderWrapper, CantSeriesGrid, Hero, HeroCta, FeatureGrid, OpenSourceBanner
 
-**Game UI:** Game, GameHeader, LobbyScreen, ResultsScreen, CodePanel, ExplanationPanel, ActivityGraph, CategoryFilter, SeedInput
+**Game UI:** Game, GameHeader, LobbyScreen, ResultsScreen, CodePanel, ImagePanel, VisualPanel, ExplanationPanel, ActivityGraph, CategoryFilter, SeedInput
 
-**Utilities:** Shiki highlighter, code block styles, analytics (createTracker + context), game types, activity store, history store, seeded random, app registry
+**Learn UI:** LearnIndexPage, LearnCategoryPage, LearnContentPanel, LearnSidebar, LearnMobileNav
+
+**Utilities:** Shiki highlighter, code block styles, analytics context, app theme context, game types, activity store, history store, seeded random, app registry
+
+### AppThemeProvider
+
+Per-app customization (panel labels, styling, checkmark animations) is centralized via an `AppThemeProvider` context. Each app defines its config once in a wrapper component, and all shared components read from it via `useAppTheme()`.
+
+```
+packages/shared/src/lib/
+├── app-theme.ts           # Types, defaults, createAppTheme() — importable by server components
+└── app-theme-context.tsx   # "use client" — context, provider, hook
+```
+
+Each app creates `components/app-theme-wrapper.tsx`:
+
+```tsx
+"use client";
+import { AppThemeProvider, createAppTheme } from "@cant/shared/lib/app-theme-context";
+import checkmarkAnimation from "./game/checkmark-animation.json";
+
+const appTheme = createAppTheme({
+  labels: { betterLabel: "Correct", worseLabel: "Incorrect" },
+  styling: { headerBackground: "secondary.main" },
+  slots: { checkmarkAnimation },
+});
+
+export function AppThemeWrapper({ children }) {
+  return <AppThemeProvider value={appTheme}>{children}</AppThemeProvider>;
+}
+```
+
+And wraps it in `app/layout.tsx`:
+
+```tsx
+<ThemeProvider theme={theme}>
+  <AnalyticsProviderWrapper>
+    <AppThemeWrapper>{children}</AppThemeWrapper>
+  </AnalyticsProviderWrapper>
+</ThemeProvider>
+```
+
+For server components (learn pages), import from the non-client module:
+
+```tsx
+import { createAppTheme } from "@cant/shared/lib/app-theme";
+```
+
+**Configurable values:**
+
+| Field | Type | Default | Used by |
+|-------|------|---------|---------|
+| `labels.betterLabel` | `ReactNode` | `"Better"` | Game panels (correct answer) |
+| `labels.worseLabel` | `ReactNode` | `"Worse"` | Game panels (wrong answer) |
+| `labels.badLabel` | `string` | `"Avoid"` | Learn pages (bad side header) |
+| `labels.goodLabel` | `string` | `"Prefer"` | Learn pages (good side header) |
+| `styling.headerBackground` | `string` | `"action.selected"` | Panel headers, lobby cards |
+| `styling.codeBackground` | `string` | `"background.paper"` | Code panel background |
+| `slots.checkmarkAnimation` | `JSON` | `undefined` | Lottie checkmark on correct answer |
+| `slots.overlaySlot` | `ReactNode` | `undefined` | Extra overlay (e.g. sparkle effects) |
 
 ### App registry
 
@@ -131,6 +198,7 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
 ### What stays per-app
 
 - `lib/theme.ts` — each app has its own color palette
+- `components/app-theme-wrapper.tsx` — per-app panel labels, styling, and animations
 - `lib/shiki.ts` — apps add language support as needed (CSS, HTML, Dockerfile, YAML, etc.)
 - Challenge data and category definitions
 - Landing pages and app-specific features (viewer, playground, inspector, explorer, changelog)
@@ -149,23 +217,26 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
 
 3. Customize:
    - `lib/theme.ts` — your app's color palette
+   - `components/app-theme-wrapper.tsx` — panel labels, styling, checkmark animation
    - `lib/learn/categories.ts` — your challenge categories
    - `lib/learn/challenges/` — your challenge content
    - `app/page.tsx` — your landing page
    - `app/icon.tsx`, `app/apple-icon.tsx`, `public/icon.svg` — your app icon
    - Metadata in `app/layout.tsx`
 
-4. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content.
+4. Wire up `AppThemeWrapper` in `app/layout.tsx` (see AppThemeProvider section above).
 
-5. Add root scripts to `package.json`:
+5. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content.
+
+6. Add root scripts to `package.json`:
    ```json
    "dev:newapp": "turbo dev --filter=cant-newapp",
    "build:newapp": "turbo build --filter=cant-newapp"
    ```
 
-6. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name).
+7. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name).
 
-7. Run `pnpm install` to link the workspace.
+8. Run `pnpm install` to link the workspace.
 
 ## Contributing
 
