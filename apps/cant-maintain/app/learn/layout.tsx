@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { MeshGradient } from "@/components/mesh-gradient";
+import { MeshGradient } from "@cant/shared/components";
 import { LearnSidebar } from "@/components/learn-sidebar";
 import { LearnMobileNav } from "@/components/learn-mobile-nav";
 

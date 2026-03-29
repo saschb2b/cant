@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import { Game } from "@/components/game/game";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { MeshGradient } from "@/components/mesh-gradient";
+import { MeshGradient } from "@cant/shared/components";
 import { getHighlighter, highlightDual, buildContentMap } from "@cant/shared/lib";
 import { challenges } from "@/lib/game/challenges";
 

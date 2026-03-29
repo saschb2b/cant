@@ -5,6 +5,7 @@ import {
   FeatureGrid,
   CantSeriesGrid,
   OpenSourceBanner,
+  MeshGradient,
 } from "@cant/shared/components";
 import { LiveRibbon } from "@cant/shared/components/game";
 import { fetchRecentResults } from "@/lib/game/actions";
@@ -23,6 +24,7 @@ export default function LandingPage() {
         position: "relative",
       }}
     >
+      <MeshGradient />
       <SiteHeader />
       <LiveRibbon fetchResults={fetchRecentResults} />
 
