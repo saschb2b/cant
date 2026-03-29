@@ -5,7 +5,7 @@ export const branchingStrategiesChallenges: Challenge[] = [
     id: "bs-001",
     category: "branching-strategies",
     difficulty: "easy",
-    title: "Long-lived feature branches",
+    title: "Feature branch lifespan",
     prompt: "Which branching approach reduces integration pain?",
     content: {
       type: "code",
@@ -213,7 +213,7 @@ git tag v3.1.0
     id: "bs-006",
     category: "branching-strategies",
     difficulty: "hard",
-    title: "Environment branches antipattern",
+    title: "Environment branch promotion",
     prompt: "Which deployment strategy avoids environment branch drift?",
     content: {
       type: "code",

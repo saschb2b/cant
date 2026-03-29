@@ -6,7 +6,11 @@ import Link from "@mui/material/Link";
 import { ExternalLink } from "lucide-react";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
-import { LearnCategoryPage, FormattedText } from "@cant/shared/components";
+import {
+  LearnCategoryPage,
+  LearnContentPanel,
+  FormattedText,
+} from "@cant/shared/components";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
 import { challenges } from "@/lib/game/challenges";
@@ -39,28 +43,32 @@ export async function generateMetadata({
   };
 }
 
-function renderVisualContentPanel(
+function renderContentPanel(
   entry: ContentMapEntry | undefined,
   side: "good" | "bad",
 ): ReactNode {
-  if (entry?.type !== "visual") return null;
-  const componentId =
-    side === "good" ? entry.goodComponentId : entry.badComponentId;
-  const Component = visualRegistry[componentId] as ComponentType | undefined;
-  if (!Component) return null;
-  return (
-    <Box
-      sx={{
-        p: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: 200,
-      }}
-    >
-      <Component />
-    </Box>
-  );
+  if (entry?.type === "visual") {
+    const componentId =
+      side === "good" ? entry.goodComponentId : entry.badComponentId;
+    const Component = visualRegistry[componentId] as
+      | ComponentType
+      | undefined;
+    if (!Component) return null;
+    return (
+      <Box
+        sx={{
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: 200,
+        }}
+      >
+        <Component />
+      </Box>
+    );
+  }
+  return <LearnContentPanel entry={entry} side={side} />;
 }
 
 export default async function CategoryPage({ params }: PageProps) {
@@ -113,7 +121,7 @@ export default async function CategoryPage({ params }: PageProps) {
           : undefined
       }
       panelBg="rgba(var(--mui-palette-secondary-mainChannel) / 0.5)"
-      renderContentPanel={renderVisualContentPanel}
+      renderContentPanel={renderContentPanel}
       renderExplanation={(challenge) => (
         <>
           <Box

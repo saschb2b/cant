@@ -85,7 +85,7 @@ with a retry mechanism.
     id: "pr-003",
     category: "pull-requests",
     difficulty: "medium",
-    title: "Draft PRs for early feedback",
+    title: "PR readiness signaling",
     prompt: "Which workflow gives you earlier feedback on your approach?",
     content: {
       type: "code",
@@ -158,7 +158,7 @@ slow identity providers.
     id: "pr-005",
     category: "pull-requests",
     difficulty: "hard",
-    title: "Self-review before requesting review",
+    title: "Pre-review checklist",
     prompt: "Which workflow respects your reviewers' time?",
     content: {
       type: "code",
@@ -236,7 +236,7 @@ git checkout -b feat/notif-ui
     id: "pr-007",
     category: "pull-requests",
     difficulty: "medium",
-    title: "Giant PR vs focused PR",
+    title: "Pull request scope",
     prompt: "Which pull request diff is easier to review thoroughly?",
     content: {
       type: "visual",
@@ -256,7 +256,7 @@ git checkout -b feat/notif-ui
     id: "pr-008",
     category: "pull-requests",
     difficulty: "hard",
-    title: "PR description context",
+    title: "PR metadata and context",
     prompt: "Which pull request description helps reviewers more?",
     content: {
       type: "visual",

@@ -193,7 +193,7 @@ git bisect reset
     id: "gb-007",
     category: "git-bisect",
     difficulty: "medium",
-    title: "Manual vs automated bisect",
+    title: "Bisect workflow efficiency",
     prompt: "Which approach to finding a regression is more efficient?",
     content: {
       type: "visual",

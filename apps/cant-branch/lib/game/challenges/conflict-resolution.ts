@@ -5,7 +5,7 @@ export const conflictResolutionChallenges: Challenge[] = [
     id: "cr-001",
     category: "conflict-resolution",
     difficulty: "easy",
-    title: "Small PRs reduce conflicts",
+    title: "PR size and conflict frequency",
     prompt: "Which PR strategy leads to fewer merge conflicts?",
     content: {
       type: "code",
@@ -88,7 +88,7 @@ function getUsers() {
     id: "cr-003",
     category: "conflict-resolution",
     difficulty: "medium",
-    title: "Enable git rerere",
+    title: "Repeated conflict handling",
     prompt: "Which approach handles recurring conflicts better?",
     content: {
       type: "code",
@@ -223,7 +223,7 @@ git merge feature/api
     id: "cr-006",
     category: "conflict-resolution",
     difficulty: "hard",
-    title: "Preventing conflicts proactively",
+    title: "File ownership and parallel edits",
     prompt: "Which team practice better prevents merge conflicts?",
     content: {
       type: "code",
@@ -265,7 +265,7 @@ git merge feature/api
     id: "cr-007",
     category: "conflict-resolution",
     difficulty: "easy",
-    title: "Conflict markers vs clean resolution",
+    title: "Merge conflict output",
     prompt: "Which merge conflict resolution is correct?",
     content: {
       type: "visual",

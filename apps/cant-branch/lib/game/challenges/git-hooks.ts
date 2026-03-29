@@ -210,7 +210,7 @@ pnpm test          # Full test suite (90s)
     id: "gh-006",
     category: "git-hooks",
     difficulty: "hard",
-    title: "Skipping hooks with --no-verify",
+    title: "The --no-verify flag",
     prompt: "Which team policy around hook bypassing is more sustainable?",
     content: {
       type: "code",

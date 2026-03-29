@@ -212,7 +212,7 @@ coverage/`,
     id: "gi-007",
     category: "gitignore",
     difficulty: "medium",
-    title: "Tracked vs untracked clutter",
+    title: "Repository file tree contents",
     prompt: "Which repository file tree is better maintained?",
     content: {
       type: "visual",

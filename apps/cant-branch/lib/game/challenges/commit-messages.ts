@@ -5,7 +5,7 @@ export const commitMessagesChallenges: Challenge[] = [
     id: "cm-001",
     category: "commit-messages",
     difficulty: "easy",
-    title: "Imperative mood in subject line",
+    title: "Commit subject tone",
     prompt: "Which commit message follows the imperative mood convention?",
     content: {
       type: "code",
@@ -112,7 +112,7 @@ src/lib/validation/."`,
     id: "cm-005",
     category: "commit-messages",
     difficulty: "easy",
-    title: "Vague commit messages",
+    title: "Commit message specificity",
     prompt:
       "Which commit message helps you understand the change without reading the diff?",
     content: {
@@ -170,7 +170,7 @@ Closes #2104"`,
     id: "cm-007",
     category: "commit-messages",
     difficulty: "easy",
-    title: "Good vs bad commit messages at a glance",
+    title: "Commit message formatting",
     prompt: "Which commit message follows best practices?",
     content: {
       type: "visual",

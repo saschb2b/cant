@@ -121,7 +121,7 @@ allow_deletions: false`,
     id: "rv-004",
     category: "code-review",
     difficulty: "medium",
-    title: "Constructive feedback",
+    title: "Review comment style",
     prompt: "Which review comment style leads to better outcomes?",
     content: {
       type: "code",
@@ -245,7 +245,7 @@ bypass_actors: [deploy-bot]
     id: "rv-007",
     category: "code-review",
     difficulty: "easy",
-    title: "Rubber stamp vs thorough review",
+    title: "Review depth",
     prompt: "Which code review approach catches more bugs?",
     content: {
       type: "visual",

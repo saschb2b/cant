@@ -171,7 +171,7 @@ git restore src/config.ts`,
     id: "uc-007",
     category: "undoing-changes",
     difficulty: "medium",
-    title: "Destructive reset vs safe revert",
+    title: "Undo strategy on shared branches",
     prompt: "Which approach to undoing changes is safer on shared branches?",
     content: {
       type: "visual",

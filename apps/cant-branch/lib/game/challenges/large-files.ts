@@ -200,7 +200,7 @@ git clone \
     id: "lf-006",
     category: "large-files",
     difficulty: "hard",
-    title: "Preventing large file commits",
+    title: "Large file commit enforcement",
     prompt:
       "Which pre-commit hook approach prevents large files from entering the repo?",
     content: {
@@ -250,7 +250,7 @@ fi`,
     id: "lf-007",
     category: "large-files",
     difficulty: "easy",
-    title: "Bloated repo vs LFS repo",
+    title: "Large file storage approach",
     prompt: "Which approach handles large files better?",
     content: {
       type: "visual",

@@ -341,7 +341,7 @@ on:
     id: "ci-007",
     category: "ci-integration",
     difficulty: "medium",
-    title: "Branch protection for CI safety",
+    title: "Branch protection and CI",
     prompt: "Which workflow provides a safer path to production?",
     content: {
       type: "visual",

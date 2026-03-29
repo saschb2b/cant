@@ -29,7 +29,7 @@ export const branchingNamingChallenges: Challenge[] = [
     id: "bn-002",
     category: "branching-naming",
     difficulty: "easy",
-    title: "Kebab-case branch names",
+    title: "Branch name casing",
     prompt: "Which branch name avoids problems across platforms and tools?",
     content: {
       type: "code",
@@ -99,7 +99,7 @@ export const branchingNamingChallenges: Challenge[] = [
     id: "bn-005",
     category: "branching-naming",
     difficulty: "medium",
-    title: "Short descriptive names",
+    title: "Branch name length",
     prompt: "Which branch name balances brevity with clarity?",
     content: {
       type: "code",
@@ -125,7 +125,7 @@ and-password-strength-validation`,
     id: "bn-006",
     category: "branching-naming",
     difficulty: "hard",
-    title: "Avoiding personal branch names",
+    title: "Personal vs convention-based branch names",
     prompt: "Which branch naming pattern works better for team collaboration?",
     content: {
       type: "code",

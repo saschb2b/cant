@@ -232,7 +232,7 @@ git tag -a v2.0.0-rc.1 -m "Release candidate 1"
     id: "tr-007",
     category: "tagging-releases",
     difficulty: "easy",
-    title: "Tagged vs untagged release history",
+    title: "Release point visibility",
     prompt: "Which release history is easier to navigate?",
     content: {
       type: "visual",

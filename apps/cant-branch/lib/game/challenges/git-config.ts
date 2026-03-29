@@ -267,7 +267,7 @@ git mergetool
     id: "gc-007",
     category: "git-config",
     difficulty: "easy",
-    title: "Unconfigured vs properly configured git",
+    title: "Git initial configuration",
     prompt: "Which git configuration leads to fewer problems?",
     content: {
       type: "visual",

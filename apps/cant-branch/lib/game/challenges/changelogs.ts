@@ -5,7 +5,7 @@ export const changelogsChallenges: Challenge[] = [
     id: "cl-001",
     category: "changelogs",
     difficulty: "easy",
-    title: "Keep a Changelog format",
+    title: "Changelog structure",
     prompt: "Which changelog format is easier to scan?",
     content: {
       type: "code",
@@ -92,7 +92,7 @@ export const changelogsChallenges: Challenge[] = [
     id: "cl-003",
     category: "changelogs",
     difficulty: "medium",
-    title: "Auto-generating from conventional commits",
+    title: "Changelog generation method",
     prompt: "Which commit style enables automated changelogs?",
     content: {
       type: "code",
@@ -247,7 +247,7 @@ git log --oneline
     id: "cl-007",
     category: "changelogs",
     difficulty: "easy",
-    title: "Unstructured vs structured changelog",
+    title: "Changelog presentation",
     prompt: "Which changelog format is more useful for consumers?",
     content: {
       type: "visual",

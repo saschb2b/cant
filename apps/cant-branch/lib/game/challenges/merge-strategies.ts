@@ -41,7 +41,7 @@ git merge --no-ff feature/auth
     id: "ms-002",
     category: "merge-strategies",
     difficulty: "easy",
-    title: "Rebase before merging",
+    title: "Pre-merge branch sync",
     prompt: "Which workflow produces cleaner pull request merges?",
     content: {
       type: "code",
@@ -117,7 +117,7 @@ git push origin shared-feature
     id: "ms-004",
     category: "merge-strategies",
     difficulty: "medium",
-    title: "Squash merge for clean history",
+    title: "Squash merge with WIP commits",
     prompt:
       "Which merge strategy is better for a feature with messy WIP commits?",
     content: {
@@ -237,7 +237,7 @@ git merge origin/main
     id: "ms-007",
     category: "merge-strategies",
     difficulty: "medium",
-    title: "Messy merges vs clean rebases",
+    title: "Merge strategy for feature branches",
     prompt: "Which git history is easier to understand and navigate?",
     content: {
       type: "visual",

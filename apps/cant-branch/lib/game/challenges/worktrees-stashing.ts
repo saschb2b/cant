@@ -5,7 +5,7 @@ export const worktreesStashingChallenges: Challenge[] = [
     id: "ws-001",
     category: "worktrees-stashing",
     difficulty: "easy",
-    title: "Stash with a descriptive message",
+    title: "Stash identification",
     prompt: "Which stash approach is easier to manage?",
     content: {
       type: "code",
@@ -269,7 +269,7 @@ git worktree remove ../review-new-api`,
     id: "ws-007",
     category: "worktrees-stashing",
     difficulty: "easy",
-    title: "Stash chaos vs worktree organization",
+    title: "Context switching strategy",
     prompt: "Which approach for switching context is safer?",
     content: {
       type: "visual",
