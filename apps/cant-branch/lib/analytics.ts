@@ -1,0 +1,88 @@
+/**
+ * Thin wrapper around Umami's `umami.track()` for type-safe custom events.
+ *
+ * @see https://umami.is/docs/tracker-functions
+ */
+
+import { createTracker } from "@cant/shared/lib";
+
+interface ChallengeAnsweredData {
+  challengeId: string;
+  category: string;
+  difficulty: string;
+  result: "correct" | "wrong";
+  timeSec: number;
+}
+
+interface GameFinishedData {
+  score: number;
+  total: number;
+  bestStreak: number;
+  durationSec: number;
+  seed: string;
+  gameType: "daily" | "weekly" | "custom";
+}
+
+interface LinkClickedData {
+  challengeId: string;
+  category: string;
+  label: string;
+}
+
+interface GameSharedData {
+  score: number;
+  total: number;
+}
+
+interface GameRestartedData {
+  previousScore: number;
+  previousTotal: number;
+}
+
+interface GameStartedData {
+  seed: string;
+  type: "daily" | "weekly" | "custom";
+  categories: number;
+}
+
+interface HistoryReplayedData {
+  seed: string;
+  previousBestScore: number;
+  plays: number;
+}
+
+interface SearchOpenedData {
+  trigger: "hotkey" | "button" | "unknown";
+}
+
+interface SearchSelectedData {
+  query: string;
+  selectedTitle: string;
+  selectedHref: string;
+}
+
+interface NotFoundVisitedData {
+  path: string;
+}
+
+interface CtaClickedData {
+  location: "result-card" | "home-page";
+}
+
+interface EventMap {
+  "404-visited": NotFoundVisitedData;
+  "challenge-answered": ChallengeAnsweredData;
+  "game-finished": GameFinishedData;
+  "game-shared": GameSharedData;
+  "game-restarted": GameRestartedData;
+  "game-started": GameStartedData;
+  "history-replayed": HistoryReplayedData;
+  "source-link-clicked": LinkClickedData;
+  "learn-link-clicked": LinkClickedData;
+  "search-opened": SearchOpenedData;
+  "search-selected": SearchSelectedData;
+  "contribute-clicked": CtaClickedData;
+  "buymeacoffee-clicked": CtaClickedData;
+}
+
+export const trackEvent = createTracker<EventMap>();

@@ -1,20 +1,12 @@
+import { transformerDecorations } from "@shikijs/core";
 import {
-  getSingletonHighlighterCore,
-  transformerDecorations,
-} from "@shikijs/core";
-import { createJavaScriptRegexEngine } from "@shikijs/engine-javascript";
+  createShikiHighlighter,
+  type ShikiHighlighter,
+} from "@cant/shared/lib/shiki";
 
-/** Returns a shared Shiki highlighter instance (TSX + both themes). */
-export function getHighlighter() {
-  return getSingletonHighlighterCore({
-    engine: createJavaScriptRegexEngine(),
-    themes: [
-      import("@shikijs/themes/github-light"),
-      import("@shikijs/themes/github-dark-default"),
-    ],
-    langs: [import("@shikijs/langs/tsx")],
-  });
-}
+export const getHighlighter = createShikiHighlighter([
+  import("@shikijs/langs/tsx"),
+]);
 
 /** Comment patterns that indicate a compile or runtime error. */
 const ERROR_PATTERNS: RegExp[] = [
@@ -86,7 +78,7 @@ function buildDecorations(code: string): Decoration[] {
  * via the `.light` / `.dark` class on `<html>`.
  */
 export function highlightDual(
-  highlighter: Awaited<ReturnType<typeof getHighlighter>>,
+  highlighter: ShikiHighlighter,
   code: string,
 ): string {
   const decorations = buildDecorations(code);

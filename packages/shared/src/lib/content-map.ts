@@ -1,14 +1,6 @@
 import type { ContentMapEntry } from "../components/game/game";
 import type { BaseChallenge } from "./game/types";
-import type { getHighlighter } from "./shiki";
-
-/** Minimal signature for a dual-theme highlight function. */
-type HighlightFn = (
-  highlighter: Awaited<ReturnType<typeof getHighlighter>>,
-  code: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  lang?: any,
-) => string;
+import type { ShikiHighlighter, HighlightDualFn } from "./shiki";
 
 /**
  * Build a content map from a list of challenges.
@@ -27,8 +19,8 @@ type HighlightFn = (
  */
 export function buildContentMap<C extends BaseChallenge>(
   challenges: C[],
-  highlighter?: Awaited<ReturnType<typeof getHighlighter>>,
-  highlight?: HighlightFn,
+  highlighter?: ShikiHighlighter,
+  highlight?: HighlightDualFn,
 ): Record<string, ContentMapEntry> {
   const map: Record<string, ContentMapEntry> = {};
 

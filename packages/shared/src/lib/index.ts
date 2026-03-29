@@ -10,4 +10,10 @@ export {
   extractCodeKeywords,
 } from "./search-items";
 export type { SearchItem } from "./search-items";
-export { getHighlighter, highlightDual } from "./shiki";
+export {
+  getHighlighter,
+  highlightDual,
+  createShikiHighlighter,
+  createHighlightDual,
+} from "./shiki";
+export type { ShikiHighlighter, HighlightDualFn } from "./shiki";
