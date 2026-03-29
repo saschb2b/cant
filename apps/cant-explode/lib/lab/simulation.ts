@@ -234,127 +234,94 @@ function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void 
   spawnAt(grid, x + 1, y, "grass");
 }
 
-// ===== Plant (growth engine): grows trunk upward, then expands canopy =====
+// ===== Plant (growth engine): the active tip that builds the tree =====
+// The plant particle IS the growing tip. It moves upward, leaving stem
+// behind, then expands a canopy of leaves at the top.
 function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void {
-  // Plants need sunlight to grow
   if (currentDaylight < 0.1) return;
 
-  const waterNearby = countNearby(grid, x, y, "water", 4);
+  const waterNearby = countNearby(grid, x, y, "water", 5);
   if (waterNearby === 0) return;
 
-  // Growth speed scales with water and sunlight
-  const growChance = Math.min(0.2, 0.03 * waterNearby) * currentDaylight;
+  const growChance = Math.min(0.2, 0.04 * waterNearby) * currentDaylight;
   if (Math.random() > growChance) return;
 
   particle.lifetime++;
   const stage = particle.lifetime;
 
-  // Stage 1-8: Grow trunk upward (taller trees)
-  if (stage <= 8) {
-    if (isEmpty(grid, x, y - 1)) {
+  // Trunk height varies per tree (determined by initial color hash)
+  const trunkHeight = 6 + (particle.r % 8); // 6-13 cells tall
+
+  // Growing phase: move upward, leave stem below
+  if (stage <= trunkHeight) {
+    const above = getCell(grid, x, y - 1);
+    const canGrow = !above || above.element === "leaf" || above.element === "grass" || above.element === "water";
+    if (canGrow) {
       consumeWater(grid, x, y);
+      // Leave a stem where we were
       const stem = createParticle("stem");
-      stem.lifetime = 0;
+      stem.lifetime = 100;
       stem.updated = true;
-      setCell(grid, x, y - 1, stem);
-      // Convert self to stem (structural)
-      const selfStem = createParticle("stem");
-      selfStem.lifetime = stage;
-      selfStem.updated = true;
-      setCell(grid, x, y, selfStem);
+      setCell(grid, x, y, stem);
+      // Move the plant tip upward (replace whatever is above)
+      particle.updated = true;
+      setCell(grid, x, y - 1, particle);
     }
-    return;
+    // If blocked by something solid, skip ahead to canopy phase
+    // (don't return - fall through to canopy code)
+    if (canGrow) return;
   }
 
-  // Stage 9+: Grow canopy of leaves
-  const radius = Math.min(stage - 5, 8);
+  // Canopy phase: expand leaves outward and upward from the treetop
+  const canopyAge = stage - trunkHeight;
+  const radius = Math.min(canopyAge, 7);
   let grew = false;
-  for (let attempt = 0; attempt < 5; attempt++) {
+
+  for (let attempt = 0; attempt < 4; attempt++) {
+    // Canopy shape: wider than tall, dome-like
     const dx = Math.floor(Math.random() * (radius * 2 + 1)) - radius;
-    const dy = -Math.floor(Math.random() * (radius + 2));
+    const maxUp = Math.floor(radius * 0.7) + 1;
+    const dy = -Math.floor(Math.random() * maxUp);
     const tx = x + dx;
     const ty = y + dy;
 
-    if (!isEmpty(grid, tx, ty)) continue;
+    // Can grow into empty cells or displace water
+    const target = getCell(grid, tx, ty);
+    if (target && target.element !== "water") continue;
 
-    // Must be connected to existing vegetation
-    const vegNearby = countNearbyAny(grid, tx, ty, ["stem", "leaf", "plant"], 2);
-    if (vegNearby === 0) continue;
+    // Must connect to existing tree
+    const support = countNearbyAny(grid, tx, ty, ["stem", "leaf", "plant"], 2);
+    if (support === 0) continue;
 
-    // Decide what to grow
-    const distFromCenter = Math.abs(dx) + Math.abs(dy);
+    // What to place
+    const dist = Math.abs(dx) + Math.abs(dy);
     let element: Particle["element"];
-
-    if (dy === 0 && Math.abs(dx) <= 1) {
-      element = "stem";
-    } else if (distFromCenter >= radius - 1 && Math.random() < 0.12) {
+    if (dist >= radius - 1 && Math.random() < 0.15) {
       element = "flower";
     } else {
       element = "leaf";
     }
 
-    if (spawnAt(grid, tx, ty, element)) {
-      consumeWater(grid, x, y);
-      grew = true;
-    }
+    const newP = createParticle(element);
+    newP.updated = true;
+    setCell(grid, tx, ty, newP);
+    consumeWater(grid, x, y);
+    grew = true;
   }
 
-  // Mature tree: stop growing, become part of the canopy
-  if (stage > 16 || (!grew && stage > 10)) {
+  // Mature: become a leaf (canopy is done)
+  if (canopyAge > 12 || (!grew && canopyAge > 6)) {
     const leaf = createParticle("leaf");
     leaf.updated = true;
     setCell(grid, x, y, leaf);
   }
 }
 
-// ===== Stem: structural trunk, can sprout branches =====
-function updateStem(grid: Grid, x: number, y: number, particle: Particle): void {
-  if (currentDaylight < 0.1) return;
-  if (particle.lifetime >= 100) return; // Mature, done growing
-  const waterNearby = countNearby(grid, x, y, "water", 3);
-  if (waterNearby === 0) return;
-  if (Math.random() > 0.06 * currentDaylight) return;
-
-  particle.lifetime++;
-  let grew = false;
-
-  // Stems grow upward (taller trunk)
-  if (particle.lifetime < 10 && isEmpty(grid, x, y - 1)) {
-    const newStem = createParticle("stem");
-    newStem.lifetime = 0;
-    newStem.updated = true;
-    setCell(grid, x, y - 1, newStem);
-    grew = true;
-  }
-
-  // Branch into leaves sideways and diagonally
-  if (particle.lifetime >= 4) {
-    const side = randomBool() ? -1 : 1;
-    if (isEmpty(grid, x + side, y) && Math.random() < 0.35) {
-      if (spawnAt(grid, x + side, y, "leaf")) grew = true;
-    }
-    if (isEmpty(grid, x + side, y - 1) && Math.random() < 0.25) {
-      if (spawnAt(grid, x + side, y - 1, "leaf")) grew = true;
-    }
-    // Occasional branch stems for wider trees
-    if (particle.lifetime >= 6 && Math.random() < 0.05) {
-      const bx = x + side;
-      if (isEmpty(grid, bx, y - 1)) {
-        const branch = createParticle("stem");
-        branch.lifetime = 6;
-        branch.updated = true;
-        setCell(grid, bx, y - 1, branch);
-        grew = true;
-      }
-    }
-  }
-
-  if (grew) consumeWater(grid, x, y);
-
-  // Tall stems become stable
-  if (particle.lifetime > 12) {
-    particle.lifetime = 100;
-  }
+// ===== Stem: structural trunk, stable once placed =====
+function updateStem(_grid: Grid, _x: number, _y: number, _particle: Particle): void {
+  // Stems are structural - they don't grow on their own.
+  // The plant particle (growth tip) builds the trunk by placing stems.
+  // Stems just exist as the tree's skeleton.
 }
 
 // ===== Leaf: can spread, fruit, and decay only when disconnected =====
@@ -394,7 +361,9 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
   const tx = x + dx;
   const ty = y + dy;
 
-  if (!isEmpty(grid, tx, ty)) return;
+  // Can grow into empty cells or displace water
+  const leafTarget = getCell(grid, tx, ty);
+  if (leafTarget && leafTarget.element !== "water") return;
 
   // Need structural support: solid below or attached to other vegetation
   const vegSupport = countNearbyAny(grid, tx, ty, ["stem", "leaf", "plant", "vine"], 1);
@@ -404,11 +373,11 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
   const leafCount = countNearbyAny(grid, tx, ty, ["leaf", "flower", "plant", "fruit"], 1);
   if (leafCount >= 3) return;
 
-  // Only consume water when actually spawning
+  // Spawn new growth, displacing water if present
   const element = Math.random() < 0.06 ? "flower" : "leaf";
-  if (spawnAt(grid, tx, ty, element)) {
-    consumeWater(grid, x, y);
-  }
+  const newLeaf = createParticle(element);
+  newLeaf.updated = true;
+  setCell(grid, tx, ty, newLeaf);
 }
 
 // ===== Flower: releases pollen during daytime, eventually wilts =====
