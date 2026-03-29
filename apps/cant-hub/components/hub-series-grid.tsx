@@ -41,8 +41,8 @@ const SERIES_META: Record<string, SeriesMeta> = {
     categories: 7,
   },
   "Can't Explode": {
-    challenges: 55,
-    categories: 15,
+    challenges: 59,
+    categories: 16,
   },
 };
 

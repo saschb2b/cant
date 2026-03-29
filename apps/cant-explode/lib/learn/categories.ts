@@ -20,6 +20,8 @@ export const CATEGORY_ORDER: ChallengeCategory[] = [
   "molecular-geometry",
   "stereochemistry",
   "electrostatic-maps",
+  // Biochemistry
+  "protein-structure",
 ];
 
 /** Human-readable labels for each challenge category. */
@@ -39,6 +41,7 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "energy-diagrams": "Energy Diagrams",
   stereochemistry: "Stereochemistry",
   "electrostatic-maps": "Electrostatic Maps",
+  "protein-structure": "Protein Structure",
 };
 
 /** Logical grouping of categories for sidebar navigation. */
@@ -77,6 +80,10 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "stereochemistry",
       "electrostatic-maps",
     ],
+  },
+  {
+    label: "Biochemistry",
+    categories: ["protein-structure"],
   },
 ];
 
@@ -121,4 +128,6 @@ export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
     "Spatial arrangement of atoms in molecules and how it affects properties. Covers Newman projections, Fischer projections, chair conformations, and the difference between cis/trans and R/S configurations.",
   "electrostatic-maps":
     "Visualization of electron density and charge distribution in molecules. Covers polar vs nonpolar bonds, net dipole moments, and the spectrum from ionic to covalent bonding character.",
+  "protein-structure":
+    "How amino acid chains fold into functional shapes. Covers alpha helices, beta sheets, primary through quaternary structure levels, and the forces that stabilize each level. Understanding protein architecture is essential for biochemistry and drug design.",
 };

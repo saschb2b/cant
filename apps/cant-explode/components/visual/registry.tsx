@@ -95,6 +95,17 @@ import {
   CyclopropaneRing,
 } from "./molecular-stability";
 
+import {
+  AlphaHelixStructure,
+  BetaSheetStructure,
+  DnaDoubleHelix,
+  DnaSingleStrand,
+  TertiaryStructure,
+  PrimaryStructure,
+  ProteinCartoon,
+  ProteinSphereFill,
+} from "./protein-structure";
+
 export const visualRegistry: Record<string, ComponentType> = {
   // Structural Formulas
   BenzeneKekule,
@@ -181,4 +192,14 @@ export const visualRegistry: Record<string, ComponentType> = {
   MethylCation,
   CyclohexaneRing,
   CyclopropaneRing,
+
+  // Protein Structure
+  AlphaHelixStructure,
+  BetaSheetStructure,
+  DnaDoubleHelix,
+  DnaSingleStrand,
+  TertiaryStructure,
+  PrimaryStructure,
+  ProteinCartoon,
+  ProteinSphereFill,
 };

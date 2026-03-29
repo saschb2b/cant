@@ -19,7 +19,8 @@ export type ChallengeCategory =
   | "electron-configuration"
   | "energy-diagrams"
   | "stereochemistry"
-  | "electrostatic-maps";
+  | "electrostatic-maps"
+  | "protein-structure";
 
 /**
  * A single chemistry challenge.

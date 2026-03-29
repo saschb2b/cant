@@ -15,6 +15,7 @@ import { electronConfigurationChallenges } from "./electron-configuration";
 import { energyDiagramsChallenges } from "./energy-diagrams";
 import { stereochemistryChallenges } from "./stereochemistry";
 import { electrostaticMapsChallenges } from "./electrostatic-maps";
+import { proteinStructureChallenges } from "./protein-structure";
 
 export const challenges: Challenge[] = [
   ...molecularStabilityChallenges,
@@ -32,4 +33,5 @@ export const challenges: Challenge[] = [
   ...energyDiagramsChallenges,
   ...stereochemistryChallenges,
   ...electrostaticMapsChallenges,
+  ...proteinStructureChallenges,
 ];
