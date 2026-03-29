@@ -1,6 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Box from "@mui/material/Box";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
@@ -27,6 +32,8 @@ export function SandboxControls({
   onToggleEraser,
   children,
 }: SandboxControlsProps) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   const cycleBrush = () => {
     onBrushSizeChange(brushSize >= 5 ? 1 : brushSize + 1);
   };
@@ -60,13 +67,32 @@ export function SandboxControls({
 
       <Tooltip title="Clear canvas">
         <IconButton
-          onClick={onReset}
+          onClick={() => setConfirmOpen(true)}
           sx={{ color: "grey.300", width: 40, height: 40 }}
           aria-label="Clear canvas"
         >
           <Trash2 size={18} />
         </IconButton>
       </Tooltip>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+      >
+        <DialogTitle>Clear the entire canvas?</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>
+          <Button
+            color="error"
+            onClick={() => {
+              setConfirmOpen(false);
+              onReset();
+            }}
+          >
+            Clear
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Tooltip title={eraserActive ? "Switch to element" : "Eraser"}>
         <IconButton

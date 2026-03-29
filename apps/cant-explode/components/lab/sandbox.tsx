@@ -108,10 +108,9 @@ export function Sandbox() {
       if (grid) {
         if (!pausedRef.current && frameCount % 2 === 0) {
           tickSimulation(grid, tickRef.current, atmoRef.current.daylight);
+          updateAtmosphere(atmoRef.current, grid);
           tickRef.current++;
         }
-
-        updateAtmosphere(atmoRef.current, grid);
 
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext("2d");
