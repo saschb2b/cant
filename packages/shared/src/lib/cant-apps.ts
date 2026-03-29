@@ -2,7 +2,7 @@ const isDev = process.env.NODE_ENV === "development";
 
 export const HUB_URL = isDev
   ? "http://localhost:3000"
-  : "https://cant-hub.saschb2b.com";
+  : "https://cant.saschb2b.com";
 
 /** Central registry of all apps in the Can't series. */
 export interface CantApp {

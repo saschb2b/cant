@@ -6,7 +6,7 @@ Today the six Can't apps (Maintain, Resize, Type, Orchestrate, SEO, UX) are isol
 
 ## The Vision
 
-**Can't Hub** is a central portal at `cant-hub.saschb2b.com` (or similar) that serves two audiences with one product:
+**Can't Hub** is a central portal at `cant.saschb2b.com` that serves two audiences with one product:
 
 ### Audience 1: Learners (free)
 
@@ -111,7 +111,7 @@ The screening and assessment features that generate revenue.
 
 | Decision | Options | Notes |
 |---|---|---|
-| **Hub domain** | `cant-hub.saschb2b.com`, `cant.saschb2b.com`, custom domain | Central branding matters for recruiter trust |
+| **Hub domain** | `cant.saschb2b.com` | Central branding matters for recruiter trust |
 | **Keep individual app domains?** | Yes, the Hub is a portal that links out | Each app keeps its own domain and experience |
 | **Auth provider** | NextAuth.js, Clerk, Auth.js, Supabase Auth | Needs to support email + OAuth |
 | **Database** | Postgres (Coolify), Supabase, PlanetScale | Self-hosted aligns with current Coolify setup |

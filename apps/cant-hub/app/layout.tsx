@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 });
 
-const siteUrl = "https://cant-hub.saschb2b.com";
+const siteUrl = "https://cant.saschb2b.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

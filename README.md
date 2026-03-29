@@ -11,7 +11,7 @@ Educational platforms where you pick the better option in side-by-side compariso
 | [cant-seo](apps/cant-seo) | SEO for Next.js | Link inspector | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com) |
 | [cant-ux](apps/cant-ux) | UX design patterns | Visual comparisons | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com) |
 | [cant-explode](apps/cant-explode) | Chemistry and biochemistry | 3D molecule viewer | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com) |
-| [cant-hub](apps/cant-hub) | Series hub / landing | App directory | [cant-hub.saschb2b.com](https://cant-hub.saschb2b.com) |
+| [cant-hub](apps/cant-hub) | Series hub / landing | App directory | [cant.saschb2b.com](https://cant.saschb2b.com) |
 
 ## Tech stack
 
