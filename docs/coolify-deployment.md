@@ -14,15 +14,15 @@ Each app in this monorepo is deployed as a separate service on Coolify. This gui
 Git push
   └─> GitHub webhook fires
         └─> Coolify receives push event
-              └─> Each resource checks its watch paths against the commit diff
-                    ├─> cant-maintain     ← only if apps/cant-maintain/** or packages/shared/** changed
-                    ├─> cant-resize       ← only if apps/cant-resize/** changed
-                    ├─> cant-type         ← only if apps/cant-type/** changed
-                    ├─> cant-orchestrate  ← only if apps/cant-orchestrate/** changed
-                    └─> cant-seo          ← only if apps/cant-seo/** changed
+              └─> All resources rebuild (Coolify has no per-path filtering)
+                    ├─> cant-maintain
+                    ├─> cant-resize
+                    ├─> cant-type
+                    ├─> cant-orchestrate
+                    └─> cant-seo
 ```
 
-Each app is a separate Coolify resource pointing to the same repository. A single GitHub webhook triggers all five resources, but each resource only rebuilds when its watched files actually changed.
+Each app is a separate Coolify resource pointing to the same repository. A single GitHub webhook triggers all resources. Coolify has a "Watch Paths" feature for selective rebuilds, but it is only available for private repositories. Since this repo is public, every push rebuilds all apps. Docker layer caching keeps unchanged app builds fast.
 
 ## What is already in place
 
@@ -61,13 +61,9 @@ Enable HTTPS via Coolify's built-in Let's Encrypt integration.
 
 No environment variables are required. Analytics is handled client-side via the Umami script tag in each app's `layout.tsx`.
 
-## Step 2: Webhook and selective rebuilds
+## Step 2: Set up the GitHub webhook
 
-A monorepo with one webhook and five Coolify resources will, by default, rebuild all five apps on every push. This is wasteful. Coolify's "Watch Paths" feature solves this by only triggering a rebuild when the commit touches files that matter to that specific app.
-
-### 2a: Set up the GitHub webhook (once)
-
-1. In Coolify, go to any one of the five resources and copy its **webhook URL** (Settings > Webhooks). All resources on the same repository share the same webhook endpoint.
+1. In Coolify, go to any one of the resources and copy its **webhook URL** (left sidebar: **Webhooks**). All resources on the same repository share the same webhook endpoint.
 2. In GitHub, go to **Settings > Webhooks > Add webhook**.
 3. Paste the Coolify webhook URL.
 4. Content type: `application/json`.
@@ -76,32 +72,7 @@ A monorepo with one webhook and five Coolify resources will, by default, rebuild
 
 One webhook is enough. Coolify routes the push event to all resources that point to the same repository.
 
-### 2b: Configure watch paths per resource
-
-In each Coolify resource, go to **Settings** and set the **Watch Paths** field. This tells Coolify to compare the incoming commit's changed files against these patterns. If nothing matches, the rebuild is skipped.
-
-| App | Watch paths |
-|-----|------------|
-| cant-maintain | `apps/cant-maintain/**`, `packages/shared/**`, `pnpm-lock.yaml` |
-| cant-resize | `apps/cant-resize/**`, `packages/shared/**`, `pnpm-lock.yaml` |
-| cant-type | `apps/cant-type/**`, `packages/shared/**`, `pnpm-lock.yaml` |
-| cant-orchestrate | `apps/cant-orchestrate/**`, `packages/shared/**`, `pnpm-lock.yaml` |
-| cant-seo | `apps/cant-seo/**`, `packages/shared/**`, `pnpm-lock.yaml` |
-
-### How it works in practice
-
-- Commit only touches `apps/cant-seo/components/inspector/...` -> only cant-seo rebuilds.
-- Commit touches `packages/shared/src/lib/cant-apps.ts` -> all five apps rebuild (shared code changed).
-- Commit touches `apps/cant-type/...` and `apps/cant-resize/...` -> only those two rebuild.
-- Commit only touches `docs/`, `CLAUDE.md`, or `.github/` -> nothing rebuilds.
-
-### Verifying the setup
-
-After pushing a commit that only changes one app, check the Coolify dashboard. You should see:
-- One resource shows "Building" or "Deployed"
-- The other four show no new activity
-
-If all five rebuild on every push, double-check that Watch Paths are configured (not left empty). An empty Watch Paths field means "rebuild on any change".
+> **Note:** Coolify's "Watch Paths" feature only works for private repositories. Since this repo is public, every push rebuilds all apps. Docker layer caching makes this acceptable since unchanged apps rebuild quickly.
 
 ## Adding a new app
 
@@ -110,7 +81,6 @@ When a new app is added to the monorepo:
 1. Add `output: "standalone"` to its `next.config.mjs`
 2. Create a `Dockerfile` by copying an existing one and replacing the app name
 3. Create a new Coolify resource with the settings from Step 1
-4. Set watch paths: `apps/<new-app>/**`, `packages/shared/**`, `pnpm-lock.yaml`
 
 No new webhook is needed. The existing GitHub webhook already covers all resources on the same repository.
 
@@ -118,7 +88,7 @@ No new webhook is needed. The existing GitHub webhook already covers all resourc
 
 ### All apps rebuild on every push
 
-Watch Paths are either empty or misconfigured. In Coolify, open each resource's settings and verify the paths are set. An empty field means "always rebuild".
+This is expected for public repositories. Coolify's Watch Paths feature is only available for private repos. Docker layer caching keeps unchanged app builds fast.
 
 ### Build fails with "Module not found: @cant/shared"
 
@@ -141,5 +111,4 @@ The multi-stage Dockerfile keeps the final image small (~150-200MB). If images a
 ### Webhook not triggering
 
 - Verify the webhook URL in GitHub Settings > Webhooks. Check "Recent Deliveries" for response codes.
-- Coolify returns 200 even when it skips a build (watch paths didn't match). This is normal.
 - If Coolify returns 401/403, regenerate the webhook secret in Coolify and update it in GitHub.
