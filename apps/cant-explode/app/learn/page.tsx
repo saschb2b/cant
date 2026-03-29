@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
+import { appThemeConfig } from "@/lib/app-theme-config";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -49,6 +50,8 @@ export default function LearnPage() {
         label: CATEGORY_LABELS[cat],
       }))}
       learningPathDescription="New to chemistry? Follow these five categories in order to build a solid foundation."
+      badLabel={appThemeConfig.labels.badLabel}
+      goodLabel={appThemeConfig.labels.goodLabel}
     />
   );
 }

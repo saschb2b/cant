@@ -2,7 +2,6 @@
 
 import { VisualPanel as SharedVisualPanel } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
-import checkmarkAnimation from "./checkmark-animation.json";
 
 interface VisualPanelWrapperProps {
   componentId: string;
@@ -24,9 +23,6 @@ export function VisualPanelWrapper(props: VisualPanelWrapperProps) {
       onSelect={props.onSelect}
       result={props.result}
       isSelected={props.isSelected}
-      checkmarkAnimation={checkmarkAnimation}
-      betterLabel="Correct"
-      worseLabel="Incorrect"
     />
   );
 }

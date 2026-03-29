@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import type { LottieRefCurrentProps } from "lottie-react";
 import { codeBlockStyles } from "../../lib/code-styles";
+import { useAppTheme } from "../../lib/app-theme-context";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -27,18 +28,6 @@ interface CodePanelProps {
   result?: "correct" | "wrong" | null;
   /** Whether this panel was the one the user selected. */
   isSelected?: boolean;
-  /** Lottie animation JSON data for the checkmark. */
-  checkmarkAnimation: LottieAnimationData;
-  /** MUI theme path for the header background when no result is shown. Defaults to "action.selected". */
-  headerBackground?: string;
-  /** MUI theme path for the code area background. Defaults to "background.paper". */
-  codeBackground?: string;
-  /** Custom "Better" label slot. Replaces the default text when result is correct. */
-  betterLabel?: ReactNode;
-  /** Custom "Worse" label slot. Replaces the default text when result is wrong. */
-  worseLabel?: ReactNode;
-  /** Extra overlay content rendered on top of the panel (e.g. sparkle effects). */
-  overlaySlot?: ReactNode;
 }
 
 function CheckmarkOverlay({
@@ -90,14 +79,9 @@ export function CodePanel({
   onSelect,
   result,
   isSelected,
-  checkmarkAnimation,
-  headerBackground = "action.selected",
-  codeBackground = "background.paper",
-  betterLabel,
-  worseLabel,
-  overlaySlot,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { labels, styling, slots } = useAppTheme();
 
   const borderColor =
     result === "correct"
@@ -118,7 +102,7 @@ export function CodePanel({
       ? "rgba(var(--mui-palette-success-mainChannel) / 0.1)"
       : result === "wrong"
         ? "rgba(var(--mui-palette-error-mainChannel) / 0.1)"
-        : headerBackground;
+        : styling.headerBackground;
 
   const headerBorderColor =
     result === "correct"
@@ -221,12 +205,12 @@ export function CodePanel({
         </Typography>
         <Fade in={result === "correct"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="success.main">
-            {betterLabel ?? "Better"}
+            {labels.betterLabel}
           </Typography>
         </Fade>
         <Fade in={result === "wrong"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="error.main">
-            {worseLabel ?? "Worse"}
+            {labels.worseLabel}
           </Typography>
         </Fade>
       </Box>
@@ -234,16 +218,16 @@ export function CodePanel({
       <Box
         sx={{
           flex: 1,
-          bgcolor: codeBackground,
+          bgcolor: styling.codeBackground,
           ...codeBlockStyles,
         }}
       >
         <div dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
       </Box>
-      {result === "correct" && isSelected && (
+      {result === "correct" && isSelected && slots.checkmarkAnimation && (
         <CheckmarkOverlay
-          animationData={checkmarkAnimation}
-          extraOverlay={overlaySlot}
+          animationData={slots.checkmarkAnimation}
+          extraOverlay={slots.overlaySlot}
         />
       )}
     </Paper>

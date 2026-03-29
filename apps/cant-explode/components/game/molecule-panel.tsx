@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import type { MoleculePanelSlotProps } from "@cant/shared/components/game";
+import { useAppTheme } from "@cant/shared/lib/app-theme-context";
 
 export function MoleculePanel({
   molecule,
@@ -15,6 +16,8 @@ export function MoleculePanel({
   result,
   isSelected,
 }: MoleculePanelSlotProps) {
+  const { labels } = useAppTheme();
+
   const borderColor =
     result === "correct"
       ? "success.main"
@@ -137,12 +140,12 @@ export function MoleculePanel({
         </Typography>
         <Fade in={result === "correct"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="success.main">
-            Correct
+            {labels.betterLabel}
           </Typography>
         </Fade>
         <Fade in={result === "wrong"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="error.main">
-            Incorrect
+            {labels.worseLabel}
           </Typography>
         </Fade>
       </Box>

@@ -13,6 +13,7 @@ import {
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { LearnContentPanel } from "@cant/shared/components";
 import { visualRegistry } from "@/components/visual/registry";
+import { appThemeConfig } from "@/lib/app-theme-config";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -116,9 +117,8 @@ export default async function CategoryPage({ params }: PageProps) {
           ? { href: `/learn/${next}`, label: CATEGORY_LABELS[next] }
           : undefined
       }
-      panelBg="background.paper"
-      badLabel="Incorrect"
-      goodLabel="Correct"
+      badLabel={appThemeConfig.labels.badLabel}
+      goodLabel={appThemeConfig.labels.goodLabel}
       renderContentPanel={renderVisualContentPanel}
       renderExplanation={(challenge) => (
         <>

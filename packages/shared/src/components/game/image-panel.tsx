@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import type { LottieRefCurrentProps } from "lottie-react";
+import { useAppTheme } from "../../lib/app-theme-context";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -29,16 +30,6 @@ interface ImagePanelProps {
   result?: "correct" | "wrong" | null;
   /** Whether this panel was the one the user selected. */
   isSelected?: boolean;
-  /** Lottie animation JSON data for the checkmark. */
-  checkmarkAnimation: LottieAnimationData;
-  /** MUI theme path for the header background when no result is shown. */
-  headerBackground?: string;
-  /** Custom "Better" label slot. */
-  betterLabel?: ReactNode;
-  /** Custom "Worse" label slot. */
-  worseLabel?: ReactNode;
-  /** Extra overlay content rendered on top of the panel. */
-  overlaySlot?: ReactNode;
 }
 
 function CheckmarkOverlay({
@@ -91,12 +82,9 @@ export function ImagePanel({
   onSelect,
   result,
   isSelected,
-  checkmarkAnimation,
-  headerBackground = "action.selected",
-  betterLabel,
-  worseLabel,
-  overlaySlot,
 }: ImagePanelProps) {
+  const { labels, styling, slots } = useAppTheme();
+
   const borderColor =
     result === "correct"
       ? "success.main"
@@ -116,7 +104,7 @@ export function ImagePanel({
       ? "rgba(var(--mui-palette-success-mainChannel) / 0.1)"
       : result === "wrong"
         ? "rgba(var(--mui-palette-error-mainChannel) / 0.1)"
-        : headerBackground;
+        : styling.headerBackground;
 
   const headerBorderColor =
     result === "correct"
@@ -218,12 +206,12 @@ export function ImagePanel({
         </Typography>
         <Fade in={result === "correct"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="success.main">
-            {betterLabel ?? "Better"}
+            {labels.betterLabel}
           </Typography>
         </Fade>
         <Fade in={result === "wrong"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="error.main">
-            {worseLabel ?? "Worse"}
+            {labels.worseLabel}
           </Typography>
         </Fade>
       </Box>
@@ -249,10 +237,10 @@ export function ImagePanel({
         />
       </Box>
 
-      {result === "correct" && isSelected && (
+      {result === "correct" && isSelected && slots.checkmarkAnimation && (
         <CheckmarkOverlay
-          animationData={checkmarkAnimation}
-          extraOverlay={overlaySlot}
+          animationData={slots.checkmarkAnimation}
+          extraOverlay={slots.overlaySlot}
         />
       )}
     </Paper>

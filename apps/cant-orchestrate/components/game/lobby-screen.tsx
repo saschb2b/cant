@@ -22,7 +22,6 @@ export type GameType = "daily" | "weekly" | "custom";
 const config = {
   categorySections: CATEGORY_SECTIONS,
   categoryLabels: CATEGORY_LABELS as Record<string, string>,
-  headerBackground: "secondary.main",
   gameUtils: {
     decodeSeed,
     generateSeed,

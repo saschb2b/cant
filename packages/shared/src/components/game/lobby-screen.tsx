@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { useTrackEvent } from "../../lib/analytics-context";
+import { useAppTheme } from "../../lib/app-theme-context";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -217,8 +218,6 @@ function ChallengeCard({
 export interface LobbyConfig {
   categorySections: CategorySection[];
   categoryLabels: Record<string, string>;
-  /** MUI theme path for card header backgrounds. Defaults to "action.selected". */
-  headerBackground?: string;
   /** Game-specific utility functions for seeds, history, and date formatting. */
   gameUtils: LobbyGameUtils;
 }
@@ -256,9 +255,10 @@ export function LobbyScreen({
   crossPromoSlot,
 }: LobbyScreenProps) {
   const trackEvent = useTrackEvent();
+  const { styling } = useAppTheme();
   const { gameUtils } = config;
   const ActivityGraphComponent = slots.activityGraph;
-  const headerBackground = config.headerBackground ?? "action.selected";
+  const headerBackground = styling.headerBackground;
   const ALL_CATEGORIES = config.categorySections.flatMap((s) => s.categories);
 
   const defaultDecoded = defaultSeed ? gameUtils.decodeSeed(defaultSeed) : null;

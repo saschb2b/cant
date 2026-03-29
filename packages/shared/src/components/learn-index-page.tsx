@@ -31,6 +31,10 @@ interface LearnIndexPageProps {
   learningPath?: { category: string; label: string }[];
   /** Short text for the learning path section, e.g. "New to responsive design? Follow these five categories in order." */
   learningPathDescription?: string;
+  /** Label for the "bad" panel header. Defaults to "Avoid". */
+  badLabel?: string;
+  /** Label for the "good" panel header. Defaults to "Prefer". */
+  goodLabel?: string;
 }
 
 export function LearnIndexPage({
@@ -41,6 +45,8 @@ export function LearnIndexPage({
   sections,
   learningPath,
   learningPathDescription,
+  badLabel = "Avoid",
+  goodLabel = "Prefer",
 }: LearnIndexPageProps) {
   return (
     <>
@@ -227,7 +233,7 @@ export function LearnIndexPage({
                         fontFamily="var(--font-geist-mono), monospace"
                         color="error.main"
                       >
-                        Avoid
+                        {badLabel}
                       </Typography>
                     </Stack>
                     <Box
@@ -274,7 +280,7 @@ export function LearnIndexPage({
                         fontFamily="var(--font-geist-mono), monospace"
                         color="success.main"
                       >
-                        Prefer
+                        {goodLabel}
                       </Typography>
                     </Stack>
                     <Box

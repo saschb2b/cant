@@ -1,9 +1,13 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { CodePanel as SharedCodePanel } from "@cant/shared/components/game";
-import checkmarkAnimation from "./checkmark-animation.json";
+import {
+  AppThemeProvider,
+  createAppTheme,
+} from "@cant/shared/lib/app-theme-context";
+import checkmarkAnimation from "./game/checkmark-animation.json";
 
 const SPARKLE_BURSTS = Array.from({ length: 8 }, (_, i) => {
   const angle = (i / 8) * 360;
@@ -76,24 +80,18 @@ const shimmerBetterLabel = (
   </Typography>
 );
 
-interface CodePanelProps {
-  highlightedHtml: string;
-  label: string;
-  isSelectable: boolean;
-  onSelect: () => void;
-  result?: "correct" | "wrong" | null;
-  isSelected?: boolean;
-}
+const appTheme = createAppTheme({
+  labels: { betterLabel: shimmerBetterLabel },
+  styling: {
+    headerBackground: "secondary.main",
+    codeBackground: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+  },
+  slots: {
+    checkmarkAnimation,
+    overlaySlot: <SparklesBurst />,
+  },
+});
 
-export function CodePanel(props: CodePanelProps) {
-  return (
-    <SharedCodePanel
-      {...props}
-      checkmarkAnimation={checkmarkAnimation}
-      headerBackground="secondary.main"
-      codeBackground="rgba(var(--mui-palette-secondary-mainChannel) / 0.5)"
-      betterLabel={shimmerBetterLabel}
-      overlaySlot={<SparklesBurst />}
-    />
-  );
+export function AppThemeWrapper({ children }: { children: ReactNode }) {
+  return <AppThemeProvider value={appTheme}>{children}</AppThemeProvider>;
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider, AnalyticsProviderWrapper } from "@cant/shared/components";
 import theme from "@/lib/theme";
+import { AppThemeWrapper } from "@/components/app-theme-wrapper";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -97,7 +98,9 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider theme={theme}>
-          <AnalyticsProviderWrapper>{children}</AnalyticsProviderWrapper>
+          <AnalyticsProviderWrapper>
+            <AppThemeWrapper>{children}</AppThemeWrapper>
+          </AnalyticsProviderWrapper>
         </ThemeProvider>
       </body>
     </html>

@@ -11,7 +11,9 @@
     "./lib/*": "./src/lib/*.ts",
     "./lib/game": "./src/lib/game/index.ts",
     "./lib/game/*": "./src/lib/game/*.ts",
-    "./lib/analytics-context": "./src/lib/analytics-context.tsx"
+    "./lib/analytics-context": "./src/lib/analytics-context.tsx",
+    "./lib/app-theme": "./src/lib/app-theme.ts",
+    "./lib/app-theme-context": "./src/lib/app-theme-context.tsx"
   },
   "peerDependencies": {
     "@emotion/cache": "^11.14.0",

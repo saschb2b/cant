@@ -37,7 +37,6 @@ export function LobbyScreen(props: LobbyScreenProps) {
       config={{
         categorySections: CATEGORY_SECTIONS,
         categoryLabels: CATEGORY_LABELS,
-        headerBackground: "secondary.main",
         gameUtils: {
           decodeSeed,
           generateSeed,
