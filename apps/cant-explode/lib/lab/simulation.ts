@@ -357,20 +357,17 @@ function updateStem(grid: Grid, x: number, y: number, particle: Particle): void 
   }
 }
 
-// ===== Leaf: can spread, fruit, and eventually decay =====
+// ===== Leaf: can spread, fruit, and decay only when disconnected =====
 function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void {
   if (currentDaylight > 0.1) particle.lifetime++;
 
-  // Old leaves decay into ash (organic matter) - feeds the soil cycle
-  if (particle.lifetime > 300 && Math.random() < 0.001) {
-    // Leaves not connected to stems decay faster (fallen leaves)
-    const hasSupport = hasAnyNeighbor(grid, x, y, ["stem", "plant"]);
-    if (!hasSupport || Math.random() < 0.3) {
-      const ash = createParticle("ash");
-      ash.updated = true;
-      setCell(grid, x, y, ash);
-      return;
-    }
+  // Only decay if disconnected from the tree (no stem/plant nearby)
+  const connected = countNearbyAny(grid, x, y, ["stem", "plant", "leaf"], 1) >= 2;
+  if (!connected && particle.lifetime > 100 && Math.random() < 0.003) {
+    const soil = createParticle("soil");
+    soil.updated = true;
+    setCell(grid, x, y, soil);
+    return;
   }
 
   const waterNearby = countNearby(grid, x, y, "water", 3);
@@ -418,9 +415,10 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
 function updateFlower(grid: Grid, x: number, y: number, particle: Particle): void {
   if (currentDaylight > 0.1) particle.lifetime++;
 
-  // Flowers wilt after a while
-  if (particle.lifetime > 250 && Math.random() < 0.002) {
-    const ash = createParticle("ash");
+  // Flowers only wilt if disconnected from the plant
+  const flowerConnected = hasAnyNeighbor(grid, x, y, ["stem", "leaf", "plant"]);
+  if (!flowerConnected && particle.lifetime > 150 && Math.random() < 0.003) {
+    const ash = createParticle("soil");
     ash.updated = true;
     setCell(grid, x, y, ash);
     return;
@@ -444,11 +442,12 @@ function updateFlower(grid: Grid, x: number, y: number, particle: Particle): voi
 function updateGrass(grid: Grid, x: number, y: number, particle: Particle): void {
   particle.lifetime++;
 
-  // Old grass decays into ash
-  if (particle.lifetime > 400 && Math.random() < 0.002) {
-    const ash = createParticle("ash");
-    ash.updated = true;
-    setCell(grid, x, y, ash);
+  // Grass only decays if isolated (no other grass, stem, or soil nearby)
+  const grassConnected = hasAnyNeighbor(grid, x, y, ["grass", "stem", "plant", "soil"]);
+  if (!grassConnected && particle.lifetime > 200 && Math.random() < 0.003) {
+    const soil = createParticle("soil");
+    soil.updated = true;
+    setCell(grid, x, y, soil);
     return;
   }
 
@@ -872,8 +871,8 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
             updateSoil(grid, x, y);
           } else if (particle.element === "ash" || particle.element === "charcoal") {
             updatePowder(grid, x, y);
-            // Wet ash/charcoal slowly decomposes into soil
-            if (countNearby(grid, x, y, "water", 2) > 0 && Math.random() < 0.005) {
+            // Wet ash/charcoal decomposes into soil
+            if (countNearby(grid, x, y, "water", 2) > 0 && Math.random() < 0.015) {
               const soil = createParticle("soil");
               soil.updated = true;
               setCell(grid, x, y, soil);

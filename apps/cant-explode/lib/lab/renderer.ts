@@ -1,6 +1,6 @@
 import type { Grid } from "./types";
 import type { Atmosphere } from "./atmosphere";
-import { getSkyColor, getAmbientSparkle, getCloudPixel } from "./atmosphere";
+import { getSkyColor, getAmbientSparkle, getCloudPixel, getCelestialPixel } from "./atmosphere";
 
 /** Elements that render translucent (blended with background). */
 const TRANSLUCENT: Record<string, number> = {
@@ -104,18 +104,9 @@ export function renderGrid(
           g = Math.min(255, g + 10);
         }
 
-        // Leaf: age-based color shift (young=bright, old=dark/autumn)
-        if (particle.element === "leaf") {
-          if (particle.lifetime > 200) {
-            // Aging: leaves slowly shift toward yellow/brown
-            const age = Math.min(1, (particle.lifetime - 200) / 200);
-            r = Math.min(255, r + Math.floor(age * 40));
-            g = Math.max(40, g - Math.floor(age * 30));
-          }
-          // Subtle shimmer for canopy depth
-          if (Math.random() < 0.01) {
-            particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 6 - 3)));
-          }
+        // Leaf: subtle canopy depth shimmer
+        if (particle.element === "leaf" && Math.random() < 0.005) {
+          particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 4 - 2)));
         }
 
         // Algae: subtle underwater shimmer
@@ -131,6 +122,14 @@ export function renderGrid(
         r = bg[0];
         g = bg[1];
         b = bg[2];
+
+        // Sun and moon
+        const celestial = getCelestialPixel(atmo, gx, gy, grid.width, bg);
+        if (celestial) {
+          r = celestial[0];
+          g = celestial[1];
+          b = celestial[2];
+        }
 
         // Clouds: blend per-pixel cloud color over sky
         const cloudPx = getCloudPixel(atmo, gx, gy);

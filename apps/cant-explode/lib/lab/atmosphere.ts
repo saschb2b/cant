@@ -64,13 +64,22 @@ export interface Atmosphere {
  * Sky phases for the day-night cycle.
  * Each phase defines top and bottom gradient colors.
  */
-const SKY_NIGHT = { top: [8, 10, 25] as RGB, bottom: [10, 18, 12] as RGB };
-const SKY_DAWN  = { top: [60, 40, 80] as RGB, bottom: [200, 120, 70] as RGB };
-const SKY_DAY   = { top: [100, 160, 220] as RGB, bottom: [170, 210, 240] as RGB };
-const SKY_DUSK  = { top: [70, 40, 60] as RGB, bottom: [210, 100, 50] as RGB };
+const SKY_NIGHT = { top: [8, 10, 25] as RGB, bottom: [12, 15, 22] as RGB };
+const SKY_DAWN  = { top: [55, 35, 75] as RGB, bottom: [200, 120, 70] as RGB };
+const SKY_DAY   = { top: [95, 155, 215] as RGB, bottom: [165, 205, 235] as RGB };
+const SKY_DUSK  = { top: [65, 35, 55] as RGB, bottom: [210, 100, 50] as RGB };
 
 /** Frames per full day-night cycle. ~60fps * 120s = 2 minute cycle. */
 const CYCLE_LENGTH = 7200;
+
+/** Sun arc parameters. */
+const SUN_RADIUS = 4;
+const SUN_GLOW_RADIUS = 12;
+/** Moon arc parameters. */
+const MOON_RADIUS = 3;
+const MOON_GLOW_RADIUS = 7;
+/** Horizon line in grid y coordinates (below this = "underground"). */
+const HORIZON_Y = 50;
 
 /** Maximum number of clouds at once. */
 const MAX_CLOUDS = 6;
@@ -98,44 +107,211 @@ export function createAtmosphere(): Atmosphere {
   };
 }
 
-/**
- * Interpolate between sky phases based on time of day (0-1).
- * Phases: midnight(0) -> dawn(0.2) -> day(0.35-0.65) -> dusk(0.8) -> night(1).
- */
-function getBaseSky(t: number): { top: RGB; bottom: RGB; daylight: number } {
-  // Normalize to handle wrap
-  const lerpC = (a: RGB, b: RGB, f: number): RGB => [
+/** Lerp between two RGB colors. */
+function lerpC(a: RGB, b: RGB, f: number): RGB {
+  return [
     a[0] + (b[0] - a[0]) * f,
     a[1] + (b[1] - a[1]) * f,
     a[2] + (b[2] - a[2]) * f,
   ];
+}
 
-  if (t < 0.18) {
-    // Night
+/** Smooth easing for more natural transitions. */
+function ease(t: number): number {
+  return t * t * (3 - 2 * t);
+}
+
+/**
+ * Interpolate between sky phases based on time of day (0-1).
+ * Longer, smoother transitions with proper easing.
+ */
+function getBaseSky(t: number): { top: RGB; bottom: RGB; daylight: number } {
+  if (t < 0.15) {
+    // Deep night
     return { top: SKY_NIGHT.top, bottom: SKY_NIGHT.bottom, daylight: 0 };
-  } else if (t < 0.28) {
-    // Night -> Dawn
-    const f = (t - 0.18) / 0.1;
+  } else if (t < 0.27) {
+    // Night -> Dawn (longer transition)
+    const f = ease((t - 0.15) / 0.12);
     return { top: lerpC(SKY_NIGHT.top, SKY_DAWN.top, f), bottom: lerpC(SKY_NIGHT.bottom, SKY_DAWN.bottom, f), daylight: f * 0.3 };
   } else if (t < 0.38) {
     // Dawn -> Day
-    const f = (t - 0.28) / 0.1;
+    const f = ease((t - 0.27) / 0.11);
     return { top: lerpC(SKY_DAWN.top, SKY_DAY.top, f), bottom: lerpC(SKY_DAWN.bottom, SKY_DAY.bottom, f), daylight: 0.3 + f * 0.7 };
   } else if (t < 0.62) {
-    // Day
+    // Full day
     return { top: SKY_DAY.top, bottom: SKY_DAY.bottom, daylight: 1 };
-  } else if (t < 0.72) {
+  } else if (t < 0.73) {
     // Day -> Dusk
-    const f = (t - 0.62) / 0.1;
+    const f = ease((t - 0.62) / 0.11);
     return { top: lerpC(SKY_DAY.top, SKY_DUSK.top, f), bottom: lerpC(SKY_DAY.bottom, SKY_DUSK.bottom, f), daylight: 1 - f * 0.7 };
-  } else if (t < 0.82) {
-    // Dusk -> Night
-    const f = (t - 0.72) / 0.1;
-    return { top: lerpC(SKY_DUSK.top, SKY_NIGHT.top, f), bottom: lerpC(SKY_NIGHT.bottom, SKY_NIGHT.bottom, f), daylight: 0.3 - f * 0.3 };
+  } else if (t < 0.85) {
+    // Dusk -> Night (longer transition)
+    const f = ease((t - 0.73) / 0.12);
+    return { top: lerpC(SKY_DUSK.top, SKY_NIGHT.top, f), bottom: lerpC(SKY_DUSK.bottom, SKY_NIGHT.bottom, f), daylight: 0.3 - f * 0.3 };
   } else {
     // Night
     return { top: SKY_NIGHT.top, bottom: SKY_NIGHT.bottom, daylight: 0 };
   }
+}
+
+/**
+ * Compute a celestial arc position.
+ * progress 0 = rising at left horizon, 0.5 = peak, 1 = setting at right horizon.
+ * Returns x, y in grid coords. y goes below HORIZON_Y at the edges (below horizon).
+ */
+function celestialArc(
+  progress: number,
+  gridWidth: number,
+  peakY: number,
+): { x: number; y: number } {
+  // Left-to-right horizontal position
+  const x = gridWidth * 0.05 + progress * gridWidth * 0.9;
+  // Sine arc: 0 at edges (horizon), peakY at center
+  const arc = Math.sin(progress * Math.PI);
+  const y = HORIZON_Y - arc * (HORIZON_Y - peakY);
+  return { x, y };
+}
+
+/**
+ * Get the sun's position. Sun rises at t=0.22, peaks at t=0.50, sets at t=0.78.
+ * Returns null only if fully below horizon.
+ */
+function getSunPosition(t: number, gridWidth: number): { x: number; y: number; intensity: number; nearHorizon: number } | null {
+  const rise = 0.22;
+  const set = 0.78;
+  if (t < rise - 0.03 || t > set + 0.03) return null;
+
+  const progress = Math.max(0, Math.min(1, (t - rise) / (set - rise)));
+  const { x, y } = celestialArc(progress, gridWidth, 8);
+
+  // Below visible area
+  if (y > HORIZON_Y + SUN_GLOW_RADIUS) return null;
+
+  // Intensity based on height above horizon
+  const heightAbove = Math.max(0, HORIZON_Y - y) / HORIZON_Y;
+  const intensity = Math.min(1, heightAbove * 3);
+
+  // How close to horizon (0=high, 1=at horizon) - for color shift
+  const nearHorizon = 1 - Math.min(1, heightAbove * 4);
+
+  return { x, y, intensity, nearHorizon };
+}
+
+/**
+ * Get the moon's position. Moon rises at t=0.76, peaks at midnight, sets at t=0.24.
+ * Returns null only if fully below horizon.
+ */
+function getMoonPosition(t: number, gridWidth: number): { x: number; y: number; intensity: number } | null {
+  const rise = 0.76;
+  const set = 0.24;
+
+  // Map time to 0-1 progress across the night
+  let progress: number;
+  if (t >= rise) {
+    progress = (t - rise) / (1 - rise + set) * 0.5;
+  } else if (t <= set) {
+    progress = 0.5 + (t / set) * 0.5;
+  } else {
+    return null;
+  }
+
+  const { x, y } = celestialArc(progress, gridWidth, 12);
+
+  if (y > HORIZON_Y + MOON_GLOW_RADIUS) return null;
+
+  const heightAbove = Math.max(0, HORIZON_Y - y) / HORIZON_Y;
+  const intensity = Math.min(1, heightAbove * 3);
+
+  return { x, y, intensity };
+}
+
+/**
+ * Get the celestial body pixel contribution at a grid position.
+ * Returns an RGB to blend, or null.
+ */
+export function getCelestialPixel(
+  atmo: Atmosphere,
+  gx: number,
+  gy: number,
+  gridWidth: number,
+  bg: RGB,
+): RGB | null {
+  const t = atmo.timeOfDay;
+
+  // Sun
+  const sun = getSunPosition(t, gridWidth);
+  if (sun && sun.intensity > 0) {
+    const dx = gx - sun.x;
+    const dy = gy - sun.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // Sun color shifts orange/red near horizon (atmospheric scattering)
+    const h = sun.nearHorizon;
+    const coreR = 255;
+    const coreG = Math.round(250 - h * 80);  // 250 -> 170 (orange)
+    const coreB = Math.round(200 - h * 150); // 200 -> 50 (red-orange)
+
+    if (dist < SUN_RADIUS) {
+      const f = dist / SUN_RADIUS;
+      const brightness = (1 - f * f) * sun.intensity;
+      return [
+        Math.min(255, Math.round(bg[0] + (coreR - bg[0]) * brightness)),
+        Math.min(255, Math.round(bg[1] + (coreG - bg[1]) * brightness)),
+        Math.min(255, Math.round(bg[2] + (coreB - bg[2]) * brightness)),
+      ];
+    }
+
+    if (dist < SUN_GLOW_RADIUS) {
+      const f = (dist - SUN_RADIUS) / (SUN_GLOW_RADIUS - SUN_RADIUS);
+      const glow = (1 - f) * (1 - f) * 0.45 * sun.intensity;
+      // Glow is warmer near horizon
+      const glowR = Math.min(255, coreR);
+      const glowG = Math.round(coreG * 0.8);
+      const glowB = Math.round(coreB * 0.4);
+      if (glow > 0.02) {
+        return [
+          Math.min(255, Math.round(bg[0] + (glowR - bg[0]) * glow)),
+          Math.min(255, Math.round(bg[1] + (glowG - bg[1]) * glow * 0.7)),
+          Math.min(255, Math.round(bg[2] + (glowB - bg[2]) * glow * 0.3)),
+        ];
+      }
+    }
+  }
+
+  // Moon
+  const moon = getMoonPosition(t, gridWidth);
+  if (moon && moon.intensity > 0) {
+    const dx = gx - moon.x;
+    const dy = gy - moon.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < MOON_RADIUS) {
+      // Moon core: cool silver-white with slight crescent shadow
+      const f = dist / MOON_RADIUS;
+      const brightness = (1 - f * f) * moon.intensity * 0.75;
+      // Crescent effect: darken the left side slightly
+      const crescent = dx < 0 ? 0.7 : 1.0;
+      return [
+        Math.min(255, Math.round(bg[0] + (215 - bg[0]) * brightness * crescent)),
+        Math.min(255, Math.round(bg[1] + (222 - bg[1]) * brightness * crescent)),
+        Math.min(255, Math.round(bg[2] + (240 - bg[2]) * brightness * crescent)),
+      ];
+    }
+
+    if (dist < MOON_GLOW_RADIUS) {
+      const f = (dist - MOON_RADIUS) / (MOON_GLOW_RADIUS - MOON_RADIUS);
+      const glow = (1 - f) * (1 - f) * 0.18 * moon.intensity;
+      if (glow > 0.01) {
+        return [
+          Math.min(255, Math.round(bg[0] + (160 - bg[0]) * glow)),
+          Math.min(255, Math.round(bg[1] + (170 - bg[1]) * glow)),
+          Math.min(255, Math.round(bg[2] + (210 - bg[2]) * glow)),
+        ];
+      }
+    }
+  }
+
+  return null;
 }
 
 /** Smoothly lerp a single value toward a target. */
@@ -448,15 +624,42 @@ function applyDawnDew(atmo: Atmosphere, grid: Grid): void {
 }
 
 /**
- * Get the background RGB for a specific grid row, interpolating the gradient.
+ * Get the background RGB for a specific grid row, interpolating the gradient
+ * with horizon glow during dawn and dusk.
  */
 export function getSkyColor(atmo: Atmosphere, row: number, totalRows: number): RGB {
   const t = row / (totalRows - 1);
-  return [
-    Math.round(atmo.skyTop[0] + (atmo.skyBottom[0] - atmo.skyTop[0]) * t),
-    Math.round(atmo.skyTop[1] + (atmo.skyBottom[1] - atmo.skyTop[1]) * t),
-    Math.round(atmo.skyTop[2] + (atmo.skyBottom[2] - atmo.skyTop[2]) * t),
-  ];
+  const r = Math.round(atmo.skyTop[0] + (atmo.skyBottom[0] - atmo.skyTop[0]) * t);
+  const g = Math.round(atmo.skyTop[1] + (atmo.skyBottom[1] - atmo.skyTop[1]) * t);
+  const b = Math.round(atmo.skyTop[2] + (atmo.skyBottom[2] - atmo.skyTop[2]) * t);
+
+  // Horizon glow: warm band near the bottom during dawn and dusk
+  const tod = atmo.timeOfDay;
+  let glowStrength = 0;
+  if (tod > 0.18 && tod < 0.35) {
+    // Dawn glow
+    const f = tod < 0.27 ? (tod - 0.18) / 0.09 : 1 - (tod - 0.27) / 0.08;
+    glowStrength = Math.max(0, f);
+  } else if (tod > 0.65 && tod < 0.82) {
+    // Dusk glow
+    const f = tod < 0.73 ? (tod - 0.65) / 0.08 : 1 - (tod - 0.73) / 0.09;
+    glowStrength = Math.max(0, f);
+  }
+
+  if (glowStrength > 0) {
+    // Glow is strongest near the horizon (bottom third), fades upward
+    const horizonBand = Math.max(0, (t - 0.5) * 2); // 0 at middle, 1 at bottom
+    const glow = glowStrength * horizonBand * 0.4;
+    if (glow > 0.01) {
+      return [
+        Math.min(255, Math.round(r + (255 - r) * glow * 0.6)),
+        Math.min(255, Math.round(g + (180 - g) * glow * 0.3)),
+        Math.min(255, Math.round(b + (80 - b) * glow * 0.1)),
+      ];
+    }
+  }
+
+  return [r, g, b];
 }
 
 /** Simple hash for noise. */
