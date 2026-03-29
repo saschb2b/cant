@@ -1,10 +1,9 @@
 "use client";
 
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import Slider from "@mui/material/Slider";
-import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { Play, Pause, Trash2, Eraser } from "lucide-react";
 
 interface SandboxControlsProps {
@@ -28,70 +27,84 @@ export function SandboxControls({
   onToggleEraser,
   children,
 }: SandboxControlsProps) {
+  const cycleBrush = () => {
+    onBrushSizeChange(brushSize >= 5 ? 1 : brushSize + 1);
+  };
+
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={0.5}
-      sx={{ mt: 1, flexWrap: "wrap" }}
+    <Box
+      sx={{
+        position: "absolute",
+        top: 8,
+        left: 8,
+        zIndex: 2,
+        display: "flex",
+        alignItems: "center",
+        gap: 0.25,
+        bgcolor: "rgba(0, 0, 0, 0.5)",
+        backdropFilter: "blur(8px)",
+        borderRadius: 20,
+        px: 0.5,
+        py: 0.25,
+      }}
     >
       <Tooltip title={paused ? "Play" : "Pause"}>
         <IconButton
-          size="small"
           onClick={onTogglePause}
-          sx={{ color: "text.secondary" }}
+          sx={{ color: "grey.300", width: 40, height: 40 }}
           aria-label={paused ? "Play" : "Pause"}
         >
-          {paused ? <Play size={16} /> : <Pause size={16} />}
+          {paused ? <Play size={18} /> : <Pause size={18} />}
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Clear canvas">
         <IconButton
-          size="small"
           onClick={onReset}
-          sx={{ color: "text.secondary" }}
+          sx={{ color: "grey.300", width: 40, height: 40 }}
           aria-label="Clear canvas"
         >
-          <Trash2 size={16} />
+          <Trash2 size={18} />
         </IconButton>
       </Tooltip>
 
       <Tooltip title={eraserActive ? "Switch to element" : "Eraser"}>
         <IconButton
-          size="small"
           onClick={onToggleEraser}
           sx={{
-            color: eraserActive ? "primary.main" : "text.secondary",
-            bgcolor: eraserActive ? "action.selected" : "transparent",
+            color: eraserActive ? "primary.main" : "grey.300",
+            bgcolor: eraserActive ? "rgba(255,255,255,0.15)" : "transparent",
+            width: 40,
+            height: 40,
           }}
           aria-label={eraserActive ? "Switch to element" : "Eraser"}
         >
-          <Eraser size={16} />
+          <Eraser size={18} />
         </IconButton>
       </Tooltip>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          ml: 0.5,
-        }}
-      >
-        <Slider
-          value={brushSize}
-          min={1}
-          max={5}
-          step={1}
-          onChange={(_, v) => onBrushSizeChange(v as number)}
-          sx={{ width: { xs: 50, sm: 70 } }}
-          size="small"
-          aria-label="Brush size"
-        />
-      </Box>
+      <Tooltip title={`Brush: ${String(brushSize)}px`}>
+        <IconButton
+          onClick={cycleBrush}
+          sx={{ color: "grey.300", width: 40, height: 40 }}
+          aria-label={`Brush size ${String(brushSize)}`}
+        >
+          <Typography
+            component="span"
+            sx={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              lineHeight: 1,
+              color: "inherit",
+              fontFamily: "monospace",
+            }}
+          >
+            {brushSize}px
+          </Typography>
+        </IconButton>
+      </Tooltip>
 
-      <Box sx={{ ml: "auto" }}>{children}</Box>
-    </Stack>
+      {children}
+    </Box>
   );
 }

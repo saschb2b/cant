@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from "react";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { BookOpen, X } from "lucide-react";
-import { ELEMENTS, PICKABLE_ELEMENTS } from "@/lib/lab/elements";
+import { BookOpen, X, Search } from "lucide-react";
+import { ELEMENTS } from "@/lib/lab/elements";
 import { REACTIONS, REACTION_GROUPS, NON_REACTIONS } from "@/lib/lab/reactions";
 import type { ElementType, ReactionRule } from "@/lib/lab/types";
 
@@ -146,47 +146,40 @@ function matchesFilter(rule: ReactionRule, filter: ElementType): boolean {
 
 export function ReactionBookButton() {
   const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState<ElementType | null>(null);
-
-  // Collect all elements that appear in reactions (as reactants or products)
-  const reactiveElements = useMemo(() => {
-    const set = new Set<ElementType>();
-    for (const r of REACTIONS) {
-      set.add(r.a);
-      set.add(r.b);
-      if (r.produceA) set.add(r.produceA);
-      if (r.produceB) set.add(r.produceB);
-    }
-    // Order: pickable elements first, then remaining sorted alphabetically
-    const ordered: ElementType[] = [];
-    for (const el of PICKABLE_ELEMENTS) {
-      if (set.has(el)) {
-        ordered.push(el);
-        set.delete(el);
-      }
-    }
-    const remaining = [...set].sort();
-    ordered.push(...remaining);
-    return ordered;
-  }, []);
+  const [search, setSearch] = useState("");
 
   const filteredGroups = useMemo(() => {
+    const q = search.toLowerCase().trim();
     const groups: { name: string; reactions: ReactionRule[] }[] = [];
     for (const groupName of REACTION_GROUPS) {
-      const reactions = REACTIONS.filter(
-        (r) => r.group === groupName && (!filter || matchesFilter(r, filter)),
-      );
+      const reactions = REACTIONS.filter((r) => {
+        if (!q) return true;
+        return (
+          r.a.includes(q) ||
+          r.b.includes(q) ||
+          (r.produceA?.includes(q) ?? false) ||
+          (r.produceB?.includes(q) ?? false) ||
+          r.desc.toLowerCase().includes(q) ||
+          r.group.toLowerCase().includes(q)
+        );
+      });
       if (reactions.length > 0) {
         groups.push({ name: groupName, reactions });
       }
     }
     return groups;
-  }, [filter]);
+  }, [search]);
 
   const filteredNonReactions = useMemo(() => {
-    if (!filter) return NON_REACTIONS;
-    return NON_REACTIONS.filter((nr) => nr.a === filter || nr.b === filter);
-  }, [filter]);
+    const q = search.toLowerCase().trim();
+    if (!q) return NON_REACTIONS;
+    return NON_REACTIONS.filter(
+      (nr) =>
+        nr.a.includes(q) ||
+        nr.b.includes(q) ||
+        nr.desc.toLowerCase().includes(q),
+    );
+  }, [search]);
 
   const totalVisible = filteredGroups.reduce((s, g) => s + g.reactions.length, 0);
 
@@ -213,85 +206,74 @@ export function ReactionBookButton() {
           },
         }}
       >
-        {/* Header */}
+        {/* Header with search */}
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            px: 2.5,
-            py: 2,
-            borderBottom: 1,
-            borderColor: "divider",
-            flexShrink: 0,
-          }}
-        >
-          <Box>
-            <Typography variant="subtitle1" fontWeight={700}>
-              Reaction Book
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {filter
-                ? `${String(totalVisible)} of ${String(REACTIONS.length)} reactions`
-                : `${String(REACTIONS.length)} reactions`}
-            </Typography>
-          </Box>
-          <IconButton
-            size="small"
-            onClick={() => setOpen(false)}
-            aria-label="Close"
-          >
-            <X size={18} />
-          </IconButton>
-        </Box>
-
-        {/* Element filter */}
-        <Box
-          sx={{
-            px: 2.5,
+            px: 2,
             py: 1.5,
             borderBottom: 1,
             borderColor: "divider",
-            display: "flex",
-            gap: 0.5,
-            flexWrap: "wrap",
             flexShrink: 0,
           }}
         >
-          <Chip
-            label="All"
-            size="small"
-            variant={filter === null ? "filled" : "outlined"}
-            color={filter === null ? "primary" : "default"}
-            onClick={() => setFilter(null)}
-            sx={{ height: 24, fontSize: "0.65rem" }}
-          />
-          {reactiveElements.map((el) => {
-            const [r, g, b] = ELEMENTS[el].baseColor;
-            const isActive = filter === el;
-            return (
-              <Chip
-                key={el}
-                label={capitalize(el)}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mb: 1,
+            }}
+          >
+            <Box>
+              <Typography variant="subtitle1" fontWeight={700}>
+                Reaction Book
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {search
+                  ? `${String(totalVisible)} of ${String(REACTIONS.length)} reactions`
+                  : `${String(REACTIONS.length)} reactions`}
+              </Typography>
+            </Box>
+            <IconButton
+              size="small"
+              onClick={() => setOpen(false)}
+              aria-label="Close"
+            >
+              <X size={18} />
+            </IconButton>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              bgcolor: "action.hover",
+              borderRadius: 1,
+              px: 1.5,
+              py: 0.75,
+            }}
+          >
+            <Search size={16} style={{ opacity: 0.5, flexShrink: 0 }} />
+            <InputBase
+              placeholder="Filter by element or keyword..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              fullWidth
+              sx={{ fontSize: "0.85rem" }}
+              inputProps={{ "aria-label": "Filter reactions" }}
+            />
+            {search && (
+              <IconButton
                 size="small"
-                variant={isActive ? "filled" : "outlined"}
-                onClick={() => setFilter(isActive ? null : el)}
-                icon={<ColorDot element={el} size={7} />}
-                sx={{
-                  height: 24,
-                  fontSize: "0.65rem",
-                  ...(isActive && {
-                    bgcolor: `rgb(${String(r)}, ${String(g)}, ${String(b)})`,
-                    color: r + g + b > 400 ? "#000" : "#fff",
-                    "&:hover": {
-                      bgcolor: `rgb(${String(Math.max(0, r - 20))}, ${String(Math.max(0, g - 20))}, ${String(Math.max(0, b - 20))})`,
-                    },
-                  }),
-                  "& .MuiChip-icon": { ml: 0.5 },
-                }}
-              />
-            );
-          })}
+                onClick={() => setSearch("")}
+                aria-label="Clear search"
+                sx={{ p: 0.25 }}
+              >
+                <X size={14} />
+              </IconButton>
+            )}
+          </Box>
         </Box>
 
         {/* Scrollable content */}
@@ -383,7 +365,7 @@ export function ReactionBookButton() {
 
           {totalVisible === 0 && filteredNonReactions.length === 0 && (
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 4 }}>
-              No reactions found for {filter ? capitalize(filter) : "this element"}.
+              No reactions found for &quot;{search}&quot;.
             </Typography>
           )}
         </Box>

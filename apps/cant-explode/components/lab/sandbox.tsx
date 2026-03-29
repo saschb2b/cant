@@ -1,33 +1,32 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
+import Box from "@mui/material/Box";
 import type { ElementType, Grid } from "@/lib/lab/types";
 import { createGrid, clearGrid, setCell, getCell } from "@/lib/lab/grid";
 import { createParticle, tickSimulation } from "@/lib/lab/simulation";
 import { renderGrid } from "@/lib/lab/renderer";
 import { createAtmosphere, updateAtmosphere } from "@/lib/lab/atmosphere";
 import { SandboxCanvas } from "./sandbox-canvas";
-import { ElementPicker } from "./element-picker";
+import { LabToolbar } from "./element-picker";
 import { SandboxControls } from "./sandbox-controls";
 import { ReactionBookButton } from "./reaction-book";
 
-const GRID_WIDTH = 200;
-const GRID_HEIGHT = 150;
+/** Canvas backing is 1:1 with grid cells; CSS handles display scaling. */
+const CELL_SIZE = 1;
 
 export function Sandbox() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gridRef = useRef<Grid>(createGrid(GRID_WIDTH, GRID_HEIGHT));
+  const gridRef = useRef<Grid | null>(null);
   const tickRef = useRef(0);
-  const cellSizeRef = useRef(3);
   const rafRef = useRef<number>(0);
+  const atmoRef = useRef(createAtmosphere());
 
   const [selectedElement, setSelectedElement] = useState<ElementType>("sand");
   const [eraserActive, setEraserActive] = useState(false);
   const [paused, setPaused] = useState(false);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 600;
   const [brushSize, setBrushSize] = useState(isMobile ? 3 : 2);
-
-  const atmoRef = useRef(createAtmosphere());
 
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
@@ -41,8 +40,27 @@ export function Sandbox() {
   const brushSizeRef = useRef(brushSize);
   brushSizeRef.current = brushSize;
 
+  const handleResize = useCallback((gw: number, gh: number) => {
+    const oldGrid = gridRef.current;
+    const newGrid = createGrid(gw, gh);
+
+    if (oldGrid) {
+      const copyW = Math.min(oldGrid.width, gw);
+      const copyH = Math.min(oldGrid.height, gh);
+      for (let y = 0; y < copyH; y++) {
+        for (let x = 0; x < copyW; x++) {
+          const cell = getCell(oldGrid, x, y);
+          if (cell) setCell(newGrid, x, y, cell);
+        }
+      }
+    }
+
+    gridRef.current = newGrid;
+  }, []);
+
   const handleDraw = useCallback((gx: number, gy: number) => {
     const grid = gridRef.current;
+    if (!grid) return;
     const isErasing = eraserRef.current;
     const el = selectedRef.current;
     const size = brushSizeRef.current;
@@ -61,12 +79,8 @@ export function Sandbox() {
     }
   }, []);
 
-  const handleCellSizeChange = useCallback((cs: number) => {
-    cellSizeRef.current = cs;
-  }, []);
-
   const handleReset = useCallback(() => {
-    clearGrid(gridRef.current);
+    if (gridRef.current) clearGrid(gridRef.current);
     tickRef.current = 0;
     atmoRef.current = createAtmosphere();
   }, []);
@@ -89,17 +103,21 @@ export function Sandbox() {
     let frameCount = 0;
     function loop() {
       frameCount++;
-      if (!pausedRef.current && frameCount % 2 === 0) {
-        tickSimulation(gridRef.current, tickRef.current, atmoRef.current.daylight);
-        tickRef.current++;
-      }
+      const grid = gridRef.current;
 
-      updateAtmosphere(atmoRef.current, gridRef.current);
+      if (grid) {
+        if (!pausedRef.current && frameCount % 2 === 0) {
+          tickSimulation(grid, tickRef.current, atmoRef.current.daylight);
+          tickRef.current++;
+        }
 
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (ctx) {
-        renderGrid(ctx, gridRef.current, cellSizeRef.current, atmoRef.current);
+        updateAtmosphere(atmoRef.current, grid);
+
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        if (ctx) {
+          renderGrid(ctx, grid, CELL_SIZE, atmoRef.current);
+        }
       }
 
       rafRef.current = requestAnimationFrame(loop);
@@ -110,26 +128,41 @@ export function Sandbox() {
   }, []);
 
   return (
-    <>
-      <ElementPicker selected={eraserActive ? "empty" : selectedElement} onSelect={handleSelectElement} />
-      <SandboxCanvas
-        canvasRef={canvasRef}
-        gridWidth={GRID_WIDTH}
-        gridHeight={GRID_HEIGHT}
-        onDraw={handleDraw}
-        onCellSizeChange={handleCellSizeChange}
-      />
-      <SandboxControls
-        paused={paused}
-        onTogglePause={handleTogglePause}
-        onReset={handleReset}
-        brushSize={brushSize}
-        onBrushSizeChange={setBrushSize}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      {/* Canvas area with floating controls overlay */}
+      <Box sx={{ flex: 1, minHeight: 0, position: "relative" }}>
+        <SandboxCanvas
+          canvasRef={canvasRef}
+          onResize={handleResize}
+          onDraw={handleDraw}
+        />
+
+        <SandboxControls
+          paused={paused}
+          onTogglePause={handleTogglePause}
+          onReset={handleReset}
+          brushSize={brushSize}
+          onBrushSizeChange={setBrushSize}
+          eraserActive={eraserActive}
+          onToggleEraser={handleToggleEraser}
+        >
+          <ReactionBookButton />
+        </SandboxControls>
+      </Box>
+
+      {/* Bottom bar: categories + elements */}
+      <LabToolbar
+        selected={eraserActive ? "empty" : selectedElement}
+        onSelect={handleSelectElement}
         eraserActive={eraserActive}
-        onToggleEraser={handleToggleEraser}
-      >
-        <ReactionBookButton />
-      </SandboxControls>
-    </>
+      />
+    </Box>
   );
 }

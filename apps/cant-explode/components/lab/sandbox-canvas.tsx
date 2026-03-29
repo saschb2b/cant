@@ -5,41 +5,43 @@ import Box from "@mui/material/Box";
 
 interface SandboxCanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
-  gridWidth: number;
-  gridHeight: number;
+  onResize: (gridWidth: number, gridHeight: number) => void;
   onDraw: (gridX: number, gridY: number) => void;
-  onCellSizeChange: (cellSize: number) => void;
 }
+
+/** CSS pixels per grid cell. */
+const CELL_SIZE = 3;
+
+/** Cap grid dimensions so the simulation stays fast on large screens. */
+const MAX_GRID_W = 300;
+const MAX_GRID_H = 225;
 
 export function SandboxCanvas({
   canvasRef,
-  gridWidth,
-  gridHeight,
+  onResize,
   onDraw,
-  onCellSizeChange,
 }: SandboxCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const drawingRef = useRef(false);
   const lastPosRef = useRef<{ x: number; y: number } | null>(null);
-  const cellSizeRef = useRef(3);
+  const gridDimsRef = useRef({ w: 1, h: 1 });
 
   const toGridCoords = useCallback(
     (clientX: number, clientY: number): { gx: number; gy: number } | null => {
       const canvas = canvasRef.current;
       if (!canvas) return null;
       const rect = canvas.getBoundingClientRect();
-      // Map from display coordinates to grid coordinates directly
-      const gx = Math.floor(((clientX - rect.left) / rect.width) * gridWidth);
-      const gy = Math.floor(((clientY - rect.top) / rect.height) * gridHeight);
-      if (gx < 0 || gx >= gridWidth || gy < 0 || gy >= gridHeight) return null;
+      const { w, h } = gridDimsRef.current;
+      const gx = Math.floor(((clientX - rect.left) / rect.width) * w);
+      const gy = Math.floor(((clientY - rect.top) / rect.height) * h);
+      if (gx < 0 || gx >= w || gy < 0 || gy >= h) return null;
       return { gx, gy };
     },
-    [canvasRef, gridWidth, gridHeight],
+    [canvasRef],
   );
 
   const drawLine = useCallback(
     (x0: number, y0: number, x1: number, y1: number) => {
-      // Bresenham line to fill gaps during fast drags
       const dx = Math.abs(x1 - x0);
       const dy = Math.abs(y1 - y0);
       const sx = x0 < x1 ? 1 : -1;
@@ -98,7 +100,7 @@ export function SandboxCanvas({
     lastPosRef.current = null;
   }, []);
 
-  // Resize canvas to fit container
+  // Measure container and size the canvas grid to fill it
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
@@ -107,29 +109,33 @@ export function SandboxCanvas({
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
-      const { width, height } = entry.contentRect;
-      const cs = Math.max(1, Math.floor(Math.min(width / gridWidth, height / gridHeight)));
-      cellSizeRef.current = cs;
-      canvas.width = gridWidth * cs;
-      canvas.height = gridHeight * cs;
-      onCellSizeChange(cs);
+      // Use CSS pixels, not physical pixels
+      const cssW = entry.contentRect.width;
+      const cssH = entry.contentRect.height;
+      const gw = Math.min(MAX_GRID_W, Math.max(1, Math.floor(cssW / CELL_SIZE)));
+      const gh = Math.min(MAX_GRID_H, Math.max(1, Math.floor(cssH / CELL_SIZE)));
+
+      // Only recreate grid if dimensions actually changed
+      const prev = gridDimsRef.current;
+      if (prev.w === gw && prev.h === gh) return;
+
+      gridDimsRef.current = { w: gw, h: gh };
+      // Canvas backing pixels = grid cells (1:1), CSS scales it up
+      canvas.width = gw;
+      canvas.height = gh;
+      onResize(gw, gh);
     });
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, [canvasRef, gridWidth, gridHeight, onCellSizeChange]);
+  }, [canvasRef, onResize]);
 
   return (
     <Box
       ref={containerRef}
       sx={{
         width: "100%",
-        aspectRatio: { xs: "4 / 3", sm: `${String(gridWidth)} / ${String(gridHeight)}` },
-        maxHeight: { xs: "55vh", md: "70vh" },
-        position: "relative",
-        border: 1,
-        borderColor: "divider",
-        borderRadius: 1,
+        height: "100%",
         overflow: "hidden",
         cursor: "crosshair",
         touchAction: "none",
@@ -141,7 +147,12 @@ export function SandboxCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        style={{ display: "block", width: "100%", height: "100%" }}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "100%",
+          imageRendering: "pixelated",
+        }}
       />
     </Box>
   );
