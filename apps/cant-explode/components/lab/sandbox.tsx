@@ -86,8 +86,10 @@ export function Sandbox() {
 
   // Main loop
   useEffect(() => {
+    let frameCount = 0;
     function loop() {
-      if (!pausedRef.current) {
+      frameCount++;
+      if (!pausedRef.current && frameCount % 2 === 0) {
         tickSimulation(gridRef.current, tickRef.current, atmoRef.current.daylight);
         tickRef.current++;
       }

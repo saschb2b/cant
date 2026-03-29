@@ -99,7 +99,7 @@ function ReactionRow({ rule }: { rule: ReactionRule }) {
         </Typography>
         {products.length > 0 ? (
           products.map((p, i) => (
-            <Box key={p} sx={{ display: "inline-flex", alignItems: "center" }}>
+            <Box key={`${p}-${String(i)}`} sx={{ display: "inline-flex", alignItems: "center" }}>
               {i > 0 && (
                 <Typography
                   component="span"
@@ -148,18 +148,25 @@ export function ReactionBookButton() {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<ElementType | null>(null);
 
-  // Collect all elements that appear in reactions for the filter chips
+  // Collect all elements that appear in reactions (as reactants or products)
   const reactiveElements = useMemo(() => {
     const set = new Set<ElementType>();
     for (const r of REACTIONS) {
       set.add(r.a);
       set.add(r.b);
+      if (r.produceA) set.add(r.produceA);
+      if (r.produceB) set.add(r.produceB);
     }
-    // Order them by PICKABLE_ELEMENTS order, then any remaining
+    // Order: pickable elements first, then remaining sorted alphabetically
     const ordered: ElementType[] = [];
     for (const el of PICKABLE_ELEMENTS) {
-      if (set.has(el)) ordered.push(el);
+      if (set.has(el)) {
+        ordered.push(el);
+        set.delete(el);
+      }
     }
+    const remaining = [...set].sort();
+    ordered.push(...remaining);
     return ordered;
   }, []);
 
@@ -306,8 +313,8 @@ export function ReactionBookButton() {
                 {group.name}
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
-                {group.reactions.map((rule, i) => (
-                  <ReactionRow key={i} rule={rule} />
+                {group.reactions.map((rule) => (
+                  <ReactionRow key={`${rule.a}-${rule.b}-${rule.produceA ?? "x"}-${rule.produceB ?? "x"}`} rule={rule} />
                 ))}
               </Box>
             </Box>
@@ -331,9 +338,9 @@ export function ReactionBookButton() {
                 No reaction
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
-                {filteredNonReactions.map((nr, i) => (
+                {filteredNonReactions.map((nr) => (
                   <Box
-                    key={i}
+                    key={`${nr.a}-${nr.b}`}
                     sx={{
                       py: 1.25,
                       px: 1.5,

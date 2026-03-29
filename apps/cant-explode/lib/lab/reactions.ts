@@ -201,25 +201,18 @@ export const REACTIONS: ReactionRule[] = [
 
   // Soil formation
   {
-    a: "ash", b: "sand", produceA: "soil", produceB: "soil", probability: 0.008,
+    a: "ash", b: "sand", produceA: "soil", produceB: "soil", probability: 0.03,
     desc: "Ash enriches sand into fertile soil",
     group: "Water",
   },
   {
-    a: "charcoal", b: "sand", produceA: "soil", produceB: "soil", probability: 0.005,
+    a: "charcoal", b: "sand", produceA: "soil", produceB: "soil", probability: 0.02,
     desc: "Decomposing charcoal mixes with sand to form soil",
     group: "Water",
   },
   {
-    a: "ash", b: "water", produceA: "soil", produceB: null, probability: 0.003,
+    a: "ash", b: "water", produceA: "soil", produceB: null, probability: 0.015,
     desc: "Wet ash breaks down into soil",
-    group: "Water",
-  },
-
-  // Decay and regrowth
-  {
-    a: "soil", b: "water", produceA: "mushroom", produceB: null, probability: 0.001,
-    desc: "Mushrooms sprout from damp soil",
     group: "Water",
   },
 
@@ -399,6 +392,36 @@ export const REACTIONS: ReactionRule[] = [
   {
     a: "lava", b: "wax", produceA: "fire", produceB: "oil", probability: 0.3,
     desc: "Lava melts wax into oil and ignites it",
+    group: "Engineered",
+  },
+  {
+    a: "fire", b: "fuse", produceA: "fire", produceB: null, probability: 0.08,
+    desc: "Fuse slowly catches fire and burns along its length",
+    group: "Engineered",
+  },
+  {
+    a: "spark", b: "fuse", produceA: "fire", produceB: null, probability: 0.08,
+    desc: "A spark can light a fuse",
+    group: "Engineered",
+  },
+  {
+    a: "lava", b: "fuse", produceA: "fire", produceB: null, probability: 0.08,
+    desc: "Lava ignites fuse on contact",
+    group: "Engineered",
+  },
+  {
+    a: "fire", b: "tnt", produceA: "fire", produceB: "smoke", probability: 1.0,
+    desc: "TNT detonates on contact with fire, creating a massive explosion",
+    group: "Engineered",
+  },
+  {
+    a: "spark", b: "tnt", produceA: "fire", produceB: "smoke", probability: 1.0,
+    desc: "A spark is enough to set off TNT",
+    group: "Engineered",
+  },
+  {
+    a: "lava", b: "tnt", produceA: "fire", produceB: "smoke", probability: 1.0,
+    desc: "Lava detonates TNT on contact",
     group: "Engineered",
   },
 ];

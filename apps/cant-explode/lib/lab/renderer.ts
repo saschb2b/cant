@@ -74,22 +74,22 @@ export function renderGrid(
           g = Math.min(255, g + 5 + Math.floor(nightBoost * 0.3));
         }
 
-        // Spark: bright white-yellow flash
+        // Spark: warm white-yellow glow
         if (particle.element === "spark") {
           r = 255;
-          g = Math.min(255, 240 + Math.floor(Math.random() * 15));
-          b = Math.min(255, 100 + Math.floor(Math.random() * 80));
+          g = 245;
+          b = 140;
         }
 
-        // Flower: gentle color shimmer
-        if (particle.element === "flower" && Math.random() < 0.03) {
-          particle.r = Math.min(255, Math.max(150, particle.r + Math.floor(Math.random() * 8 - 4)));
-          particle.b = Math.min(255, Math.max(80, particle.b + Math.floor(Math.random() * 8 - 4)));
+        // Flower: very subtle color drift
+        if (particle.element === "flower" && Math.random() < 0.005) {
+          particle.r = Math.min(255, Math.max(150, particle.r + Math.floor(Math.random() * 4 - 2)));
+          particle.b = Math.min(255, Math.max(80, particle.b + Math.floor(Math.random() * 4 - 2)));
         }
 
-        // TNT: subtle pulsing red
+        // TNT: steady red
         if (particle.element === "tnt") {
-          r = Math.min(255, r + Math.floor(Math.random() * 10));
+          r = Math.min(255, r + 5);
         }
 
         // Fruit: gentle glow to stand out against leaves
@@ -98,16 +98,24 @@ export function renderGrid(
           g = Math.min(255, g + 5);
         }
 
-        // Pollen: golden sparkle
-        if (particle.element === "pollen" && Math.random() < 0.1) {
-          r = Math.min(255, r + 30);
-          g = Math.min(255, g + 20);
-          b = Math.min(255, b + 10);
+        // Pollen: gentle golden tint
+        if (particle.element === "pollen") {
+          r = Math.min(255, r + 15);
+          g = Math.min(255, g + 10);
         }
 
-        // Leaf: subtle depth variation based on neighbors (canopy feel)
-        if (particle.element === "leaf" && Math.random() < 0.01) {
-          particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 6 - 3)));
+        // Leaf: age-based color shift (young=bright, old=dark/autumn)
+        if (particle.element === "leaf") {
+          if (particle.lifetime > 200) {
+            // Aging: leaves slowly shift toward yellow/brown
+            const age = Math.min(1, (particle.lifetime - 200) / 200);
+            r = Math.min(255, r + Math.floor(age * 40));
+            g = Math.max(40, g - Math.floor(age * 30));
+          }
+          // Subtle shimmer for canopy depth
+          if (Math.random() < 0.01) {
+            particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 6 - 3)));
+          }
         }
 
         // Algae: subtle underwater shimmer

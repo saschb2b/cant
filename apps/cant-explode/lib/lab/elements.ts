@@ -17,7 +17,7 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   gunpowder: { behavior: "powder", baseColor: [60, 60, 55], density: 3, flammable: true },
   salt: { behavior: "powder", baseColor: [240, 240, 235], density: 3, flammable: false },
   rust: { behavior: "static", baseColor: [183, 65, 14], density: 99, flammable: false },
-  ash: { behavior: "powder", baseColor: [140, 140, 135], density: 1, flammable: false },
+  ash: { behavior: "powder", baseColor: [140, 140, 135], density: 2, flammable: false },
   charcoal: { behavior: "powder", baseColor: [50, 45, 40], density: 2, flammable: true },
   patina: { behavior: "static", baseColor: [80, 160, 120], density: 99, flammable: false },
 
@@ -84,7 +84,7 @@ export const ELEMENT_GROUPS: { label: string; elements: ElementType[] }[] = [
   },
   {
     label: "Organic",
-    elements: ["seed", "wax", "coal", "dust"],
+    elements: ["wax", "coal", "dust"],
   },
   {
     label: "Boom",
