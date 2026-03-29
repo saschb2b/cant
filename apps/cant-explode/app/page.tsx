@@ -27,8 +27,9 @@ export default function LandingPage() {
       <LiveRibbon fetchResults={fetchRecentResults} />
 
       <Hero
-        titleLine1="Two molecules."
-        titleLine2="One survives."
+        titleLine1="Can't try this"
+        titleLine2="at home."
+        gimmick={{ href: "/lab", label: "Lab" }}
         subtitle="Compare molecular stability, acid strength, bond energy, and more. 59 chemistry challenges across 16 categories, all side by side."
         caption="free &middot; no signup &middot; learn chemistry"
         visual={<HeroAnimation />}
