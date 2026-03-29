@@ -1,59 +1,9 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-
-function use3DmolViewer(
-  containerRef: React.RefObject<HTMLDivElement | null>,
-  xyzData: string,
-) {
-  useEffect(() => {
-    if (!containerRef.current) return;
-    let viewer: any;
-    let cancelled = false;
-    let spinInterval: ReturnType<typeof setInterval> | null = null;
-
-    import("3dmol").then(($3Dmol) => {
-      if (cancelled || !containerRef.current) return;
-      viewer = $3Dmol.createViewer(containerRef.current, {
-        backgroundColor: "0x000000", backgroundAlpha: 0,
-      });
-      viewer.addModel(xyzData, "xyz");
-      viewer.setStyle(
-        {},
-        { stick: { radius: 0.15 }, sphere: { scale: 0.3 } },
-      );
-      viewer.zoomTo(undefined, undefined, undefined, 0.5);
-      viewer.render();
-
-      // Gentle auto-rotation via manual increments to avoid 3dmol's
-      // internal spin which crashes on cleanup
-      spinInterval = setInterval(() => {
-        if (viewer) {
-          try {
-            viewer.rotate(2, "y");
-            viewer.rotate(0.5, "x");
-            viewer.render();
-          } catch {
-            // viewer may be disposed
-          }
-        }
-      }, 30);
-    });
-
-    return () => {
-      cancelled = true;
-      if (spinInterval) clearInterval(spinInterval);
-      if (containerRef.current) {
-        containerRef.current.innerHTML = "";
-      }
-    };
-  }, [containerRef, xyzData]);
-}
+import { MoleculeViewer } from "./molecule-viewer";
 
 // ---------------------------------------------------------------------------
-// mg-001: Water molecule geometry — bent vs linear
+// mg-001: Water molecule geometry
 // ---------------------------------------------------------------------------
 
 const WATER_BENT_XYZ = `3
@@ -69,55 +19,17 @@ H   0.960   0.000   0.000
 H  -0.960   0.000   0.000`;
 
 export function WaterBent() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, WATER_BENT_XYZ);
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        H₂O bent (104.5°)
-      </Typography>
-    </Box>
-  );
+  return <MoleculeViewer xyzData={WATER_BENT_XYZ} label="H₂O bent (104.5°)" />;
 }
 
 export function WaterLinear() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, WATER_LINEAR_XYZ);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        H₂O linear (180°)
-      </Typography>
-    </Box>
+    <MoleculeViewer xyzData={WATER_LINEAR_XYZ} label="H₂O linear (180°)" />
   );
 }
 
 // ---------------------------------------------------------------------------
-// mg-002: Methane — tetrahedral vs square planar
+// mg-002: Methane
 // ---------------------------------------------------------------------------
 
 const METHANE_TETRAHEDRAL_XYZ = `5
@@ -137,55 +49,22 @@ H  -1.090   0.000   0.000
 H   0.000  -1.090   0.000`;
 
 export function MethaneTetrahedral() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, METHANE_TETRAHEDRAL_XYZ);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        CH₄ tetrahedral
-      </Typography>
-    </Box>
+    <MoleculeViewer xyzData={METHANE_TETRAHEDRAL_XYZ} label="CH₄ tetrahedral" />
   );
 }
 
 export function MethaneSquarePlanar() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, METHANE_SQUARE_PLANAR_XYZ);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        CH₄ square planar
-      </Typography>
-    </Box>
+    <MoleculeViewer
+      xyzData={METHANE_SQUARE_PLANAR_XYZ}
+      label="CH₄ square planar"
+    />
   );
 }
 
 // ---------------------------------------------------------------------------
-// mg-003: Ammonia — trigonal pyramidal vs trigonal planar
+// mg-003: Ammonia
 // ---------------------------------------------------------------------------
 
 const AMMONIA_PYRAMIDAL_XYZ = `4
@@ -203,55 +82,22 @@ H  -0.505   0.875   0.000
 H  -0.505  -0.875   0.000`;
 
 export function AmmoniaPyramidal() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, AMMONIA_PYRAMIDAL_XYZ);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        NH₃ trigonal pyramidal
-      </Typography>
-    </Box>
+    <MoleculeViewer
+      xyzData={AMMONIA_PYRAMIDAL_XYZ}
+      label="NH₃ trigonal pyramidal"
+    />
   );
 }
 
 export function AmmoniaPlanar() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, AMMONIA_PLANAR_XYZ);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        NH₃ trigonal planar
-      </Typography>
-    </Box>
+    <MoleculeViewer xyzData={AMMONIA_PLANAR_XYZ} label="NH₃ trigonal planar" />
   );
 }
 
 // ---------------------------------------------------------------------------
-// mg-004: SF₆ — octahedral vs trigonal prismatic
+// mg-004: SF₆
 // ---------------------------------------------------------------------------
 
 const SF6_OCTAHEDRAL_XYZ = `7
@@ -275,49 +121,14 @@ F  -0.675   1.169  -0.780
 F  -0.675  -1.169  -0.780`;
 
 export function SF6Octahedral() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, SF6_OCTAHEDRAL_XYZ);
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        SF₆ octahedral
-      </Typography>
-    </Box>
-  );
+  return <MoleculeViewer xyzData={SF6_OCTAHEDRAL_XYZ} label="SF₆ octahedral" />;
 }
 
 export function SF6Trigonal() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  use3DmolViewer(containerRef, SF6_TRIGONAL_PRISMATIC_XYZ);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{ width: "100%", height: 280, position: "relative" }}
-      />
-      <Typography variant="caption" color="text.secondary">
-        SF₆ trigonal prismatic
-      </Typography>
-    </Box>
+    <MoleculeViewer
+      xyzData={SF6_TRIGONAL_PRISMATIC_XYZ}
+      label="SF₆ trigonal prismatic"
+    />
   );
 }

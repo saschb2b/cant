@@ -17,10 +17,6 @@ interface PdbViewerBaseProps {
   label: string;
   /** Optional sublabel. */
   sublabel?: string;
-  /** Viewer width in pixels. */
-  width?: number;
-  /** Viewer height in pixels. */
-  height?: number;
 }
 
 interface PdbViewerInlineProps extends PdbViewerBaseProps {
@@ -58,8 +54,6 @@ export function PdbViewer({
   styles,
   label,
   sublabel,
-  width = 260,
-  height = 200,
 }: PdbViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(!!pdbId);
@@ -118,52 +112,69 @@ export function PdbViewer({
   return (
     <Box
       sx={{
+        position: "relative",
+        width: "100%",
+        minHeight: 240,
+        flex: 1,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
       }}
     >
-      <Box sx={{ position: "relative", width, height }}>
-        <div
-          ref={containerRef}
-          style={{ width, height, position: "relative" }}
-        />
-        {loading && (
-          <Box
-            sx={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <CircularProgress size={24} />
-          </Box>
-        )}
-      </Box>
-      <Typography
-        sx={{
-          fontSize: 9,
-          fontWeight: 600,
-          color: "text.secondary",
-          textAlign: "center",
-          mt: 0.5,
+      <div
+        ref={containerRef}
+        style={{
+          width: "100%",
+          flex: 1,
+          minHeight: 200,
+          position: "relative",
         }}
-      >
-        {label}
-      </Typography>
-      {sublabel && (
-        <Typography
+      />
+      {loading && (
+        <Box
           sx={{
-            fontSize: 8,
-            color: "text.secondary",
-            textAlign: "center",
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          {sublabel}
-        </Typography>
+          <CircularProgress size={24} />
+        </Box>
       )}
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          py: 0.5,
+          px: 1,
+          background:
+            "linear-gradient(transparent, rgba(var(--mui-palette-background-defaultChannel) / 0.85))",
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: 10,
+            fontWeight: 600,
+            color: "text.secondary",
+          }}
+        >
+          {label}
+        </Typography>
+        {sublabel && (
+          <Typography
+            sx={{
+              fontSize: 8,
+              color: "text.secondary",
+            }}
+          >
+            {sublabel}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 }

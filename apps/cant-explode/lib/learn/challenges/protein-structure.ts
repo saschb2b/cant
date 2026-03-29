@@ -5,7 +5,7 @@ export const proteinStructureChallenges: Challenge[] = [
     id: "ps-001",
     category: "protein-structure",
     difficulty: "easy",
-    title: "Alpha helix vs beta sheet",
+    title: "Intra-chain H-bonds: alpha helix vs beta sheet",
     prompt:
       "Which secondary structure is stabilized by hydrogen bonds within the same chain?",
     content: {
@@ -25,7 +25,7 @@ export const proteinStructureChallenges: Challenge[] = [
     id: "ps-002",
     category: "protein-structure",
     difficulty: "easy",
-    title: "DNA double helix vs single strand",
+    title: "Genomic DNA: double helix vs single strand",
     prompt: "Which form of DNA carries genetic information in living cells?",
     content: {
       type: "visual",
@@ -44,7 +44,7 @@ export const proteinStructureChallenges: Challenge[] = [
     id: "ps-003",
     category: "protein-structure",
     difficulty: "medium",
-    title: "Protein structure levels",
+    title: "Biological function: tertiary fold vs amino acid sequence",
     prompt: "Which level of protein structure determines biological function?",
     content: {
       type: "visual",
@@ -64,7 +64,7 @@ export const proteinStructureChallenges: Challenge[] = [
     id: "ps-004",
     category: "protein-structure",
     difficulty: "medium",
-    title: "Protein representation",
+    title: "Revealing secondary structure: ribbon vs space-filling",
     prompt:
       "Which 3D representation best reveals a protein's secondary structure?",
     content: {
