@@ -1,0 +1,238 @@
+import type { ReactionRule } from "./types";
+
+/**
+ * Reaction rules. When particle A touches particle B, they may transform.
+ * Rules are checked in both directions (a,b) and (b,a).
+ */
+export const REACTIONS: ReactionRule[] = [
+  // Alkali metals + Water
+  {
+    a: "sodium", b: "water", produceA: "fire", produceB: "steam", probability: 0.4,
+    desc: "Sodium reacts violently with water, producing heat and steam",
+    group: "Alkali metals",
+  },
+  {
+    a: "potassium", b: "water", produceA: "fire", produceB: "hydrogen", probability: 0.6,
+    desc: "Potassium explodes on contact with water, releasing hydrogen gas",
+    group: "Alkali metals",
+  },
+  {
+    a: "magnesium", b: "fire", produceA: "spark", produceB: "smoke", probability: 0.5,
+    desc: "Magnesium burns with an intense white flame",
+    group: "Alkali metals",
+  },
+  {
+    a: "magnesium", b: "acid", produceA: "hydrogen", produceB: "water", probability: 0.15,
+    desc: "Magnesium dissolves in acid, releasing hydrogen gas",
+    group: "Alkali metals",
+  },
+
+  // Salt formation
+  {
+    a: "sodium", b: "chlorine", produceA: "salt", produceB: "salt", probability: 0.5,
+    desc: "Sodium and chlorine form sodium chloride (table salt)",
+    group: "Salt formation",
+  },
+  {
+    a: "potassium", b: "chlorine", produceA: "salt", produceB: "salt", probability: 0.5,
+    desc: "Potassium and chlorine form potassium chloride",
+    group: "Salt formation",
+  },
+
+  // Acid reactions
+  {
+    a: "acid", b: "iron", produceA: "hydrogen", produceB: "water", probability: 0.08,
+    desc: "Acid dissolves iron, releasing hydrogen gas",
+    group: "Acid",
+  },
+  {
+    a: "acid", b: "stone", produceA: "co2", produceB: "sand", probability: 0.04,
+    desc: "Acid dissolves limestone, releasing CO2",
+    group: "Acid",
+  },
+  {
+    a: "acid", b: "wood", produceA: "charcoal", produceB: "smoke", probability: 0.02,
+    desc: "Concentrated acid dehydrates wood into carbon",
+    group: "Acid",
+  },
+  {
+    a: "acid", b: "salt", produceA: "chlorine", produceB: "water", probability: 0.06,
+    desc: "Acid reacts with salt to release chlorine gas",
+    group: "Acid",
+  },
+
+  // Water reactions
+  {
+    a: "water", b: "chlorine", produceA: "acid", produceB: null, probability: 0.08,
+    desc: "Chlorine dissolves in water to form hydrochloric acid",
+    group: "Water",
+  },
+  {
+    a: "iron", b: "water", produceA: "rust", produceB: null, probability: 0.005,
+    desc: "Iron slowly rusts in contact with water",
+    group: "Water",
+  },
+  {
+    a: "copper", b: "water", produceA: "patina", produceB: null, probability: 0.003,
+    desc: "Copper develops a green patina over time with moisture",
+    group: "Water",
+  },
+
+  // Fire and combustion
+  {
+    a: "fire", b: "oil", produceA: "fire", produceB: "fire", probability: 0.8,
+    desc: "Oil is highly flammable and spreads fire rapidly",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "coal", produceA: "fire", produceB: "smoke", probability: 0.3,
+    desc: "Coal burns slowly, producing smoke",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "wood", produceA: "fire", produceB: "charcoal", probability: 0.15,
+    desc: "Wood burns and chars into charcoal",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "charcoal", produceA: "fire", produceB: "ash", probability: 0.1,
+    desc: "Charcoal burns down to ash",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "gunpowder", produceA: "spark", produceB: "smoke", probability: 0.95,
+    desc: "Gunpowder ignites explosively on contact with fire",
+    group: "Combustion",
+  },
+  {
+    a: "spark", b: "gunpowder", produceA: "fire", produceB: "smoke", probability: 0.9,
+    desc: "Even a spark is enough to set off gunpowder",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "hydrogen", produceA: "spark", produceB: "steam", probability: 0.9,
+    desc: "Hydrogen ignites with a pop, forming water vapor",
+    group: "Combustion",
+  },
+  {
+    a: "spark", b: "hydrogen", produceA: "fire", produceB: "steam", probability: 0.9,
+    desc: "Sparks ignite hydrogen gas",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "water", produceA: "steam", produceB: null, probability: 1.0,
+    desc: "Water extinguishes fire, producing steam",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "ice", produceA: "water", produceB: "steam", probability: 0.3,
+    desc: "Fire melts and partially evaporates ice",
+    group: "Combustion",
+  },
+  {
+    a: "fire", b: "sand", produceA: null, produceB: "glass", probability: 0.01,
+    desc: "Extreme heat melts sand into glass (rare)",
+    group: "Combustion",
+  },
+
+  // Oxygen interactions
+  {
+    a: "oxygen", b: "fire", produceA: "fire", produceB: "fire", probability: 0.7,
+    desc: "Oxygen feeds flames, making fire spread",
+    group: "Oxidation",
+  },
+  {
+    a: "oxygen", b: "spark", produceA: "fire", produceB: null, probability: 0.8,
+    desc: "Oxygen turns sparks into full flames",
+    group: "Oxidation",
+  },
+  {
+    a: "oxygen", b: "iron", produceA: "rust", produceB: null, probability: 0.02,
+    desc: "Oxygen oxidizes iron into rust",
+    group: "Oxidation",
+  },
+  {
+    a: "oxygen", b: "copper", produceA: "patina", produceB: null, probability: 0.01,
+    desc: "Oxygen turns copper green over time",
+    group: "Oxidation",
+  },
+
+  // Lava
+  {
+    a: "lava", b: "water", produceA: "stone", produceB: "steam", probability: 0.5,
+    desc: "Water cools lava into solid stone",
+    group: "Lava",
+  },
+  {
+    a: "lava", b: "ice", produceA: "stone", produceB: "water", probability: 0.6,
+    desc: "Ice cools lava into stone and melts",
+    group: "Lava",
+  },
+  {
+    a: "lava", b: "oil", produceA: "fire", produceB: "smoke", probability: 0.9,
+    desc: "Lava instantly ignites oil",
+    group: "Lava",
+  },
+  {
+    a: "lava", b: "wood", produceA: "fire", produceB: "charcoal", probability: 0.7,
+    desc: "Lava chars wood on contact",
+    group: "Lava",
+  },
+  {
+    a: "lava", b: "sand", produceA: null, produceB: "glass", probability: 0.05,
+    desc: "Lava melts sand into volcanic glass (obsidian)",
+    group: "Lava",
+  },
+  {
+    a: "lava", b: "coal", produceA: "fire", produceB: "smoke", probability: 0.6,
+    desc: "Lava ignites coal",
+    group: "Lava",
+  },
+  {
+    a: "lava", b: "gunpowder", produceA: "spark", produceB: "fire", probability: 0.95,
+    desc: "Lava detonates gunpowder",
+    group: "Lava",
+  },
+
+  // Ice / Temperature
+  {
+    a: "ice", b: "salt", produceA: "water", produceB: "water", probability: 0.1,
+    desc: "Salt lowers the freezing point, melting ice",
+    group: "Temperature",
+  },
+
+  // Mercury
+  {
+    a: "mercury", b: "gold", produceA: "mercury", produceB: null, probability: 0.05,
+    desc: "Mercury dissolves gold into an amalgam",
+    group: "Mercury",
+  },
+
+  // Hydrogen + Oxygen
+  {
+    a: "hydrogen", b: "oxygen", produceA: "water", produceB: null, probability: 0.005,
+    desc: "Hydrogen and oxygen slowly combine into water",
+    group: "Gas reactions",
+  },
+
+  // CO2 interactions
+  {
+    a: "co2", b: "fire", produceA: null, produceB: "smoke", probability: 0.8,
+    desc: "CO2 smothers fire (used in fire extinguishers)",
+    group: "Gas reactions",
+  },
+];
+
+/** Unique reaction groups in display order. */
+export const REACTION_GROUPS: string[] = [
+  ...new Set(REACTIONS.map((r) => r.group)),
+];
+
+/**
+ * Notable non-reactions for the reaction book.
+ */
+export const NON_REACTIONS: { a: string; b: string; desc: string }[] = [
+  { a: "acid", b: "gold", desc: "Gold resists acid. Only aqua regia (a mix of nitric and hydrochloric acid) can dissolve it" },
+  { a: "acid", b: "copper", desc: "Copper resists dilute acid" },
+  { a: "mercury", b: "iron", desc: "Iron resists mercury amalgamation" },
+];

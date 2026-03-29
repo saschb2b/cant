@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Gamepad2, BookOpen, FlaskConical } from "lucide-react";
+import { Gamepad2, BookOpen, FlaskConical, TestTubes } from "lucide-react";
 import {
   Hero,
   FeatureGrid,
@@ -35,9 +35,15 @@ export default function LandingPage() {
       />
 
       <FeatureGrid
-        title="Three ways to learn chemistry"
-        subtitle="A molecule quiz, a pattern reference, and a challenge game."
+        title="Four ways to explore chemistry"
+        subtitle="A sandbox, a molecule quiz, a pattern reference, and a challenge game."
         cards={[
+          {
+            icon: <TestTubes size={20} />,
+            title: "Lab",
+            desc: "Drop elements onto a canvas and watch them react. A falling-sand chemistry sandbox.",
+            href: "/lab",
+          },
           {
             icon: <FlaskConical size={20} />,
             title: "Molecules",

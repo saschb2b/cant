@@ -1,6 +1,7 @@
 import { SiteFooter as SharedSiteFooter } from "@cant/shared/components";
 
 const NAV_LINKS = [
+  { href: "/lab", label: "Lab" },
   { href: "/play", label: "Play" },
   { href: "/learn", label: "Learn" },
   {

@@ -12,6 +12,23 @@ export type { SearchItem };
 const pages: SearchItem[] = [
   {
     type: "page",
+    title: "Chemistry Lab",
+    description:
+      "Falling-sand chemistry sandbox. Drop elements and watch them react.",
+    icon: "learn",
+    keywords: [
+      "lab",
+      "sandbox",
+      "simulation",
+      "chemistry",
+      "elements",
+      "reactions",
+      "particles",
+    ],
+    href: "/lab",
+  },
+  {
+    type: "page",
     title: "Learn",
     description: "Browse all categories and study chemistry patterns",
     icon: "learn",

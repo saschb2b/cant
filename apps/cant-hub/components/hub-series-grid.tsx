@@ -43,6 +43,7 @@ const SERIES_META: Record<string, SeriesMeta> = {
   "Can't Explode": {
     challenges: 59,
     categories: 16,
+    tool: { label: "Lab", href: "/lab" },
   },
 };
 
