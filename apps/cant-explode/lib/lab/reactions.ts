@@ -263,13 +263,13 @@ export const REACTIONS: ReactionRule[] = [
     group: "Organic",
   },
   {
-    a: "fire", b: "stem", produceA: "fire", produceB: "charcoal", probability: 0.2,
-    desc: "Stems burn slowly into charcoal",
+    a: "fire", b: "stem", produceA: "fire", produceB: "fire", probability: 0.15,
+    desc: "Stems catch fire and burn",
     group: "Organic",
   },
   {
-    a: "fire", b: "leaf", produceA: "fire", produceB: "ash", probability: 0.5,
-    desc: "Leaves catch fire easily",
+    a: "fire", b: "leaf", produceA: "fire", produceB: "fire", probability: 0.5,
+    desc: "Leaves catch fire and spread it",
     group: "Organic",
   },
   {
@@ -283,8 +283,8 @@ export const REACTIONS: ReactionRule[] = [
     group: "Organic",
   },
   {
-    a: "fire", b: "grass", produceA: "fire", produceB: "ash", probability: 0.5,
-    desc: "Grass catches fire rapidly",
+    a: "fire", b: "grass", produceA: "fire", produceB: "fire", probability: 0.6,
+    desc: "Grass catches fire rapidly and spreads it",
     group: "Organic",
   },
   {

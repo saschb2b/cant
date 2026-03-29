@@ -178,15 +178,40 @@ function updateFire(grid: Grid, x: number, y: number, particle: Particle): void 
   particle.b = 0;
 
   if (particle.lifetime <= 0) {
-    if (Math.random() < 0.3) {
+    // Fire dies: leave ash, charcoal, or smoke
+    const roll = Math.random();
+    if (roll < 0.25) {
       const smoke = createParticle("smoke");
       smoke.updated = true;
       setCell(grid, x, y, smoke);
+    } else if (roll < 0.4) {
+      const ash = createParticle("ash");
+      ash.updated = true;
+      setCell(grid, x, y, ash);
     } else {
       setCell(grid, x, y, null);
     }
     return;
   }
+
+  // Wildfire spread: fire actively ignites flammable neighbors (including diagonals)
+  if (Math.random() < 0.3) {
+    const spreadDirs: [number, number][] = [
+      [-1, -1], [0, -1], [1, -1],
+      [-1, 0],           [1, 0],
+      [-1, 1],  [0, 1],  [1, 1],
+    ];
+    const sd = spreadDirs[Math.floor(Math.random() * spreadDirs.length)];
+    if (sd) {
+      const neighbor = getCell(grid, x + sd[0], y + sd[1]);
+      if (neighbor && ELEMENTS[neighbor.element].flammable && Math.random() < 0.15) {
+        const fire = createParticle("fire");
+        fire.updated = true;
+        setCell(grid, x + sd[0], y + sd[1], fire);
+      }
+    }
+  }
+
   updateGas(grid, x, y);
 }
 
