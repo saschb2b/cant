@@ -26,18 +26,18 @@ export const metadata: Metadata = {
     template: "%s - Can't Hub",
   },
   description:
-    "One game, every topic. Six series covering React, responsive design, TypeScript, DevOps, SEO, and UX. Pick the better pattern, learn why it matters.",
+    "One game, every topic. Seven series covering React, responsive design, TypeScript, DevOps, SEO, UX, and chemistry. Pick the better option, learn why it matters.",
   keywords: [
-    "web development quiz",
-    "coding challenges",
+    "side-by-side quiz",
+    "learning challenges",
     "React patterns",
     "responsive design",
     "TypeScript",
     "DevOps",
     "SEO",
     "UX design",
-    "technical screening",
-    "developer training",
+    "chemistry",
+    "pattern comparison",
   ],
   authors: [{ name: "Sascha", url: "https://saschb2b.com/" }],
   openGraph: {
@@ -46,14 +46,14 @@ export const metadata: Metadata = {
     siteName: "Can't Hub",
     title: "Can't Hub - The Complete Series",
     description:
-      "One game, every topic. Six series covering React, responsive design, TypeScript, DevOps, SEO, and UX.",
+      "One game, every topic. Seven series covering React, responsive design, TypeScript, DevOps, SEO, UX, and chemistry.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
     title: "Can't Hub - The Complete Series",
     description:
-      "One game, every topic. Six series covering React, responsive design, TypeScript, DevOps, SEO, and UX.",
+      "One game, every topic. Seven series covering React, responsive design, TypeScript, DevOps, SEO, UX, and chemistry.",
   },
   alternates: {
     canonical: siteUrl,
@@ -88,7 +88,7 @@ export default function RootLayout({
               name: "Can't Hub",
               url: siteUrl,
               description:
-                "One game, every topic. Six series covering React, responsive design, TypeScript, DevOps, SEO, and UX design patterns.",
+                "One game, every topic. Seven series covering React, responsive design, TypeScript, DevOps, SEO, UX, and chemistry.",
               author: {
                 "@type": "Person",
                 name: "Sascha Becker",

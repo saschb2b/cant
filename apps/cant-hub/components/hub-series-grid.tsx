@@ -131,9 +131,23 @@ function SeriesCard({ app }: { app: CantApp }) {
               </Box>
             </Box>
             <Typography
+              variant="caption"
+              color="text.disabled"
+              fontFamily="var(--font-geist-mono), monospace"
+              sx={{
+                display: "inline-block",
+                mt: 0.5,
+                fontSize: "0.6rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              {app.category}
+            </Typography>
+            <Typography
               variant="body2"
               color="text.secondary"
-              sx={{ mt: 0.5, lineHeight: 1.5 }}
+              sx={{ mt: 0.25, lineHeight: 1.5 }}
             >
               {app.desc}
             </Typography>

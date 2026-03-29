@@ -38,7 +38,7 @@ export function CantSeriesGrid({
       sx={{
         display: "grid",
         gridTemplateColumns: isCompact
-          ? { xs: "1fr", sm: "repeat(2, 1fr)" }
+          ? { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }
           : {
               xs: "1fr",
               sm: "repeat(2, 1fr)",
@@ -71,6 +71,7 @@ export function CantSeriesGrid({
               transition: "all 0.2s ease",
               display: "flex",
               flexDirection: "column",
+              position: "relative",
               "&:hover": {
                 borderColor: app.colorFrom,
                 transform: "translateY(-2px)",
@@ -80,39 +81,36 @@ export function CantSeriesGrid({
           >
             <Box
               sx={{
+                position: "absolute",
+                top: isCompact ? 10 : 12,
+                right: isCompact ? 10 : 12,
+                color: "text.disabled",
+                display: "flex",
+              }}
+            >
+              <ExternalLink size={12} />
+            </Box>
+            <Box
+              sx={{
                 display: "flex",
                 gap: isCompact ? 1.5 : 2,
                 p: isCompact ? 2 : 2.5,
+                pr: isCompact ? 4 : 5,
                 flex: 1,
               }}
             >
               <AppIcon app={app} size={iconSize} />
               <Box sx={{ flex: 1, minWidth: 0 }}>
-                <Box
+                <Typography
+                  variant={isCompact ? "caption" : "body2"}
+                  fontWeight={700}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 0.75,
                     mb: 0.5,
+                    ...(isCompact && { fontSize: "0.75rem" }),
                   }}
                 >
-                  <Typography
-                    variant={isCompact ? "caption" : "body2"}
-                    fontWeight={700}
-                    sx={isCompact ? { fontSize: "0.75rem" } : undefined}
-                  >
-                    {app.name}
-                  </Typography>
-                  <Box
-                    sx={{
-                      ml: isCompact ? "auto" : 0,
-                      color: "text.disabled",
-                      display: "flex",
-                    }}
-                  >
-                    <ExternalLink size={12} />
-                  </Box>
-                </Box>
+                  {app.name}
+                </Typography>
                 <Typography
                   variant="caption"
                   color="text.secondary"
@@ -128,14 +126,29 @@ export function CantSeriesGrid({
                 >
                   {isCompact ? app.playPitch : app.desc}
                 </Typography>
+                {isCompact && (
+                  <Typography
+                    variant="caption"
+                    color="text.disabled"
+                    fontFamily="var(--font-geist-mono), monospace"
+                    sx={{
+                      fontSize: "0.55rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      mt: 0.75,
+                    }}
+                  >
+                    {app.category}
+                  </Typography>
+                )}
               </Box>
             </Box>
-            {/* Tags bar - full variant only */}
+            {/* Category bar - full variant only */}
             {!isCompact && (
               <Box
                 sx={{
                   px: 2.5,
-                  py: 1,
+                  py: 0.75,
                   borderTop: 1,
                   borderColor: "divider",
                 }}
@@ -144,9 +157,13 @@ export function CantSeriesGrid({
                   variant="caption"
                   color="text.disabled"
                   fontFamily="var(--font-geist-mono), monospace"
-                  sx={{ fontSize: "0.65rem" }}
+                  sx={{
+                    fontSize: "0.6rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                  }}
                 >
-                  {app.tags}
+                  {app.category}
                 </Typography>
               </Box>
             )}

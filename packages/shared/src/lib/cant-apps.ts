@@ -9,6 +9,8 @@ export interface CantApp {
   name: string;
   desc: string;
   href: string;
+  /** High-level domain label (e.g. "Development", "Design", "Science"). */
+  category: string;
   /** Short pitch for the /play lobby cross-promo. */
   playPitch: string;
   /** Comma-separated topic tags shown in the lobby card. */
@@ -33,6 +35,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't Maintain",
     desc: "React component API design. Props, composition, and patterns.",
     href: appUrl("https://cant-maintain.saschb2b.com", 3001),
+    category: "Development",
     playPitch:
       "Think you can spot clean React component APIs? Same game, same format, different topic.",
     tags: "Props, composition, patterns",
@@ -44,6 +47,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't Resize",
     desc: "Responsive design patterns. Media queries, flexbox, grid, and viewport units.",
     href: appUrl("https://cant-resize.saschb2b.com", 3002),
+    category: "Development",
     playPitch:
       "Think you know responsive design? Same game, same format, different topic.",
     tags: "Media queries, flexbox, grid, MUI patterns",
@@ -55,6 +59,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't Type",
     desc: "TypeScript patterns. Generics, narrowing, utility types, and common mistakes.",
     href: appUrl("https://cant-type.saschb2b.com", 3003),
+    category: "Development",
     playPitch:
       "Test your TypeScript instincts. Generics, narrowing, utility types, and common mistakes.",
     tags: "Generics, narrowing, utility types",
@@ -66,6 +71,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't Orchestrate",
     desc: "Container orchestration patterns. Docker, Kubernetes, CI/CD, and Helm.",
     href: appUrl("https://cant-orchestrate.saschb2b.com", 3004),
+    category: "Development",
     playPitch:
       "Test your DevOps instincts. Docker, Kubernetes, CI/CD, and infrastructure patterns.",
     tags: "Docker, Kubernetes, CI/CD, Helm",
@@ -77,6 +83,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't SEO",
     desc: "SEO best practices for Next.js. Meta tags, Open Graph, structured data, and more.",
     href: appUrl("https://cant-seo.saschb2b.com", 3005),
+    category: "Development",
     playPitch:
       "Think you know SEO? Test your meta tag instincts with Open Graph, structured data, and more.",
     tags: "Meta tags, Open Graph, structured data, canonical URLs",
@@ -88,6 +95,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't UX",
     desc: "UX design patterns. Typography, spacing, color, hierarchy, layout, and forms.",
     href: appUrl("https://cant-ux.saschb2b.com", 3006),
+    category: "Design",
     playPitch:
       "Think you have a good design eye? Same game, same format, visual UX patterns.",
     tags: "Typography, spacing, color, hierarchy, forms",
@@ -99,6 +107,7 @@ export const ALL_APPS: CantApp[] = [
     name: "Can't Explode",
     desc: "Chemistry challenges. Molecular stability, acid strength, bond energy, and electronegativity.",
     href: appUrl("https://cant-explode.saschb2b.com", 3007),
+    category: "Science",
     playPitch:
       "Think you know chemistry? Test your instincts with molecule comparisons across 8 categories.",
     tags: "Stability, acids, bonds, electronegativity",
