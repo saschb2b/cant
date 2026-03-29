@@ -775,23 +775,103 @@ export function getAmbientSparkle(
   gy: number,
   bg: RGB,
 ): RGB | null {
-  // Stars: visible at night, fade during day and with heavy activity
+  // Stars: visible at night, fade during day
   const nightness = Math.max(0, 1 - atmo.daylight * 1.5);
-  const activity = atmo.fire + atmo.water + atmo.plant + atmo.smoke + atmo.lava;
-  const starChance = nightness * Math.max(0, 1 - activity * 1.5);
-  if (starChance > 0.1 && gy < 80) {
-    // Fixed star positions based on coords only
-    const starHash = ((gx * 7919 + gy * 104729) >>> 0) % 10000;
-    if (starHash < 15) {
-      // Twinkle: brightness varies with frame
-      const twinkle = Math.sin((atmo.frame + gx * 17 + gy * 31) * 0.03) * 0.5 + 0.5;
-      const brightness = twinkle * starChance;
-      if (brightness > 0.3) {
+  if (nightness > 0.05 && gy < 100) {
+    // Deterministic star field with multiple layers
+    const h1 = ((gx * 7919 + gy * 104729) >>> 0) % 10000;
+    const h2 = ((gx * 13337 + gy * 56093) >>> 0) % 10000;
+    const h3 = ((gx * 3571 + gy * 71993) >>> 0) % 10000;
+
+    // Layer 1: Bright stars (rare, large twinkle)
+    if (h1 < 8) {
+      const twinkle = Math.sin((atmo.frame + gx * 17 + gy * 31) * 0.02) * 0.4 + 0.6;
+      const brightness = twinkle * nightness;
+      // Star color based on hash: white, blue-white, yellow, orange-red
+      const colorType = h1 % 4;
+      let sr = 255, sg = 255, sb = 255;
+      if (colorType === 1) { sr = 200; sg = 220; sb = 255; } // Blue-white
+      else if (colorType === 2) { sr = 255; sg = 240; sb = 180; } // Yellow
+      else if (colorType === 3) { sr = 255; sg = 200; sb = 160; } // Orange
+      return [
+        Math.round(bg[0] + (sr - bg[0]) * brightness * 0.8),
+        Math.round(bg[1] + (sg - bg[1]) * brightness * 0.8),
+        Math.round(bg[2] + (sb - bg[2]) * brightness * 0.7),
+      ];
+    }
+
+    // Layer 2: Medium stars (more common, gentler twinkle)
+    if (h2 < 25) {
+      const twinkle = Math.sin((atmo.frame + gx * 11 + gy * 23) * 0.015) * 0.3 + 0.5;
+      const brightness = twinkle * nightness * 0.5;
+      if (brightness > 0.15) {
         return [
-          Math.round(bg[0] + (255 - bg[0]) * brightness * 0.6),
-          Math.round(bg[1] + (255 - bg[1]) * brightness * 0.6),
-          Math.round(bg[2] + (240 - bg[2]) * brightness * 0.5),
+          Math.round(bg[0] + (240 - bg[0]) * brightness),
+          Math.round(bg[1] + (245 - bg[1]) * brightness),
+          Math.round(bg[2] + (255 - bg[2]) * brightness),
         ];
+      }
+    }
+
+    // Layer 3: Dim stars (many, faint, no twinkle - star dust)
+    if (h3 < 40 && gy < 70) {
+      const brightness = nightness * 0.2;
+      if (brightness > 0.08) {
+        return [
+          Math.round(bg[0] + (200 - bg[0]) * brightness),
+          Math.round(bg[1] + (210 - bg[1]) * brightness),
+          Math.round(bg[2] + (230 - bg[2]) * brightness),
+        ];
+      }
+    }
+
+    // Milky Way band: subtle lighter streak across the upper sky
+    // Diagonal band from top-left to mid-right
+    const bandCenter = gy * 0.8 + gx * 0.3;
+    const bandDist = Math.abs(bandCenter - 45);
+    if (bandDist < 12 && gy < 60) {
+      const bandHash = ((gx * 9871 + gy * 6271) >>> 0) % 1000;
+      const bandIntensity = (1 - bandDist / 12) * nightness * 0.08;
+      // Extra stars in the milky way
+      if (bandHash < 60) {
+        const brightness = nightness * 0.25;
+        return [
+          Math.round(bg[0] + (210 - bg[0]) * brightness),
+          Math.round(bg[1] + (215 - bg[1]) * brightness),
+          Math.round(bg[2] + (235 - bg[2]) * brightness),
+        ];
+      }
+      // Nebula glow
+      if (bandIntensity > 0.01) {
+        return [
+          Math.round(bg[0] + (60 - bg[0]) * bandIntensity),
+          Math.round(bg[1] + (50 - bg[1]) * bandIntensity),
+          Math.round(bg[2] + (80 - bg[2]) * bandIntensity),
+        ];
+      }
+    }
+
+    // Shooting stars: very rare, brief streak
+    const shootFrame = Math.floor(atmo.frame / 120); // Changes every ~2 seconds
+    const shootHash = ((shootFrame * 4919) >>> 0) % 200;
+    if (shootHash === 0) {
+      // Active shooting star this period
+      const progress = (atmo.frame % 120) / 120;
+      if (progress < 0.3) {
+        const sx = 30 + (shootFrame * 7) % 140;
+        const sy = 5 + (shootFrame * 13) % 30;
+        const streakX = sx + Math.floor(progress * 25);
+        const streakY = sy + Math.floor(progress * 12);
+        const dist = Math.abs(gx - streakX) + Math.abs(gy - streakY);
+        if (dist < 2) {
+          const fade = 1 - progress / 0.3;
+          const brightness = fade * nightness * 0.9;
+          return [
+            Math.round(bg[0] + (255 - bg[0]) * brightness),
+            Math.round(bg[1] + (255 - bg[1]) * brightness),
+            Math.round(bg[2] + (240 - bg[2]) * brightness),
+          ];
+        }
       }
     }
   }
