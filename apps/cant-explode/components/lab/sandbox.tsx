@@ -6,6 +6,7 @@ import type { ElementType, Grid } from "@/lib/lab/types";
 import { createGrid, clearGrid, setCell, getCell } from "@/lib/lab/grid";
 import { createParticle, tickSimulation } from "@/lib/lab/simulation";
 import { renderGrid } from "@/lib/lab/renderer";
+import { createAtmosphere, updateAtmosphere } from "@/lib/lab/atmosphere";
 import { SandboxCanvas } from "./sandbox-canvas";
 import { ElementPicker } from "./element-picker";
 import { SandboxControls } from "./sandbox-controls";
@@ -13,9 +14,6 @@ import { ReactionBookButton } from "./reaction-book";
 
 const GRID_WIDTH = 200;
 const GRID_HEIGHT = 150;
-
-const BG_DARK: [number, number, number] = [13, 27, 15];
-const BG_LIGHT: [number, number, number] = [245, 245, 240];
 
 export function Sandbox() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,9 +30,10 @@ export function Sandbox() {
 
   const { mode, systemMode } = useColorScheme();
   const resolvedMode = mode === "system" ? systemMode : mode;
-  const bgColor = resolvedMode === "dark" ? BG_DARK : BG_LIGHT;
-  const bgColorRef = useRef(bgColor);
-  bgColorRef.current = bgColor;
+  const isDark = resolvedMode === "dark";
+  const atmoRef = useRef(createAtmosphere(isDark));
+  const isDarkRef = useRef(isDark);
+  isDarkRef.current = isDark;
 
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
@@ -75,6 +74,7 @@ export function Sandbox() {
   const handleReset = useCallback(() => {
     clearGrid(gridRef.current);
     tickRef.current = 0;
+    atmoRef.current = createAtmosphere(isDarkRef.current);
   }, []);
 
   const handleTogglePause = useCallback(() => {
@@ -98,10 +98,12 @@ export function Sandbox() {
         tickRef.current++;
       }
 
+      updateAtmosphere(atmoRef.current, gridRef.current, isDarkRef.current);
+
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
       if (ctx) {
-        renderGrid(ctx, gridRef.current, cellSizeRef.current, bgColorRef.current);
+        renderGrid(ctx, gridRef.current, cellSizeRef.current, atmoRef.current);
       }
 
       rafRef.current = requestAnimationFrame(loop);

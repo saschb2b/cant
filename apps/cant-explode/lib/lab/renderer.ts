@@ -1,4 +1,6 @@
 import type { Grid } from "./types";
+import type { Atmosphere } from "./atmosphere";
+import { getSkyColor, getAmbientSparkle } from "./atmosphere";
 
 /** Elements that render translucent (blended with background). */
 const TRANSLUCENT: Record<string, number> = {
@@ -8,23 +10,34 @@ const TRANSLUCENT: Record<string, number> = {
   hydrogen: 0.2,
   oxygen: 0.2,
   chlorine: 0.5,
+  methane: 0.15,
+  pollen: 0.6,
 };
 
 /**
  * Render the grid to a canvas context using ImageData for performance.
+ * Uses the atmosphere for dynamic gradient background and ambient effects.
  */
 export function renderGrid(
   ctx: CanvasRenderingContext2D,
   grid: Grid,
   cellSize: number,
-  bgColor: [number, number, number],
+  atmo: Atmosphere,
 ): void {
   const canvasW = grid.width * cellSize;
   const canvasH = grid.height * cellSize;
   const imageData = ctx.createImageData(canvasW, canvasH);
   const data = imageData.data;
 
+  // Pre-compute sky colors per row
+  const skyColors: [number, number, number][] = [];
   for (let gy = 0; gy < grid.height; gy++) {
+    skyColors.push(getSkyColor(atmo, gy, grid.height));
+  }
+
+  for (let gy = 0; gy < grid.height; gy++) {
+    const bg = skyColors[gy]!;
+
     for (let gx = 0; gx < grid.width; gx++) {
       const particle = grid.cells[gy * grid.width + gx];
 
@@ -41,9 +54,9 @@ export function renderGrid(
         const opacity = TRANSLUCENT[particle.element];
         if (opacity !== undefined) {
           const inv = 1 - opacity;
-          r = Math.round(r * opacity + bgColor[0] * inv);
-          g = Math.round(g * opacity + bgColor[1] * inv);
-          b = Math.round(b * opacity + bgColor[2] * inv);
+          r = Math.round(r * opacity + bg[0] * inv);
+          g = Math.round(g * opacity + bg[1] * inv);
+          b = Math.round(b * opacity + bg[2] * inv);
         }
 
         // Fire glow
@@ -64,10 +77,56 @@ export function renderGrid(
           g = Math.min(255, 240 + Math.floor(Math.random() * 15));
           b = Math.min(255, 100 + Math.floor(Math.random() * 80));
         }
+
+        // Flower: gentle color shimmer
+        if (particle.element === "flower" && Math.random() < 0.03) {
+          particle.r = Math.min(255, Math.max(150, particle.r + Math.floor(Math.random() * 8 - 4)));
+          particle.b = Math.min(255, Math.max(80, particle.b + Math.floor(Math.random() * 8 - 4)));
+        }
+
+        // TNT: subtle pulsing red
+        if (particle.element === "tnt") {
+          r = Math.min(255, r + Math.floor(Math.random() * 10));
+        }
+
+        // Fruit: gentle glow to stand out against leaves
+        if (particle.element === "fruit" && Math.random() < 0.05) {
+          r = Math.min(255, r + 15);
+          g = Math.min(255, g + 5);
+        }
+
+        // Pollen: golden sparkle
+        if (particle.element === "pollen" && Math.random() < 0.1) {
+          r = Math.min(255, r + 30);
+          g = Math.min(255, g + 20);
+          b = Math.min(255, b + 10);
+        }
+
+        // Leaf: subtle depth variation based on neighbors (canopy feel)
+        if (particle.element === "leaf" && Math.random() < 0.01) {
+          particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 6 - 3)));
+        }
+
+        // Algae: subtle underwater shimmer
+        if (particle.element === "algae") {
+          const algaeOpacity = 0.7;
+          const inv = 1 - algaeOpacity;
+          r = Math.round(r * algaeOpacity + bg[0] * inv);
+          g = Math.round(g * algaeOpacity + bg[1] * inv);
+          b = Math.round(b * algaeOpacity + bg[2] * inv);
+        }
       } else {
-        r = bgColor[0];
-        g = bgColor[1];
-        b = bgColor[2];
+        // Empty cell: check for ambient sparkle effects
+        const sparkle = getAmbientSparkle(atmo, gx, gy, bg);
+        if (sparkle) {
+          r = sparkle[0];
+          g = sparkle[1];
+          b = sparkle[2];
+        } else {
+          r = bg[0];
+          g = bg[1];
+          b = bg[2];
+        }
       }
 
       // Fill the cellSize x cellSize block

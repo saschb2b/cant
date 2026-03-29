@@ -40,17 +40,39 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   smoke: { behavior: "gas", baseColor: [160, 160, 160], density: 0, flammable: false, lifetime: 60 },
   steam: { behavior: "gas", baseColor: [200, 220, 255], density: 0, flammable: false, lifetime: 40 },
   co2: { behavior: "gas", baseColor: [180, 180, 170], density: 0, flammable: false, lifetime: 80 },
+  methane: { behavior: "gas", baseColor: [160, 180, 140], density: 0, flammable: true, lifetime: 200 },
 
   // --- Energy ---
   fire: { behavior: "fire", baseColor: [255, 69, 0], density: 0, flammable: false, lifetime: 25 },
   spark: { behavior: "fire", baseColor: [255, 255, 100], density: 0, flammable: false, lifetime: 5 },
+
+  // --- Organic ---
+  seed: { behavior: "powder", baseColor: [90, 65, 30], density: 2, flammable: true },
+  plant: { behavior: "plant", baseColor: [34, 139, 34], density: 99, flammable: true },
+  stem: { behavior: "static", baseColor: [80, 60, 30], density: 99, flammable: true },
+  leaf: { behavior: "static", baseColor: [50, 160, 50], density: 99, flammable: true },
+  vine: { behavior: "vine", baseColor: [50, 120, 50], density: 99, flammable: true },
+  flower: { behavior: "static", baseColor: [220, 80, 160], density: 99, flammable: true },
+  grass: { behavior: "static", baseColor: [80, 180, 60], density: 99, flammable: true },
+  moss: { behavior: "static", baseColor: [60, 130, 60], density: 99, flammable: true },
+  algae: { behavior: "static", baseColor: [30, 110, 50], density: 99, flammable: true },
+  fruit: { behavior: "powder", baseColor: [200, 40, 60], density: 2, flammable: true },
+  mushroom: { behavior: "static", baseColor: [180, 150, 120], density: 99, flammable: true },
+  pollen: { behavior: "gas", baseColor: [240, 220, 80], density: 0, flammable: true, lifetime: 300 },
+  soil: { behavior: "powder", baseColor: [90, 60, 30], density: 3, flammable: false },
+
+  // --- Engineered ---
+  fuse: { behavior: "fuse", baseColor: [160, 120, 80], density: 99, flammable: false },
+  tnt: { behavior: "explosive", baseColor: [200, 50, 40], density: 4, flammable: false },
+  wax: { behavior: "static", baseColor: [245, 235, 200], density: 3, flammable: true },
+  dust: { behavior: "powder", baseColor: [180, 160, 140], density: 1, flammable: true },
 };
 
 /** Element groups for the picker toolbar. */
 export const ELEMENT_GROUPS: { label: string; elements: ElementType[] }[] = [
   {
-    label: "Basic",
-    elements: ["sand", "stone", "water", "ice", "wood"],
+    label: "Nature",
+    elements: ["sand", "stone", "water", "ice", "wood", "oil", "lava"],
   },
   {
     label: "Metals",
@@ -58,11 +80,19 @@ export const ELEMENT_GROUPS: { label: string; elements: ElementType[] }[] = [
   },
   {
     label: "Reactive",
-    elements: ["acid", "chlorine", "hydrogen", "oxygen", "gunpowder"],
+    elements: ["acid", "chlorine", "hydrogen", "oxygen", "methane"],
   },
   {
-    label: "Other",
-    elements: ["oil", "coal", "lava", "mercury", "fire"],
+    label: "Organic",
+    elements: ["seed", "wax", "coal", "dust"],
+  },
+  {
+    label: "Boom",
+    elements: ["fire", "fuse", "gunpowder", "tnt"],
+  },
+  {
+    label: "Build",
+    elements: ["mercury", "glass"],
   },
 ];
 
@@ -71,16 +101,117 @@ export const PICKABLE_ELEMENTS: ElementType[] = ELEMENT_GROUPS.flatMap(
   (g) => g.elements,
 );
 
+/** Elements that get extra color diversity. */
+const HIGH_VARIATION: Record<string, number> = {
+  leaf: 30,
+  plant: 25,
+  grass: 25,
+  vine: 20,
+  moss: 20,
+  algae: 20,
+  flower: 40,
+  fruit: 35,
+  mushroom: 25,
+  soil: 20,
+};
+
 /**
- * Create a particle color with slight random variation from the base color.
+ * Create a particle color with random variation from the base color.
+ * Vegetation elements get extra diversity for a natural look.
  */
 export function variedColor(
   base: [number, number, number],
+  element?: string,
 ): [number, number, number] {
-  const vary = 15;
-  return [
+  const vary = (element ? HIGH_VARIATION[element] : undefined) ?? 15;
+  const result: [number, number, number] = [
     Math.max(0, Math.min(255, base[0] + Math.floor(Math.random() * vary * 2 - vary))),
     Math.max(0, Math.min(255, base[1] + Math.floor(Math.random() * vary * 2 - vary))),
     Math.max(0, Math.min(255, base[2] + Math.floor(Math.random() * vary * 2 - vary))),
   ];
+
+  // Flowers get random hue shifts for variety (pink, purple, yellow, orange)
+  if (element === "flower") {
+    const hue = Math.random();
+    if (hue < 0.25) {
+      // Pink
+      result[0] = 200 + Math.floor(Math.random() * 55);
+      result[1] = 60 + Math.floor(Math.random() * 60);
+      result[2] = 120 + Math.floor(Math.random() * 80);
+    } else if (hue < 0.5) {
+      // Yellow
+      result[0] = 230 + Math.floor(Math.random() * 25);
+      result[1] = 200 + Math.floor(Math.random() * 40);
+      result[2] = 30 + Math.floor(Math.random() * 40);
+    } else if (hue < 0.75) {
+      // Purple
+      result[0] = 140 + Math.floor(Math.random() * 60);
+      result[1] = 50 + Math.floor(Math.random() * 60);
+      result[2] = 180 + Math.floor(Math.random() * 75);
+    } else {
+      // White
+      result[0] = 230 + Math.floor(Math.random() * 25);
+      result[1] = 230 + Math.floor(Math.random() * 25);
+      result[2] = 220 + Math.floor(Math.random() * 25);
+    }
+  }
+
+  // Fruit gets random hue shifts (red, orange, purple, blue berries)
+  if (element === "fruit") {
+    const hue = Math.random();
+    if (hue < 0.3) {
+      // Red berry
+      result[0] = 180 + Math.floor(Math.random() * 75);
+      result[1] = 20 + Math.floor(Math.random() * 40);
+      result[2] = 30 + Math.floor(Math.random() * 40);
+    } else if (hue < 0.5) {
+      // Orange
+      result[0] = 220 + Math.floor(Math.random() * 35);
+      result[1] = 120 + Math.floor(Math.random() * 60);
+      result[2] = 10 + Math.floor(Math.random() * 30);
+    } else if (hue < 0.7) {
+      // Purple/plum
+      result[0] = 100 + Math.floor(Math.random() * 60);
+      result[1] = 20 + Math.floor(Math.random() * 40);
+      result[2] = 120 + Math.floor(Math.random() * 80);
+    } else if (hue < 0.85) {
+      // Blueberry
+      result[0] = 40 + Math.floor(Math.random() * 40);
+      result[1] = 40 + Math.floor(Math.random() * 50);
+      result[2] = 140 + Math.floor(Math.random() * 80);
+    } else {
+      // Golden/yellow
+      result[0] = 230 + Math.floor(Math.random() * 25);
+      result[1] = 180 + Math.floor(Math.random() * 50);
+      result[2] = 20 + Math.floor(Math.random() * 30);
+    }
+  }
+
+  // Mushroom cap color variety (tan, brown, reddish, pale)
+  if (element === "mushroom") {
+    const hue = Math.random();
+    if (hue < 0.3) {
+      // Classic tan
+      result[0] = 180 + Math.floor(Math.random() * 40);
+      result[1] = 150 + Math.floor(Math.random() * 30);
+      result[2] = 110 + Math.floor(Math.random() * 30);
+    } else if (hue < 0.5) {
+      // Red-brown toadstool
+      result[0] = 160 + Math.floor(Math.random() * 60);
+      result[1] = 50 + Math.floor(Math.random() * 50);
+      result[2] = 40 + Math.floor(Math.random() * 40);
+    } else if (hue < 0.7) {
+      // Pale/white
+      result[0] = 220 + Math.floor(Math.random() * 30);
+      result[1] = 215 + Math.floor(Math.random() * 30);
+      result[2] = 200 + Math.floor(Math.random() * 30);
+    } else {
+      // Deep brown
+      result[0] = 90 + Math.floor(Math.random() * 40);
+      result[1] = 60 + Math.floor(Math.random() * 30);
+      result[2] = 30 + Math.floor(Math.random() * 30);
+    }
+  }
+
+  return result;
 }

@@ -33,11 +33,40 @@ export type ElementType =
   | "smoke"
   | "steam"
   | "co2"
+  | "methane"
   // Energy
   | "fire"
-  | "spark";
+  | "spark"
+  // Organic
+  | "seed"
+  | "plant"
+  | "stem"
+  | "leaf"
+  | "vine"
+  | "flower"
+  | "grass"
+  | "moss"
+  | "algae"
+  | "fruit"
+  | "mushroom"
+  | "pollen"
+  | "soil"
+  // Engineered
+  | "fuse"
+  | "tnt"
+  | "wax"
+  | "dust";
 
-export type Behavior = "powder" | "liquid" | "gas" | "fire" | "static";
+export type Behavior =
+  | "powder"
+  | "liquid"
+  | "gas"
+  | "fire"
+  | "static"
+  | "plant"
+  | "vine"
+  | "fuse"
+  | "explosive";
 
 export interface ElementDef {
   behavior: Behavior;

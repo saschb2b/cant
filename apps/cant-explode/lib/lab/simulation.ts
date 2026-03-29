@@ -5,12 +5,86 @@ import { REACTIONS } from "./reactions";
 
 export function createParticle(element: Particle["element"]): Particle {
   const def = ELEMENTS[element];
-  const [r, g, b] = variedColor(def.baseColor);
+  const [r, g, b] = variedColor(def.baseColor, element);
   return { element, r, g, b, lifetime: def.lifetime ?? 0, updated: false };
 }
 
 function randomBool(): boolean {
   return Math.random() < 0.5;
+}
+
+function isEmpty(grid: Grid, x: number, y: number): boolean {
+  return inBounds(grid, x, y) && getCell(grid, x, y) === null;
+}
+
+function hasNeighbor(grid: Grid, x: number, y: number, element: string): boolean {
+  const offsets: [number, number][] = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+  for (const [dx, dy] of offsets) {
+    const cell = getCell(grid, x + dx, y + dy);
+    if (cell && cell.element === element) return true;
+  }
+  return false;
+}
+
+function hasAnyNeighbor(grid: Grid, x: number, y: number, elements: string[]): boolean {
+  const offsets: [number, number][] = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+  for (const [dx, dy] of offsets) {
+    const cell = getCell(grid, x + dx, y + dy);
+    if (cell && elements.includes(cell.element)) return true;
+  }
+  return false;
+}
+
+const SOLID_BEHAVIORS = new Set(["static", "plant", "vine", "fuse", "explosive", "powder"]);
+
+function hasSolidBelow(grid: Grid, x: number, y: number): boolean {
+  const below = getCell(grid, x, y + 1);
+  if (!below) return !inBounds(grid, x, y + 1);
+  return SOLID_BEHAVIORS.has(ELEMENTS[below.element].behavior);
+}
+
+function countNearby(grid: Grid, x: number, y: number, element: string, radius: number): number {
+  let count = 0;
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && cell.element === element) count++;
+    }
+  }
+  return count;
+}
+
+function countNearbyAny(grid: Grid, x: number, y: number, elements: string[], radius: number): number {
+  let count = 0;
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && elements.includes(cell.element)) count++;
+    }
+  }
+  return count;
+}
+
+function consumeWater(grid: Grid, x: number, y: number): boolean {
+  const dirs: [number, number][] = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+  for (const [dx, dy] of dirs) {
+    const cell = getCell(grid, x + dx, y + dy);
+    if (cell && cell.element === "water") {
+      setCell(grid, x + dx, y + dy, null);
+      return true;
+    }
+  }
+  return false;
+}
+
+function spawnAt(grid: Grid, x: number, y: number, element: Particle["element"]): boolean {
+  if (!isEmpty(grid, x, y)) return false;
+  const p = createParticle(element);
+  p.updated = true;
+  setCell(grid, x, y, p);
+  return true;
 }
 
 function tryMove(grid: Grid, x: number, y: number, nx: number, ny: number): boolean {
@@ -22,14 +96,17 @@ function tryMove(grid: Grid, x: number, y: number, nx: number, ny: number): bool
     if (moved) moved.updated = true;
     return true;
   }
-  // Denser particles sink through less dense ones
   const source = getCell(grid, x, y);
   if (
     source &&
     target &&
     !target.updated &&
     ELEMENTS[source.element].density > ELEMENTS[target.element].density &&
-    ELEMENTS[target.element].behavior !== "static"
+    ELEMENTS[target.element].behavior !== "static" &&
+    ELEMENTS[target.element].behavior !== "plant" &&
+    ELEMENTS[target.element].behavior !== "vine" &&
+    ELEMENTS[target.element].behavior !== "fuse" &&
+    ELEMENTS[target.element].behavior !== "explosive"
   ) {
     swapCells(grid, x, y, nx, ny);
     const moved = getCell(grid, nx, ny);
@@ -55,17 +132,14 @@ function updateLiquid(grid: Grid, x: number, y: number): void {
   const dx2 = leftFirst ? 1 : -1;
   if (tryMove(grid, x, y, x + dx1, y + 1)) return;
   if (tryMove(grid, x, y, x + dx2, y + 1)) return;
-  // Liquids spread horizontally
   if (tryMove(grid, x, y, x + dx1, y)) return;
   tryMove(grid, x, y, x + dx2, y);
 }
 
 function updateGas(grid: Grid, x: number, y: number): void {
-  // Gases rise with slight horizontal drift
   const drift = Math.random() < 0.3 ? (randomBool() ? -1 : 1) : 0;
   if (tryMove(grid, x, y, x + drift, y - 1)) return;
   if (tryMove(grid, x, y, x, y - 1)) return;
-  // Spread sideways
   const dx = randomBool() ? -1 : 1;
   if (tryMove(grid, x, y, x + dx, y)) return;
   tryMove(grid, x, y, x - dx, y);
@@ -75,12 +149,10 @@ function updateFire(grid: Grid, x: number, y: number, particle: Particle): void 
   particle.lifetime--;
 
   if (particle.element === "spark") {
-    // Sparks are bright and short-lived
     if (particle.lifetime <= 0) {
       setCell(grid, x, y, null);
       return;
     }
-    // Sparks move erratically upward
     const dx = Math.random() < 0.5 ? (randomBool() ? -1 : 1) : 0;
     tryMove(grid, x, y, x + dx, y - 1);
     return;
@@ -94,7 +166,6 @@ function updateFire(grid: Grid, x: number, y: number, particle: Particle): void 
   particle.b = 0;
 
   if (particle.lifetime <= 0) {
-    // Fire dies, maybe leave smoke
     if (Math.random() < 0.3) {
       const smoke = createParticle("smoke");
       smoke.updated = true;
@@ -104,8 +175,519 @@ function updateFire(grid: Grid, x: number, y: number, particle: Particle): void 
     }
     return;
   }
-  // Fire rises
   updateGas(grid, x, y);
+}
+
+// ===== Seed: falls, then sprouts a stem when watered =====
+function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void {
+  // Try to fall first
+  if (tryMove(grid, x, y, x, y + 1)) return;
+  const leftFirst = randomBool();
+  if (tryMove(grid, x, y, x + (leftFirst ? -1 : 1), y + 1)) return;
+  if (tryMove(grid, x, y, x + (leftFirst ? 1 : -1), y + 1)) return;
+
+  // Settled: need water nearby
+  if (!hasSolidBelow(grid, x, y) || !hasNeighbor(grid, x, y, "water")) return;
+
+  // Seeds near a wall/surface sprout into vine (on any ground)
+  const surfaces = ["stone", "wood", "glass", "iron", "copper", "rust", "patina"];
+  if (hasAnyNeighbor(grid, x, y, surfaces)) {
+    particle.lifetime++;
+    particle.g = Math.min(255, particle.g + 2);
+    if (particle.lifetime <= 8) return;
+    consumeWater(grid, x, y);
+    const vine = createParticle("vine");
+    vine.updated = true;
+    setCell(grid, x, y, vine);
+    return;
+  }
+
+  // For trees and grass, seeds require soil
+  if (!hasNeighbor(grid, x, y, "soil")) return;
+
+  particle.lifetime++;
+  // Color shift to show germination
+  particle.g = Math.min(255, particle.g + 2);
+  if (particle.lifetime <= 8) return;
+
+  consumeWater(grid, x, y);
+
+  // Open soil: become a stem (the root of the plant)
+  const stem = createParticle("stem");
+  stem.lifetime = 0;
+  stem.updated = true;
+  setCell(grid, x, y, stem);
+  // Also try to grow grass around the base
+  spawnAt(grid, x - 1, y, "grass");
+  spawnAt(grid, x + 1, y, "grass");
+}
+
+// ===== Plant (growth engine): grows stems upward, branches into leaves =====
+function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void {
+  const waterNearby = countNearby(grid, x, y, "water", 3);
+  if (waterNearby === 0) return;
+
+  // Growth speed scales with water availability
+  const growChance = Math.min(0.15, 0.03 * waterNearby);
+  if (Math.random() > growChance) return;
+
+  consumeWater(grid, x, y);
+
+  // Use lifetime to track growth stage
+  particle.lifetime++;
+  const stage = particle.lifetime;
+
+  // Stage 1-3: Grow stem upward
+  if (stage <= 3) {
+    if (isEmpty(grid, x, y - 1)) {
+      const stem = createParticle("stem");
+      stem.lifetime = 0;
+      stem.updated = true;
+      setCell(grid, x, y - 1, stem);
+      // Convert self to stem (structural)
+      const selfStem = createParticle("stem");
+      selfStem.lifetime = stage;
+      selfStem.updated = true;
+      setCell(grid, x, y, selfStem);
+    }
+    return;
+  }
+
+  // Stage 4+: Grow canopy of leaves
+  const radius = Math.min(stage - 2, 5);
+  let grew = false;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const dx = Math.floor(Math.random() * (radius * 2 + 1)) - radius;
+    const dy = -Math.floor(Math.random() * (radius + 1)); // Upward bias
+    const tx = x + dx;
+    const ty = y + dy;
+
+    if (!isEmpty(grid, tx, ty)) continue;
+
+    // Don't grow leaves too far from other vegetation
+    const vegNearby = countNearbyAny(grid, tx, ty, ["stem", "leaf", "plant"], 2);
+    if (vegNearby === 0) continue;
+
+    // Decide what to grow
+    const distFromCenter = Math.abs(dx) + Math.abs(dy);
+    let element: Particle["element"];
+
+    if (dy === 0 && Math.abs(dx) <= 1) {
+      element = "stem"; // Keep growing stem in the middle
+    } else if (distFromCenter >= radius && Math.random() < 0.08) {
+      element = "flower"; // Flowers at the edges
+    } else {
+      element = "leaf";
+    }
+
+    spawnAt(grid, tx, ty, element);
+    grew = true;
+  }
+
+  // If the canopy is getting big, stop this cell from growing further
+  if (stage > 8 || !grew) {
+    // Convert to leaf (no longer a growth point)
+    const leaf = createParticle("leaf");
+    leaf.updated = true;
+    setCell(grid, x, y, leaf);
+  }
+}
+
+// ===== Stem: structural trunk, can sprout branches =====
+function updateStem(grid: Grid, x: number, y: number, particle: Particle): void {
+  const waterNearby = countNearby(grid, x, y, "water", 2);
+  if (waterNearby === 0) return;
+  if (Math.random() > 0.04) return;
+
+  consumeWater(grid, x, y);
+  particle.lifetime++;
+
+  // Stems grow upward
+  if (particle.lifetime < 6 && isEmpty(grid, x, y - 1)) {
+    const newStem = createParticle("stem");
+    newStem.lifetime = 0;
+    newStem.updated = true;
+    setCell(grid, x, y - 1, newStem);
+  }
+
+  // After some height, branch into leaves sideways
+  if (particle.lifetime >= 3) {
+    const side = randomBool() ? -1 : 1;
+    if (isEmpty(grid, x + side, y) && Math.random() < 0.3) {
+      spawnAt(grid, x + side, y, "leaf");
+    }
+    if (isEmpty(grid, x + side, y - 1) && Math.random() < 0.2) {
+      spawnAt(grid, x + side, y - 1, "leaf");
+    }
+  }
+
+  // Tall stems become stable (stop growing)
+  if (particle.lifetime > 8) {
+    particle.lifetime = 100; // Mark as mature
+  }
+}
+
+// ===== Leaf: can spread to adjacent empty cells, occasionally flowers or fruit =====
+function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void {
+  particle.lifetime++;
+
+  const waterNearby = countNearby(grid, x, y, "water", 3);
+
+  // Mature leaves near flowers can grow fruit
+  if (particle.lifetime > 20 && waterNearby > 0 && Math.random() < 0.003) {
+    if (hasNeighbor(grid, x, y, "flower")) {
+      const dirs: [number, number][] = [[0, 1], [-1, 1], [1, 1], [-1, 0], [1, 0]];
+      const dir = dirs[Math.floor(Math.random() * dirs.length)];
+      if (dir && isEmpty(grid, x + dir[0], y + dir[1])) {
+        spawnAt(grid, x + dir[0], y + dir[1], "fruit");
+      }
+    }
+  }
+
+  if (waterNearby === 0) return;
+  if (Math.random() > 0.02) return;
+
+  consumeWater(grid, x, y);
+
+  // Leaves spread outward and upward
+  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [-1, -1], [1, -1]];
+  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  if (!dir) return;
+  const [dx, dy] = dir;
+  const tx = x + dx;
+  const ty = y + dy;
+
+  if (!isEmpty(grid, tx, ty)) return;
+
+  // Don't grow too dense
+  const leafCount = countNearbyAny(grid, tx, ty, ["leaf", "flower", "plant", "fruit"], 1);
+  if (leafCount >= 3) return;
+
+  // Occasionally bloom
+  if (Math.random() < 0.06) {
+    spawnAt(grid, tx, ty, "flower");
+  } else {
+    spawnAt(grid, tx, ty, "leaf");
+  }
+}
+
+// ===== Flower: occasionally releases pollen into the air =====
+function updateFlower(grid: Grid, x: number, y: number, particle: Particle): void {
+  particle.lifetime++;
+
+  // Only release pollen from mature flowers near water
+  if (particle.lifetime < 30) return;
+  const waterNearby = countNearby(grid, x, y, "water", 4);
+  if (waterNearby === 0 && Math.random() > 0.0005) return;
+  if (Math.random() > 0.005) return;
+
+  // Release pollen upward
+  const dirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, -2], [0, -2], [1, -2]];
+  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  if (dir && isEmpty(grid, x + dir[0], y + dir[1])) {
+    spawnAt(grid, x + dir[0], y + dir[1], "pollen");
+  }
+}
+
+// ===== Grass: spreads horizontally along soil =====
+function updateGrass(grid: Grid, x: number, y: number): void {
+  if (!hasAnyNeighbor(grid, x, y, ["grass", "stem", "plant", "soil"])) return;
+  const waterNearby = countNearby(grid, x, y, "water", 2);
+  if (waterNearby === 0 && Math.random() > 0.002) return;
+  if (Math.random() > 0.03) return;
+
+  if (waterNearby > 0) consumeWater(grid, x, y);
+
+  // Spread sideways, only on soil or near other grass
+  const side = randomBool() ? -1 : 1;
+  const belowTarget = getCell(grid, x + side, y + 1);
+  const onSoil = belowTarget && belowTarget.element === "soil";
+  if (isEmpty(grid, x + side, y) && (onSoil || hasNeighbor(grid, x + side, y, "grass"))) {
+    spawnAt(grid, x + side, y, "grass");
+  }
+  // Occasionally grow one cell up
+  if (Math.random() < 0.1 && isEmpty(grid, x, y - 1)) {
+    spawnAt(grid, x, y - 1, "grass");
+  }
+}
+
+// ===== Moss: grows on hard surfaces (stone, wood, metal) =====
+function updateMoss(grid: Grid, x: number, y: number): void {
+  const surfaces = ["stone", "wood", "glass", "iron", "copper", "rust", "patina"];
+  if (!hasAnyNeighbor(grid, x, y, surfaces) && !hasNeighbor(grid, x, y, "moss")) return;
+
+  const waterNearby = countNearby(grid, x, y, "water", 2);
+  if (waterNearby === 0 && Math.random() > 0.001) return;
+  if (Math.random() > 0.02) return;
+
+  if (waterNearby > 0) consumeWater(grid, x, y);
+
+  // Grow along surfaces in any direction
+  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  if (!dir) return;
+  const [dx, dy] = dir;
+  const tx = x + dx;
+  const ty = y + dy;
+
+  if (!isEmpty(grid, tx, ty)) return;
+  // Must be next to a surface
+  if (!hasAnyNeighbor(grid, tx, ty, surfaces) && !hasNeighbor(grid, tx, ty, "moss")) return;
+
+  spawnAt(grid, tx, ty, "moss");
+}
+
+// ===== Algae: grows inside water =====
+function updateAlgae(grid: Grid, x: number, y: number): void {
+  if (Math.random() > 0.015) return;
+
+  // Algae spreads to water cells
+  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  if (!dir) return;
+  const [dx, dy] = dir;
+  const cell = getCell(grid, x + dx, y + dy);
+  if (cell && cell.element === "water") {
+    const algae = createParticle("algae");
+    algae.updated = true;
+    setCell(grid, x + dx, y + dy, algae);
+  }
+}
+
+// ===== Vine: creeps along surfaces =====
+function updateVine(grid: Grid, x: number, y: number, _particle: Particle): void {
+  const waterNearby = countNearby(grid, x, y, "water", 2);
+  if (waterNearby === 0 && Math.random() > 0.001) return;
+  if (Math.random() > 0.02) return;
+
+  if (waterNearby > 0) consumeWater(grid, x, y);
+
+  const surfaces = ["stone", "wood", "glass", "iron", "copper", "rust", "patina"];
+  const hasSurface = hasAnyNeighbor(grid, x, y, surfaces);
+  if (!hasSurface && !hasNeighbor(grid, x, y, "vine")) return;
+
+  // Vine prefers sideways and downward, hugging walls
+  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, 1], [-1, 1], [1, 1], [0, -1]];
+  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  if (!dir) return;
+  const [dx, dy] = dir;
+  const tx = x + dx;
+  const ty = y + dy;
+
+  if (!isEmpty(grid, tx, ty)) return;
+
+  // Don't overgrow
+  const vineCount = countNearby(grid, tx, ty, "vine", 1);
+  if (vineCount >= 2) return;
+
+  spawnAt(grid, tx, ty, "vine");
+
+  // Vines occasionally grow leaves
+  if (Math.random() < 0.08) {
+    const leafDir = dirs[Math.floor(Math.random() * dirs.length)];
+    if (leafDir) {
+      spawnAt(grid, tx + leafDir[0], ty + leafDir[1], "leaf");
+    }
+  }
+}
+
+// ===== Fruit: grows on mature plants, falls when ripe, becomes a seed on the ground =====
+function updateFruit(grid: Grid, x: number, y: number, particle: Particle): void {
+  // Fruit hangs on plants until it ripens (lifetime tracks ripeness)
+  const attachedToPlant = hasAnyNeighbor(grid, x, y, ["leaf", "stem", "plant", "vine"]);
+
+  if (attachedToPlant) {
+    // Still growing on the plant
+    particle.lifetime++;
+    // Darken slightly as it ripens
+    particle.r = Math.min(255, particle.r + 1);
+
+    // When ripe, detach and fall
+    if (particle.lifetime > 40 && Math.random() < 0.02) {
+      // Fall as powder
+      if (tryMove(grid, x, y, x, y + 1)) return;
+      const leftFirst = randomBool();
+      if (tryMove(grid, x, y, x + (leftFirst ? -1 : 1), y + 1)) return;
+      tryMove(grid, x, y, x + (leftFirst ? 1 : -1), y + 1);
+    }
+    return;
+  }
+
+  // Not attached: fall like powder
+  if (tryMove(grid, x, y, x, y + 1)) return;
+  const leftFirst = randomBool();
+  if (tryMove(grid, x, y, x + (leftFirst ? -1 : 1), y + 1)) return;
+  if (tryMove(grid, x, y, x + (leftFirst ? 1 : -1), y + 1)) return;
+
+  // On the ground: slowly become a seed
+  if (hasSolidBelow(grid, x, y)) {
+    particle.lifetime++;
+    if (particle.lifetime > 60 && Math.random() < 0.03) {
+      const seed = createParticle("seed");
+      seed.updated = true;
+      setCell(grid, x, y, seed);
+    }
+  }
+}
+
+// ===== Mushroom: grows on dead organic matter, spreads slowly in damp conditions =====
+function updateMushroom(grid: Grid, x: number, y: number): void {
+  const substrate = ["ash", "charcoal", "wood", "soil"];
+  if (!hasAnyNeighbor(grid, x, y, substrate) && !hasNeighbor(grid, x, y, "mushroom")) return;
+
+  const waterNearby = countNearby(grid, x, y, "water", 3);
+  if (waterNearby === 0 && Math.random() > 0.0005) return;
+  if (Math.random() > 0.01) return;
+
+  if (waterNearby > 0) consumeWater(grid, x, y);
+
+  // Spread to adjacent cells on or near substrate
+  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [-1, -1], [1, -1]];
+  const dir = dirs[Math.floor(Math.random() * dirs.length)];
+  if (!dir) return;
+  const [dx, dy] = dir;
+  const tx = x + dx;
+  const ty = y + dy;
+
+  if (!isEmpty(grid, tx, ty)) return;
+
+  // Don't overgrow
+  const count = countNearby(grid, tx, ty, "mushroom", 2);
+  if (count >= 3) return;
+
+  spawnAt(grid, tx, ty, "mushroom");
+}
+
+// ===== Pollen: drifts like gas, lands on ground to become a seed =====
+function updatePollen(grid: Grid, x: number, y: number, particle: Particle): void {
+  particle.lifetime--;
+
+  if (particle.lifetime <= 0) {
+    setCell(grid, x, y, null);
+    return;
+  }
+
+  // Check if pollen lands on ground or near water
+  if (hasSolidBelow(grid, x, y)) {
+    // High chance to become a seed when touching ground
+    if (Math.random() < 0.15) {
+      const seed = createParticle("seed");
+      seed.updated = true;
+      setCell(grid, x, y, seed);
+      return;
+    }
+  }
+
+  // Pollen near water settles faster
+  if (hasNeighbor(grid, x, y, "water") && Math.random() < 0.2) {
+    const seed = createParticle("seed");
+    seed.updated = true;
+    setCell(grid, x, y, seed);
+    return;
+  }
+
+  // Float gently: mostly sideways with slight upward drift
+  const drift = randomBool() ? -1 : 1;
+  const roll = Math.random();
+  if (roll < 0.35) {
+    tryMove(grid, x, y, x + drift, y);
+  } else if (roll < 0.55) {
+    tryMove(grid, x, y, x + drift, y - 1);
+  } else if (roll < 0.75) {
+    tryMove(grid, x, y, x, y + 1);
+  } else {
+    tryMove(grid, x, y, x, y - 1);
+  }
+}
+
+// ===== Fuse: catches fire slowly from neighbor fire, burns along its length =====
+function updateFuse(grid: Grid, x: number, y: number, _particle: Particle): void {
+  if (!hasAnyNeighbor(grid, x, y, ["fire", "spark", "lava"])) return;
+  if (Math.random() > 0.08) return; // Slow burn rate = suspense
+
+  const fire = createParticle("fire");
+  fire.lifetime = 8; // Short fire, just enough to ignite the next fuse cell
+  fire.updated = true;
+  setCell(grid, x, y, fire);
+}
+
+// ===== TNT: explodes when touched by fire/spark, blasts particles outward =====
+function explode(grid: Grid, cx: number, cy: number, radius: number): void {
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > radius) continue;
+
+      const x = cx + dx;
+      const y = cy + dy;
+      if (!inBounds(grid, x, y)) continue;
+
+      const cell = getCell(grid, x, y);
+
+      // Inner core: fire and sparks
+      if (dist < radius * 0.4) {
+        const p = createParticle(Math.random() < 0.5 ? "fire" : "spark");
+        p.updated = true;
+        setCell(grid, x, y, p);
+        continue;
+      }
+
+      // Middle ring: destroy or ignite
+      if (dist < radius * 0.7) {
+        if (!cell) {
+          if (Math.random() < 0.4) {
+            const p = createParticle(Math.random() < 0.6 ? "smoke" : "fire");
+            p.updated = true;
+            setCell(grid, x, y, p);
+          }
+        } else if (cell.element === "tnt") {
+          // Chain reaction: other TNT explodes too
+          explode(grid, x, y, radius);
+        } else if (ELEMENTS[cell.element].flammable) {
+          const p = createParticle("fire");
+          p.updated = true;
+          setCell(grid, x, y, p);
+        } else if (ELEMENTS[cell.element].behavior !== "static" || cell.element === "stone") {
+          // Blast pushes or destroys non-static particles
+          if (Math.random() < 0.6) {
+            setCell(grid, x, y, null);
+          }
+        }
+        continue;
+      }
+
+      // Outer ring: smoke and shockwave
+      if (!cell) {
+        if (Math.random() < 0.2) {
+          const p = createParticle("smoke");
+          p.updated = true;
+          setCell(grid, x, y, p);
+        }
+      } else if (ELEMENTS[cell.element].flammable && Math.random() < 0.3) {
+        const p = createParticle("fire");
+        p.updated = true;
+        setCell(grid, x, y, p);
+      }
+    }
+  }
+}
+
+function updateExplosive(grid: Grid, x: number, y: number, _particle: Particle): void {
+  if (!hasAnyNeighbor(grid, x, y, ["fire", "spark", "lava"])) return;
+
+  // TNT goes boom
+  setCell(grid, x, y, null);
+  explode(grid, x, y, 12);
+}
+
+// ===== Wax: melts into oil when near fire/lava =====
+function updateWax(grid: Grid, x: number, y: number): void {
+  if (!hasAnyNeighbor(grid, x, y, ["fire", "lava", "spark"])) return;
+  if (Math.random() > 0.05) return;
+
+  const oil = createParticle("oil");
+  oil.updated = true;
+  setCell(grid, x, y, oil);
 }
 
 function checkReactions(grid: Grid, x: number, y: number): void {
@@ -131,7 +713,6 @@ function checkReactions(grid: Grid, x: number, y: number): void {
       if (!match) continue;
       if (Math.random() > rule.probability) continue;
 
-      // Determine which is a and which is b
       const isForward = particle.element === rule.a;
       const prodSelf = isForward ? rule.produceA : rule.produceB;
       const prodNeighbor = isForward ? rule.produceB : rule.produceA;
@@ -152,7 +733,7 @@ function checkReactions(grid: Grid, x: number, y: number): void {
         setCell(grid, nx, ny, null);
       }
 
-      return; // One reaction per tick per particle
+      return;
     }
   }
 }
@@ -164,10 +745,8 @@ export function tickSimulation(grid: Grid, tick: number): void {
     if (cell) cell.updated = false;
   }
 
-  // Alternate scan direction to prevent bias
   const leftToRight = tick % 2 === 0;
 
-  // Bottom-to-top so falling particles don't cascade in one tick
   for (let y = grid.height - 1; y >= 0; y--) {
     const startX = leftToRight ? 0 : grid.width - 1;
     const endX = leftToRight ? grid.width : -1;
@@ -179,8 +758,8 @@ export function tickSimulation(grid: Grid, tick: number): void {
 
       const def = ELEMENTS[particle.element];
 
-      // Handle lifetime for gases
-      if (def.lifetime && def.behavior === "gas") {
+      // Handle lifetime for gases (except pollen which has custom logic)
+      if (def.lifetime && def.behavior === "gas" && particle.element !== "pollen") {
         particle.lifetime--;
         if (particle.lifetime <= 0) {
           setCell(grid, x, y, null);
@@ -190,18 +769,66 @@ export function tickSimulation(grid: Grid, tick: number): void {
 
       switch (def.behavior) {
         case "powder":
-          updatePowder(grid, x, y);
+          if (particle.element === "seed") {
+            updateSeed(grid, x, y, particle);
+          } else if (particle.element === "fruit") {
+            updateFruit(grid, x, y, particle);
+          } else {
+            updatePowder(grid, x, y);
+          }
           break;
         case "liquid":
           updateLiquid(grid, x, y);
           break;
         case "gas":
-          updateGas(grid, x, y);
+          if (particle.element === "pollen") {
+            updatePollen(grid, x, y, particle);
+          } else {
+            updateGas(grid, x, y);
+          }
           break;
         case "fire":
           updateFire(grid, x, y, particle);
           break;
+        case "plant":
+          updatePlant(grid, x, y, particle);
+          break;
+        case "vine":
+          updateVine(grid, x, y, particle);
+          break;
+        case "fuse":
+          updateFuse(grid, x, y, particle);
+          break;
+        case "explosive":
+          updateExplosive(grid, x, y, particle);
+          break;
         case "static":
+          switch (particle.element) {
+            case "wax":
+              updateWax(grid, x, y);
+              break;
+            case "stem":
+              updateStem(grid, x, y, particle);
+              break;
+            case "leaf":
+              updateLeaf(grid, x, y, particle);
+              break;
+            case "flower":
+              updateFlower(grid, x, y, particle);
+              break;
+            case "grass":
+              updateGrass(grid, x, y);
+              break;
+            case "moss":
+              updateMoss(grid, x, y);
+              break;
+            case "algae":
+              updateAlgae(grid, x, y);
+              break;
+            case "mushroom":
+              updateMushroom(grid, x, y);
+              break;
+          }
           break;
       }
 

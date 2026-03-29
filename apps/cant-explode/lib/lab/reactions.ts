@@ -77,6 +77,11 @@ export const REACTIONS: ReactionRule[] = [
     desc: "Copper develops a green patina over time with moisture",
     group: "Water",
   },
+  {
+    a: "stone", b: "water", produceA: "moss", produceB: null, probability: 0.001,
+    desc: "Moss slowly grows on wet stone",
+    group: "Water",
+  },
 
   // Fire and combustion
   {
@@ -194,6 +199,30 @@ export const REACTIONS: ReactionRule[] = [
     group: "Lava",
   },
 
+  // Soil formation
+  {
+    a: "ash", b: "sand", produceA: "soil", produceB: "soil", probability: 0.008,
+    desc: "Ash enriches sand into fertile soil",
+    group: "Water",
+  },
+  {
+    a: "charcoal", b: "sand", produceA: "soil", produceB: "soil", probability: 0.005,
+    desc: "Decomposing charcoal mixes with sand to form soil",
+    group: "Water",
+  },
+  {
+    a: "ash", b: "water", produceA: "soil", produceB: null, probability: 0.003,
+    desc: "Wet ash breaks down into soil",
+    group: "Water",
+  },
+
+  // Decay and regrowth
+  {
+    a: "soil", b: "water", produceA: "mushroom", produceB: null, probability: 0.001,
+    desc: "Mushrooms sprout from damp soil",
+    group: "Water",
+  },
+
   // Ice / Temperature
   {
     a: "ice", b: "salt", produceA: "water", produceB: "water", probability: 0.1,
@@ -220,6 +249,157 @@ export const REACTIONS: ReactionRule[] = [
     a: "co2", b: "fire", produceA: null, produceB: "smoke", probability: 0.8,
     desc: "CO2 smothers fire (used in fire extinguishers)",
     group: "Gas reactions",
+  },
+
+  // Methane
+  {
+    a: "fire", b: "methane", produceA: "spark", produceB: "fire", probability: 0.95,
+    desc: "Methane ignites explosively on contact with fire",
+    group: "Gas reactions",
+  },
+  {
+    a: "spark", b: "methane", produceA: "fire", produceB: "fire", probability: 0.9,
+    desc: "Sparks ignite methane gas",
+    group: "Gas reactions",
+  },
+
+  // Organic
+  {
+    a: "fire", b: "plant", produceA: "fire", produceB: "fire", probability: 0.4,
+    desc: "Plants catch fire and spread it to nearby vegetation",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "stem", produceA: "fire", produceB: "charcoal", probability: 0.2,
+    desc: "Stems burn slowly into charcoal",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "leaf", produceA: "fire", produceB: "ash", probability: 0.5,
+    desc: "Leaves catch fire easily",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "vine", produceA: "fire", produceB: "ash", probability: 0.35,
+    desc: "Vines burn to ash",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "flower", produceA: "fire", produceB: "ash", probability: 0.6,
+    desc: "Flowers burn quickly",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "grass", produceA: "fire", produceB: "ash", probability: 0.5,
+    desc: "Grass catches fire rapidly",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "moss", produceA: "smoke", produceB: "ash", probability: 0.3,
+    desc: "Moss smolders and produces smoke",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "algae", produceA: "steam", produceB: null, probability: 0.4,
+    desc: "Algae evaporates in fire",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "seed", produceA: "fire", produceB: "ash", probability: 0.6,
+    desc: "Seeds are flammable",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "plant", produceA: "fire", produceB: "charcoal", probability: 0.5,
+    desc: "Lava chars plants on contact",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "stem", produceA: "fire", produceB: "charcoal", probability: 0.4,
+    desc: "Lava chars stems",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "leaf", produceA: "fire", produceB: "ash", probability: 0.6,
+    desc: "Lava incinerates leaves",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "vine", produceA: "fire", produceB: "charcoal", probability: 0.5,
+    desc: "Lava chars vines on contact",
+    group: "Organic",
+  },
+  {
+    a: "acid", b: "plant", produceA: "smoke", produceB: null, probability: 0.1,
+    desc: "Acid dissolves organic plant matter",
+    group: "Organic",
+  },
+  {
+    a: "acid", b: "leaf", produceA: "smoke", produceB: null, probability: 0.12,
+    desc: "Acid dissolves leaves",
+    group: "Organic",
+  },
+  {
+    a: "acid", b: "vine", produceA: "smoke", produceB: null, probability: 0.1,
+    desc: "Acid dissolves vines",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "fruit", produceA: "fire", produceB: "ash", probability: 0.5,
+    desc: "Fruit burns quickly",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "mushroom", produceA: "smoke", produceB: "ash", probability: 0.25,
+    desc: "Mushrooms smolder when burned",
+    group: "Organic",
+  },
+  {
+    a: "fire", b: "pollen", produceA: "spark", produceB: "fire", probability: 0.95,
+    desc: "Pollen is extremely flammable and ignites in a flash",
+    group: "Organic",
+  },
+  {
+    a: "spark", b: "pollen", produceA: "fire", produceB: "fire", probability: 0.9,
+    desc: "A spark is enough to ignite airborne pollen",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "fruit", produceA: "fire", produceB: "smoke", probability: 0.6,
+    desc: "Lava incinerates fruit",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "mushroom", produceA: "fire", produceB: "ash", probability: 0.5,
+    desc: "Lava destroys mushrooms",
+    group: "Organic",
+  },
+  {
+    a: "acid", b: "mushroom", produceA: "smoke", produceB: null, probability: 0.08,
+    desc: "Acid dissolves mushrooms",
+    group: "Organic",
+  },
+
+  // Engineered
+  {
+    a: "fire", b: "wax", produceA: "fire", produceB: "oil", probability: 0.1,
+    desc: "Wax melts into oil when heated",
+    group: "Engineered",
+  },
+  {
+    a: "fire", b: "dust", produceA: "spark", produceB: "fire", probability: 0.9,
+    desc: "Dust ignites instantly, creating a flash fire",
+    group: "Engineered",
+  },
+  {
+    a: "spark", b: "dust", produceA: "fire", produceB: "fire", probability: 0.85,
+    desc: "Dust explosions can be triggered by a single spark",
+    group: "Engineered",
+  },
+  {
+    a: "lava", b: "wax", produceA: "fire", produceB: "oil", probability: 0.3,
+    desc: "Lava melts wax into oil and ignites it",
+    group: "Engineered",
   },
 ];
 
