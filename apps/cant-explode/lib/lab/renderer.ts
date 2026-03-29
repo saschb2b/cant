@@ -14,6 +14,11 @@ const TRANSLUCENT: Record<string, number> = {
   pollen: 0.2,
 };
 
+/** Cached ImageData to avoid allocating a new buffer every frame. */
+let cachedImageData: ImageData | null = null;
+let cachedW = 0;
+let cachedH = 0;
+
 /**
  * Render the grid to a canvas context using ImageData for performance.
  * Uses the atmosphere for dynamic gradient background and ambient effects.
@@ -26,8 +31,17 @@ export function renderGrid(
 ): void {
   const canvasW = grid.width * cellSize;
   const canvasH = grid.height * cellSize;
-  const imageData = ctx.createImageData(canvasW, canvasH);
+  if (!cachedImageData || cachedW !== canvasW || cachedH !== canvasH) {
+    cachedImageData = ctx.createImageData(canvasW, canvasH);
+    cachedW = canvasW;
+    cachedH = canvasH;
+  }
+  const imageData = cachedImageData;
   const data = imageData.data;
+
+  // Pre-compute per-frame constants
+  const nightGlow = Math.floor((1 - atmo.daylight) * 25);
+  const lavaGlow = Math.floor((1 - atmo.daylight) * 15);
 
   // Pre-compute sky colors per row
   const skyColors: [number, number, number][] = [];
@@ -51,8 +65,10 @@ export function renderGrid(
         g = particle.g;
         b = particle.b;
 
+        const el = particle.element;
+
         // Translucent gases: blend with background
-        const opacity = TRANSLUCENT[particle.element];
+        const opacity = TRANSLUCENT[el];
         if (opacity !== undefined) {
           const inv = 1 - opacity;
           r = Math.round(r * opacity + bg[0] * inv);
@@ -60,70 +76,60 @@ export function renderGrid(
           b = Math.round(b * opacity + bg[2] * inv);
         }
 
-        // Fire glow: brighter at night
-        if (particle.element === "fire") {
-          const nightBoost = Math.floor((1 - atmo.daylight) * 25);
-          r = Math.min(255, r + 40 + nightBoost);
-          g = Math.min(255, g + 15 + Math.floor(nightBoost * 0.4));
-        }
-
-        // Lava glow: brighter at night
-        if (particle.element === "lava") {
-          const nightBoost = Math.floor((1 - atmo.daylight) * 15);
-          r = Math.min(255, r + 20 + nightBoost);
-          g = Math.min(255, g + 5 + Math.floor(nightBoost * 0.3));
-        }
-
-        // Spark: warm white-yellow glow
-        if (particle.element === "spark") {
-          r = 255;
-          g = 245;
-          b = 140;
-        }
-
-        // Flower: very subtle color drift
-        if (particle.element === "flower" && Math.random() < 0.005) {
-          particle.r = Math.min(255, Math.max(150, particle.r + Math.floor(Math.random() * 4 - 2)));
-          particle.b = Math.min(255, Math.max(80, particle.b + Math.floor(Math.random() * 4 - 2)));
-        }
-
-        // TNT: steady red
-        if (particle.element === "tnt") {
-          r = Math.min(255, r + 5);
-        }
-
-        // Fruit: gentle glow to stand out against leaves
-        if (particle.element === "fruit" && Math.random() < 0.05) {
-          r = Math.min(255, r + 15);
-          g = Math.min(255, g + 5);
-        }
-
-        // Pollen: gentle golden tint
-        if (particle.element === "pollen") {
-          r = Math.min(255, r + 15);
-          g = Math.min(255, g + 10);
-        }
-
-        // Bee: bright yellow-black stripe effect
-        if (particle.element === "bee") {
-          const stripe = ((gx + gy) % 2 === 0);
-          r = stripe ? 230 : 40;
-          g = stripe ? 190 : 30;
-          b = stripe ? 20 : 10;
-        }
-
-        // Leaf: subtle canopy depth shimmer
-        if (particle.element === "leaf" && Math.random() < 0.005) {
-          particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 4 - 2)));
-        }
-
-        // Algae: subtle underwater shimmer
-        if (particle.element === "algae") {
-          const algaeOpacity = 0.7;
-          const inv = 1 - algaeOpacity;
-          r = Math.round(r * algaeOpacity + bg[0] * inv);
-          g = Math.round(g * algaeOpacity + bg[1] * inv);
-          b = Math.round(b * algaeOpacity + bg[2] * inv);
+        // Element-specific rendering (single switch avoids repeated string comparisons)
+        switch (el) {
+          case "fire": {
+            const nightBoost = nightGlow;
+            r = Math.min(255, r + 40 + nightBoost);
+            g = Math.min(255, g + 15 + ((nightBoost * 2 + 2) >> 2));
+            break;
+          }
+          case "lava": {
+            const nightBoost = lavaGlow;
+            r = Math.min(255, r + 20 + nightBoost);
+            g = Math.min(255, g + 5 + ((nightBoost * 3 + 5) / 10) | 0);
+            break;
+          }
+          case "spark":
+            r = 255; g = 245; b = 140;
+            break;
+          case "flower":
+            if (Math.random() < 0.005) {
+              particle.r = Math.min(255, Math.max(150, particle.r + Math.floor(Math.random() * 4 - 2)));
+              particle.b = Math.min(255, Math.max(80, particle.b + Math.floor(Math.random() * 4 - 2)));
+            }
+            break;
+          case "tnt":
+            r = Math.min(255, r + 5);
+            break;
+          case "fruit":
+            if (Math.random() < 0.05) {
+              r = Math.min(255, r + 15);
+              g = Math.min(255, g + 5);
+            }
+            break;
+          case "pollen":
+            r = Math.min(255, r + 15);
+            g = Math.min(255, g + 10);
+            break;
+          case "bee": {
+            const stripe = ((gx + gy) % 2 === 0);
+            r = stripe ? 230 : 40;
+            g = stripe ? 190 : 30;
+            b = stripe ? 20 : 10;
+            break;
+          }
+          case "leaf":
+            if (Math.random() < 0.005) {
+              particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 4 - 2)));
+            }
+            break;
+          case "algae": {
+            r = Math.round(r * 0.7 + bg[0] * 0.3);
+            g = Math.round(g * 0.7 + bg[1] * 0.3);
+            b = Math.round(b * 0.7 + bg[2] * 0.3);
+            break;
+          }
         }
       } else {
         // Empty cell: start with sky gradient

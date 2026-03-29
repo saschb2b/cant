@@ -82,15 +82,29 @@ export function SandboxCanvas({
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
       if (!drawingRef.current) return;
-      const pos = toGridCoords(e.clientX, e.clientY);
-      if (!pos) return;
-      const last = lastPosRef.current;
-      if (last) {
-        drawLine(last.x, last.y, pos.gx, pos.gy);
-      } else {
-        onDraw(pos.gx, pos.gy);
+
+      // Use coalesced events for smoother strokes (batches rapid moves)
+      const events =
+        typeof e.nativeEvent.getCoalescedEvents === "function"
+          ? e.nativeEvent.getCoalescedEvents()
+          : null;
+
+      const points =
+        events && events.length > 0
+          ? events
+          : [e.nativeEvent];
+
+      for (const pe of points) {
+        const pos = toGridCoords(pe.clientX, pe.clientY);
+        if (!pos) continue;
+        const last = lastPosRef.current;
+        if (last) {
+          drawLine(last.x, last.y, pos.gx, pos.gy);
+        } else {
+          onDraw(pos.gx, pos.gy);
+        }
+        lastPosRef.current = { x: pos.gx, y: pos.gy };
       }
-      lastPosRef.current = { x: pos.gx, y: pos.gy };
     },
     [toGridCoords, onDraw, drawLine],
   );

@@ -1,7 +1,7 @@
 import type { Grid, Particle } from "./types";
 import { ELEMENTS, variedColor } from "./elements";
 import { getCell, setCell, swapCells, inBounds } from "./grid";
-import { REACTIONS } from "./reactions";
+import { REACTION_MAP } from "./reactions";
 
 /** Current daylight level for this tick (0=night, 1=day). Set by tickSimulation. */
 let currentDaylight = 1;
@@ -988,23 +988,22 @@ function checkReactions(grid: Grid, x: number, y: number): void {
   const particle = getCell(grid, x, y);
   if (!particle) return;
 
-  const neighbors: [number, number][] = [
+  const dirs: [number, number][] = [
     [x, y - 1],
     [x, y + 1],
     [x - 1, y],
     [x + 1, y],
   ];
 
-  for (const [nx, ny] of neighbors) {
+  for (const [nx, ny] of dirs) {
     const neighbor = getCell(grid, nx, ny);
     if (!neighbor) continue;
 
-    for (const rule of REACTIONS) {
-      const match =
-        (particle.element === rule.a && neighbor.element === rule.b) ||
-        (particle.element === rule.b && neighbor.element === rule.a);
+    const key = `${particle.element}|${neighbor.element}`;
+    const rules = REACTION_MAP.get(key);
+    if (!rules) continue;
 
-      if (!match) continue;
+    for (const rule of rules) {
       if (Math.random() > rule.probability) continue;
 
       const isForward = particle.element === rule.a;

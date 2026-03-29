@@ -449,6 +449,28 @@ export const REACTION_GROUPS: string[] = [
 ];
 
 /**
+ * Pre-built lookup map for O(1) reaction checks.
+ * Key: "elementA|elementB" (both orderings stored).
+ * Value: array of matching rules.
+ */
+export const REACTION_MAP: Map<string, ReactionRule[]> = (() => {
+  const map = new Map<string, ReactionRule[]>();
+  for (const rule of REACTIONS) {
+    const fwd = `${rule.a}|${rule.b}`;
+    const rev = `${rule.b}|${rule.a}`;
+    let fwdList = map.get(fwd);
+    if (!fwdList) { fwdList = []; map.set(fwd, fwdList); }
+    fwdList.push(rule);
+    if (rule.a !== rule.b) {
+      let revList = map.get(rev);
+      if (!revList) { revList = []; map.set(rev, revList); }
+      revList.push(rule);
+    }
+  }
+  return map;
+})();
+
+/**
  * Notable non-reactions for the reaction book.
  */
 export const NON_REACTIONS: { a: string; b: string; desc: string }[] = [
