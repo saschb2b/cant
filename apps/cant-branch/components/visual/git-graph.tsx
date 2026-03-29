@@ -4,23 +4,28 @@ import Paper from "@mui/material/Paper";
 import { Gitgraph, templateExtend, TemplateName } from "@gitgraph/react";
 
 const template = templateExtend(TemplateName.Metro, {
-  branch: { lineWidth: 3, spacing: 28, label: { font: "10px sans-serif" } },
+  branch: {
+    lineWidth: 3,
+    spacing: 46,
+    label: { font: "9px sans-serif", borderRadius: 4 },
+  },
   commit: {
-    spacing: 24,
-    dot: { size: 4 },
+    spacing: 20,
+    dot: { size: 3 },
     message: {
       displayAuthor: false,
       displayHash: false,
-      font: "11px monospace",
+      font: "10px monospace",
     },
   },
 });
 
 const graphWrapperSx = {
   p: 1,
-  height: 280,
+  width: "100%",
+  minHeight: 200,
   overflow: "hidden",
-  "& svg": { maxHeight: 260 },
+  "& svg": { width: "100%" },
 } as const;
 
 export function GitGraphMessyMerge() {

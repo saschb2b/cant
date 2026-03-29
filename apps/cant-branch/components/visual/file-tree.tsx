@@ -8,9 +8,10 @@ import ListItem from "@mui/material/ListItem";
 import { Folder, File, FileText } from "lucide-react";
 
 const treeSx = {
-  height: 280,
+  width: "100%",
+  minHeight: 200,
   overflow: "hidden",
-  p: 1,
+  p: 1.5,
 } as const;
 
 const iconSx = { flexShrink: 0, width: 14, height: 14 } as const;
@@ -110,11 +111,6 @@ const dirtyEntries: TreeEntry[] = [
 export function FileTreeDirty() {
   return (
     <Paper sx={treeSx}>
-      <Typography
-        sx={{ fontSize: 10, fontWeight: 600, color: "error.main", mb: 0.5 }}
-      >
-        No .gitignore configured
-      </Typography>
       <TreeView entries={dirtyEntries} />
     </Paper>
   );
@@ -138,11 +134,6 @@ const cleanEntries: TreeEntry[] = [
 export function FileTreeClean() {
   return (
     <Paper sx={treeSx}>
-      <Typography
-        sx={{ fontSize: 10, fontWeight: 600, color: "success.main", mb: 0.5 }}
-      >
-        .gitignore: node_modules, dist, .env, .DS_Store
-      </Typography>
       <TreeView entries={cleanEntries} />
     </Paper>
   );
@@ -166,11 +157,6 @@ const badStructureEntries: TreeEntry[] = [
 export function FileTreeBadStructure() {
   return (
     <Paper sx={treeSx}>
-      <Typography
-        sx={{ fontSize: 10, fontWeight: 600, color: "text.secondary", mb: 0.5 }}
-      >
-        No README, no structure, no conventions
-      </Typography>
       <TreeView entries={badStructureEntries} />
     </Paper>
   );
@@ -197,11 +183,6 @@ const goodStructureEntries: TreeEntry[] = [
 export function FileTreeGoodStructure() {
   return (
     <Paper sx={treeSx}>
-      <Typography
-        sx={{ fontSize: 10, fontWeight: 600, color: "success.main", mb: 0.5 }}
-      >
-        Well-organized with documentation
-      </Typography>
       <TreeView entries={goodStructureEntries} />
     </Paper>
   );
@@ -242,17 +223,12 @@ const bloatedEntries: TreeEntry[] = [
 export function FileTreeBloatedRepo() {
   return (
     <Paper sx={treeSx}>
-      <Typography
-        sx={{ fontSize: 10, fontWeight: 600, color: "error.main", mb: 0.5 }}
-      >
-        Large binaries tracked in Git history
-      </Typography>
       <TreeView entries={bloatedEntries} />
       <Typography
         sx={{
           fontSize: 10,
           fontFamily: "monospace",
-          color: "error.main",
+          color: "text.secondary",
           mt: 0.5,
           px: 1,
         }}
@@ -296,23 +272,114 @@ const lfsEntries: TreeEntry[] = [
 export function FileTreeLFSRepo() {
   return (
     <Paper sx={treeSx}>
-      <Typography
-        sx={{ fontSize: 10, fontWeight: 600, color: "success.main", mb: 0.5 }}
-      >
-        Large files managed with Git LFS
-      </Typography>
       <TreeView entries={lfsEntries} />
       <Typography
         sx={{
           fontSize: 10,
           fontFamily: "monospace",
-          color: "success.main",
+          color: "text.secondary",
           mt: 0.5,
           px: 1,
         }}
       >
         git clone: 23 MB (LFS on demand)
       </Typography>
+    </Paper>
+  );
+}
+
+/* ---------- Inconsistent naming (rs-004 left) ---------- */
+
+const inconsistentEntries: TreeEntry[] = [
+  { name: "src/", type: "folder" },
+  { name: "components/", type: "folder", indent: 1 },
+  { name: "Button.tsx", type: "file", indent: 2 },
+  { name: "button.css", type: "file", indent: 2 },
+  { name: "userProfile/", type: "folder", indent: 1 },
+  { name: "user_profile.tsx", type: "file", indent: 2 },
+  { name: "UserProfileStyles.css", type: "file", indent: 2 },
+  { name: "Utils/", type: "folder", indent: 1 },
+  { name: "helpers.ts", type: "file", indent: 2 },
+  { name: "DateFormatting.ts", type: "file", indent: 2 },
+  { name: "api.ts", type: "file", indent: 1 },
+  { name: "API_types.ts", type: "file", indent: 1 },
+];
+
+export function FileTreeInconsistentNaming() {
+  return (
+    <Paper sx={treeSx}>
+      <TreeView entries={inconsistentEntries} />
+    </Paper>
+  );
+}
+
+/* ---------- Consistent naming (rs-004 right) ---------- */
+
+const consistentEntries: TreeEntry[] = [
+  { name: "src/", type: "folder" },
+  { name: "components/", type: "folder", indent: 1 },
+  { name: "button.tsx", type: "file", indent: 2 },
+  { name: "button.module.css", type: "file", indent: 2 },
+  { name: "user-profile/", type: "folder", indent: 1 },
+  { name: "user-profile.tsx", type: "file", indent: 2 },
+  { name: "user-profile.module.css", type: "file", indent: 2 },
+  { name: "lib/", type: "folder", indent: 1 },
+  { name: "helpers.ts", type: "file", indent: 2 },
+  { name: "date-formatting.ts", type: "file", indent: 2 },
+  { name: "api/", type: "folder", indent: 1 },
+  { name: "client.ts", type: "file", indent: 2 },
+  { name: "types.ts", type: "file", indent: 2 },
+];
+
+export function FileTreeConsistentNaming() {
+  return (
+    <Paper sx={treeSx}>
+      <TreeView entries={consistentEntries} />
+    </Paper>
+  );
+}
+
+/* ---------- Monorepo (rs-006 left) ---------- */
+
+const monorepoEntries: TreeEntry[] = [
+  { name: "my-platform/", type: "folder" },
+  { name: "apps/", type: "folder", indent: 1 },
+  { name: "web/", type: "folder", indent: 2 },
+  { name: "api/", type: "folder", indent: 2 },
+  { name: "admin/", type: "folder", indent: 2 },
+  { name: "packages/", type: "folder", indent: 1 },
+  { name: "shared/", type: "folder", indent: 2 },
+  { name: "ui/", type: "folder", indent: 2 },
+  { name: "db/", type: "folder", indent: 2 },
+  { name: "package.json", type: "file", indent: 1 },
+  { name: "turbo.json", type: "file", indent: 1 },
+];
+
+export function FileTreeMonorepo() {
+  return (
+    <Paper sx={treeSx}>
+      <TreeView entries={monorepoEntries} />
+    </Paper>
+  );
+}
+
+/* ---------- Polyrepo (rs-006 right) ---------- */
+
+const polyrepoEntries: TreeEntry[] = [
+  { name: "my-platform-web/", type: "folder" },
+  { name: "package.json", type: "file", indent: 1 },
+  { name: "my-platform-api/", type: "folder" },
+  { name: "package.json", type: "file", indent: 1 },
+  { name: "my-platform-admin/", type: "folder" },
+  { name: "package.json", type: "file", indent: 1 },
+  { name: "my-platform-shared/", type: "folder" },
+  { name: "package.json", type: "file", indent: 1 },
+];
+
+export function FileTreePolyrepo() {
+  return (
+    <Paper sx={treeSx}>
+      <TreeView entries={polyrepoEntries} />
     </Paper>
   );
 }

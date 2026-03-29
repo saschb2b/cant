@@ -6,7 +6,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
 const cardSx = {
-  height: 280,
+  width: "100%",
+  minHeight: 200,
   overflow: "hidden",
   bgcolor: "#1a1a2e",
   p: 0,
@@ -92,13 +93,7 @@ export function CommitCardBadMessage() {
         </Typography>
       </Box>
 
-      <Box sx={{ px: 1.5, mt: 1.5 }}>
-        <Typography
-          sx={{ fontFamily: "monospace", fontSize: 9, color: "#666", fontStyle: "italic" }}
-        >
-          No body. No footer. No context.
-        </Typography>
-      </Box>
+      <Box sx={{ px: 1.5, mt: 1.5 }} />
     </Paper>
   );
 }

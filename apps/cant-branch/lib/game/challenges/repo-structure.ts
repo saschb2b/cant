@@ -157,34 +157,9 @@ pnpm test
     title: "Directory layout consistency",
     prompt: "Which project structure is easier to navigate?",
     content: {
-      type: "code",
-
-      left: `src/
-  components/
-    Button.tsx
-    button.css
-  userProfile/
-    user_profile.tsx
-    UserProfileStyles.css
-  Utils/
-    helpers.ts
-    DateFormatting.ts
-  api.ts
-  API_types.ts`,
-
-      right: `src/
-  components/
-    button.tsx
-    button.module.css
-  user-profile/
-    user-profile.tsx
-    user-profile.module.css
-  lib/
-    helpers.ts
-    date-formatting.ts
-  api/
-    client.ts
-    types.ts`,
+      type: "visual",
+      left: { componentId: "FileTreeInconsistentNaming" },
+      right: { componentId: "FileTreeConsistentNaming" },
     },
 
     correctSide: "right",
@@ -248,33 +223,9 @@ indent_style = tab`,
     prompt:
       "Which repository strategy works better for tightly coupled services?",
     content: {
-      type: "code",
-
-      left: `# Monorepo structure
-my-platform/
-  apps/
-    web/          # Next.js frontend
-    api/          # Express backend
-    admin/        # Admin dashboard
-  packages/
-    shared/       # Shared types, utils
-    ui/           # Component library
-    db/           # Database schema
-  package.json    # Workspace root
-  turbo.json      # Build orchestration`,
-
-      right: `# Polyrepo structure
-my-platform-web/    # Next.js frontend
-  package.json
-
-my-platform-api/    # Express backend
-  package.json
-
-my-platform-admin/  # Admin dashboard
-  package.json
-
-my-platform-shared/ # Published to npm
-  package.json`,
+      type: "visual",
+      left: { componentId: "FileTreeMonorepo" },
+      right: { componentId: "FileTreePolyrepo" },
     },
 
     correctSide: "left",

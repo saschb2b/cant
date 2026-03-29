@@ -6,10 +6,11 @@ import Typography from "@mui/material/Typography";
 import ReactDiffViewer from "react-diff-viewer-continued";
 
 const wrapperSx = {
-  height: 280,
+  width: "100%",
+  minHeight: 200,
   overflow: "hidden",
-  "& pre": { fontSize: "10px !important", lineHeight: "1.4 !important" },
-  "& td": { fontSize: "10px !important" },
+  "& pre": { fontSize: "11px !important", lineHeight: "1.5 !important" },
+  "& td": { fontSize: "11px !important" },
 } as const;
 
 /* ---------- Giant PR (too many unrelated changes) ---------- */
@@ -265,13 +266,13 @@ export function DiffConflictMarkers() {
         sx={{
           px: 1,
           py: 0.5,
-          bgcolor: "#ef535020",
+          bgcolor: "action.hover",
           borderBottom: 1,
           borderColor: "divider",
         }}
       >
-        <Typography sx={{ fontSize: 10, color: "error.main", fontWeight: 600 }}>
-          Conflict markers committed to the codebase
+        <Typography sx={{ fontSize: 10, color: "text.secondary" }}>
+          PR #510: Merge feature/auth into main
         </Typography>
       </Box>
       <ReactDiffViewer
@@ -305,15 +306,13 @@ export function DiffConflictResolved() {
         sx={{
           px: 1,
           py: 0.5,
-          bgcolor: "#66bb6a20",
+          bgcolor: "action.hover",
           borderBottom: 1,
           borderColor: "divider",
         }}
       >
-        <Typography
-          sx={{ fontSize: 10, color: "success.main", fontWeight: 600 }}
-        >
-          Conflict resolved with intent documented
+        <Typography sx={{ fontSize: 10, color: "text.secondary" }}>
+          PR #510: Merge feature/auth into main
         </Typography>
       </Box>
       <ReactDiffViewer

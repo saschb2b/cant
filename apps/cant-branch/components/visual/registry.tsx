@@ -36,6 +36,10 @@ import {
   FileTreeGoodStructure,
   FileTreeBloatedRepo,
   FileTreeLFSRepo,
+  FileTreeInconsistentNaming,
+  FileTreeConsistentNaming,
+  FileTreeMonorepo,
+  FileTreePolyrepo,
 } from "./file-tree";
 import {
   TerminalDestructiveReset,
@@ -90,6 +94,10 @@ export const visualRegistry: Record<string, ComponentType> = {
   FileTreeGoodStructure,
   FileTreeBloatedRepo,
   FileTreeLFSRepo,
+  FileTreeInconsistentNaming,
+  FileTreeConsistentNaming,
+  FileTreeMonorepo,
+  FileTreePolyrepo,
   // Terminal
   TerminalDestructiveReset,
   TerminalSafeRevert,

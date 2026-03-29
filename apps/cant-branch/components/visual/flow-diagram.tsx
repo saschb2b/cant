@@ -5,7 +5,8 @@ import { ReactFlow, type Node, type Edge } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
 const flowWrapperSx = {
-  height: 280,
+  width: "100%",
+  height: 320,
   overflow: "hidden",
   "& .react-flow__attribution": { display: "none" },
 } as const;

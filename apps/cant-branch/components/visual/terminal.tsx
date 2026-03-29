@@ -5,7 +5,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 const terminalSx = {
-  height: 280,
+  width: "100%",
+  minHeight: 200,
   overflow: "hidden",
   bgcolor: "#1a1a2e",
   p: 0,
@@ -24,10 +25,10 @@ const dotSx = (color: string) =>
   ({ width: 8, height: 8, borderRadius: "50%", bgcolor: color }) as const;
 
 const bodySx = {
-  p: 1,
+  p: 1.5,
   fontFamily: "monospace",
-  fontSize: 10,
-  lineHeight: 1.6,
+  fontSize: 12,
+  lineHeight: 1.7,
   color: "#e0e0e0",
   whiteSpace: "pre-wrap",
   overflow: "hidden",
