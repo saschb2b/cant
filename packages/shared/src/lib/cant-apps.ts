@@ -123,8 +123,8 @@ export const ALL_APPS: CantApp[] = [
     playPitch:
       "Think you know git? Test your instincts with commits, branches, merges, and repo management.",
     tags: "Commits, branches, merges, PRs, hooks",
-    colorFrom: "#E84D31",
-    colorTo: "#C2410C",
-    iconSvgContent: `<line x1="90" y1="30" x2="90" y2="150" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/><circle cx="90" cy="50" r="10" fill="#FFFFFF"/><circle cx="90" cy="110" r="10" fill="#FFFFFF"/><circle cx="130" cy="80" r="10" fill="#F9A825"/><line x1="90" y1="70" x2="130" y2="80" stroke="#F9A825" stroke-width="5" stroke-linecap="round"/><line x1="130" y1="80" x2="90" y2="90" stroke="#F9A825" stroke-width="5" stroke-linecap="round"/>`,
+    colorFrom: "#DB2777",
+    colorTo: "#BE185D",
+    iconSvgContent: `<line x1="72" y1="32" x2="72" y2="148" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><circle cx="72" cy="48" r="9" fill="#FFFFFF"/><circle cx="72" cy="90" r="9" fill="#FFFFFF"/><circle cx="72" cy="132" r="9" fill="#FFFFFF"/><circle cx="124" cy="72" r="9" fill="#FBCFE8"/><line x1="72" y1="65" x2="124" y2="72" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/><line x1="124" y1="72" x2="72" y2="85" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/>`,
   },
 ];

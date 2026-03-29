@@ -1,12 +1,19 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#2B4C7E"/>
-      <stop offset="100%" stop-color="#1E3A5F"/>
+      <stop offset="0%" stop-color="#DB2777"/>
+      <stop offset="100%" stop-color="#BE185D"/>
     </linearGradient>
   </defs>
   <rect width="180" height="180" rx="37" fill="url(#bg)"/>
-  <text x="20" y="112" font-family="system-ui, sans-serif" font-weight="700" font-size="72" fill="#E8E0D4">&lt;</text>
-  <circle cx="90" cy="90" r="14" fill="#D4A843"/>
-  <text x="97" y="112" font-family="system-ui, sans-serif" font-weight="700" font-size="72" fill="#E8E0D4">/&gt;</text>
+  <!-- Main branch line -->
+  <line x1="72" y1="32" x2="72" y2="148" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/>
+  <!-- Commits on main -->
+  <circle cx="72" cy="48" r="9" fill="#FFFFFF"/>
+  <circle cx="72" cy="90" r="9" fill="#FFFFFF"/>
+  <circle cx="72" cy="132" r="9" fill="#FFFFFF"/>
+  <!-- Feature branch -->
+  <circle cx="124" cy="72" r="9" fill="#FBCFE8"/>
+  <line x1="72" y1="65" x2="124" y2="72" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/>
+  <line x1="124" y1="72" x2="72" y2="85" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/>
 </svg>

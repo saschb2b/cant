@@ -10,32 +10,40 @@ export default function Icon() {
         width: 32,
         height: 32,
         borderRadius: 7,
-        background: "linear-gradient(135deg, #E84D31, #C2410C)",
+        background: "linear-gradient(135deg, #DB2777, #BE185D)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      {/* Git branch icon: vertical line with a branch off */}
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
         <line
-          x1="10"
+          x1="8"
           y1="3"
-          x2="10"
+          x2="8"
           y2="17"
           stroke="#FFFFFF"
           strokeWidth="2"
           strokeLinecap="round"
         />
-        <circle cx="10" cy="5" r="2" fill="#FFFFFF" />
-        <circle cx="10" cy="15" r="2" fill="#FFFFFF" />
-        <circle cx="16" cy="9" r="2" fill="#F9A825" />
+        <circle cx="8" cy="5" r="2" fill="#FFFFFF" />
+        <circle cx="8" cy="15" r="2" fill="#FFFFFF" />
+        <circle cx="15" cy="9" r="2" fill="#FBCFE8" />
         <line
-          x1="10"
+          x1="8"
           y1="8"
-          x2="16"
+          x2="15"
           y2="9"
-          stroke="#F9A825"
+          stroke="#FBCFE8"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <line
+          x1="15"
+          y1="9"
+          x2="8"
+          y2="11"
+          stroke="#FBCFE8"
           strokeWidth="1.5"
           strokeLinecap="round"
         />

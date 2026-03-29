@@ -17,16 +17,16 @@ const theme = createTheme({
     light: {
       palette: {
         background: {
-          default: "#FBF5F0",
+          default: "#FDF5F9",
           paper: "#FFFFFF",
         },
         primary: {
-          main: "#C2410C",
+          main: "#BE185D",
           contrastText: "#FFFFFF",
         },
         secondary: {
-          main: "#F0E6DA",
-          contrastText: "#2D1B08",
+          main: "#F5E0EC",
+          contrastText: "#2D0A1B",
         },
         error: {
           main: "#B91C1C",
@@ -41,31 +41,31 @@ const theme = createTheme({
           contrastText: "#FFFFFF",
         },
         accent: {
-          main: "#0369A1",
-          light: "#0284C7",
-          dark: "#075985",
+          main: "#7C3AED",
+          light: "#8B5CF6",
+          dark: "#6D28D9",
           contrastText: "#FFFFFF",
         },
         text: {
-          primary: "#1C1410",
-          secondary: "#6B5744",
+          primary: "#1C0F16",
+          secondary: "#6B4458",
         },
-        divider: "#E0D5C8",
+        divider: "#E8D0DC",
       },
     },
     dark: {
       palette: {
         background: {
-          default: "#1C1410",
-          paper: "#2A1F17",
+          default: "#1C0F16",
+          paper: "#2A1722",
         },
         primary: {
-          main: "#F97316",
+          main: "#F472B6",
           contrastText: "#FFFFFF",
         },
         secondary: {
-          main: "#332618",
-          contrastText: "#F0E6DA",
+          main: "#33181E",
+          contrastText: "#F5E0EC",
         },
         error: {
           main: "#EF4444",
@@ -80,16 +80,16 @@ const theme = createTheme({
           contrastText: "#FFFFFF",
         },
         accent: {
-          main: "#38BDF8",
-          light: "#7DD3FC",
-          dark: "#0284C7",
+          main: "#A78BFA",
+          light: "#C4B5FD",
+          dark: "#8B5CF6",
           contrastText: "#FFFFFF",
         },
         text: {
-          primary: "#F0E6DA",
-          secondary: "#B8A48E",
+          primary: "#F5E0EC",
+          secondary: "#B88EA0",
         },
-        divider: "#3D3025",
+        divider: "#3D2530",
         action: {
           hover: "rgba(255,255,255,0.10)",
           selected: "rgba(255,255,255,0.20)",
@@ -129,11 +129,11 @@ const theme = createTheme({
         },
         ".light body, body.light": {
           backgroundImage:
-            "radial-gradient(ellipse at 50% 0%, #F5E8DA 0%, #FBF5F0 60%)",
+            "radial-gradient(ellipse at 50% 0%, #F5DAE8 0%, #FDF5F9 60%)",
         },
         ".dark body, body.dark": {
           backgroundImage:
-            "radial-gradient(ellipse at 50% 0%, #261C14 0%, #1C1410 60%)",
+            "radial-gradient(ellipse at 50% 0%, #26141C 0%, #1C0F16 60%)",
         },
         /* Shiki dual-theme toggle */
         ".shiki-dark": { display: "none" },

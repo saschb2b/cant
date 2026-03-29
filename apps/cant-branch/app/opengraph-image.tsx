@@ -15,7 +15,7 @@ export default function OgImage() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        background: "#1C1410",
+        background: "#1C0F16",
         fontFamily: "system-ui, sans-serif",
       }}
     >
@@ -30,32 +30,32 @@ export default function OgImage() {
       >
         <svg width="80" height="80" viewBox="0 0 180 180" fill="none">
           <line
-            x1="90"
+            x1="72"
             y1="20"
-            x2="90"
+            x2="72"
             y2="160"
-            stroke="#E84D31"
+            stroke="#DB2777"
             strokeWidth="12"
             strokeLinecap="round"
           />
-          <circle cx="90" cy="40" r="14" fill="#E84D31" />
-          <circle cx="90" cy="140" r="14" fill="#E84D31" />
-          <circle cx="140" cy="80" r="14" fill="#F9A825" />
+          <circle cx="72" cy="40" r="14" fill="#DB2777" />
+          <circle cx="72" cy="140" r="14" fill="#DB2777" />
+          <circle cx="130" cy="80" r="14" fill="#FBCFE8" />
           <line
-            x1="90"
+            x1="72"
             y1="70"
-            x2="140"
+            x2="130"
             y2="80"
-            stroke="#F9A825"
+            stroke="#FBCFE8"
             strokeWidth="10"
             strokeLinecap="round"
           />
           <line
-            x1="140"
+            x1="130"
             y1="80"
-            x2="90"
+            x2="72"
             y2="100"
-            stroke="#F9A825"
+            stroke="#FBCFE8"
             strokeWidth="10"
             strokeLinecap="round"
           />
@@ -66,7 +66,7 @@ export default function OgImage() {
         style={{
           fontSize: 56,
           fontWeight: 700,
-          color: "#F0E6DA",
+          color: "#F5E0EC",
           marginBottom: 16,
         }}
       >
@@ -76,7 +76,7 @@ export default function OgImage() {
       <div
         style={{
           fontSize: 26,
-          color: "#B8A48E",
+          color: "#B88EA0",
           maxWidth: 700,
           textAlign: "center",
           lineHeight: 1.4,
@@ -112,7 +112,7 @@ export default function OgImage() {
           style={{
             display: "flex",
             alignItems: "center",
-            color: "#6B5744",
+            color: "#6B4458",
             fontSize: 22,
           }}
         >
