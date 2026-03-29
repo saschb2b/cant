@@ -249,12 +249,40 @@ function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void 
 
   consumeWater(grid, x, y);
 
-  // Open soil: become a plant (the growth engine)
+  // Determine biome from position (low-frequency spatial variation)
+  // Nearby seeds get similar biomes, creating local forest consistency
+  const biomeHash = Math.sin(x * 0.07 + 3.7) * Math.sin(x * 0.13 + 1.1);
+  const biomeVal = (biomeHash + 1) / 2; // 0-1
+
+  // Biome sets the tree's DNA via color channels
   const p = createParticle("plant");
   p.lifetime = 0;
+
+  // Encode biome into RGB (overrides random color)
+  if (biomeVal < 0.2) {
+    // Scrubland: short bushy shrubs (3-6 tall, wide canopy)
+    p.r = 3 + Math.floor(Math.random() * 4);     // height 3-6
+    p.g = 180 + Math.floor(Math.random() * 40);   // wide canopy, moderate lean
+    p.b = 10 + Math.floor(Math.random() * 20);    // low branching
+  } else if (biomeVal < 0.55) {
+    // Temperate forest: medium trees (7-12 tall, moderate canopy)
+    p.r = 7 + Math.floor(Math.random() * 6);      // height 7-12
+    p.g = 100 + Math.floor(Math.random() * 60);   // moderate canopy
+    p.b = 40 + Math.floor(Math.random() * 40);    // moderate branching
+  } else if (biomeVal < 0.85) {
+    // Tall forest: tall narrow trees (10-18 tall, narrow canopy)
+    p.r = 10 + Math.floor(Math.random() * 9);     // height 10-18
+    p.g = 40 + Math.floor(Math.random() * 40);    // narrow canopy, slight lean
+    p.b = 60 + Math.floor(Math.random() * 50);    // frequent branching
+  } else {
+    // Ancient grove: mammoth trees (16-25 tall, massive canopy, rare)
+    p.r = 16 + Math.floor(Math.random() * 10);    // height 16-25
+    p.g = 200 + Math.floor(Math.random() * 50);   // huge canopy
+    p.b = 80 + Math.floor(Math.random() * 60);    // heavy branching
+  }
+
   p.updated = true;
   setCell(grid, x, y, p);
-  // Also try to grow grass around the base
   spawnAt(grid, x - 1, y, "grass");
   spawnAt(grid, x + 1, y, "grass");
 }
@@ -276,12 +304,12 @@ function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void
   particle.lifetime++;
   const stage = particle.lifetime;
 
-  // Tree DNA from initial color values
-  const trunkHeight = 5 + (particle.r % 10);           // 5-14 cells tall
-  const lean = ((particle.r % 3) - 1);                  // -1, 0, or 1 lean direction
-  const leanChance = 0.15 + (particle.g % 10) * 0.03;   // 0.15-0.42 lean probability
-  const branchFreq = 0.08 + (particle.b % 8) * 0.03;    // 0.08-0.29 branch probability
-  const canopyWidth = 4 + (particle.g % 5);              // 4-8 canopy radius
+  // Tree DNA: r=trunk height, g=canopy/lean, b=branching
+  const trunkHeight = particle.r;                                   // direct height value
+  const lean = particle.g > 160 ? 1 : particle.g < 80 ? -1 : 0;   // lean from g range
+  const leanChance = 0.1 + (particle.g % 30) * 0.01;               // 0.1-0.4
+  const branchFreq = particle.b / 500;                               // 0.0-0.28
+  const canopyWidth = Math.max(3, Math.floor(particle.g / 30));     // 1-8+ radius
 
   // ---- Trunk growing phase ----
   if (stage <= trunkHeight) {
