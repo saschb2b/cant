@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -14,6 +15,8 @@ interface LearnSection {
   description: string;
   count: number;
   preview: { goodHtml: string; badHtml: string } | null;
+  /** Whether a non-code preview exists for this category (used with renderPreview). */
+  hasPreview?: boolean;
 }
 
 interface LearnIndexPageProps {
@@ -35,6 +38,13 @@ interface LearnIndexPageProps {
   badLabel?: string;
   /** Label for the "good" panel header. Defaults to "Prefer". */
   goodLabel?: string;
+  /**
+   * Custom preview renderer for non-code content types (visual, molecule).
+   * When provided, renders this instead of the default code preview for
+   * categories where `hasPreview` is true but `preview` is null.
+   * Receives the category slug and returns a ReactNode with both sides.
+   */
+  renderPreview?: (category: string) => ReactNode;
 }
 
 export function LearnIndexPage({
@@ -47,6 +57,7 @@ export function LearnIndexPage({
   learningPathDescription,
   badLabel = "Avoid",
   goodLabel = "Prefer",
+  renderPreview,
 }: LearnIndexPageProps) {
   return (
     <>
@@ -189,7 +200,7 @@ export function LearnIndexPage({
                 </Typography>
               </Box>
 
-              {section.preview && (
+              {(section.preview || (section.hasPreview && renderPreview)) && (
                 <Stack
                   direction={{ xs: "column", sm: "row" }}
                   divider={
@@ -205,97 +216,103 @@ export function LearnIndexPage({
                     bgcolor: "background.paper",
                   }}
                 >
-                  <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={0.75}
-                      sx={{ px: 2, pt: 1.5 }}
-                    >
-                      <Box
-                        sx={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: "50%",
-                          bgcolor:
-                            "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: "error.main",
-                        }}
-                      >
-                        <X size={9} strokeWidth={3} />
+                  {section.preview ? (
+                    <>
+                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          spacing={0.75}
+                          sx={{ px: 2, pt: 1.5 }}
+                        >
+                          <Box
+                            sx={{
+                              width: 16,
+                              height: 16,
+                              borderRadius: "50%",
+                              bgcolor:
+                                "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "error.main",
+                            }}
+                          >
+                            <X size={9} strokeWidth={3} />
+                          </Box>
+                          <Typography
+                            variant="caption"
+                            fontWeight={600}
+                            fontFamily="var(--font-geist-mono), monospace"
+                            color="error.main"
+                          >
+                            {badLabel}
+                          </Typography>
+                        </Stack>
+                        <Box
+                          sx={{
+                            ...codeBlockStyles,
+                            "& pre": {
+                              fontSize: "0.75rem",
+                              p: 1.5,
+                            },
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: section.preview.badHtml,
+                          }}
+                        />
                       </Box>
-                      <Typography
-                        variant="caption"
-                        fontWeight={600}
-                        fontFamily="var(--font-geist-mono), monospace"
-                        color="error.main"
-                      >
-                        {badLabel}
-                      </Typography>
-                    </Stack>
-                    <Box
-                      sx={{
-                        ...codeBlockStyles,
-                        "& pre": {
-                          fontSize: "0.75rem",
-                          p: 1.5,
-                        },
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: section.preview.badHtml,
-                      }}
-                    />
-                  </Box>
 
-                  <Divider sx={{ display: { sm: "none" } }} />
+                      <Divider sx={{ display: { sm: "none" } }} />
 
-                  <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={0.75}
-                      sx={{ px: 2, pt: 1.5 }}
-                    >
-                      <Box
-                        sx={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: "50%",
-                          bgcolor:
-                            "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: "success.main",
-                        }}
-                      >
-                        <Check size={9} strokeWidth={3} />
+                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          spacing={0.75}
+                          sx={{ px: 2, pt: 1.5 }}
+                        >
+                          <Box
+                            sx={{
+                              width: 16,
+                              height: 16,
+                              borderRadius: "50%",
+                              bgcolor:
+                                "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "success.main",
+                            }}
+                          >
+                            <Check size={9} strokeWidth={3} />
+                          </Box>
+                          <Typography
+                            variant="caption"
+                            fontWeight={600}
+                            fontFamily="var(--font-geist-mono), monospace"
+                            color="success.main"
+                          >
+                            {goodLabel}
+                          </Typography>
+                        </Stack>
+                        <Box
+                          sx={{
+                            ...codeBlockStyles,
+                            "& pre": {
+                              fontSize: "0.75rem",
+                              p: 1.5,
+                            },
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: section.preview.goodHtml,
+                          }}
+                        />
                       </Box>
-                      <Typography
-                        variant="caption"
-                        fontWeight={600}
-                        fontFamily="var(--font-geist-mono), monospace"
-                        color="success.main"
-                      >
-                        {goodLabel}
-                      </Typography>
-                    </Stack>
-                    <Box
-                      sx={{
-                        ...codeBlockStyles,
-                        "& pre": {
-                          fontSize: "0.75rem",
-                          p: 1.5,
-                        },
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: section.preview.goodHtml,
-                      }}
-                    />
-                  </Box>
+                    </>
+                  ) : (
+                    renderPreview?.(section.category)
+                  )}
                 </Stack>
               )}
             </Paper>
