@@ -63,8 +63,9 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   compost: { behavior: "powder", baseColor: [65, 50, 25], density: 2, flammable: false },
 
   // --- Creatures ---
-  worm: { behavior: "critter", baseColor: [160, 100, 80], density: 3, flammable: false, lifetime: 2500 },
+  worm: { behavior: "critter", baseColor: [160, 100, 80], density: 3, flammable: false, lifetime: 15000 },
   bee: { behavior: "critter", baseColor: [220, 190, 40], density: 0, flammable: false, lifetime: 600 },
+  human: { behavior: "critter", baseColor: [210, 170, 130], density: 3, flammable: false, lifetime: 0 },
 
   // --- Engineered ---
   fuse: { behavior: "fuse", baseColor: [160, 120, 80], density: 99, flammable: false },
@@ -98,6 +99,10 @@ export const ELEMENT_GROUPS: { label: string; elements: ElementType[] }[] = [
   {
     label: "Build",
     elements: ["mercury", "glass"],
+  },
+  {
+    label: "Life",
+    elements: ["human"],
   },
 ];
 

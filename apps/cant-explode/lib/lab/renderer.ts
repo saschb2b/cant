@@ -19,6 +19,45 @@ let cachedImageData: ImageData | null = null;
 let cachedW = 0;
 let cachedH = 0;
 
+/** Human sprite: 3 wide x 5 tall, bottom-center is the particle position.
+ *  Each frame is a flat array of [dx, dy, colorIndex] entries.
+ *  colorIndex: 0=skin, 1=shirt, 2=pants, 3=transparent (skip) */
+type SpritePixel = [number, number, number];
+
+// Walk frame 1: left leg forward
+const HUMAN_FRAME_A: SpritePixel[] = [
+  [0, -4, 0],                         //  H    head
+  [-1, -3, 1], [0, -3, 1], [1, -3, 1], // HHH  shoulders
+  [0, -2, 1],                          //  H    torso
+  [-1, -1, 2], [1, 0, 2],              // L  R  legs staggered
+  [0, -1, 2], [0, 0, 2],              //  LL   connecting
+];
+
+// Walk frame 2: right leg forward
+const HUMAN_FRAME_B: SpritePixel[] = [
+  [0, -4, 0],                         //  H    head
+  [-1, -3, 1], [0, -3, 1], [1, -3, 1], // HHH  shoulders
+  [0, -2, 1],                          //  H    torso
+  [1, -1, 2], [-1, 0, 2],              //  R L  legs staggered
+  [0, -1, 2], [0, 0, 2],              //  LL   connecting
+];
+
+// Idle frame: standing still
+const HUMAN_FRAME_IDLE: SpritePixel[] = [
+  [0, -4, 0],                         //  H    head
+  [-1, -3, 1], [0, -3, 1], [1, -3, 1], // HHH  shoulders
+  [0, -2, 1],                          //  H    torso
+  [-1, -1, 2], [1, -1, 2],            // L R   legs even
+  [-1, 0, 2], [1, 0, 2],              // L R   feet even
+];
+
+// Sleeping: lying on the ground
+const HUMAN_FRAME_SLEEP: SpritePixel[] = [
+  [-2, 0, 0],                                     // H        head
+  [-1, 0, 1], [0, 0, 1], [1, 0, 1],               //  BBB     body
+  [2, 0, 2], [3, 0, 2],                            //      LL  legs
+];
+
 /**
  * Render the grid to a canvas context using ImageData for performance.
  * Uses the atmosphere for dynamic gradient background and ambient effects.
@@ -119,6 +158,11 @@ export function renderGrid(
             b = stripe ? 20 : 10;
             break;
           }
+          case "human":
+            // Humans are drawn as multi-pixel sprites in a second pass
+            // Make the particle cell itself transparent (show background)
+            r = bg[0]; g = bg[1]; b = bg[2];
+            break;
           case "leaf":
             if (Math.random() < 0.005) {
               particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 4 - 2)));
@@ -175,6 +219,75 @@ export function renderGrid(
           data[i + 1] = g;
           data[i + 2] = b;
           data[i + 3] = 255;
+        }
+      }
+    }
+  }
+
+  // Second pass: draw human sprites over the image data
+  for (let gy = 0; gy < grid.height; gy++) {
+    for (let gx = 0; gx < grid.width; gx++) {
+      const particle = grid.cells[gy * grid.width + gx];
+      if (!particle || particle.element !== "human") continue;
+
+      // Determine health-based skin tone
+      const health = Math.min(particle.r, particle.g);
+      let skinR: number, skinG: number, skinB: number;
+      if (health > 150) {
+        skinR = 210; skinG = 170; skinB = 130;
+      } else if (health > 60) {
+        skinR = 195; skinG = 175; skinB = 155;
+      } else {
+        skinR = 175; skinG = 120; skinB = 100;
+      }
+
+      // Shirt color: muted earth tones based on sex bit (b >> 7)
+      const sex = (particle.b >> 7) & 1;
+      const shirtR = sex ? 140 : 100;
+      const shirtG = sex ? 90 : 120;
+      const shirtB = sex ? 70 : 150;
+
+      // Pants: dark brown
+      const pantsR = 70, pantsG = 50, pantsB = 35;
+
+      const palette: [number, number, number][] = [
+        [skinR, skinG, skinB],
+        [shirtR, shirtG, shirtB],
+        [pantsR, pantsG, pantsB],
+      ];
+
+      // Pick animation frame: sleeping, walking, or idle
+      // Slow, smooth walk cycle: alternate legs every 12 ticks
+      const sleeping = atmo.daylight < 0.2;
+      const walkPhase = Math.floor(particle.lifetime / 12) % 4; // 0,1=frame A, 2,3=frame B
+      const frame = sleeping ? HUMAN_FRAME_SLEEP
+        : walkPhase < 2 ? HUMAN_FRAME_A : HUMAN_FRAME_B;
+
+      // Direction: flip sprite horizontally if facing left
+      const facingLeft = (particle.b & 0x01) === 0;
+
+      for (const [dx, dy, colorIdx] of frame) {
+        const sdx = facingLeft ? -dx : dx;
+        const px = gx + sdx;
+        const py = gy + dy;
+        if (px < 0 || px >= grid.width || py < 0 || py >= grid.height) continue;
+
+        // Draw over everything except tree trunks (depth effect)
+        const targetCell = grid.cells[py * grid.width + px];
+        if (targetCell && targetCell.element === "stem") continue;
+
+        const color = palette[colorIdx]!;
+        const pixX = px * cellSize;
+        const pixY = py * cellSize;
+        for (let pdy = 0; pdy < cellSize; pdy++) {
+          const rowStart = ((pixY + pdy) * canvasW + pixX) * 4;
+          for (let pdx = 0; pdx < cellSize; pdx++) {
+            const i = rowStart + pdx * 4;
+            data[i] = color[0];
+            data[i + 1] = color[1];
+            data[i + 2] = color[2];
+            data[i + 3] = 255;
+          }
         }
       }
     }

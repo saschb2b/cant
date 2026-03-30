@@ -389,6 +389,21 @@ export const REACTIONS: ReactionRule[] = [
     desc: "Acid kills worms",
     group: "Organic",
   },
+  {
+    a: "fire", b: "human", produceA: null, produceB: "ash", probability: 0.7,
+    desc: "Fire is deadly to humans",
+    group: "Organic",
+  },
+  {
+    a: "lava", b: "human", produceA: null, produceB: "ash", probability: 0.9,
+    desc: "Lava is instantly fatal",
+    group: "Organic",
+  },
+  {
+    a: "acid", b: "human", produceA: null, produceB: "compost", probability: 0.4,
+    desc: "Acid dissolves humans",
+    group: "Organic",
+  },
 
   // Engineered
   {

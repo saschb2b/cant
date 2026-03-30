@@ -7,6 +7,7 @@ interface SandboxCanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   onResize: (gridWidth: number, gridHeight: number) => void;
   onDraw: (gridX: number, gridY: number) => void;
+  onDrawEnd?: () => void;
 }
 
 /** CSS pixels per grid cell. */
@@ -20,6 +21,7 @@ export function SandboxCanvas({
   canvasRef,
   onResize,
   onDraw,
+  onDrawEnd,
 }: SandboxCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const drawingRef = useRef(false);
@@ -112,7 +114,8 @@ export function SandboxCanvas({
   const handlePointerUp = useCallback(() => {
     drawingRef.current = false;
     lastPosRef.current = null;
-  }, []);
+    onDrawEnd?.();
+  }, [onDrawEnd]);
 
   // Measure container and size the canvas grid to fill it
   useEffect(() => {

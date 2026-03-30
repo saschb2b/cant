@@ -9,7 +9,16 @@ let currentDaylight = 1;
 export function createParticle(element: Particle["element"]): Particle {
   const def = ELEMENTS[element];
   const [r, g, b] = variedColor(def.baseColor, element);
-  return { element, r, g, b, lifetime: def.lifetime ?? 0, updated: false };
+  const p: Particle = { element, r, g, b, lifetime: def.lifetime ?? 0, updated: false };
+  if (element === "human") {
+    // State encoding: r=hunger, g=thirst, b=packed behavior bits, lifetime=age
+    p.r = 200; // hunger (full)
+    p.g = 200; // thirst (full)
+    // b bits: 0-1=direction, 2=carrying, 3=material type, 4-6=activity, 7=sex
+    p.b = (Math.random() < 0.5 ? 0x80 : 0) | 0x01; // random sex, facing right
+    p.lifetime = 0; // age starts at 0
+  }
+  return p;
 }
 
 function randomBool(): boolean {
@@ -429,6 +438,28 @@ function updateStem(grid: Grid, x: number, y: number, particle: Particle): void 
   // Mature stems (well-established) can slowly extend the tree
   if (particle.lifetime < 200) return;
 
+  // Wound healing: regrow into adjacent empty gaps between stems
+  // Detects holes left by chopping and fills them in
+  if (Math.random() < 0.002) {
+    const dirs: [number, number][] = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+    for (const [dx, dy] of dirs) {
+      const gap = getCell(grid, x + dx, y + dy);
+      if (gap && gap.element !== "stem") continue; // not a gap
+      if (gap) continue; // occupied
+      if (!isEmpty(grid, x + dx, y + dy)) continue;
+      // Check if the other side of the gap has a stem (bridging a hole)
+      const beyond = getCell(grid, x + dx * 2, y + dy * 2);
+      if (beyond && beyond.element === "stem") {
+        consumeWater(grid, x, y);
+        const heal = createParticle("stem");
+        heal.lifetime = 0;
+        heal.updated = true;
+        setCell(grid, x + dx, y + dy, heal);
+        return;
+      }
+    }
+  }
+
   // Slow trunk extension: topmost stem grows upward occasionally
   const above = getCell(grid, x, y - 1);
   if (above && (above.element === "leaf" || above.element === "flower") && Math.random() < 0.0003) {
@@ -818,11 +849,11 @@ function updateSoil(grid: Grid, x: number, y: number): void {
   }
 
   // Worms emerge gradually in wet soil (population-limited)
-  if (Math.random() < 0.00005) {
+  if (Math.random() < 0.0001) {
     const below = getCell(grid, x, y + 1);
     if (below && (below.element === "soil" || below.element === "sand")) {
-      // Don't overpopulate: max 2 worms within radius 4
-      if (countNearby(grid, x, y, "worm", 4) < 2) {
+      // Don't overpopulate: max 3 worms within radius 5
+      if (countNearby(grid, x, y, "worm", 5) < 3) {
         const worm = createParticle("worm");
         worm.updated = true;
         setCell(grid, x, y, worm);
@@ -941,15 +972,35 @@ function updateWorm(grid: Grid, x: number, y: number, particle: Particle): void 
   const inOpenAir = !underground;
 
   // Moisture-dependent aging: worms breathe through skin, need moisture to survive
-  if (waterNearby > 0) {
-    // Moist environment: age very slowly
-    particle.lifetime--;
+  if (waterNearby > 0 && !inOpenAir) {
+    // Moist underground: barely age (can live for many days)
+    if (Math.random() < 0.1) particle.lifetime--;
+  } else if (waterNearby > 0 && inOpenAir) {
+    // Surface but moist: moderate aging
+    particle.lifetime -= 2;
   } else if (inOpenAir) {
-    // Exposed on surface with no moisture: desiccate rapidly
-    particle.lifetime -= 8;
+    // Exposed on surface, dry: desiccate rapidly
+    particle.lifetime -= 6;
   } else {
-    // Underground but dry: age faster than normal
-    particle.lifetime -= 3;
+    // Underground but dry: slow drain
+    particle.lifetime--;
+  }
+
+  // Feeding: worms eat compost and organic matter to restore lifetime
+  if (Math.random() < 0.02) {
+    const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    const dir = dirs[Math.floor(Math.random() * dirs.length)];
+    if (dir) {
+      const food = getCell(grid, x + dir[0], y + dir[1]);
+      if (food && food.element === "compost") {
+        // Eat compost, convert to enriched soil, restore lifetime
+        const soil = createParticle("soil");
+        soil.lifetime = waterNearby > 0 ? 60 : 0; // pass on some moisture
+        soil.updated = true;
+        setCell(grid, x + dir[0], y + dir[1], soil);
+        particle.lifetime = Math.min(particle.lifetime + 2000, 15000);
+      }
+    }
   }
 
   if (particle.lifetime <= 0) {
@@ -1085,6 +1136,351 @@ function updateBee(grid: Grid, x: number, y: number, particle: Particle): void {
     const dx = Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 1 : 0;
     const dy = Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 1 : 0;
     tryMove(grid, x, y, x + dx, y + dy);
+  }
+}
+
+// ===== Human: walks, forages, builds, socializes, reproduces =====
+// State encoding: r=hunger(0-255), g=thirst(0-255), b=packed bits, lifetime=age
+// b bits: 0-1=direction, 2=carrying, 3=material(0=wood,1=stone), 4-6=activity, 7=sex
+
+function getHumanDir(p: Particle): number { return p.b & 0x01; } // 0=left, 1=right
+function setHumanDir(p: Particle, d: number) { p.b = (p.b & ~0x01) | (d & 0x01); }
+function isCarrying(p: Particle): boolean { return (p.b & 0x04) !== 0; }
+function setCarrying(p: Particle, c: boolean, isStone: boolean) {
+  p.b = c ? (p.b | 0x04 | (isStone ? 0x08 : 0)) : (p.b & ~0x0C);
+}
+function getCarriedMaterial(p: Particle): "stone" | "wood" { return (p.b & 0x08) ? "stone" : "wood"; }
+function getSex(p: Particle): number { return (p.b >> 7) & 0x01; }
+
+/** Elements that block human movement (solid ground and heavy structures) */
+const HUMAN_BLOCKING = new Set(["stone", "iron", "copper", "gold", "glass", "ice", "sand", "soil", "salt", "tnt"]);
+
+function canHumanPass(grid: Grid, px: number, py: number): boolean {
+  if (isEmpty(grid, px, py)) return true;
+  const cell = getCell(grid, px, py);
+  if (!cell) return false;
+  // Block on solid terrain; pass through everything else (vegetation, wood, stems, liquids, etc.)
+  return !HUMAN_BLOCKING.has(cell.element);
+}
+
+function tryMoveHuman(grid: Grid, x: number, y: number, nx: number, ny: number): boolean {
+  // Direct horizontal move (into empty or passable vegetation with ground below)
+  if (canHumanPass(grid, nx, ny) && hasSolidBelow(grid, nx, ny)) {
+    swapCells(grid, x, y, nx, ny);
+    const moved = getCell(grid, nx, ny);
+    if (moved) moved.updated = true;
+    return true;
+  }
+  // Step up 1 block (climbing) - target blocked but above it is passable
+  if (!canHumanPass(grid, nx, ny) && canHumanPass(grid, nx, ny - 1) && canHumanPass(grid, x, y - 1)) {
+    swapCells(grid, x, y, nx, ny - 1);
+    const moved = getCell(grid, nx, ny - 1);
+    if (moved) moved.updated = true;
+    return true;
+  }
+  return false;
+}
+
+/** Find the nearest cell of a given element within a radius. Returns [dx, dy] or null. */
+function findNearest(grid: Grid, x: number, y: number, element: string, radius: number): [number, number] | null {
+  let bestDist = Infinity;
+  let best: [number, number] | null = null;
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && cell.element === element) {
+        const dist = Math.abs(dx) + Math.abs(dy);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = [dx, dy];
+        }
+      }
+    }
+  }
+  return best;
+}
+
+function findNearestAny(grid: Grid, x: number, y: number, elements: string[], radius: number): [number, number, string] | null {
+  let bestDist = Infinity;
+  let best: [number, number, string] | null = null;
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && elements.includes(cell.element)) {
+        const dist = Math.abs(dx) + Math.abs(dy);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = [dx, dy, cell.element];
+        }
+      }
+    }
+  }
+  return best;
+}
+
+function updateHuman(grid: Grid, x: number, y: number, particle: Particle): void {
+  particle.lifetime++; // age
+
+  // --- Metabolism (slow: one full day ~7200 ticks, drain ~1 per 35/25 ticks) ---
+  if (particle.lifetime % 35 === 0 && particle.r > 0) particle.r--; // hunger drain
+  if (particle.lifetime % 25 === 0 && particle.g > 0) particle.g--; // thirst drain
+
+  // --- Death (old age ~5 full days) ---
+  if (particle.r === 0 || particle.g === 0 || particle.lifetime > 30000) {
+    const compost = createParticle("compost");
+    compost.updated = true;
+    setCell(grid, x, y, compost);
+    return;
+  }
+
+  // --- Gravity ---
+  if (!hasSolidBelow(grid, x, y)) {
+    if (tryMove(grid, x, y, x, y + 1)) return;
+    const side = randomBool() ? -1 : 1;
+    if (tryMove(grid, x, y, x + side, y + 1)) return;
+    return;
+  }
+
+  // --- Rest at night ---
+  if (currentDaylight < 0.2) return;
+
+  // --- Flee from danger (highest priority) ---
+  const dangers = ["fire", "lava", "acid"];
+  const danger = findNearestAny(grid, x, y, dangers, 3);
+  if (danger) {
+    const fleeDir = danger[0] > 0 ? -1 : danger[0] < 0 ? 1 : (randomBool() ? -1 : 1);
+    if (tryMoveHuman(grid, x, y, x + fleeDir, y)) return;
+    tryMoveHuman(grid, x, y, x + fleeDir, y - 1);
+    return;
+  }
+
+  const dirs8: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
+  const hungry = particle.r < 150;
+  const thirsty = particle.g < 150;
+  const starving = particle.r < 60;
+  const dehydrated = particle.g < 60;
+
+  // --- Drink: from adjacent water or wet soil (opportunistic, always) ---
+  if (thirsty) {
+    for (const [dx, dy] of dirs8) {
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && cell.element === "water") {
+        setCell(grid, x + dx, y + dy, null);
+        particle.g = Math.min(255, particle.g + 100);
+        return;
+      }
+    }
+    // Drink from wet soil underfoot
+    for (const [dx, dy] of dirs8) {
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && cell.element === "soil" && cell.lifetime > 40) {
+        cell.lifetime -= 40;
+        particle.g = Math.min(255, particle.g + 50);
+        return;
+      }
+    }
+  }
+
+  // --- Eat: grab adjacent food opportunistically ---
+  if (hungry) {
+    for (const [dx, dy] of dirs8) {
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && (cell.element === "fruit" || cell.element === "mushroom")) {
+        const nutrition = cell.element === "fruit" ? 90 : 60;
+        setCell(grid, x + dx, y + dy, null);
+        particle.r = Math.min(255, particle.r + nutrition);
+        return;
+      }
+    }
+  }
+
+  // --- Forage leaves/grass when desperate ---
+  if (starving && Math.random() < 0.1) {
+    for (const [dx, dy] of dirs8) {
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && (cell.element === "leaf" || cell.element === "grass")) {
+        particle.r = Math.min(255, particle.r + 15);
+        if (Math.random() < 0.3) setCell(grid, x + dx, y + dy, null);
+        return;
+      }
+    }
+  }
+
+  // --- Seek water (walk toward it when dehydrated) ---
+  if (dehydrated) {
+    const water = findNearest(grid, x, y, "water", 15);
+    if (water) {
+      const moveDir = water[0] > 0 ? 1 : water[0] < 0 ? -1 : 0;
+      tryMoveHuman(grid, x, y, x + moveDir, y);
+      return;
+    }
+  }
+
+  // --- Seek food (walk toward it when starving) ---
+  if (starving) {
+    const food = findNearestAny(grid, x, y, ["fruit", "mushroom"], 15);
+    if (food) {
+      const moveDir = food[0] > 0 ? 1 : food[0] < 0 ? -1 : 0;
+      tryMoveHuman(grid, x, y, x + moveDir, y);
+      return;
+    }
+  }
+
+  // --- Reproduction (well-fed, near opposite sex, ~once per day) ---
+  if (particle.r > 170 && particle.g > 170 && particle.lifetime > 5000 && particle.lifetime % 3000 < 3) {
+    for (const [dx, dy] of dirs8) {
+      const neighbor = getCell(grid, x + dx, y + dy);
+      if (neighbor && neighbor.element === "human" && getSex(neighbor) !== getSex(particle)) {
+        if (neighbor.r > 120 && neighbor.g > 120) {
+          for (const [bx, by] of dirs8) {
+            const tx = x + bx;
+            const ty = y + by;
+            if (canHumanPass(grid, tx, ty) && hasSolidBelow(grid, tx, ty)) {
+              spawnAt(grid, tx, ty, "human");
+              particle.r -= 50;
+              particle.g -= 40;
+              break;
+            }
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  // --- Plant seeds near water (farming, when well-fed) ---
+  if (particle.r > 170 && Math.random() < 0.005) {
+    const waterNear = countMoisture(grid, x, y, 3);
+    if (waterNear > 0) {
+      const plantSpots: [number, number][] = [[1, 0], [-1, 0], [2, 0], [-2, 0]];
+      for (const [sx, sy] of plantSpots) {
+        if (isEmpty(grid, x + sx, y + sy) && hasSolidBelow(grid, x + sx, y + sy)) {
+          spawnAt(grid, x + sx, y + sy, "seed");
+          return;
+        }
+      }
+    }
+  }
+
+  // --- Building: gather materials and construct houses on open ground ---
+  const nearHumans = countNearby(grid, x, y, "human", 5);
+
+  if (isCarrying(particle)) {
+    // Find a good build site: on solid ground, not inside tree canopy
+    const inCanopy = countNearbyAny(grid, x, y, ["leaf", "stem", "flower"], 2) > 3;
+
+    // If in the forest, walk toward open ground before placing
+    if (inCanopy) {
+      const dir = getHumanDir(particle) === 0 ? -1 : 1;
+      tryMoveHuman(grid, x, y, x + dir, y);
+      return;
+    }
+
+    // Place next to existing builds (extend the structure)
+    const existingBuild = findNearestAny(grid, x, y, ["wood", "stone"], 4);
+    if (existingBuild) {
+      // Walk toward the build site if not adjacent
+      if (Math.abs(existingBuild[0]) > 2 || Math.abs(existingBuild[1]) > 2) {
+        tryMoveHuman(grid, x, y, x + (existingBuild[0] > 0 ? 1 : -1), y);
+        return;
+      }
+      // Place: walls beside existing builds, roofs on top
+      const buildSpots: [number, number][] = [
+        [existingBuild[0] + 1, existingBuild[1]], [existingBuild[0] - 1, existingBuild[1]], // walls
+        [existingBuild[0], existingBuild[1] - 1], // roof
+        [existingBuild[0] + 1, existingBuild[1] - 1], [existingBuild[0] - 1, existingBuild[1] - 1], // upper walls
+      ];
+      for (const [bx, by] of buildSpots) {
+        const tx = x + bx;
+        const ty = y + by;
+        if (isEmpty(grid, tx, ty)) {
+          spawnAt(grid, tx, ty, getCarriedMaterial(particle));
+          setCarrying(particle, false, false);
+          return;
+        }
+      }
+    }
+
+    // No existing builds: start a new foundation on the ground
+    if (hasSolidBelow(grid, x, y)) {
+      // Place first block to the side at ground level
+      const side = getHumanDir(particle) === 0 ? -1 : 1;
+      const spots: [number, number][] = [[side, 0], [side, -1], [-side, 0]];
+      for (const [sx, sy] of spots) {
+        if (isEmpty(grid, x + sx, y + sy) && (sy === 0 || hasSolidBelow(grid, x + sx, y + sy))) {
+          spawnAt(grid, x + sx, y + sy, getCarriedMaterial(particle));
+          setCarrying(particle, false, false);
+          return;
+        }
+      }
+    }
+  }
+
+  // Gather materials: chop or collect (community activity, 2+ humans)
+  if (!isCarrying(particle) && nearHumans >= 2 && Math.random() < 0.02) {
+    // Prefer loose wood/stone first
+    const loose = findNearestAny(grid, x, y, ["wood", "stone"], 4);
+    if (loose && Math.abs(loose[0]) <= 1 && Math.abs(loose[1]) <= 1) {
+      setCell(grid, x + loose[0], y + loose[1], null);
+      setCarrying(particle, true, loose[2] === "stone");
+      return;
+    }
+    // Chop wood from a tree (only if plenty of trees)
+    if (countNearby(grid, x, y, "stem", 6) > 4) {
+      const stem = findNearest(grid, x, y, "stem", 3);
+      if (stem && Math.abs(stem[0]) <= 1 && Math.abs(stem[1]) <= 1) {
+        setCell(grid, x + stem[0], y + stem[1], null);
+        setCarrying(particle, true, false);
+        return;
+      }
+      if (stem) {
+        tryMoveHuman(grid, x, y, x + (stem[0] > 0 ? 1 : -1), y);
+        return;
+      }
+    }
+  }
+
+  // --- Movement: settle, navigate, or travel ---
+  const nearResources = countNearbyAny(grid, x, y, ["fruit", "mushroom", "water", "stem", "leaf"], 5);
+  const inGoodArea = nearResources > 5 && !hungry && !thirsty;
+
+  if (inGoodArea) {
+    // Settled: relaxed strolls and socializing
+    if (Math.random() < 0.12) {
+      const other = findNearest(grid, x, y, "human", 6);
+      if (other && Math.abs(other[0]) > 2 && Math.random() < 0.3) {
+        tryMoveHuman(grid, x, y, x + (other[0] > 0 ? 1 : -1), y);
+      } else {
+        const dir = getHumanDir(particle) === 0 ? -1 : 1;
+        if (Math.random() < 0.15) setHumanDir(particle, dir === -1 ? 1 : 0);
+        tryMoveHuman(grid, x, y, x + dir, y);
+      }
+    }
+  } else {
+    // Not in a good area: scan wide for resources, then travel determinedly
+    // Scan a large area for anything worth walking toward
+    if (particle.lifetime % 60 === 0) {
+      // Only scan periodically (every 60 ticks) to save perf, but scan wide
+      const goal = findNearestAny(grid, x, y, ["stem", "water", "fruit", "flower"], 40);
+      if (goal) {
+        // Lock direction toward the goal
+        setHumanDir(particle, goal[0] > 0 ? 1 : 0);
+      }
+    }
+
+    // Walk determinedly: only turn at walls, never randomly
+    if (Math.random() < 0.45) {
+      const dir = getHumanDir(particle) === 0 ? -1 : 1;
+      if (!tryMoveHuman(grid, x, y, x + dir, y)) {
+        // Hit a wall: try climbing first
+        if (!tryMoveHuman(grid, x, y, x + dir, y - 1)) {
+          // Can't climb: turn around
+          setHumanDir(particle, dir === -1 ? 1 : 0);
+        }
+      }
+    }
   }
 }
 
@@ -1384,6 +1780,8 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
             updateWorm(grid, x, y, particle);
           } else if (particle.element === "bee") {
             updateBee(grid, x, y, particle);
+          } else if (particle.element === "human") {
+            updateHuman(grid, x, y, particle);
           }
           break;
         case "static":
