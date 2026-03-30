@@ -10,6 +10,7 @@ apps/cant-resize      # Responsive design patterns
 apps/cant-type        # TypeScript patterns
 apps/cant-orchestrate # Container orchestration patterns
 apps/cant-seo         # SEO best practices for Next.js
+apps/cant-test        # Testing patterns (+ Bug Hunt game)
 packages/shared       # @cant/shared - components, game logic, utilities
 ```
 
@@ -226,12 +227,26 @@ Every challenge has a `content` field that describes what is being compared. The
 }
 ```
 
+### Using visual challenges in an app
+
+Visual challenges render live React components instead of code snippets. They require per-app wiring since the component registry is app-specific. Prefer visual challenges over plain-text code when the content is structural (file trees, diagrams, flows) rather than syntax.
+
+**Per-app setup** (see cant-branch or cant-test for full examples):
+
+1. Create visual components in `components/visual/` (e.g. `file-tree.tsx`, `git-graph.tsx`)
+2. Create a registry in `components/visual/registry.tsx` that maps `componentId` strings to components
+3. Create a `components/game/visual-panel.tsx` wrapper that looks up the registry and renders via `SharedVisualPanel`
+4. Pass `visualPanel: VisualPanelWrapper` in the `slots` prop of `SharedGame` in `components/game/game.tsx`
+5. In `app/learn/[category]/page.tsx`, add a `renderContentPanel` function that checks for `entry?.type === "visual"` and renders the component from the registry, falling back to `LearnContentPanel` for code/image types
+
+**Apps with visual challenges:** cant-branch (git graphs, file trees, diffs, terminals, flow diagrams), cant-ux (visual component comparisons), cant-test (file trees)
+
 ### Shared infrastructure
 
 Challenge rendering is centralized in `@cant/shared`:
 
 - `buildContentMap()` processes challenges into a render-ready content map, handling `correctSide` mapping and Shiki highlighting for code challenges
-- `LearnCategoryPage` renders the full learn/[category] page; apps only provide a `renderExplanation` slot
+- `LearnCategoryPage` renders the full learn/[category] page; apps provide a `renderExplanation` slot and optionally a `renderContentPanel` slot for visual challenges
 - `LearnIndexPage` renders the learn index page with optional learning path
 - `LearnContentPanel` renders the Avoid/Prefer content panels (code, image, or visual)
 - `ImagePanel` and `VisualPanel` are game-mode panel components for non-code challenges

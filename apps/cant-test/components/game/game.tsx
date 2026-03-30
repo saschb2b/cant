@@ -12,6 +12,7 @@ import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { ExplanationPanel } from "./explanation-panel";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
+import { VisualPanelWrapper } from "./visual-panel";
 import type { Challenge } from "@/lib/game/types";
 
 interface GameProps {
@@ -31,6 +32,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       generateSeed={generateSeed}
       slots={{
         codePanel: CodePanel,
+        visualPanel: VisualPanelWrapper,
         lobby: LobbyScreen,
         results: ResultsScreen,
         explanation: ExplanationPanel,

@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
+import type { ReactNode, ComponentType } from "react";
 import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
+import type { ContentMapEntry } from "@cant/shared/components/game";
+import { visualRegistry } from "@/components/visual/registry";
 import {
   LearnCategoryPage,
+  LearnContentPanel,
   FormattedText,
   SourceLink,
 } from "@cant/shared/components";
@@ -42,6 +46,34 @@ export async function generateMetadata({
     title: `${label} - Learn`,
     description: CATEGORY_DESCRIPTIONS[category as ChallengeCategory],
   };
+}
+
+function renderContentPanel(
+  entry: ContentMapEntry | undefined,
+  side: "good" | "bad",
+): ReactNode {
+  if (entry?.type === "visual") {
+    const componentId =
+      side === "good" ? entry.goodComponentId : entry.badComponentId;
+    const Component = visualRegistry[componentId] as
+      | ComponentType
+      | undefined;
+    if (!Component) return null;
+    return (
+      <Box
+        sx={{
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: 200,
+        }}
+      >
+        <Component />
+      </Box>
+    );
+  }
+  return <LearnContentPanel entry={entry} side={side} />;
 }
 
 export default async function CategoryPage({ params }: PageProps) {
@@ -82,6 +114,7 @@ export default async function CategoryPage({ params }: PageProps) {
       description={description}
       challenges={categoryChallenges}
       contentMap={contentMap}
+      renderContentPanel={renderContentPanel}
       prev={
         prev
           ? { href: `/learn/${prev}`, label: CATEGORY_LABELS[prev] }

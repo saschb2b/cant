@@ -75,37 +75,9 @@ test("rejects order with no items", () => {
     title: "Test file organization",
     prompt: "Which test file structure is easier to maintain?",
     content: {
-      type: "code",
-
-      left: `src/
-  components/
-    Button.tsx
-    Button.test.tsx
-    Dialog.tsx
-    Dialog.test.tsx
-  hooks/
-    useAuth.ts
-    useAuth.test.ts
-  utils/
-    format.ts
-    format.test.ts`,
-
-      right: `src/
-  components/
-    Button.tsx
-    Dialog.tsx
-  hooks/
-    useAuth.ts
-  utils/
-    format.ts
-__tests__/
-  components/
-    Button.test.tsx
-    Dialog.test.tsx
-  hooks/
-    useAuth.test.ts
-  utils/
-    format.test.ts`,
+      type: "visual",
+      left: { componentId: "FileTreeColocated" },
+      right: { componentId: "FileTreeSeparate" },
     },
 
     correctSide: "left",
