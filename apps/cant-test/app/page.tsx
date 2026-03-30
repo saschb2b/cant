@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Gamepad2, BookOpen } from "lucide-react";
+import { Gamepad2, BookOpen, Bug } from "lucide-react";
 import {
   Hero,
   FeatureGrid,
@@ -31,6 +31,7 @@ export default function LandingPage() {
       <Hero
         titleLine1="Assert better."
         titleLine2="Ship confident."
+        gimmick={{ href: "/hunt", label: "Bug Hunt" }}
         subtitle="Test your testing instincts with quick-fire challenges, and study patterns across unit tests, mocking, async, components, and more."
         caption="free &middot; no signup &middot; 7 categories"
         visual={<HeroAnimation />}
@@ -52,6 +53,12 @@ export default function LandingPage() {
             title: "Learn",
             desc: "Patterns across 7 categories. Each shows the fragile approach, the resilient one, and why it matters.",
             href: "/learn",
+          },
+          {
+            icon: <Bug size={20} />,
+            title: "Bug Hunt",
+            desc: "Minesweeper meets QA. Reveal safe modules and flag the bugs before they crash production.",
+            href: "/hunt",
           },
         ]}
       />

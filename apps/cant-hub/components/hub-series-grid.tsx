@@ -53,6 +53,7 @@ const SERIES_META: Record<string, SeriesMeta> = {
   "Can't Test": {
     challenges: 56,
     categories: 7,
+    tool: { label: "Bug Hunt", href: "/hunt" },
   },
   "Can't Query": {
     challenges: 65,

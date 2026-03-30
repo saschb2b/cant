@@ -26,6 +26,12 @@ const eslintConfig = [
     },
   },
   {
+    files: ["**/*.test.ts"],
+    rules: {
+      "@typescript-eslint/no-non-null-assertion": "off",
+    },
+  },
+  {
     ignores: [
       "node_modules/**",
       ".next/**",

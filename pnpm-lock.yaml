@@ -767,6 +767,9 @@ importers:
       typescript-eslint:
         specifier: ^8.56.1
         version: 8.57.2(eslint@9.39.4)(typescript@5.7.3)
+      vitest:
+        specifier: ^4.1.1
+        version: 4.1.1(@types/node@22.19.15)(@vitest/browser-playwright@4.1.1)(vite@7.3.1(@types/node@22.19.15))
 
   apps/cant-type:
     dependencies:

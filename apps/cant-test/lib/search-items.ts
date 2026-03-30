@@ -18,6 +18,15 @@ const pages: SearchItem[] = [
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",
   },
+  {
+    type: "page",
+    title: "Bug Hunt",
+    description:
+      "Minesweeper-inspired game where you find bugs before they ship to production",
+    icon: "hunt",
+    keywords: ["bug", "hunt", "minesweeper", "game", "find", "assert", "flag"],
+    href: "/hunt",
+  },
 ];
 
 export const searchItems: SearchItem[] = buildSearchItems({
