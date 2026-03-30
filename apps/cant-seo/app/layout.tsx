@@ -100,7 +100,7 @@ export default function RootLayout({
         <Script
           async
           src="https://umami.saschb2b.com/script.js"
-          data-website-id="placeholder-cant-seo"
+          data-website-id="1ca08826-ca6c-4791-b790-7e3651301ce0"
         />
       </head>
       <body>

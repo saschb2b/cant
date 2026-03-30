@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import {
   ThemeProvider,
   AnalyticsProviderWrapper,
@@ -96,6 +97,11 @@ export default function RootLayout({
               },
             }),
           }}
+        />
+        <Script
+          async
+          src="https://umami.saschb2b.com/script.js"
+          data-website-id="c78811f8-12ee-429b-84e0-592edd47676f"
         />
       </head>
       <body>

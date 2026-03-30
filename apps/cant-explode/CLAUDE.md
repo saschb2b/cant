@@ -7,4 +7,4 @@ See the root [CLAUDE.md](../../CLAUDE.md) for monorepo-wide rules.
 - Categories and challenges live in `lib/learn/categories.ts` and `lib/learn/challenges/`
 - This app uses the molecule content type for chemistry structure comparisons
 - `lib/shiki.ts` is minimal since most challenges use molecule type, not code
-- Umami website ID: not yet assigned (use empty string for now)
+- Umami website ID: `c78811f8-12ee-429b-84e0-592edd47676f`
