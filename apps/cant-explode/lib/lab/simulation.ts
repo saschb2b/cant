@@ -503,6 +503,17 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
 
   const waterNearby = countMoisture(grid, x, y, 3);
 
+  // Transpiration: leaves release moisture as steam during the day (drives water cycle)
+  if (currentDaylight > 0.3 && waterNearby > 1 && Math.random() < 0.0008) {
+    // Release steam above if space is available
+    const aboveDirs: [number, number][] = [[0, -1], [-1, -1], [1, -1]];
+    const td = aboveDirs[Math.floor(Math.random() * aboveDirs.length)];
+    if (td && isEmpty(grid, x + td[0], y + td[1])) {
+      spawnAt(grid, x + td[0], y + td[1], "steam");
+      consumeWater(grid, x, y);
+    }
+  }
+
   // Mature leaves near flowers can grow fruit
   if (particle.lifetime > 20 && waterNearby > 0 && Math.random() < 0.003) {
     if (hasNeighbor(grid, x, y, "flower")) {
@@ -764,6 +775,14 @@ function updateSoil(grid: Grid, x: number, y: number): void {
         neighbor.lifetime += 10;
         particle.lifetime -= 5;
       }
+    }
+  }
+
+  // Soil evaporation: exposed wet soil releases steam during the day (water cycle)
+  if (particle.lifetime > 30 && currentDaylight > 0.3 && Math.random() < 0.001) {
+    if (isEmpty(grid, x, y - 1)) {
+      spawnAt(grid, x, y - 1, "steam");
+      particle.lifetime -= 15;
     }
   }
 
@@ -1231,7 +1250,14 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
       if (def.lifetime && def.behavior === "gas" && particle.element !== "pollen") {
         particle.lifetime--;
         if (particle.lifetime <= 0) {
-          setCell(grid, x, y, null);
+          // Steam condenses back into water instead of vanishing
+          if (particle.element === "steam") {
+            const water = createParticle("water");
+            water.updated = true;
+            setCell(grid, x, y, water);
+          } else {
+            setCell(grid, x, y, null);
+          }
           continue;
         }
       }
@@ -1319,6 +1345,21 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
         case "gas":
           if (particle.element === "pollen") {
             updatePollen(grid, x, y, particle);
+          } else if (particle.element === "steam") {
+            updateGas(grid, x, y);
+            // Early condensation: steam near top of grid, near cold surfaces, or at night
+            const nearTop = y < grid.height * 0.15;
+            const nearCold = hasAnyNeighbor(grid, x, y, ["stone", "glass", "iron", "copper"]);
+            const nightCool = currentDaylight < 0.3;
+            let condensChance = 0.002; // base
+            if (nearTop) condensChance += 0.02;
+            if (nearCold) condensChance += 0.05;
+            if (nightCool) condensChance += 0.01;
+            if (Math.random() < condensChance) {
+              const water = createParticle("water");
+              water.updated = true;
+              setCell(grid, x, y, water);
+            }
           } else {
             updateGas(grid, x, y);
           }
