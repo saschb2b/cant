@@ -14,7 +14,7 @@ export function StorySection() {
         borderTop: 1,
         borderBottom: 1,
         borderColor: "divider",
-        py: { xs: 8, md: 12 },
+        py: { xs: 5, md: 7 },
         overflow: "hidden",
         "&::before": {
           content: '""',
@@ -26,90 +26,68 @@ export function StorySection() {
         },
       }}
     >
-      <Container
-        maxWidth="md"
-        sx={{ position: "relative" }}
-      >
+      <Container maxWidth="lg" sx={{ position: "relative" }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
-          spacing={{ xs: 4, md: 6 }}
+          spacing={{ xs: 3, md: 5 }}
           alignItems="center"
         >
-          {/* Portrait */}
+          {/* Avatar */}
           <Box
             sx={{
               flexShrink: 0,
-              width: { xs: 120, md: 160 },
-              height: { xs: 120, md: 160 },
+              width: { xs: 72, md: 80 },
+              height: { xs: 72, md: 80 },
               borderRadius: "50%",
               overflow: "hidden",
-              border: 3,
+              border: 2,
               borderColor: "divider",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
             }}
           >
             <Image
               src="/sascha.webp"
               alt="Sascha Becker"
-              width={160}
-              height={160}
+              width={80}
+              height={80}
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
           </Box>
 
-          {/* Text */}
-          <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
+          {/* Quote */}
+          <Box sx={{ flex: 1, textAlign: { xs: "center", md: "left" } }}>
             <Typography
-              variant="overline"
-              color="text.disabled"
-              sx={{ letterSpacing: "0.1em" }}
-            >
-              The idea
-            </Typography>
-            <Typography
-              variant="h4"
-              component="h2"
-              fontWeight={700}
-              sx={{
-                mt: 1.5,
-                fontSize: { xs: "1.5rem", md: "2rem" },
-                lineHeight: 1.3,
-              }}
+              variant="body1"
+              fontWeight={600}
+              sx={{ lineHeight: 1.6, maxWidth: { md: 600 } }}
             >
               I never learned much from reading docs.
             </Typography>
             <Typography
-              variant="body1"
+              variant="body2"
               color="text.secondary"
-              sx={{ mt: 2.5, lineHeight: 1.9 }}
-            >
-              {
-                "I learn by comparing. Put two approaches next to each other and the difference clicks instantly. I built the Can't series to turn that into a game: real patterns, real decisions, and a clear explanation every time."
-              }
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ mt: 2, lineHeight: 1.9 }}
-            >
-              {
-                "Every challenge comes from a real decision I've faced or seen others struggle with. No trivia, no gotchas."
-              }
-            </Typography>
-
-            {/* Author name + links */}
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems="center"
               sx={{
-                mt: 3,
-                justifyContent: { xs: "center", md: "flex-start" },
+                mt: 1.5,
+                fontStyle: "italic",
+                lineHeight: 1.8,
+                maxWidth: { md: 600 },
+                "&::before": { content: '"\\201C"' },
+                "&::after": { content: '"\\201D"' },
               }}
             >
-              <Typography variant="body2" fontWeight={600}>
-                Sascha Becker
-              </Typography>
+              I learn by comparing. Put two approaches next to each other and the difference clicks instantly. I built the Can't series to turn that into a game: real patterns, real decisions, and a clear explanation every time. Every challenge comes from a real decision I've faced or seen others struggle with. No trivia, no gotchas.
+            </Typography>
+          </Box>
+
+          {/* Author + links */}
+          <Stack
+            alignItems={{ xs: "center", md: "flex-end" }}
+            spacing={0.75}
+            sx={{ flexShrink: 0 }}
+          >
+            <Typography variant="body2" fontWeight={700} sx={{ whiteSpace: "nowrap" }}>
+              Sascha Becker
+            </Typography>
+            <Stack direction="row" spacing={1.5}>
               <NextLink
                 href="https://github.com/saschb2b"
                 target="_blank"
@@ -123,8 +101,8 @@ export function StorySection() {
                   alignItems="center"
                   sx={{ color: "text.secondary", "&:hover": { color: "text.primary" }, transition: "color 0.2s" }}
                 >
-                  <Github size={15} />
-                  <Typography variant="caption">saschb2b</Typography>
+                  <Github size={13} />
+                  <Typography variant="caption" sx={{ fontSize: "0.65rem" }}>saschb2b</Typography>
                 </Stack>
               </NextLink>
               <NextLink
@@ -140,12 +118,12 @@ export function StorySection() {
                   alignItems="center"
                   sx={{ color: "text.secondary", "&:hover": { color: "text.primary" }, transition: "color 0.2s" }}
                 >
-                  <Globe size={15} />
-                  <Typography variant="caption">saschb2b.com</Typography>
+                  <Globe size={13} />
+                  <Typography variant="caption" sx={{ fontSize: "0.65rem" }}>saschb2b.com</Typography>
                 </Stack>
               </NextLink>
             </Stack>
-          </Box>
+          </Stack>
         </Stack>
       </Container>
     </Box>

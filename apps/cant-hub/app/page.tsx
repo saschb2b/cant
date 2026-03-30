@@ -51,7 +51,7 @@ export default function LandingPage() {
         }}
       >
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: "center", mb: { xs: 5, md: 8 } }}>
+          <Box sx={{ textAlign: { xs: "center", md: "left" }, mb: { xs: 5, md: 8 } }}>
             <Typography
               variant="h3"
               component="h2"
@@ -67,7 +67,7 @@ export default function LandingPage() {
             <Typography
               variant="body1"
               color="text.secondary"
-              sx={{ mt: 2, maxWidth: 480, mx: "auto", lineHeight: 1.7 }}
+              sx={{ mt: 2, maxWidth: 480, lineHeight: 1.7, mx: { xs: "auto", md: 0 } }}
             >
               From React components to Git workflows, TypeScript to UX design. Real decisions, built from experience.
             </Typography>
