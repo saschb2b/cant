@@ -137,8 +137,14 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 3. Customize `lib/theme.ts`, categories, challenges, and landing page
 4. Add scripts to root `package.json`: `dev:newapp`, `build:newapp`
 5. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content
-6. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name)
-7. Run `pnpm install`
+6. **Keep all icon representations in sync.** Each app has four icon locations that must use the same visual design:
+   - `packages/shared/src/lib/cant-apps.ts` `iconSvgContent` (SVG shapes in a 180x180 viewBox, used in app switcher and hub)
+   - `apps/<name>/public/icon.svg` (SVG favicon, 32x32)
+   - `apps/<name>/app/icon.tsx` (generated PNG favicon, 32x32, using `ImageResponse`)
+   - `apps/<name>/app/apple-icon.tsx` (generated Apple touch icon, 180x180, using `ImageResponse`)
+7. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name)
+7. Add the app to the hub: add an entry in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` with challenge/category counts, and update `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx`
+8. Run `pnpm install`
 
 ## Adding a new challenge
 
@@ -147,6 +153,14 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 3. Link to an authoritative source (React docs, MDN, TypeScript docs)
 4. Follow visual parity rules: both sides should have similar length and structure
 5. The `correctSide` value is randomized at runtime in game mode
+6. **Keep the hub in sync.** Update the challenge count in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` and `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx` whenever challenges are added or removed
+7. **Keep titles and code comments neutral.** Titles and inline code comments must not hint at which side is correct. This is critical for game mode, where players choose the better pattern.
+   - Titles should describe the topic, not name the solution (e.g. "Pagination strategy" not "Cursor-based pagination")
+   - Do not use value-laden words in titles like "proper", "robust", "structured", "over-fetching", "minimal"
+   - Inline code comments should describe what the code does, not judge it
+   - Do not add comments listing downsides only on the wrong side (e.g. "// No error handling", "// Crackable in seconds")
+   - Do not add comments listing advantages only on the correct side (e.g. "// Fully typed, auto-generated", "// Single source of truth")
+   - Both sides should feel equally plausible at first glance. Value judgments belong in `explanationCorrect` and `explanationWrong`, not in titles or code
 
 ### Challenge content types
 

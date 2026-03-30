@@ -127,4 +127,16 @@ export const ALL_APPS: CantApp[] = [
     colorTo: "#BE185D",
     iconSvgContent: `<line x1="72" y1="32" x2="72" y2="148" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><circle cx="72" cy="48" r="9" fill="#FFFFFF"/><circle cx="72" cy="90" r="9" fill="#FFFFFF"/><circle cx="72" cy="132" r="9" fill="#FFFFFF"/><circle cx="124" cy="72" r="9" fill="#FBCFE8"/><line x1="72" y1="65" x2="124" y2="72" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/><line x1="124" y1="72" x2="72" y2="85" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/>`,
   },
+  {
+    name: "Can't Query",
+    desc: "API endpoint patterns. REST, GraphQL, WebSockets, auth, and error handling.",
+    href: appUrl("https://cant-query.saschb2b.com", 3009),
+    category: "Development",
+    playPitch:
+      "Think you know API design? Test your instincts with REST, GraphQL, WebSockets, and more.",
+    tags: "REST, GraphQL, WebSockets, auth, error handling",
+    colorFrom: "#475569",
+    colorTo: "#334155",
+    iconSvgContent: `<line x1="30" y1="75" x2="90" y2="75" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/><polygon points="85,65 100,75 85,85" fill="#FFFFFF"/><line x1="150" y1="105" x2="90" y2="105" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/><polygon points="95,95 80,105 95,115" fill="#CBD5E1"/><text x="90" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="28" fill="#FFFFFF">?</text>`,
+  },
 ];
