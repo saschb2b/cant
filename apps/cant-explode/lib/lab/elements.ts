@@ -64,8 +64,9 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
 
   // --- Creatures ---
   worm: { behavior: "critter", baseColor: [160, 100, 80], density: 3, flammable: false, lifetime: 15000 },
-  bee: { behavior: "critter", baseColor: [220, 190, 40], density: 0, flammable: false, lifetime: 600 },
+  bee: { behavior: "critter", baseColor: [220, 190, 40], density: 0, flammable: false, lifetime: 8000 },
   human: { behavior: "critter", baseColor: [210, 170, 130], density: 3, flammable: false, lifetime: 0 },
+  bird: { behavior: "critter", baseColor: [100, 80, 60], density: 0, flammable: false, lifetime: 12000 },
 
   // --- Engineered ---
   fuse: { behavior: "fuse", baseColor: [160, 120, 80], density: 99, flammable: false },

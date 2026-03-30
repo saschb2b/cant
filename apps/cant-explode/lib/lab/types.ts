@@ -56,6 +56,7 @@ export type ElementType =
   | "worm"
   | "bee"
   | "human"
+  | "bird"
   // Engineered
   | "fuse"
   | "tnt"

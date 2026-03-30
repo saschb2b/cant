@@ -170,8 +170,11 @@ export function renderGrid(
           }
           case "human":
             // Humans are drawn as multi-pixel sprites in a second pass
-            // Make the particle cell itself transparent (show background)
             r = bg[0]; g = bg[1]; b = bg[2];
+            break;
+          case "bird":
+            // Small dark silhouette
+            r = 50; g = 40; b = 35;
             break;
           case "leaf":
             if (Math.random() < 0.005) {

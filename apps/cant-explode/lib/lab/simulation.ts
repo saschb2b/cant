@@ -5,11 +5,18 @@ import { REACTION_MAP } from "./reactions";
 
 /** Current daylight level for this tick (0=night, 1=day). Set by tickSimulation. */
 let currentDaylight = 1;
+/** Current wind direction (-1 or 1). Slowly oscillates. Set by tickSimulation. */
+let currentWindDir = 1;
 
 export function createParticle(element: Particle["element"]): Particle {
   const def = ELEMENTS[element];
   const [r, g, b] = variedColor(def.baseColor, element);
   const p: Particle = { element, r, g, b, lifetime: def.lifetime ?? 0, updated: false };
+  if (element === "bird") {
+    p.r = 150; // hunger (starts moderately full)
+    p.g = 0;   // seeds carried (none initially)
+    p.b = Math.random() < 0.5 ? 1 : 0; // random direction
+  }
   if (element === "human") {
     // State encoding: r=hunger, g=thirst, b=packed behavior bits, lifetime=age
     p.r = 200; // hunger (full)
@@ -517,19 +524,55 @@ function updateStem(grid: Grid, x: number, y: number, particle: Particle): void 
       }
     }
   }
+
+  // Root spreading: base stems convert nearby sand to soil
+  if (particle.lifetime > 300 && Math.random() < 0.0003) {
+    const rootDirs: [number, number][] = [[-1, 1], [0, 1], [1, 1], [-2, 1], [2, 1], [-1, 2], [0, 2], [1, 2]];
+    const rd = rootDirs[Math.floor(Math.random() * rootDirs.length)];
+    if (rd) {
+      const target = getCell(grid, x + rd[0], y + rd[1]);
+      if (target && target.element === "sand") {
+        const soil = createParticle("soil");
+        soil.lifetime = 20; // slightly moist from root activity
+        soil.updated = true;
+        setCell(grid, x + rd[0], y + rd[1], soil);
+      }
+    }
+  }
 }
 
 // ===== Leaf: can spread, fruit, and decay only when disconnected =====
 function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void {
   if (currentDaylight > 0.1) particle.lifetime++;
 
-  // Only decay if disconnected from the tree (no stem/plant nearby)
+  // Disconnected leaves: fall as litter, decay faster on ground
   const connected = countNearbyAny(grid, x, y, ["stem", "plant", "leaf"], 1) >= 2;
-  if (!connected && particle.lifetime > 100 && Math.random() < 0.003) {
-    const compost = createParticle("compost");
-    compost.updated = true;
-    setCell(grid, x, y, compost);
-    return;
+  if (!connected) {
+    // Detached leaves fall like powder (leaf litter)
+    if (!hasSolidBelow(grid, x, y)) {
+      if (tryMove(grid, x, y, x, y + 1)) return;
+      const fallSide = randomBool() ? -1 : 1;
+      if (tryMove(grid, x, y, x + fallSide, y + 1)) return;
+    }
+    // Faster decay when grounded (becomes compost/soil at forest edge)
+    if (hasSolidBelow(grid, x, y) && particle.lifetime > 60 && Math.random() < 0.008) {
+      const compost = createParticle("compost");
+      compost.updated = true;
+      setCell(grid, x, y, compost);
+      return;
+    }
+    // Normal slow decay for airborne disconnected leaves
+    if (particle.lifetime > 100 && Math.random() < 0.003) {
+      const compost = createParticle("compost");
+      compost.updated = true;
+      setCell(grid, x, y, compost);
+      return;
+    }
+  }
+
+  // Seasonal leaf drop: old connected leaves occasionally detach at night
+  if (connected && particle.lifetime > 400 && currentDaylight < 0.2 && Math.random() < 0.001) {
+    particle.lifetime = 50; // reset so it enters decay path soon
   }
 
   const waterNearby = countMoisture(grid, x, y, 3);
@@ -616,8 +659,8 @@ function updateFlower(grid: Grid, x: number, y: number, particle: Particle): voi
     spawnAt(grid, x + dir[0], y + dir[1], "pollen");
   }
 
-  // Flowers attract bees (rare spawn)
-  if (particle.lifetime > 40 && Math.random() < 0.0004) {
+  // Flowers attract bees (spawn when enough flowers nearby)
+  if (particle.lifetime > 40 && countNearby(grid, x, y, "bee", 6) < 2 && Math.random() < 0.0008) {
     // Spawn bee above flower if space is available
     for (const [bx, by] of [[-1, -1], [0, -2], [1, -1]] as [number, number][]) {
       if (isEmpty(grid, x + bx, y + by)) {
@@ -647,12 +690,13 @@ function updateGrass(grid: Grid, x: number, y: number, particle: Particle): void
   if (waterNearby === 0 && Math.random() > 0.002) return;
   if (Math.random() > 0.03) return;
 
-  // Spread sideways, only on soil or near other grass
+  // Spread sideways: onto soil, wet sand (pioneer colonization), or near other grass
   let grew = false;
   const side = randomBool() ? -1 : 1;
   const belowTarget = getCell(grid, x + side, y + 1);
   const onSoil = belowTarget && belowTarget.element === "soil";
-  if (isEmpty(grid, x + side, y) && (onSoil || (hasSolidBelow(grid, x + side, y) && hasNeighbor(grid, x + side, y, "grass")))) {
+  const onWetSand = belowTarget && belowTarget.element === "sand" && countMoisture(grid, x + side, y, 2) > 0;
+  if (isEmpty(grid, x + side, y) && (onSoil || onWetSand || (hasSolidBelow(grid, x + side, y) && hasNeighbor(grid, x + side, y, "grass")))) {
     if (spawnAt(grid, x + side, y, "grass")) grew = true;
   }
   // Occasionally grow one cell up
@@ -660,6 +704,16 @@ function updateGrass(grid: Grid, x: number, y: number, particle: Particle): void
     if (spawnAt(grid, x, y - 1, "grass")) grew = true;
   }
   if (grew && waterNearby > 0) consumeWater(grid, x, y);
+
+  // Grass roots slowly convert sand below into soil (succession)
+  if (particle.lifetime > 150 && Math.random() < 0.0005) {
+    const below = getCell(grid, x, y + 1);
+    if (below && below.element === "sand") {
+      const soil = createParticle("soil");
+      soil.updated = true;
+      setCell(grid, x, y + 1, soil);
+    }
+  }
 }
 
 // ===== Moss: grows on hard surfaces (stone, wood, metal) =====
@@ -769,13 +823,54 @@ function updateFruit(grid: Grid, x: number, y: number, particle: Particle): void
   if (tryMove(grid, x, y, x + (leftFirst ? -1 : 1), y + 1)) return;
   if (tryMove(grid, x, y, x + (leftFirst ? 1 : -1), y + 1)) return;
 
-  // On the ground: slowly become a seed
+  // On the ground: roll downhill briefly then decompose into seeds
   if (hasSolidBelow(grid, x, y)) {
     particle.lifetime++;
+
+    // Roll downhill for the first 30 ticks (spreads fruit away from parent tree)
+    if (particle.lifetime < 30) {
+      const rollSide = randomBool() ? -1 : 1;
+      if (isEmpty(grid, x + rollSide, y) && isEmpty(grid, x + rollSide, y + 1)) {
+        tryMove(grid, x, y, x + rollSide, y + 1);
+        return;
+      }
+    }
+
+    // Decompose: multi-seed dispersal
     if (particle.lifetime > 60 && Math.random() < 0.03) {
-      const seed = createParticle("seed");
-      seed.updated = true;
-      setCell(grid, x, y, seed);
+      const roll = Math.random();
+      if (roll < 0.5) {
+        // Seed at position + scatter a second seed nearby
+        const seed = createParticle("seed");
+        seed.updated = true;
+        setCell(grid, x, y, seed);
+        const scatterSide = randomBool() ? -2 : 2;
+        if (isEmpty(grid, x + scatterSide, y)) {
+          spawnAt(grid, x + scatterSide, y, "seed");
+        }
+      } else if (roll < 0.8) {
+        // Become compost (enriches soil) + spawn seed adjacent
+        const compost = createParticle("compost");
+        compost.updated = true;
+        setCell(grid, x, y, compost);
+        const side = randomBool() ? -1 : 1;
+        if (isEmpty(grid, x + side, y)) {
+          spawnAt(grid, x + side, y, "seed");
+        }
+      } else {
+        // Just become a seed
+        const seed = createParticle("seed");
+        seed.updated = true;
+        setCell(grid, x, y, seed);
+      }
+    }
+  }
+
+  // Fruit-heavy trees attract birds (spawn from the ecosystem)
+  if (particle.lifetime > 30 && countNearby(grid, x, y, "fruit", 6) >= 3
+    && countNearby(grid, x, y, "bird", 15) < 2 && Math.random() < 0.0003) {
+    if (isEmpty(grid, x, y - 1)) {
+      spawnAt(grid, x, y - 1, "bird");
     }
   }
 }
@@ -920,8 +1015,8 @@ function updatePollen(grid: Grid, x: number, y: number, particle: Particle): voi
     return;
   }
 
-  // Float gently: mostly sideways with slight upward drift
-  const drift = randomBool() ? -1 : 1;
+  // Float with wind: biased in wind direction for long-range dispersal
+  const drift = Math.random() < 0.7 ? currentWindDir : -currentWindDir;
   const roll = Math.random();
   if (roll < 0.35) {
     tryMove(grid, x, y, x + drift, y);
@@ -1087,55 +1182,186 @@ function updateWorm(grid: Grid, x: number, y: number, particle: Particle): void 
   }
 }
 
-// ===== Bee: flies between flowers, boosts pollination =====
+// ===== Bee: pollinates flowers, feeds on nectar, reproduces near hive-mates =====
 function updateBee(grid: Grid, x: number, y: number, particle: Particle): void {
-  particle.lifetime--;
+  // Aging: flower feeding slows aging, no flowers = faster drain
+  const nearFlowers = countNearby(grid, x, y, "flower", 3);
+  if (nearFlowers > 0) {
+    // Near flowers: age very slowly (thriving)
+    if (Math.random() < 0.15) particle.lifetime--;
+  } else {
+    // No flowers: age normally
+    particle.lifetime--;
+  }
+
+  // Death: becomes compost (completing the cycle)
   if (particle.lifetime <= 0) {
-    setCell(grid, x, y, null);
+    const compost = createParticle("compost");
+    compost.updated = true;
+    setCell(grid, x, y, compost);
     return;
   }
 
-  // If adjacent to a flower, "visit" it - boost pollen production
+  // Rest at night: bees don't fly in the dark
+  if (currentDaylight < 0.2) return;
+
+  // --- Pollination: visit adjacent flowers ---
   if (hasNeighbor(grid, x, y, "flower")) {
-    // Pollinate: occasionally spawn pollen near the flower
-    if (Math.random() < 0.01) {
-      const dirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [0, -2]];
-      const dir = dirs[Math.floor(Math.random() * dirs.length)];
+    // Feed on nectar: restore lifetime
+    particle.lifetime = Math.min(particle.lifetime + 5, 8000);
+
+    // Pollinate: spread pollen to boost the ecosystem
+    if (Math.random() < 0.02) {
+      const pollenDirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [0, -2], [-1, -2], [1, -2]];
+      const dir = pollenDirs[Math.floor(Math.random() * pollenDirs.length)];
       if (dir && isEmpty(grid, x + dir[0], y + dir[1])) {
         spawnAt(grid, x + dir[0], y + dir[1], "pollen");
       }
     }
-    // Extend bee lifetime when feeding on flowers
-    particle.lifetime = Math.min(particle.lifetime + 2, 800);
-  }
 
-  // Movement: purposeful flight toward flowers, with random wandering
-  if (Math.random() < 0.5) return; // Don't move every tick (calmer)
-
-  // Look for nearby flowers (within 6 cells) to fly toward
-  let targetDx = 0;
-  let targetDy = 0;
-  let foundFlower = false;
-  for (let dy = -6; dy <= 6 && !foundFlower; dy++) {
-    for (let dx = -6; dx <= 6; dx++) {
-      const cell = getCell(grid, x + dx, y + dy);
-      if (cell && cell.element === "flower") {
-        targetDx = dx > 0 ? 1 : dx < 0 ? -1 : 0;
-        targetDy = dy > 0 ? 1 : dy < 0 ? -1 : 0;
-        foundFlower = true;
-        break;
+    // Cross-pollinate: occasionally spawn a new flower near a different flower
+    if (Math.random() < 0.003) {
+      const flowerDirs: [number, number][] = [[-2, 0], [2, 0], [-1, -1], [1, -1], [0, -1]];
+      const fd = flowerDirs[Math.floor(Math.random() * flowerDirs.length)];
+      if (fd && isEmpty(grid, x + fd[0], y + fd[1]) && hasAnyNeighbor(grid, x + fd[0], y + fd[1], ["leaf", "stem"])) {
+        spawnAt(grid, x + fd[0], y + fd[1], "flower");
       }
     }
   }
 
-  if (foundFlower) {
-    // Fly toward flower
-    tryMove(grid, x, y, x + targetDx, y + targetDy);
+  // --- Reproduction: well-fed bees near other bees can spawn new bees ---
+  if (particle.lifetime > 5000 && Math.random() < 0.0005) {
+    const nearBees = countNearby(grid, x, y, "bee", 4);
+    if (nearBees >= 1 && nearBees < 4) { // not too crowded
+      const spawnDirs: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0]];
+      const sd = spawnDirs[Math.floor(Math.random() * spawnDirs.length)];
+      if (sd && isEmpty(grid, x + sd[0], y + sd[1])) {
+        spawnAt(grid, x + sd[0], y + sd[1], "bee");
+        particle.lifetime -= 2000; // reproduction costs energy
+      }
+    }
+  }
+
+  // --- Movement: calmer, purposeful flight ---
+  if (Math.random() < 0.4) return; // don't move every tick
+
+  // Search for flowers in a wide radius
+  const flower = findNearest(grid, x, y, "flower", 15);
+  if (flower) {
+    // Fly toward the nearest flower
+    const fdx = flower[0] > 0 ? 1 : flower[0] < 0 ? -1 : 0;
+    const fdy = flower[1] > 0 ? 1 : flower[1] < 0 ? -1 : 0;
+    // Bees fly diagonally toward flowers (more natural than straight lines)
+    if (Math.random() < 0.6) {
+      tryMove(grid, x, y, x + fdx, y + fdy);
+    } else {
+      // Slight zigzag
+      tryMove(grid, x, y, x + fdx, y);
+    }
   } else {
-    // Random wandering flight
+    // No flowers: wander looking for them (wider search pattern)
     const dx = Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 1 : 0;
-    const dy = Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 1 : 0;
+    const dy = Math.random() < 0.4 ? -1 : Math.random() < 0.5 ? 1 : 0;
     tryMove(grid, x, y, x + dx, y + dy);
+  }
+}
+
+// ===== Bird: flies between trees, eats fruit, drops seeds far away =====
+// State: lifetime=age countdown, r=hunger(0-255), g=seeds carried(0-3), b=direction bit
+function updateBird(grid: Grid, x: number, y: number, particle: Particle): void {
+  // Aging: near fruit trees = slower aging
+  const nearFruit = countNearby(grid, x, y, "fruit", 4);
+  if (nearFruit > 0) {
+    if (Math.random() < 0.2) particle.lifetime--;
+  } else {
+    particle.lifetime--;
+  }
+
+  // Hunger drain
+  if (particle.lifetime % 20 === 0 && particle.r > 0) particle.r--;
+
+  // Death: become compost
+  if (particle.lifetime <= 0 || particle.r === 0) {
+    const compost = createParticle("compost");
+    compost.updated = true;
+    setCell(grid, x, y, compost);
+    return;
+  }
+
+  // Rest at night (perch in place)
+  if (currentDaylight < 0.2) return;
+
+  // --- Feeding: eat adjacent fruit ---
+  if (particle.r < 180) {
+    const dirs8: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
+    for (const [dx, dy] of dirs8) {
+      const cell = getCell(grid, x + dx, y + dy);
+      if (cell && cell.element === "fruit") {
+        setCell(grid, x + dx, y + dy, null);
+        particle.r = Math.min(255, particle.r + 80);
+        particle.g = Math.min(3, particle.g + 1); // carry a seed
+        return;
+      }
+    }
+  }
+
+  // --- Seed dropping: deposit seeds far from parent tree ---
+  if (particle.g > 0 && Math.random() < 0.004) {
+    // Drop seed below
+    if (isEmpty(grid, x, y + 1)) {
+      spawnAt(grid, x, y + 1, "seed");
+      particle.g--;
+      // Bird droppings fertilize: also spawn compost nearby
+      if (isEmpty(grid, x + 1, y + 1)) {
+        spawnAt(grid, x + 1, y + 1, "compost");
+      } else if (isEmpty(grid, x - 1, y + 1)) {
+        spawnAt(grid, x - 1, y + 1, "compost");
+      }
+    }
+  }
+
+  // --- Reproduction: well-fed birds near other birds ---
+  if (particle.r > 200 && particle.lifetime > 6000 && Math.random() < 0.0003) {
+    const nearBirds = countNearby(grid, x, y, "bird", 8);
+    if (nearBirds >= 1 && nearBirds < 3) {
+      if (isEmpty(grid, x, y - 1)) {
+        spawnAt(grid, x, y - 1, "bird");
+        particle.r -= 80;
+        particle.lifetime -= 3000;
+      }
+    }
+  }
+
+  // --- Flight ---
+  if (Math.random() < 0.4) return; // don't move every tick
+
+  // Seek fruit if hungry
+  if (particle.r < 120) {
+    const fruit = findNearest(grid, x, y, "fruit", 15);
+    if (fruit) {
+      const fdx = fruit[0] > 0 ? 1 : fruit[0] < 0 ? -1 : 0;
+      const fdy = fruit[1] > 0 ? 1 : fruit[1] < 0 ? -1 : 0;
+      tryMove(grid, x, y, x + fdx, y + fdy);
+      return;
+    }
+  }
+
+  // Wander with wind bias and horizontal coverage
+  const dir = (particle.b & 0x01) === 0 ? -1 : 1;
+  const roll = Math.random();
+  if (roll < 0.5) {
+    // Fly forward with wind
+    const windBias = Math.random() < 0.3 ? currentWindDir : dir;
+    tryMove(grid, x, y, x + windBias, y);
+  } else if (roll < 0.7) {
+    // Fly diagonally up
+    tryMove(grid, x, y, x + dir, y - 1);
+  } else if (roll < 0.85) {
+    // Descend
+    tryMove(grid, x, y, x + dir, y + 1);
+  } else {
+    // Change direction
+    particle.b = particle.b ^ 0x01;
   }
 }
 
@@ -1622,6 +1848,7 @@ function checkReactions(grid: Grid, x: number, y: number): void {
 
 export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): void {
   currentDaylight = daylight;
+  currentWindDir = Math.sin(tick * 0.008) > 0 ? 1 : -1;
 
   // Reset updated flags
   for (let i = 0; i < grid.cells.length; i++) {
@@ -1727,6 +1954,17 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
               }
               if (!getCell(grid, x, y)) break;
             }
+            // Erosion: flowing water occasionally dislodges soil particles
+            if (Math.random() < 0.002) {
+              const erosionDirs: [number, number][] = [[-1, 1], [1, 1], [0, 1]];
+              const ed = erosionDirs[Math.floor(Math.random() * erosionDirs.length)];
+              if (ed) {
+                const target = getCell(grid, x + ed[0], y + ed[1]);
+                if (target && target.element === "soil" && isEmpty(grid, x + ed[0], y + ed[1] - 1)) {
+                  swapCells(grid, x + ed[0], y + ed[1], x + ed[0], y + ed[1] - 1);
+                }
+              }
+            }
             // Solar evaporation: exposed water slowly becomes steam during the day
             if (currentDaylight > 0.3) {
               const exposed = isEmpty(grid, x, y - 1);
@@ -1782,6 +2020,8 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
             updateBee(grid, x, y, particle);
           } else if (particle.element === "human") {
             updateHuman(grid, x, y, particle);
+          } else if (particle.element === "bird") {
+            updateBird(grid, x, y, particle);
           }
           break;
         case "static":

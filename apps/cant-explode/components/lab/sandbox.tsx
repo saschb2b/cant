@@ -14,18 +14,20 @@ import { SandboxControls } from "./sandbox-controls";
 import { ReactionBookButton } from "./reaction-book";
 
 /** Count specific creature types in the grid. */
-function countCreatures(grid: Grid): { worms: number; bees: number; humans: number } {
+function countCreatures(grid: Grid): { worms: number; bees: number; humans: number; birds: number } {
   let worms = 0;
   let bees = 0;
   let humans = 0;
+  let birds = 0;
   for (let i = 0; i < grid.cells.length; i++) {
     const cell = grid.cells[i];
     if (!cell) continue;
     if (cell.element === "worm") worms++;
     else if (cell.element === "bee") bees++;
     else if (cell.element === "human") humans++;
+    else if (cell.element === "bird") birds++;
   }
-  return { worms, bees, humans };
+  return { worms, bees, humans, birds };
 }
 
 /** Canvas backing is 1:1 with grid cells; CSS handles display scaling. */
@@ -41,8 +43,8 @@ export function Sandbox() {
   const [selectedElement, setSelectedElement] = useState<ElementType>("sand");
   const [eraserActive, setEraserActive] = useState(false);
   const [paused, setPaused] = useState(false);
-  const creaturesRef = useRef({ worms: 0, bees: 0, humans: 0 });
-  const [creatures, setCreatures] = useState({ worms: 0, bees: 0, humans: 0 });
+  const creaturesRef = useRef({ worms: 0, bees: 0, humans: 0, birds: 0 });
+  const [creatures, setCreatures] = useState({ worms: 0, bees: 0, humans: 0, birds: 0 });
   const isMobile = typeof window !== "undefined" && window.innerWidth < 600;
   const [brushSize, setBrushSize] = useState(isMobile ? 3 : 2);
 
@@ -200,7 +202,7 @@ export function Sandbox() {
         </SandboxControls>
 
         {/* Creature population counter */}
-        {(creatures.worms > 0 || creatures.bees > 0 || creatures.humans > 0) && (
+        {(creatures.worms > 0 || creatures.bees > 0 || creatures.humans > 0 || creatures.birds > 0) && (
           <Box
             sx={{
               position: "absolute",
@@ -248,6 +250,23 @@ export function Sandbox() {
                   }}
                 >
                   {creatures.bees}
+                </Typography>
+              </Box>
+            )}
+            {creatures.birds > 0 && (
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <Typography sx={{ fontSize: "0.85rem", lineHeight: 1 }}>
+                  🐦
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    color: "grey.300",
+                    fontFamily: "monospace",
+                  }}
+                >
+                  {creatures.birds}
                 </Typography>
               </Box>
             )}
