@@ -7,7 +7,8 @@ WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/cant-branch/package.json ./apps/cant-branch/
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 
 # --- Build ---
 FROM base AS builder
@@ -16,7 +17,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
 COPY --from=deps /app/apps/cant-branch/node_modules ./apps/cant-branch/node_modules
 COPY . .
-RUN pnpm --filter cant-branch build
+RUN pnpm --filter cant-branch build && \
+    rm -rf /app/.turbo /app/node_modules/.cache
 
 # --- Production ---
 FROM node:20-alpine AS runner

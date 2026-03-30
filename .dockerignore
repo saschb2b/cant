@@ -3,3 +3,9 @@
 **/.next
 **/.turbo
 **/storybook-static
+**/.env*
+**/dist
+docs/
+*.md
+!pnpm-workspace.yaml
+.storybook/
