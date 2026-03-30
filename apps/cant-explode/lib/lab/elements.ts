@@ -63,7 +63,7 @@ export const ELEMENTS: Record<ElementType, ElementDef> = {
   compost: { behavior: "powder", baseColor: [65, 50, 25], density: 2, flammable: false },
 
   // --- Creatures ---
-  worm: { behavior: "critter", baseColor: [160, 100, 80], density: 3, flammable: false, lifetime: 800 },
+  worm: { behavior: "critter", baseColor: [160, 100, 80], density: 3, flammable: false, lifetime: 2500 },
   bee: { behavior: "critter", baseColor: [220, 190, 40], density: 0, flammable: false, lifetime: 600 },
 
   // --- Engineered ---

@@ -72,6 +72,7 @@ function countNearbyAny(grid: Grid, x: number, y: number, elements: string[], ra
 
 function consumeWater(grid: Grid, x: number, y: number): boolean {
   const dirs: [number, number][] = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+  // First try actual water particles
   for (const [dx, dy] of dirs) {
     const cell = getCell(grid, x + dx, y + dy);
     if (cell && cell.element === "water") {
@@ -79,7 +80,30 @@ function consumeWater(grid: Grid, x: number, y: number): boolean {
       return true;
     }
   }
+  // Then try drawing from wet soil moisture
+  for (const [dx, dy] of dirs) {
+    const cell = getCell(grid, x + dx, y + dy);
+    if (cell && cell.element === "soil" && cell.lifetime > 20) {
+      cell.lifetime -= 20;
+      return true;
+    }
+  }
   return false;
+}
+
+/** Count available moisture: water particles + wet soil (lifetime > 0) in radius */
+function countMoisture(grid: Grid, x: number, y: number, radius: number): number {
+  let moisture = 0;
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const cell = getCell(grid, x + dx, y + dy);
+      if (!cell) continue;
+      if (cell.element === "water") moisture++;
+      else if (cell.element === "soil" && cell.lifetime > 0) moisture += 0.5;
+    }
+  }
+  return moisture;
 }
 
 function spawnAt(grid: Grid, x: number, y: number, element: Particle["element"]): boolean {
@@ -218,8 +242,8 @@ function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void 
   if (tryMove(grid, x, y, x + (leftFirst ? -1 : 1), y + 1)) return;
   if (tryMove(grid, x, y, x + (leftFirst ? 1 : -1), y + 1)) return;
 
-  // Settled: need water within 2 cells
-  if (!hasSolidBelow(grid, x, y) || countNearby(grid, x, y, "water", 2) === 0) return;
+  // Settled: need moisture within 2 cells (water or wet soil)
+  if (!hasSolidBelow(grid, x, y) || countMoisture(grid, x, y, 2) === 0) return;
 
   // Seeds near a wall/surface sprout into vine (on any ground)
   const surfaces = ["stone", "wood", "glass", "iron", "copper", "rust", "patina"];
@@ -290,7 +314,7 @@ function updateSeed(grid: Grid, x: number, y: number, particle: Particle): void 
 function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void {
   if (currentDaylight < 0.1) return;
 
-  const waterNearby = countNearby(grid, x, y, "water", 5);
+  const waterNearby = countMoisture(grid, x, y, 5);
   if (waterNearby === 0) return;
 
   const growChance = Math.min(0.2, 0.04 * waterNearby) * currentDaylight;
@@ -387,18 +411,81 @@ function updatePlant(grid: Grid, x: number, y: number, particle: Particle): void
     grew = true;
   }
 
-  if (canopyAge > 14 || (!grew && canopyAge > 7)) {
+  if (canopyAge > 20 || (!grew && canopyAge > 12)) {
     const leaf = createParticle("leaf");
     leaf.updated = true;
     setCell(grid, x, y, leaf);
   }
 }
 
-// ===== Stem: structural trunk, stable once placed =====
-function updateStem(_grid: Grid, _x: number, _y: number, _particle: Particle): void {
-  // Stems are structural - they don't grow on their own.
-  // The plant particle (growth tip) builds the trunk by placing stems.
-  // Stems just exist as the tree's skeleton.
+// ===== Stem: structural trunk, slowly grows and branches when watered =====
+function updateStem(grid: Grid, x: number, y: number, particle: Particle): void {
+  if (currentDaylight < 0.1) return;
+  particle.lifetime++;
+
+  const waterNearby = countMoisture(grid, x, y, 4);
+  if (waterNearby === 0) return;
+
+  // Mature stems (well-established) can slowly extend the tree
+  if (particle.lifetime < 200) return;
+
+  // Slow trunk extension: topmost stem grows upward occasionally
+  const above = getCell(grid, x, y - 1);
+  if (above && (above.element === "leaf" || above.element === "flower") && Math.random() < 0.0003) {
+    // Only extend if this is near the top of the trunk (has air or leaf above, stem below)
+    const below = getCell(grid, x, y + 1);
+    if (below && below.element === "stem") {
+      consumeWater(grid, x, y);
+      // Push the leaf up by replacing it with stem and placing leaf above
+      const newStem = createParticle("stem");
+      newStem.lifetime = 0;
+      newStem.updated = true;
+      setCell(grid, x, y - 1, newStem);
+      // Place leaf where it got displaced to
+      if (isEmpty(grid, x, y - 2)) {
+        const leaf = createParticle("leaf");
+        leaf.updated = true;
+        setCell(grid, x, y - 2, leaf);
+      }
+    }
+  }
+
+  // Slow branching: mature stems sprout new growth sideways
+  if (particle.lifetime > 400 && Math.random() < 0.0002) {
+    const side = randomBool() ? -1 : 1;
+    const bx = x + side;
+    const by = y - 1;
+    const target = getCell(grid, bx, by);
+    if (!target || target.element === "water") {
+      consumeWater(grid, x, y);
+      // Spawn a small branch tip
+      const branch = createParticle("plant");
+      branch.lifetime = 0;
+      branch.r = 2 + Math.floor(Math.random() * 3); // short branch (2-4)
+      branch.g = 60 + Math.floor(Math.random() * 40); // small canopy
+      branch.b = 10; // minimal sub-branching
+      branch.updated = true;
+      setCell(grid, bx, by, branch);
+    }
+  }
+
+  // Slow trunk thickening: grow adjacent stem next to existing stem
+  if (particle.lifetime > 600 && Math.random() < 0.0001) {
+    const side = randomBool() ? -1 : 1;
+    const neighbor = getCell(grid, x + side, y);
+    if (!neighbor || neighbor.element === "water") {
+      // Only thicken if there's stem above and below (we're mid-trunk)
+      const hasAbove = getCell(grid, x, y - 1);
+      const hasBelow = getCell(grid, x, y + 1);
+      if (hasAbove?.element === "stem" && hasBelow?.element === "stem") {
+        consumeWater(grid, x, y);
+        const thickStem = createParticle("stem");
+        thickStem.lifetime = 0;
+        thickStem.updated = true;
+        setCell(grid, x + side, y, thickStem);
+      }
+    }
+  }
 }
 
 // ===== Leaf: can spread, fruit, and decay only when disconnected =====
@@ -414,7 +501,7 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
     return;
   }
 
-  const waterNearby = countNearby(grid, x, y, "water", 3);
+  const waterNearby = countMoisture(grid, x, y, 3);
 
   // Mature leaves near flowers can grow fruit
   if (particle.lifetime > 20 && waterNearby > 0 && Math.random() < 0.003) {
@@ -428,9 +515,13 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
   }
 
   if (waterNearby === 0) return;
-  if (Math.random() > 0.02) return;
 
-  // Leaves spread outward and upward
+  // Leaves at canopy edges (fewer neighbors) spread more readily than interior leaves
+  const ownDensity = countNearbyAny(grid, x, y, ["leaf", "flower", "fruit"], 1);
+  const spreadChance = ownDensity <= 2 ? 0.015 : 0.003; // edge leaves spread 5x more
+  if (Math.random() > spreadChance) return;
+
+  // Prefer outward/upward growth at edges, not into dense canopy
   const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [-1, -1], [1, -1]];
   const dir = dirs[Math.floor(Math.random() * dirs.length)];
   if (!dir) return;
@@ -446,9 +537,9 @@ function updateLeaf(grid: Grid, x: number, y: number, particle: Particle): void 
   const vegSupport = countNearbyAny(grid, tx, ty, ["stem", "leaf", "plant", "vine"], 1);
   if (vegSupport === 0 && !hasSolidBelow(grid, tx, ty)) return;
 
-  // Don't grow too dense
-  const leafCount = countNearbyAny(grid, tx, ty, ["leaf", "flower", "plant", "fruit"], 1);
-  if (leafCount >= 3) return;
+  // Density check: strongly resist growing into already-dense areas
+  const targetDensity = countNearbyAny(grid, tx, ty, ["leaf", "flower", "plant", "fruit"], 2);
+  if (targetDensity >= 6) return; // wider radius, higher threshold for natural canopy shape
 
   // Spawn new growth, displacing water if present
   const element = Math.random() < 0.06 ? "flower" : "leaf";
@@ -472,7 +563,7 @@ function updateFlower(grid: Grid, x: number, y: number, particle: Particle): voi
 
   // Release pollen from mature flowers during the day
   if (particle.lifetime < 20 || currentDaylight < 0.3) return;
-  const waterNearby = countNearby(grid, x, y, "water", 4);
+  const waterNearby = countMoisture(grid, x, y, 4);
   if (waterNearby === 0 && Math.random() > 0.001) return;
   if (Math.random() > 0.01) return;
 
@@ -510,7 +601,7 @@ function updateGrass(grid: Grid, x: number, y: number, particle: Particle): void
 
   if (currentDaylight < 0.1) return;
   if (!hasAnyNeighbor(grid, x, y, ["grass", "stem", "plant", "soil"])) return;
-  const waterNearby = countNearby(grid, x, y, "water", 2);
+  const waterNearby = countMoisture(grid, x, y, 2);
   if (waterNearby === 0 && Math.random() > 0.002) return;
   if (Math.random() > 0.03) return;
 
@@ -534,7 +625,7 @@ function updateMoss(grid: Grid, x: number, y: number): void {
   const surfaces = ["stone", "wood", "glass", "iron", "copper", "rust", "patina"];
   if (!hasAnyNeighbor(grid, x, y, surfaces) && !hasNeighbor(grid, x, y, "moss")) return;
 
-  const waterNearby = countNearby(grid, x, y, "water", 2);
+  const waterNearby = countMoisture(grid, x, y, 2);
   if (waterNearby === 0 && Math.random() > 0.001) return;
   if (Math.random() > 0.02) return;
 
@@ -574,7 +665,7 @@ function updateAlgae(grid: Grid, x: number, y: number): void {
 
 // ===== Vine: creeps along surfaces =====
 function updateVine(grid: Grid, x: number, y: number, _particle: Particle): void {
-  const waterNearby = countNearby(grid, x, y, "water", 2);
+  const waterNearby = countMoisture(grid, x, y, 2);
   if (waterNearby === 0 && Math.random() > 0.001) return;
   if (Math.random() > 0.02) return;
 
@@ -649,9 +740,36 @@ function updateFruit(grid: Grid, x: number, y: number, particle: Particle): void
 
 // ===== Soil: wet soil spontaneously sprouts life =====
 function updateSoil(grid: Grid, x: number, y: number): void {
+  const particle = getCell(grid, x, y);
+  if (!particle) return;
+
+  // Absorb water on contact: water nearby increases soil moisture
+  const waterNearby = countNearby(grid, x, y, "water", 1);
+  if (waterNearby > 0) {
+    particle.lifetime = Math.min(particle.lifetime + 3, 300);
+  }
+
+  // Soil slowly dries out
+  if (particle.lifetime > 0 && Math.random() < 0.02) {
+    particle.lifetime--;
+  }
+
+  // Spread moisture to dry neighboring soil (capillary action)
+  if (particle.lifetime > 50 && Math.random() < 0.03) {
+    const dirs: [number, number][] = [[-1, 0], [1, 0], [0, 1], [0, -1]];
+    const dir = dirs[Math.floor(Math.random() * dirs.length)];
+    if (dir) {
+      const neighbor = getCell(grid, x + dir[0], y + dir[1]);
+      if (neighbor && neighbor.element === "soil" && neighbor.lifetime < particle.lifetime - 20) {
+        neighbor.lifetime += 10;
+        particle.lifetime -= 5;
+      }
+    }
+  }
+
   if (currentDaylight < 0.1) return;
-  const waterNearby = countNearby(grid, x, y, "water", 2);
-  if (waterNearby === 0) return;
+  const moisture = countMoisture(grid, x, y, 2);
+  if (moisture === 0 && particle.lifetime === 0) return;
 
   // Check cell above: must be empty or water (seeds push through water)
   const above = getCell(grid, x, y - 1);
@@ -669,21 +787,27 @@ function updateSoil(grid: Grid, x: number, y: number): void {
   }
 
   // Spontaneous seed: life emerges from fertile wet soil
+  // But not under existing canopy (don't grow new trees on top of old ones)
   if (Math.random() < 0.002 * currentDaylight) {
-    const seed = createParticle("seed");
-    seed.updated = true;
-    setCell(grid, x, y - 1, seed);
-    return;
+    const vegAbove = countNearbyAny(grid, x, y - 2, ["leaf", "stem", "plant", "flower"], 3);
+    if (vegAbove < 2) {
+      const seed = createParticle("seed");
+      seed.updated = true;
+      setCell(grid, x, y - 1, seed);
+      return;
+    }
   }
 
-  // Worms spawn in wet soil (rare, underground life)
-  if (Math.random() < 0.0002) {
-    // Worms prefer to spawn below ground (soil below too)
+  // Worms emerge gradually in wet soil (population-limited)
+  if (Math.random() < 0.00005) {
     const below = getCell(grid, x, y + 1);
     if (below && (below.element === "soil" || below.element === "sand")) {
-      const worm = createParticle("worm");
-      worm.updated = true;
-      setCell(grid, x, y, worm);
+      // Don't overpopulate: max 2 worms within radius 4
+      if (countNearby(grid, x, y, "worm", 4) < 2) {
+        const worm = createParticle("worm");
+        worm.updated = true;
+        setCell(grid, x, y, worm);
+      }
     }
   }
 }
@@ -693,7 +817,7 @@ function updateMushroom(grid: Grid, x: number, y: number): void {
   const substrate = ["ash", "charcoal", "wood", "soil"];
   if (!hasAnyNeighbor(grid, x, y, substrate) && !hasNeighbor(grid, x, y, "mushroom")) return;
 
-  const waterNearby = countNearby(grid, x, y, "water", 3);
+  const waterNearby = countMoisture(grid, x, y, 3);
   if (waterNearby === 0 && Math.random() > 0.0005) return;
   if (Math.random() > 0.01) return;
 
@@ -782,17 +906,33 @@ function updateCompost(grid: Grid, x: number, y: number, particle: Particle): vo
     return;
   }
 
-  // Worms can spawn in compost near soil
-  if (particle.lifetime > 50 && hasNeighbor(grid, x, y, "soil") && Math.random() < 0.0005) {
-    if (isEmpty(grid, x, y - 1)) {
+  // Worms can spawn in mature compost near soil (rare, population-limited)
+  if (particle.lifetime > 80 && hasNeighbor(grid, x, y, "soil") && Math.random() < 0.0002) {
+    if (isEmpty(grid, x, y - 1) && countNearby(grid, x, y, "worm", 4) < 2) {
       spawnAt(grid, x, y - 1, "worm");
     }
   }
 }
 
 // ===== Worm: burrows through soil, enriches it, spawns from wet soil =====
+// Realistic behavior: moisture-dependent survival, surface avoidance, gradual population
 function updateWorm(grid: Grid, x: number, y: number, particle: Particle): void {
-  particle.lifetime--;
+  const waterNearby = countMoisture(grid, x, y, 3);
+  const underground = hasAnyNeighbor(grid, x, y, ["soil", "sand", "compost"]);
+  const inOpenAir = !underground;
+
+  // Moisture-dependent aging: worms breathe through skin, need moisture to survive
+  if (waterNearby > 0) {
+    // Moist environment: age very slowly
+    particle.lifetime--;
+  } else if (inOpenAir) {
+    // Exposed on surface with no moisture: desiccate rapidly
+    particle.lifetime -= 8;
+  } else {
+    // Underground but dry: age faster than normal
+    particle.lifetime -= 3;
+  }
+
   if (particle.lifetime <= 0) {
     // Worm dies, becomes compost
     const compost = createParticle("compost");
@@ -801,25 +941,59 @@ function updateWorm(grid: Grid, x: number, y: number, particle: Particle): void 
     return;
   }
 
-  // Worms move through soil, compost, and ash (burrowing)
-  const burrowable = ["soil", "compost", "ash", "sand"];
-  const dirs: [number, number][] = [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, 1], [1, 1]];
+  // If exposed on surface, urgently seek to burrow down
+  if (inOpenAir) {
+    const below = getCell(grid, x, y + 1);
+    if (!below) {
+      tryMove(grid, x, y, x, y + 1);
+      return;
+    }
+    const burrowable = ["soil", "compost", "ash", "sand"];
+    if (below && burrowable.includes(below.element)) {
+      swapCells(grid, x, y, x, y + 1);
+      const moved = getCell(grid, x, y + 1);
+      if (moved) moved.updated = true;
+      return;
+    }
+    // Try sideways to find ground
+    const side = randomBool() ? -1 : 1;
+    const sideCell = getCell(grid, x + side, y + 1);
+    if (!sideCell) {
+      tryMove(grid, x, y, x + side, y + 1);
+    } else if (sideCell && burrowable.includes(sideCell.element)) {
+      swapCells(grid, x, y, x + side, y + 1);
+      const moved = getCell(grid, x + side, y + 1);
+      if (moved) moved.updated = true;
+    }
+    return;
+  }
 
-  // Prefer downward and sideways movement
-  if (Math.random() < 0.3) {
+  // Underground burrowing movement
+  const burrowable = ["soil", "compost", "ash", "sand"];
+  const moveChance = waterNearby > 0 ? 0.25 : 0.15; // More active when moist
+
+  if (Math.random() < moveChance) {
+    // Bias movement toward water if nearby and dry
+    let dirs: [number, number][];
+    if (waterNearby === 0) {
+      // Dry: prefer downward (toward water table)
+      dirs = [[0, 1], [0, 1], [-1, 1], [1, 1], [-1, 0], [1, 0]];
+    } else {
+      // Moist: move freely in all underground directions
+      dirs = [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, 1], [1, 1]];
+    }
+
     const dir = dirs[Math.floor(Math.random() * dirs.length)];
     if (!dir) return;
     const nx = x + dir[0];
     const ny = y + dir[1];
     const target = getCell(grid, nx, ny);
     if (target && burrowable.includes(target.element)) {
-      // Swap with the soil/compost (burrow through it)
       swapCells(grid, x, y, nx, ny);
       const moved = getCell(grid, nx, ny);
       if (moved) moved.updated = true;
 
-      // Enrichment: soil the worm passes through becomes more fertile
-      // Convert sand/ash/compost to soil as the worm passes
+      // Enrichment: convert sand/ash/compost to soil as the worm passes
       const left = getCell(grid, x, y);
       if (left && (left.element === "sand" || left.element === "ash" || left.element === "compost")) {
         const soil = createParticle("soil");
@@ -829,14 +1003,14 @@ function updateWorm(grid: Grid, x: number, y: number, particle: Particle): void 
       return;
     }
 
-    // If in open air, fall
+    // If target is empty (cavity), fall into it
     if (!target) {
       tryMove(grid, x, y, nx, ny);
       return;
     }
   }
 
-  // If somehow in open air, act like powder (fall)
+  // Gravity: fall if nothing below
   const below = getCell(grid, x, y + 1);
   if (!below) {
     tryMove(grid, x, y, x, y + 1);
@@ -1087,13 +1261,58 @@ export function tickSimulation(grid: Grid, tick: number, daylight: number = 1): 
           break;
         case "liquid":
           updateLiquid(grid, x, y);
-          // Solar evaporation: exposed water slowly becomes steam during the day
-          if (particle.element === "water" && currentDaylight > 0.3) {
-            const exposed = isEmpty(grid, x, y - 1);
-            if (exposed && Math.random() < 0.0015 * currentDaylight) {
-              const steam = createParticle("steam");
-              steam.updated = true;
-              setCell(grid, x, y, steam);
+          if (particle.element === "water") {
+            // Canopy drip: water percolates through leaves, flowers, grass
+            const vegetation = ["leaf", "flower", "grass", "moss", "vine"];
+            const below = getCell(grid, x, y + 1);
+            if (below && vegetation.includes(below.element) && Math.random() < 0.3) {
+              // Find the first non-vegetation cell below (drip through canopy)
+              let dripY = y + 1;
+              while (dripY < y + 20) {
+                const cell = getCell(grid, x, dripY);
+                if (!cell) {
+                  // Empty space below canopy: move water here
+                  swapCells(grid, x, y, x, dripY);
+                  const moved = getCell(grid, x, dripY);
+                  if (moved) moved.updated = true;
+                  break;
+                }
+                if (!vegetation.includes(cell.element)) {
+                  // Hit something solid (stem, soil): place water just above
+                  if (dripY > y + 1 && isEmpty(grid, x, dripY - 1)) {
+                    swapCells(grid, x, y, x, dripY - 1);
+                    const moved = getCell(grid, x, dripY - 1);
+                    if (moved) moved.updated = true;
+                  }
+                  break;
+                }
+                dripY++;
+              }
+              if (!getCell(grid, x, y)) break;
+            }
+            // Soil absorption: water soaks into adjacent soil, increasing its moisture
+            if (Math.random() < 0.08) {
+              const absDirs: [number, number][] = [[0, 1], [-1, 0], [1, 0], [0, -1], [-1, 1], [1, 1]];
+              for (const [adx, ady] of absDirs) {
+                const neighbor = getCell(grid, x + adx, y + ady);
+                if (neighbor && (neighbor.element === "soil" || neighbor.element === "compost" || neighbor.element === "ash")) {
+                  if (neighbor.element === "soil") {
+                    neighbor.lifetime = Math.min(neighbor.lifetime + 60, 300);
+                  }
+                  setCell(grid, x, y, null);
+                  break;
+                }
+              }
+              if (!getCell(grid, x, y)) break;
+            }
+            // Solar evaporation: exposed water slowly becomes steam during the day
+            if (currentDaylight > 0.3) {
+              const exposed = isEmpty(grid, x, y - 1);
+              if (exposed && Math.random() < 0.0015 * currentDaylight) {
+                const steam = createParticle("steam");
+                steam.updated = true;
+                setCell(grid, x, y, steam);
+              }
             }
           }
           break;
