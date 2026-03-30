@@ -1,0 +1,62 @@
+import type { Metadata } from "next";
+import { decodeResults, getRank } from "@/lib/game/share";
+import { ResultsRedirect } from "./results-redirect";
+
+interface Props {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
+  const params = await searchParams;
+  const r = typeof params.r === "string" ? params.r : undefined;
+  const decoded = r ? decodeResults(r) : null;
+
+  if (!decoded) {
+    return { title: "Results | Can't Game" };
+  }
+
+  const { score, total } = decoded;
+  const percentage = Math.round((score / total) * 100);
+  const rank = getRank(percentage);
+
+  const title = `${rank} — ${String(score)}/${String(total)} | Can't Game`;
+  const description = `I scored ${String(score)}/${String(total)} on spotting better game dev patterns. Can you beat my score? Train your eye for clean game architecture in under 5 minutes.`;
+  const ogImage = "https://cant-game.saschb2b.com/opengraph-image";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      siteName: "Can't Game",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Can't Game: Game Dev Patterns",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
+
+/**
+ * Renders a minimal page so crawlers can read OG meta tags,
+ * then redirects browsers to /play via client-side navigation.
+ */
+export default async function ResultsPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const seed = typeof params.seed === "string" ? params.seed : undefined;
+  return <ResultsRedirect seed={seed} />;
+}

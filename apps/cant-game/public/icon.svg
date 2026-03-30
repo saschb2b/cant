@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="7" fill="url(#g)"/>
+  <!-- D-pad -->
+  <rect x="5" y="12" width="10" height="3" rx="1" fill="#FFFFFF"/>
+  <rect x="8" y="9" width="3" height="10" rx="1" fill="#FFFFFF"/>
+  <!-- Buttons -->
+  <circle cx="23" cy="11" r="2.5" fill="#FCA5A5"/>
+  <circle cx="27" cy="15" r="2.5" fill="#FCA5A5"/>
+  <!-- Body -->
+  <rect x="6" y="21" width="20" height="2" rx="1" fill="#FCA5A5" opacity="0.5"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="32" y2="32">
+      <stop stop-color="#DC2626"/>
+      <stop offset="1" stop-color="#991B1B"/>
+    </linearGradient>
+  </defs>
+</svg>

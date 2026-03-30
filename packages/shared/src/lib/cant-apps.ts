@@ -151,4 +151,16 @@ export const ALL_APPS: CantApp[] = [
     colorTo: "#334155",
     iconSvgContent: `<line x1="30" y1="75" x2="90" y2="75" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/><polygon points="85,65 100,75 85,85" fill="#FFFFFF"/><line x1="150" y1="105" x2="90" y2="105" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/><polygon points="95,95 80,105 95,115" fill="#CBD5E1"/><text x="90" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="28" fill="#FFFFFF">?</text>`,
   },
+  {
+    name: "Can't Game",
+    desc: "Game development patterns. Game loops, input, physics, rendering, AI, shaders, and netcode.",
+    href: appUrl("https://cant-game.saschb2b.com", 3011),
+    category: "Development",
+    playPitch:
+      "Think you know game dev? Test your instincts with game loops, physics, rendering, AI, and netcode.",
+    tags: "Game loops, physics, rendering, AI, shaders, netcode",
+    colorFrom: "#DC2626",
+    colorTo: "#991B1B",
+    iconSvgContent: `<rect x="40" y="68" width="40" height="12" rx="4" fill="#FFFFFF"/><rect x="54" y="54" width="12" height="40" rx="4" fill="#FFFFFF"/><circle cx="125" cy="70" r="10" fill="#FCA5A5"/><circle cx="115" cy="90" r="10" fill="#FCA5A5"/><rect x="45" y="120" width="90" height="6" rx="3" fill="#FCA5A5" opacity="0.5"/>`,
+  },
 ];

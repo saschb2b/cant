@@ -59,6 +59,10 @@ const SERIES_META: Record<string, SeriesMeta> = {
     challenges: 65,
     categories: 7,
   },
+  "Can't Game": {
+    challenges: 18,
+    categories: 8,
+  },
 };
 
 function AppIcon({ app, size = 56 }: { app: CantApp; size?: number }) {
