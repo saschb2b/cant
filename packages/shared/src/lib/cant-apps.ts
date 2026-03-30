@@ -128,6 +128,18 @@ export const ALL_APPS: CantApp[] = [
     iconSvgContent: `<line x1="72" y1="32" x2="72" y2="148" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><circle cx="72" cy="48" r="9" fill="#FFFFFF"/><circle cx="72" cy="90" r="9" fill="#FFFFFF"/><circle cx="72" cy="132" r="9" fill="#FFFFFF"/><circle cx="124" cy="72" r="9" fill="#FBCFE8"/><line x1="72" y1="65" x2="124" y2="72" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/><line x1="124" y1="72" x2="72" y2="85" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round"/>`,
   },
   {
+    name: "Can't Test",
+    desc: "Testing patterns. Unit tests, integration tests, mocking, test strategy, and CI.",
+    href: appUrl("https://cant-test.saschb2b.com", 3010),
+    category: "Development",
+    playPitch:
+      "Think you know testing? Test your instincts with unit tests, mocking, strategy, and more.",
+    tags: "Unit tests, integration, mocking, strategy, CI",
+    colorFrom: "#059669",
+    colorTo: "#047857",
+    iconSvgContent: `<polyline points="50,95 70,120 115,60" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="120" y1="110" x2="145" y2="135" stroke="#A7F3D0" stroke-width="8" stroke-linecap="round"/><line x1="145" y1="110" x2="120" y2="135" stroke="#A7F3D0" stroke-width="8" stroke-linecap="round"/>`,
+  },
+  {
     name: "Can't Query",
     desc: "API endpoint patterns. REST, GraphQL, WebSockets, auth, and error handling.",
     href: appUrl("https://cant-query.saschb2b.com", 3009),

@@ -50,6 +50,10 @@ const SERIES_META: Record<string, SeriesMeta> = {
     challenges: 141,
     categories: 20,
   },
+  "Can't Test": {
+    challenges: 56,
+    categories: 7,
+  },
   "Can't Query": {
     challenges: 65,
     categories: 7,
