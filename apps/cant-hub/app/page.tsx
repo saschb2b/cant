@@ -2,13 +2,13 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { OpenSourceBanner } from "@cant/shared/components";
-import { ALL_APPS } from "@cant/shared/lib/cant-apps";
+
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { HubSeriesGrid } from "@/components/hub-series-grid";
-import { ColorBar } from "@/components/color-bar";
+import { Hero } from "@/components/hero";
+import { StorySection } from "@/components/story-section";
 
-const TOTAL_CHALLENGES = 452;
+import { HubSeriesGrid } from "@/components/hub-series-grid";
 
 export default function LandingPage() {
   return (
@@ -23,51 +23,68 @@ export default function LandingPage() {
     >
       <SiteHeader />
 
-      {/* Intro */}
-      <Container
-        maxWidth="md"
+      <Box component="main">
+      {/* 1. Bold, centered headline */}
+      <Hero />
+
+      {/* 2. The story behind it (full-bleed band) */}
+      <StorySection />
+
+      {/* 3. The series (full-bleed band) */}
+      <Box
+        id="series"
         sx={{
-          pt: { xs: 8, md: 12 },
-          pb: { xs: 2, md: 3 },
-          textAlign: "center",
+          position: "relative",
+          borderTop: 1,
+          borderBottom: 1,
+          borderColor: "divider",
+          py: { xs: 8, md: 14 },
+          overflow: "hidden",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(49,120,198,0.03) 0%, rgba(124,58,237,0.03) 50%, rgba(219,39,119,0.03) 100%)",
+            pointerEvents: "none",
+          },
         }}
       >
-        {/* Color spectrum bar */}
-        <ColorBar colors={ALL_APPS.map((a) => a.colorFrom)} />
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: "center", mb: { xs: 5, md: 8 } }}>
+            <Typography
+              variant="h3"
+              component="h2"
+              fontWeight={800}
+              sx={{
+                fontSize: { xs: "1.75rem", sm: "2.25rem", md: "2.75rem" },
+                lineHeight: 1.15,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Sharpen the instincts that matter.
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ mt: 2, maxWidth: 480, mx: "auto", lineHeight: 1.7 }}
+            >
+              From React components to Git workflows, TypeScript to UX design. Real decisions, built from experience.
+            </Typography>
+          </Box>
+          <HubSeriesGrid />
+        </Container>
+      </Box>
 
-        <Typography variant="h2" component="h1" sx={{ mt: 3 }}>
-          {"The Can't Series"}
-        </Typography>
-
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          sx={{
-            mt: 2,
-            mb: 1.5,
-            maxWidth: 520,
-            mx: "auto",
-          }}
-        >
-          {`${String(ALL_APPS.length)} topics, ${String(TOTAL_CHALLENGES)} challenges. Pick the better pattern from two side-by-side options, then learn why it matters.`}
-        </Typography>
-
-        <Typography variant="caption" color="text.disabled">
-          free &middot; no signup &middot; open source
-        </Typography>
-      </Container>
-
-      {/* Series cards */}
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
-        <HubSeriesGrid />
-      </Container>
-
-      {/* Open source CTA */}
-      <OpenSourceBanner
-        title="Open source"
-        description="Built with Next.js, Material UI, and TypeScript. Contributions welcome."
-        githubUrl="https://github.com/saschb2b/cant"
-      />
+      {/* 5. Open source */}
+      <Box sx={{ py: { xs: 2, md: 4 } }}>
+        <OpenSourceBanner
+          title="Open source, always"
+          description="Every challenge, every line of code. Contributions, new challenges, and feedback are always welcome."
+          githubUrl="https://github.com/saschb2b/cant"
+        />
+      </Box>
+      </Box>
 
       <SiteFooter />
     </Box>

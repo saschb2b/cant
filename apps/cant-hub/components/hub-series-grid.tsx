@@ -1,6 +1,7 @@
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import { ExternalLink } from "lucide-react";
 import { ALL_APPS } from "@cant/shared/lib/cant-apps";
 import type { CantApp } from "@cant/shared/lib/cant-apps";
@@ -45,9 +46,13 @@ const SERIES_META: Record<string, SeriesMeta> = {
     categories: 16,
     tool: { label: "Lab", href: "/lab" },
   },
+  "Can't Branch": {
+    challenges: 141,
+    categories: 20,
+  },
 };
 
-function AppIcon({ app, size = 48 }: { app: CantApp; size?: number }) {
+function AppIcon({ app, size = 56 }: { app: CantApp; size?: number }) {
   const id = `hub-icon-${app.name.replace(/[^a-zA-Z0-9]/g, "").toLowerCase()}`;
   return (
     <svg
@@ -56,6 +61,7 @@ function AppIcon({ app, size = 48 }: { app: CantApp; size?: number }) {
       viewBox="0 0 180 180"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
       style={{ flexShrink: 0 }}
     >
       <defs>
@@ -85,6 +91,7 @@ function SeriesCard({ app }: { app: CantApp }) {
       href={app.href}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={`${app.name} (opens in new tab)`}
       style={{ textDecoration: "none", color: "inherit", display: "flex" }}
     >
       <Box
@@ -93,44 +100,34 @@ function SeriesCard({ app }: { app: CantApp }) {
           position: "relative",
           overflow: "hidden",
           borderRadius: 3,
-          p: { xs: 3, sm: 4 },
+          p: { xs: 3, sm: 4, md: 5 },
           display: "flex",
           flexDirection: "column",
-          gap: 2,
-          background: `linear-gradient(135deg, ${app.colorFrom}18, ${app.colorTo}10)`,
+          gap: 2.5,
+          background: `linear-gradient(135deg, ${app.colorFrom}14, ${app.colorTo}08)`,
           border: 1,
-          borderColor: `${app.colorFrom}30`,
-          transition: "all 0.25s ease",
+          borderColor: `${app.colorFrom}25`,
+          transition: "all 0.3s ease",
           "&:hover": {
             borderColor: app.colorFrom,
-            transform: "translateY(-3px)",
-            boxShadow: `0 8px 32px ${app.colorFrom}20`,
-            background: `linear-gradient(135deg, ${app.colorFrom}24, ${app.colorTo}16)`,
+            transform: "translateY(-4px)",
+            boxShadow: `0 12px 40px ${app.colorFrom}18`,
+            background: `linear-gradient(135deg, ${app.colorFrom}22, ${app.colorTo}14)`,
           },
         }}
       >
-        {/* Top: icon + name */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/* Icon + name */}
+        <Stack direction="row" spacing={2} alignItems="center">
           <AppIcon app={app} />
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Typography
-                variant="h6"
-                fontWeight={700}
-                sx={{ lineHeight: 1.2 }}
-              >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Typography variant="h6" component="h3" fontWeight={700} sx={{ lineHeight: 1.2 }}>
                 {app.name}
               </Typography>
               <Box sx={{ ml: "auto", color: "text.disabled", display: "flex" }}>
                 <ExternalLink size={14} />
               </Box>
-            </Box>
+            </Stack>
             <Typography
               variant="caption"
               color="text.disabled"
@@ -145,25 +142,24 @@ function SeriesCard({ app }: { app: CantApp }) {
             >
               {app.category}
             </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ mt: 0.25, lineHeight: 1.5 }}
-            >
-              {app.desc}
-            </Typography>
           </Box>
-        </Box>
+        </Stack>
+
+        {/* Description */}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ lineHeight: 1.7, flex: 1 }}
+        >
+          {app.desc}
+        </Typography>
 
         {/* Stats row */}
         {meta && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: { xs: 2, sm: 3 },
-              flexWrap: "wrap",
-              mt: "auto",
-            }}
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ mt: "auto", flexWrap: "nowrap", alignItems: "baseline" }}
           >
             <Stat
               value={meta.challenges}
@@ -176,13 +172,7 @@ function SeriesCard({ app }: { app: CantApp }) {
               color={app.colorFrom}
             />
             {meta.tool && (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 0.5,
-                }}
-              >
+              <Stack direction="row" spacing={0.5} alignItems="baseline">
                 <Box
                   sx={{
                     width: 6,
@@ -200,9 +190,9 @@ function SeriesCard({ app }: { app: CantApp }) {
                 >
                   {meta.tool.label}
                 </Typography>
-              </Box>
+              </Stack>
             )}
-          </Box>
+          </Stack>
         )}
       </Box>
     </NextLink>
@@ -239,20 +229,56 @@ function Stat({
   );
 }
 
+const CATEGORY_ORDER = ["Development", "Design", "Science"];
+
+function groupByCategory(apps: CantApp[]) {
+  const groups: { category: string; apps: CantApp[] }[] = [];
+  for (const cat of CATEGORY_ORDER) {
+    const matching = apps.filter((a) => a.category === cat);
+    if (matching.length > 0) groups.push({ category: cat, apps: matching });
+  }
+  return groups;
+}
+
 export function HubSeriesGrid() {
+  const groups = groupByCategory([...ALL_APPS]);
+
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: {
-          xs: "1fr",
-          md: "repeat(2, 1fr)",
-        },
-        gap: 2.5,
-      }}
-    >
-      {ALL_APPS.map((app) => (
-        <SeriesCard key={app.name} app={app} />
+    <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 5, md: 7 } }}>
+      {groups.map((group) => (
+        <Box key={group.category}>
+          <Typography
+            variant="caption"
+            color="text.disabled"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{
+              display: "block",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              fontSize: "0.65rem",
+              mb: 2,
+              textAlign: { xs: "center", sm: "left" },
+            }}
+          >
+            {group.category}
+          </Typography>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: `repeat(${Math.min(group.apps.length, 2)}, 1fr)`,
+                lg: `repeat(${Math.min(group.apps.length, 3)}, 1fr)`,
+              },
+              maxWidth: group.apps.length === 1 ? { sm: "50%", lg: "33.33%" } : undefined,
+              gap: { xs: 2.5, md: 3 },
+            }}
+          >
+            {group.apps.map((app) => (
+              <SeriesCard key={app.name} app={app} />
+            ))}
+          </Box>
+        </Box>
       ))}
     </Box>
   );

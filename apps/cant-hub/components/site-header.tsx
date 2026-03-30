@@ -143,6 +143,8 @@ export function SiteHeader() {
           </NextLink>
 
           <Stack
+            component="nav"
+            aria-label="Site navigation"
             direction="row"
             spacing={1}
             alignItems="center"
@@ -157,7 +159,7 @@ export function SiteHeader() {
                 rel="noopener noreferrer"
                 size="small"
                 sx={{ color: "text.secondary" }}
-                aria-label="GitHub"
+                aria-label="GitHub (opens in new tab)"
               >
                 <svg
                   width={18}
