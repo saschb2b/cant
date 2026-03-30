@@ -1,32 +1,95 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Box from "@mui/material/Box";
 
-const SEQ = [
-  "green",
-  "dpad-up",
-  "red",
-  "dpad-right",
-  "blue",
-  "yellow",
-  "dpad-down",
-  "dpad-left",
-] as const;
-type Btn = (typeof SEQ)[number];
+type DpadDir = "up" | "down" | "left" | "right";
+type FaceBtn = "green" | "blue" | "red" | "yellow";
+
+interface Frame {
+  dpad?: DpadDir;
+  face?: FaceBtn;
+  /** Duration in ms. Short = mash, long = hold. */
+  ms: number;
+}
+
+/**
+ * A gameplay sequence: the player moves with d-pad while
+ * occasionally pressing action buttons. Sometimes mashes.
+ */
+const GAMEPLAY: Frame[] = [
+  // Running right
+  { dpad: "right", ms: 400 },
+  { dpad: "right", ms: 350 },
+  // Jump while moving right
+  { dpad: "right", face: "green", ms: 300 },
+  { dpad: "right", ms: 250 },
+  { dpad: "right", ms: 300 },
+  // Attack mash
+  { dpad: "right", face: "red", ms: 150 },
+  { face: "red", ms: 120 },
+  { face: "red", ms: 120 },
+  // Move up
+  { dpad: "up", ms: 350 },
+  { dpad: "up", ms: 300 },
+  // Use ability
+  { dpad: "up", face: "blue", ms: 280 },
+  { dpad: "up", ms: 300 },
+  // Dodge left
+  { dpad: "left", ms: 250 },
+  { dpad: "left", face: "yellow", ms: 300 },
+  { dpad: "left", ms: 300 },
+  // Move down
+  { dpad: "down", ms: 350 },
+  { dpad: "down", face: "green", ms: 280 },
+  // Quick right + attack combo
+  { dpad: "right", ms: 200 },
+  { dpad: "right", face: "red", ms: 200 },
+  { face: "red", ms: 140 },
+  { face: "red", ms: 140 },
+  { face: "red", ms: 140 },
+  // Pause, then jump
+  { ms: 300 },
+  { face: "green", ms: 250 },
+  { dpad: "right", ms: 350 },
+  { dpad: "right", ms: 300 },
+  // Special move
+  { dpad: "down", ms: 200 },
+  { dpad: "right", face: "blue", ms: 300 },
+  { dpad: "right", ms: 350 },
+  // More movement
+  { dpad: "up", ms: 300 },
+  { dpad: "right", ms: 350 },
+  { dpad: "right", face: "yellow", ms: 280 },
+  { dpad: "right", ms: 300 },
+];
 
 export function HeroAnimation() {
-  const [active, setActive] = useState<Btn>("green");
-  useEffect(() => {
+  const [dpad, setDpad] = useState<DpadDir | null>(null);
+  const [face, setFace] = useState<FaceBtn | null>(null);
+
+  const tick = useCallback(() => {
     let i = 0;
-    const id = setInterval(() => {
-      i = (i + 1) % SEQ.length;
-      setActive(SEQ[i] ?? "green");
-    }, 500);
-    return () => clearInterval(id);
+    let timeout: ReturnType<typeof setTimeout>;
+
+    function next() {
+      const frame = GAMEPLAY[i % GAMEPLAY.length];
+      if (frame) {
+        setDpad(frame.dpad ?? null);
+        setFace(frame.face ?? null);
+        i++;
+        timeout = setTimeout(next, frame.ms);
+      }
+    }
+
+    next();
+    return () => clearTimeout(timeout);
   }, []);
 
-  const on = (b: Btn) => active === b;
+  useEffect(() => tick(), [tick]);
+
+  const dOn = (dir: DpadDir) => dpad === dir;
+  const fOn = (btn: FaceBtn) => face === btn;
 
   return (
     <Box
@@ -59,7 +122,7 @@ export function HeroAnimation() {
         aria-hidden="true"
         style={{ width: "100%", maxWidth: 360, height: "auto" }}
       >
-        <style>{`.gp{transition:all .15s ease-out}`}</style>
+        <style>{`.gp{transition:all .1s ease-out}`}</style>
 
         {/* Controller body */}
         <path
@@ -116,7 +179,7 @@ export function HeroAnimation() {
           opacity="0.06"
         />
 
-        {/* D-pad highlights */}
+        {/* D-pad directional highlights */}
         <rect
           className="gp"
           x="91"
@@ -124,8 +187,8 @@ export function HeroAnimation() {
           width="30"
           height="24"
           rx="5"
-          fill={on("dpad-up") ? "#60A5FA" : "transparent"}
-          opacity={on("dpad-up") ? 0.55 : 0}
+          fill={dOn("up") ? "#60A5FA" : "transparent"}
+          opacity={dOn("up") ? 0.55 : 0}
         />
         <rect
           className="gp"
@@ -134,8 +197,8 @@ export function HeroAnimation() {
           width="30"
           height="24"
           rx="5"
-          fill={on("dpad-down") ? "#60A5FA" : "transparent"}
-          opacity={on("dpad-down") ? 0.55 : 0}
+          fill={dOn("down") ? "#60A5FA" : "transparent"}
+          opacity={dOn("down") ? 0.55 : 0}
         />
         <rect
           className="gp"
@@ -144,8 +207,8 @@ export function HeroAnimation() {
           width="24"
           height="30"
           rx="5"
-          fill={on("dpad-left") ? "#60A5FA" : "transparent"}
-          opacity={on("dpad-left") ? 0.55 : 0}
+          fill={dOn("left") ? "#60A5FA" : "transparent"}
+          opacity={dOn("left") ? 0.55 : 0}
         />
         <rect
           className="gp"
@@ -154,21 +217,18 @@ export function HeroAnimation() {
           width="24"
           height="30"
           rx="5"
-          fill={on("dpad-right") ? "#60A5FA" : "transparent"}
-          opacity={on("dpad-right") ? 0.55 : 0}
+          fill={dOn("right") ? "#60A5FA" : "transparent"}
+          opacity={dOn("right") ? 0.55 : 0}
         />
-        {(["dpad-up", "dpad-down", "dpad-left", "dpad-right"] as Btn[]).map(
-          (id) =>
-            on(id) && (
-              <circle
-                key={`g-${id}`}
-                cx="105.93"
-                cy="255.999"
-                r="50"
-                fill="#60A5FA"
-                opacity="0.05"
-              />
-            ),
+        {/* D-pad glow */}
+        {dpad != null && (
+          <circle
+            cx="105.93"
+            cy="255.999"
+            r="50"
+            fill="#60A5FA"
+            opacity="0.05"
+          />
         )}
 
         {/* Center bar */}
@@ -221,89 +281,41 @@ export function HeroAnimation() {
         />
 
         {/* Face buttons */}
-        <circle
-          className="gp"
-          cx="357.517"
-          cy="258.206"
-          r="17.655"
-          fill={on("green") ? "#00DCC8" : "currentColor"}
-          opacity={on("green") ? 0.7 : 0.07}
-          stroke={on("green") ? "#00DCC8" : "currentColor"}
-          strokeWidth="1.5"
-          strokeOpacity={on("green") ? 0.5 : 0.06}
-        />
-        {on("green") && (
-          <circle
-            cx="357.517"
-            cy="258.206"
-            r="24"
-            fill="#00DCC8"
-            opacity="0.1"
-          />
-        )}
-
-        <circle
-          className="gp"
-          cx="401.655"
-          cy="222.896"
-          r="17.655"
-          fill={on("blue") ? "#82B9FF" : "currentColor"}
-          opacity={on("blue") ? 0.7 : 0.07}
-          stroke={on("blue") ? "#82B9FF" : "currentColor"}
-          strokeWidth="1.5"
-          strokeOpacity={on("blue") ? 0.5 : 0.06}
-        />
-        {on("blue") && (
-          <circle
-            cx="401.655"
-            cy="222.896"
-            r="24"
-            fill="#82B9FF"
-            opacity="0.1"
-          />
-        )}
-
-        <circle
-          className="gp"
-          cx="454.62"
-          cy="253.792"
-          r="17.655"
-          fill={on("red") ? "#FF6464" : "currentColor"}
-          opacity={on("red") ? 0.7 : 0.07}
-          stroke={on("red") ? "#FF6464" : "currentColor"}
-          strokeWidth="1.5"
-          strokeOpacity={on("red") ? 0.5 : 0.06}
-        />
-        {on("red") && (
-          <circle
-            cx="454.62"
-            cy="253.792"
-            r="24"
-            fill="#FF6464"
-            opacity="0.1"
-          />
-        )}
-
-        <circle
-          className="gp"
-          cx="410.482"
-          cy="289.103"
-          r="17.655"
-          fill={on("yellow") ? "#FFCD46" : "currentColor"}
-          opacity={on("yellow") ? 0.7 : 0.07}
-          stroke={on("yellow") ? "#FFCD46" : "currentColor"}
-          strokeWidth="1.5"
-          strokeOpacity={on("yellow") ? 0.5 : 0.06}
-        />
-        {on("yellow") && (
-          <circle
-            cx="410.482"
-            cy="289.103"
-            r="24"
-            fill="#FFCD46"
-            opacity="0.1"
-          />
-        )}
+        {(
+          [
+            {
+              id: "green" as FaceBtn,
+              cx: 357.517,
+              cy: 258.206,
+              col: "#00DCC8",
+            },
+            { id: "blue" as FaceBtn, cx: 401.655, cy: 222.896, col: "#82B9FF" },
+            { id: "red" as FaceBtn, cx: 454.62, cy: 253.792, col: "#FF6464" },
+            {
+              id: "yellow" as FaceBtn,
+              cx: 410.482,
+              cy: 289.103,
+              col: "#FFCD46",
+            },
+          ] as const
+        ).map((b) => (
+          <g key={b.id}>
+            <circle
+              className="gp"
+              cx={b.cx}
+              cy={b.cy}
+              r="17.655"
+              fill={fOn(b.id) ? b.col : "currentColor"}
+              opacity={fOn(b.id) ? 0.7 : 0.07}
+              stroke={fOn(b.id) ? b.col : "currentColor"}
+              strokeWidth="1.5"
+              strokeOpacity={fOn(b.id) ? 0.5 : 0.06}
+            />
+            {fOn(b.id) && (
+              <circle cx={b.cx} cy={b.cy} r="24" fill={b.col} opacity="0.1" />
+            )}
+          </g>
+        ))}
       </svg>
     </Box>
   );
