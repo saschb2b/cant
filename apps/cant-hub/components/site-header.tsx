@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
+
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -112,7 +112,20 @@ function ColorSchemeToggle({ size = 18 }: { size?: number }) {
   );
 }
 
+function useScrolled(threshold = 10) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return scrolled;
+}
+
 export function SiteHeader() {
+  const scrolled = useScrolled();
+
   return (
     <Box
       component="header"
@@ -120,8 +133,10 @@ export function SiteHeader() {
         position: "sticky",
         top: 0,
         zIndex: 1100,
-        bgcolor: "rgba(var(--mui-palette-background-defaultChannel) / 0.8)",
-        backdropFilter: "blur(12px)",
+        backdropFilter: "blur(20px)",
+        borderBottom: 1,
+        borderColor: scrolled ? "divider" : "transparent",
+        transition: "border-color 0.3s ease",
       }}
     >
       <Container maxWidth="lg">
@@ -174,7 +189,6 @@ export function SiteHeader() {
           </Stack>
         </Stack>
       </Container>
-      <Divider />
     </Box>
   );
 }

@@ -104,15 +104,15 @@ function SeriesCard({ app }: { app: CantApp }) {
           display: "flex",
           flexDirection: "column",
           gap: 2.5,
-          background: `linear-gradient(135deg, ${app.colorFrom}14, ${app.colorTo}08)`,
+          background: `linear-gradient(135deg, ${app.colorFrom}22, ${app.colorTo}12)`,
           border: 1,
-          borderColor: `${app.colorFrom}25`,
+          borderColor: `${app.colorFrom}35`,
           transition: "all 0.3s ease",
           "&:hover": {
             borderColor: app.colorFrom,
             transform: "translateY(-4px)",
-            boxShadow: `0 12px 40px ${app.colorFrom}18`,
-            background: `linear-gradient(135deg, ${app.colorFrom}22, ${app.colorTo}14)`,
+            boxShadow: `0 12px 40px ${app.colorFrom}30`,
+            background: `linear-gradient(135deg, ${app.colorFrom}35, ${app.colorTo}22)`,
           },
         }}
       >
@@ -124,7 +124,7 @@ function SeriesCard({ app }: { app: CantApp }) {
               <Typography variant="h6" component="h3" fontWeight={700} sx={{ lineHeight: 1.2 }}>
                 {app.name}
               </Typography>
-              <Box sx={{ ml: "auto", color: "text.disabled", display: "flex" }}>
+              <Box sx={{ ml: "auto", pl: 1, color: "text.disabled", display: "flex", flexShrink: 0 }}>
                 <ExternalLink size={14} />
               </Box>
             </Stack>

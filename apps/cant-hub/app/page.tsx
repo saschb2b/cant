@@ -45,7 +45,7 @@ export default function LandingPage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(49,120,198,0.03) 0%, rgba(124,58,237,0.03) 50%, rgba(219,39,119,0.03) 100%)",
+              "linear-gradient(180deg, rgba(49,120,198,0.10) 0%, rgba(124,58,237,0.08) 50%, rgba(219,39,119,0.10) 100%)",
             pointerEvents: "none",
           },
         }}

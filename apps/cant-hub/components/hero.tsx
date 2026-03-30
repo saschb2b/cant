@@ -20,13 +20,9 @@ export function Hero() {
         "&::before": {
           content: '""',
           position: "absolute",
-          top: "-40%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "140%",
-          height: "100%",
+          inset: 0,
           background:
-            "radial-gradient(ellipse at center, rgba(212,168,67,0.07) 0%, rgba(61,139,114,0.04) 40%, transparent 70%)",
+            "radial-gradient(ellipse at 40% 50%, rgba(212,168,67,0.18) 0%, rgba(61,139,114,0.10) 35%, transparent 65%), radial-gradient(ellipse at 65% 60%, rgba(124,58,237,0.10) 0%, rgba(49,120,198,0.06) 40%, transparent 70%)",
           pointerEvents: "none",
         },
       }}
@@ -74,7 +70,15 @@ export function Hero() {
           >
             <StatChip value={String(ALL_APPS.length)} label="topics" />
             <StatChip value={String(TOTAL_CHALLENGES)} label="challenges" />
-            <StatChip value="free" label="forever" />
+            <Typography
+              variant="h5"
+              component="span"
+              fontWeight={800}
+              color="secondary"
+              sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" } }}
+            >
+              free
+            </Typography>
           </Stack>
 
           {/* CTA */}

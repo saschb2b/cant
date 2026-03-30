@@ -1,8 +1,10 @@
+import NextLink from "next/link";
 import Image from "next/image";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import { Github, Globe } from "lucide-react";
 
 export function StorySection() {
   return (
@@ -19,7 +21,7 @@ export function StorySection() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(135deg, rgba(212,168,67,0.04) 0%, rgba(61,139,114,0.03) 50%, rgba(49,120,198,0.04) 100%)",
+            "linear-gradient(135deg, rgba(212,168,67,0.12) 0%, rgba(61,139,114,0.08) 50%, rgba(49,120,198,0.12) 100%)",
           pointerEvents: "none",
         },
       }}
@@ -94,6 +96,55 @@ export function StorySection() {
                 "Every challenge comes from a real decision I've faced or seen others struggle with. No trivia, no gotchas."
               }
             </Typography>
+
+            {/* Author name + links */}
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems="center"
+              sx={{
+                mt: 3,
+                justifyContent: { xs: "center", md: "flex-start" },
+              }}
+            >
+              <Typography variant="body2" fontWeight={600}>
+                Sascha Becker
+              </Typography>
+              <NextLink
+                href="https://github.com/saschb2b"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub (opens in new tab)"
+                style={{ textDecoration: "none", color: "inherit", display: "flex" }}
+              >
+                <Stack
+                  direction="row"
+                  spacing={0.5}
+                  alignItems="center"
+                  sx={{ color: "text.secondary", "&:hover": { color: "text.primary" }, transition: "color 0.2s" }}
+                >
+                  <Github size={15} />
+                  <Typography variant="caption">saschb2b</Typography>
+                </Stack>
+              </NextLink>
+              <NextLink
+                href="https://saschb2b.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Personal website (opens in new tab)"
+                style={{ textDecoration: "none", color: "inherit", display: "flex" }}
+              >
+                <Stack
+                  direction="row"
+                  spacing={0.5}
+                  alignItems="center"
+                  sx={{ color: "text.secondary", "&:hover": { color: "text.primary" }, transition: "color 0.2s" }}
+                >
+                  <Globe size={15} />
+                  <Typography variant="caption">saschb2b.com</Typography>
+                </Stack>
+              </NextLink>
+            </Stack>
           </Box>
         </Stack>
       </Container>
