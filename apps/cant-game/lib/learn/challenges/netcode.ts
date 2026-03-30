@@ -62,42 +62,9 @@ function onPlayerInput(
     prompt:
       "Which approach to rendering remote players produces smoother movement?",
     content: {
-      type: "code",
-
-      left: `// Snap to latest server position
-function onServerUpdate(entity: Entity, data: StateData) {
-  entity.x = data.x;
-  entity.y = data.y;
-  entity.rotation = data.rotation;
-}
-
-// Entities teleport 20 times per second
-// Movement looks choppy between updates`,
-
-      right: `// Interpolation buffer: render in the past
-const INTERP_DELAY = 100; // ms
-
-function onServerUpdate(entity: Entity, data: StateData) {
-  entity.stateBuffer.push({
-    time: data.serverTime,
-    x: data.x,
-    y: data.y,
-    rotation: data.rotation,
-  });
-}
-
-function render(entity: Entity, renderTime: number) {
-  const target = renderTime - INTERP_DELAY;
-  const [a, b] = findSurroundingStates(
-    entity.stateBuffer, target,
-  );
-  const t = (target - a.time) / (b.time - a.time);
-  entity.displayX = lerp(a.x, b.x, t);
-  entity.displayY = lerp(a.y, b.y, t);
-  entity.displayRot = lerpAngle(
-    a.rotation, b.rotation, t,
-  );
-}`,
+      type: "visual",
+      left: { componentId: "NetcodeSnapping" },
+      right: { componentId: "NetcodeInterpolation" },
     },
 
     correctSide: "right",

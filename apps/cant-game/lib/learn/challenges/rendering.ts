@@ -63,34 +63,9 @@ function render(sprites: Sprite[]) {
     title: "Off-screen geometry",
     prompt: "Which approach to rendering handles off-screen objects better?",
     content: {
-      type: "code",
-
-      left: `// Render everything, let the GPU clip
-function render(objects: GameObject[]) {
-  for (const obj of objects) {
-    const mvp = multiply(viewProjection, obj.model);
-    setUniform("mvp", mvp);
-    obj.mesh.draw();
-  }
-}
-// GPU clips triangles outside the viewport
-// but the CPU still processes every object`,
-
-      right: `// Frustum culling: skip objects outside view
-function render(
-  objects: GameObject[],
-  frustum: Frustum,
-) {
-  for (const obj of objects) {
-    if (!frustum.intersects(obj.bounds)) continue;
-
-    const mvp = multiply(viewProjection, obj.model);
-    setUniform("mvp", mvp);
-    obj.mesh.draw();
-  }
-}
-// A sphere-frustum test is ~10 multiplies
-// vs thousands of vertices transformed on GPU`,
+      type: "visual",
+      left: { componentId: "RenderAll" },
+      right: { componentId: "RenderCulled" },
     },
 
     correctSide: "right",

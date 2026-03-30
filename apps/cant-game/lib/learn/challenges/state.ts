@@ -8,57 +8,9 @@ export const stateChallenges: Challenge[] = [
     title: "Character behavior modeling",
     prompt: "Which approach to managing character states is more maintainable?",
     content: {
-      type: "code",
-
-      left: `class Player {
-  isJumping = false;
-  isAttacking = false;
-  isDashing = false;
-  isStunned = false;
-
-  update(dt: number) {
-    if (this.isStunned) {
-      // Can't do anything
-    } else if (this.isAttacking) {
-      if (this.isJumping) {
-        this.doAirAttack(dt);
-      } else {
-        this.doGroundAttack(dt);
-      }
-    } else if (this.isJumping) {
-      this.doJump(dt);
-      if (input.dash && !this.isDashing) {
-        this.isDashing = true;
-      }
-    }
-    // What if isJumping AND isStunned?
-  }
-}`,
-
-      right: `type PlayerState =
-  | { type: "idle" }
-  | { type: "jumping"; velocity: number }
-  | { type: "attacking"; frame: number; airborne: boolean }
-  | { type: "dashing"; direction: number; timer: number }
-  | { type: "stunned"; remaining: number };
-
-function updatePlayer(
-  state: PlayerState,
-  input: Input,
-  dt: number,
-): PlayerState {
-  switch (state.type) {
-    case "idle":
-      if (input.jump) return { type: "jumping", velocity: -12 };
-      if (input.attack) return { type: "attacking", frame: 0, airborne: false };
-      return state;
-    case "stunned":
-      return state.remaining <= 0
-        ? { type: "idle" }
-        : { ...state, remaining: state.remaining - dt };
-    // ...each state handles its own transitions
-  }
-}`,
+      type: "visual",
+      left: { componentId: "StateBooleanFlags" },
+      right: { componentId: "StateFiniteMachine" },
     },
 
     correctSide: "right",

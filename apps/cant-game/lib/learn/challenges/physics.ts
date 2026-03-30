@@ -9,57 +9,9 @@ export const physicsChallenges: Challenge[] = [
     prompt:
       "Which collision detection approach scales better with many entities?",
     content: {
-      type: "code",
-
-      left: `// Check every pair of entities
-function checkCollisions(entities: Entity[]) {
-  for (let i = 0; i < entities.length; i++) {
-    for (let j = i + 1; j < entities.length; j++) {
-      if (intersects(entities[i], entities[j])) {
-        resolve(entities[i], entities[j]);
-      }
-    }
-  }
-}
-// 1000 entities = 499,500 checks per frame`,
-
-      right: `// Spatial hash: only check nearby entities
-class SpatialHash {
-  private cells = new Map<string, Entity[]>();
-  private cellSize: number;
-
-  constructor(cellSize: number) {
-    this.cellSize = cellSize;
-  }
-
-  insert(entity: Entity) {
-    const key = this.key(entity.x, entity.y);
-    const cell = this.cells.get(key) ?? [];
-    cell.push(entity);
-    this.cells.set(key, cell);
-  }
-
-  query(entity: Entity): Entity[] {
-    const nearby: Entity[] = [];
-    // Check 3x3 neighborhood
-    for (let dx = -1; dx <= 1; dx++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        const key = this.key(
-          entity.x + dx * this.cellSize,
-          entity.y + dy * this.cellSize,
-        );
-        nearby.push(...(this.cells.get(key) ?? []));
-      }
-    }
-    return nearby;
-  }
-
-  private key(x: number, y: number): string {
-    const cx = Math.floor(x / this.cellSize);
-    const cy = Math.floor(y / this.cellSize);
-    return cx + "," + cy;
-  }
-}`,
+      type: "visual",
+      left: { componentId: "CollisionBruteForce" },
+      right: { componentId: "CollisionSpatialHash" },
     },
 
     correctSide: "right",
@@ -79,37 +31,9 @@ class SpatialHash {
     prompt:
       "Which collision detection handles fast-moving objects more reliably?",
     content: {
-      type: "code",
-
-      left: `// Discrete: test position each frame
-function update(bullet: Circle, wall: AABB, dt: number) {
-  bullet.x += bullet.vx * dt;
-  bullet.y += bullet.vy * dt;
-
-  if (overlaps(bullet, wall)) {
-    // Bullet already inside the wall
-    resolve(bullet, wall);
-  }
-}
-// A fast bullet can skip over a thin wall entirely`,
-
-      right: `// Continuous: sweep the path between frames
-function update(bullet: Circle, wall: AABB, dt: number) {
-  const dx = bullet.vx * dt;
-  const dy = bullet.vy * dt;
-
-  const hit = sweepCircleAABB(bullet, dx, dy, wall);
-
-  if (hit) {
-    // Move to exact contact point
-    bullet.x += dx * hit.t;
-    bullet.y += dy * hit.t;
-    reflect(bullet, hit.normal);
-  } else {
-    bullet.x += dx;
-    bullet.y += dy;
-  }
-}`,
+      type: "visual",
+      left: { componentId: "CollisionDiscrete" },
+      right: { componentId: "CollisionContinuous" },
     },
 
     correctSide: "right",
@@ -120,5 +44,27 @@ function update(bullet: Circle, wall: AABB, dt: number) {
     sourceUrl:
       "https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects",
     sourceLabel: "Toptal: Game Physics, Collision Detection",
+  },
+  {
+    id: "phys-003",
+    category: "physics",
+    difficulty: "medium",
+    title: "Integration method",
+    prompt:
+      "Which numerical integration keeps a rope simulation stable over time?",
+    content: {
+      type: "visual",
+      left: { componentId: "RopeEuler" },
+      right: { componentId: "RopeVerlet" },
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "Verlet integration stores position and previous position instead of position and velocity. The velocity is implicit in the difference between the two. Constraint relaxation (repeatedly nudging points to satisfy distance constraints) is simple and stable because it operates directly on positions. Energy is naturally dissipated rather than accumulated, making it ideal for ropes, cloth, and ragdolls.",
+    explanationWrong:
+      "Euler integration updates velocity then position each frame. When constraint corrections feed back into velocity, small floating-point errors accumulate over time and inject energy into the system. The rope oscillates with increasing amplitude until it explodes. Reducing the timestep helps but never fully eliminates the instability.",
+    sourceUrl:
+      "https://www.gamedev.net/tutorials/programming/math-and-physics/a-verlet-based-approach-for-2d-game-physics-r2714/",
+    sourceLabel: "GameDev.net: Verlet-based 2D Physics",
   },
 ];

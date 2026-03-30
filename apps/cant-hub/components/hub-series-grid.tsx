@@ -60,7 +60,7 @@ const SERIES_META: Record<string, SeriesMeta> = {
     categories: 7,
   },
   "Can't Game": {
-    challenges: 18,
+    challenges: 24,
     categories: 8,
   },
 };

@@ -77,32 +77,9 @@ export const aiChallenges: Challenge[] = [
     prompt:
       "Which A* heuristic produces shorter paths on a grid that allows diagonal movement?",
     content: {
-      type: "code",
-
-      left: `// Manhattan distance heuristic
-function heuristic(a: Node, b: Node): number {
-  return Math.abs(a.x - b.x)
-       + Math.abs(a.y - b.y);
-}
-
-// A* with Manhattan on a grid
-// where diagonal moves cost sqrt(2)
-// Overestimates diagonal paths
-// Still finds a path, but may explore
-// more nodes than necessary`,
-
-      right: `// Octile distance heuristic
-function heuristic(a: Node, b: Node): number {
-  const dx = Math.abs(a.x - b.x);
-  const dy = Math.abs(a.y - b.y);
-  // Diagonal cost: sqrt(2) ~ 1.414
-  return dx + dy + (Math.SQRT2 - 2) * Math.min(dx, dy);
-}
-
-// Matches actual movement cost on a grid
-// with 8-directional movement
-// Never overestimates, so A* finds
-// the optimal path efficiently`,
+      type: "visual",
+      left: { componentId: "PathfindingManhattan" },
+      right: { componentId: "PathfindingOctile" },
     },
 
     correctSide: "right",
@@ -113,5 +90,27 @@ function heuristic(a: Node, b: Node): number {
     sourceUrl:
       "http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html",
     sourceLabel: "Red Blob Games: A* Heuristics",
+  },
+  {
+    id: "ai-003",
+    category: "ai",
+    difficulty: "easy",
+    title: "Target approach behavior",
+    prompt:
+      "Which steering behavior reaches a target position more gracefully?",
+    content: {
+      type: "visual",
+      left: { componentId: "SteerSeek" },
+      right: { componentId: "SteerArrive" },
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "Arrive behavior scales the steering force based on distance to the target. Outside the slowing radius it behaves like seek, but inside it reduces desired speed proportionally, causing the agent to decelerate smoothly to a stop. This is the standard approach for any AI that needs to reach a specific position, from RTS unit movement to NPC navigation.",
+    explanationWrong:
+      "Pure seek always applies maximum steering force toward the target regardless of distance. When the agent reaches the target it is still at full speed, so it overshoots, turns around, overshoots again, and oscillates indefinitely. Clamping speed near the target is a hack that produces abrupt stops. The arrive behavior solves this naturally.",
+    sourceUrl:
+      "https://www.red3d.com/cwr/steer/gdc99/",
+    sourceLabel: "Craig Reynolds: Steering Behaviors for Autonomous Characters",
   },
 ];

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import type { ReactNode, ComponentType } from "react";
 import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -12,6 +12,7 @@ import {
   FormattedText,
   SourceLink,
 } from "@cant/shared/components";
+import { visualRegistry } from "@/components/visual/registry";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -51,6 +52,27 @@ function renderContentPanel(
   entry: ContentMapEntry | undefined,
   side: "good" | "bad",
 ): ReactNode {
+  if (entry?.type === "visual") {
+    const componentId =
+      side === "good" ? entry.goodComponentId : entry.badComponentId;
+    const Component = visualRegistry[componentId] as
+      | ComponentType
+      | undefined;
+    if (!Component) return null;
+    return (
+      <Box
+        sx={{
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: 200,
+        }}
+      >
+        <Component />
+      </Box>
+    );
+  }
   return <LearnContentPanel entry={entry} side={side} />;
 }
 

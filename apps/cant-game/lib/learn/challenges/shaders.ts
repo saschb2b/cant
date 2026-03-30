@@ -8,43 +8,9 @@ export const shadersChallenges: Challenge[] = [
     title: "Computation placement",
     prompt: "Which shader distributes computation more efficiently?",
     content: {
-      type: "code",
-
-      left: `// Fragment shader: compute per pixel
-// Runs once per pixel covered (~500k+ times)
-precision mediump float;
-uniform vec3 uLightPos;
-varying vec3 vWorldPos;
-varying vec3 vNormal;
-
-void main() {
-  vec3 lightDir = normalize(uLightPos - vWorldPos);
-  float diff = max(dot(vNormal, lightDir), 0.0);
-  vec3 color = vec3(0.8) * diff;
-  gl_FragColor = vec4(color, 1.0);
-}`,
-
-      right: `// Vertex shader: compute per vertex
-// Runs once per vertex (~1k times)
-uniform vec3 uLightPos;
-attribute vec3 aPosition;
-attribute vec3 aNormal;
-varying float vDiffuse;
-
-void main() {
-  vec3 worldPos = (uModel * vec4(aPosition, 1.0)).xyz;
-  vec3 lightDir = normalize(uLightPos - worldPos);
-  vDiffuse = max(dot(aNormal, lightDir), 0.0);
-  gl_Position = uMVP * vec4(aPosition, 1.0);
-}
-
-// Fragment shader: just use interpolated value
-precision mediump float;
-varying float vDiffuse;
-
-void main() {
-  gl_FragColor = vec4(vec3(0.8) * vDiffuse, 1.0);
-}`,
+      type: "visual",
+      left: { componentId: "ShadingPhong" },
+      right: { componentId: "ShadingGouraud" },
     },
 
     correctSide: "right",

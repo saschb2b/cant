@@ -8,35 +8,9 @@ export const gameLoopChallenges: Challenge[] = [
     title: "Timestep strategy",
     prompt: "Which game loop handles frame rate variation more reliably?",
     content: {
-      type: "code",
-
-      left: `function gameLoop() {
-  requestAnimationFrame(gameLoop);
-
-  const now = performance.now();
-  const dt = now - lastTime;
-  lastTime = now;
-
-  update(dt / 1000);
-  render();
-}`,
-
-      right: `const FIXED_DT = 1 / 60;
-let accumulator = 0;
-
-function gameLoop() {
-  requestAnimationFrame(gameLoop);
-
-  const now = performance.now();
-  accumulator += (now - lastTime) / 1000;
-  lastTime = now;
-
-  while (accumulator >= FIXED_DT) {
-    update(FIXED_DT);
-    accumulator -= FIXED_DT;
-  }
-  render();
-}`,
+      type: "visual",
+      left: { componentId: "TimestepVariable" },
+      right: { componentId: "TimestepFixed" },
     },
 
     correctSide: "right",
@@ -177,5 +151,26 @@ function update(dt: number) {
       "Allocating a new object per spawn and filtering the array every frame generates garbage that the GC must eventually collect. In JavaScript and similar managed runtimes, GC pauses are unpredictable and can cause frame drops at the worst possible moment. The filter() call also allocates a new array every frame.",
     sourceUrl: "https://gameprogrammingpatterns.com/object-pool.html",
     sourceLabel: "Game Programming Patterns: Object Pool",
+  },
+  {
+    id: "loop-004",
+    category: "game-loop",
+    difficulty: "easy",
+    title: "Camera follow strategy",
+    prompt: "Which camera behavior feels smoother during gameplay?",
+    content: {
+      type: "visual",
+      left: { componentId: "CameraSnap" },
+      right: { componentId: "CameraSmooth" },
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "A dampened camera (lerping toward the target each frame) creates smooth, natural-feeling movement. The slight delay as the character drifts off-center during direction changes gives the player a sense of momentum and makes the world feel alive. Most 2D and 3D games use some form of smoothed follow, often with configurable lookahead and deadzone parameters.",
+    explanationWrong:
+      "Snapping the camera to the player every frame keeps the character pixel-perfect centered, but the entire world jerks around with every movement change. This is especially noticeable on direction reversals and during fast movement. The rigid lock makes the scene feel mechanical and can cause motion discomfort in some players.",
+    sourceUrl:
+      "https://www.gamedeveloper.com/design/scroll-back-the-theory-and-practice-of-cameras-in-side-scrollers",
+    sourceLabel: "Game Developer: Cameras in Side-Scrollers",
   },
 ];
