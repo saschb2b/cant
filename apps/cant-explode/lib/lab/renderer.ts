@@ -1,6 +1,6 @@
 import type { Grid } from "./types";
 import type { Atmosphere } from "./atmosphere";
-import { getSkyColor, getAmbientSparkle, getCloudPixel, getCelestialPixel } from "./atmosphere";
+import { getSkyColor, getAmbientSparkle, getCloudPixel, getCelestialPixel, getCloudShade } from "./atmosphere";
 
 /** Elements that render translucent (blended with background). */
 const TRANSLUCENT: Record<string, number> = {
@@ -88,6 +88,16 @@ export function renderGrid(
     skyColors.push(getSkyColor(atmo, gy, grid.height));
   }
 
+
+  // Pre-compute cloud shade per column, scaled by daylight for smooth transition
+  const shadeMap: number[] = [];
+  if (atmo.daylight > 0.01 && atmo.clouds.length > 0) {
+    // Smooth fade: shadows ramp with daylight (no shadow at night, full at midday)
+    const shadeFade = Math.min(1, atmo.daylight * 2); // 0 at night, 1 above daylight 0.5
+    for (let gx = 0; gx < grid.width; gx++) {
+      shadeMap.push(getCloudShade(atmo, gx) * shadeFade);
+    }
+  }
 
   for (let gy = 0; gy < grid.height; gy++) {
     const bg = skyColors[gy]!;
@@ -205,6 +215,17 @@ export function renderGrid(
           r = sparkle[0];
           g = sparkle[1];
           b = sparkle[2];
+        }
+      }
+
+      // Cloud shadow: darken ground particles under clouds
+      if (particle && shadeMap.length > 0) {
+        const shade = shadeMap[gx] ?? 0;
+        if (shade > 0) {
+          const dim = 1 - shade;
+          r = Math.round(r * dim);
+          g = Math.round(g * dim);
+          b = Math.round(b * dim);
         }
       }
 

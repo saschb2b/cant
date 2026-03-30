@@ -82,10 +82,10 @@ const MOON_GLOW_RADIUS = 7;
 const HORIZON_Y = 50;
 
 /** Maximum number of clouds at once. */
-const MAX_CLOUDS = 8;
-/** Cloud band: clouds live in the top portion of the grid. */
-const CLOUD_Y_MIN = 2;
-const CLOUD_Y_MAX = 12;
+const MAX_CLOUDS = 6;
+/** Cloud band: clouds live in the upper portion of the grid. */
+const CLOUD_Y_MIN = 5;
+const CLOUD_Y_MAX = 45;
 /** Steam needed to form a new cloud. */
 const STEAM_THRESHOLD = 5;
 
@@ -356,47 +356,67 @@ function absorbSteam(atmo: Atmosphere, grid: Grid): void {
   }
 }
 
-/** Generate a cumulus cloud: puffy, tall, flat bottom, billowy top. */
+/** Generate a cumulus cloud: large puffy dome, flat bottom, billowy cauliflower top.
+ *  Real cumulus: 20-50 cells wide, 10-25 cells tall. Flat base, rounded towers on top. */
 function generateCumulus(scale: number): Puff[] {
   const puffs: Puff[] = [];
-  const numPuffs = 5 + Math.floor(Math.random() * 4);
 
-  // Flat bottom row
-  for (let i = 0; i < numPuffs; i++) {
-    const t = (i / (numPuffs - 1)) * 2 - 1;
-    const r = (2.5 + Math.random() * 2) * scale;
-    const ox = t * scale * 5 * (0.8 + Math.random() * 0.4);
-    const heightBias = (1 - t * t) * scale * 2.5;
-    const oy = -(heightBias + Math.random() * scale * 0.5);
+  // Wide flat base layer (the characteristic flat bottom of cumulus)
+  const baseWidth = 8 + Math.floor(Math.random() * 5);
+  for (let i = 0; i < baseWidth; i++) {
+    const t = (i / (baseWidth - 1)) * 2 - 1; // -1 to 1
+    const ox = t * scale * 14;
+    const oy = 0; // flat bottom at center y
+    const r = (4 + Math.random() * 2) * scale;
     puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
   }
 
-  // Billowy peaks on top
+  // Middle body: dome shape, wider at base, narrowing upward
+  const bodyLayers = 3 + Math.floor(Math.random() * 2);
+  for (let layer = 1; layer <= bodyLayers; layer++) {
+    const layerWidth = baseWidth - layer * 1.5;
+    const count = Math.max(3, Math.floor(layerWidth));
+    for (let i = 0; i < count; i++) {
+      const t = count > 1 ? (i / (count - 1)) * 2 - 1 : 0;
+      const spread = (1 - layer / (bodyLayers + 1)) * 0.9;
+      const ox = t * scale * 14 * spread + (Math.random() - 0.5) * scale * 2;
+      const oy = -(layer * scale * 3.5 + Math.random() * scale);
+      const r = (3.5 + Math.random() * 2.5) * scale;
+      puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
+    }
+  }
+
+  // Cauliflower peaks: 2-4 billowy towers on top
   const peaks = 2 + Math.floor(Math.random() * 3);
   for (let i = 0; i < peaks; i++) {
-    const ox = (Math.random() * 2 - 1) * scale * 3;
-    const oy = -(scale * 3 + Math.random() * scale * 2.5);
-    const r = (2 + Math.random() * 2) * scale;
+    const ox = (Math.random() * 2 - 1) * scale * 8;
+    const oy = -(bodyLayers * scale * 3.5 + Math.random() * scale * 5);
+    const r = (3 + Math.random() * 3) * scale;
     puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
   }
 
   return puffs;
 }
 
-/** Generate a cirrus cloud: thin, wispy, high altitude streaks. */
+/** Generate a cirrus cloud: long wispy ice-crystal streaks at high altitude.
+ *  Real cirrus: 40-80 cells long, only 2-4 cells tall. Often with hooks or mare's tails. */
 function generateCirrus(scale: number): Puff[] {
   const puffs: Puff[] = [];
-  const streaks = 2 + Math.floor(Math.random() * 3);
+  const streaks = 1 + Math.floor(Math.random() * 3);
 
   for (let s = 0; s < streaks; s++) {
-    const baseX = (Math.random() * 2 - 1) * scale * 3;
-    const baseY = -(Math.random() * scale * 1.5);
-    const length = 3 + Math.floor(Math.random() * 4);
+    const baseX = (Math.random() * 2 - 1) * scale * 8;
+    const baseY = s * scale * 2;
+    const length = 8 + Math.floor(Math.random() * 8);
+    // Slight curve (hook shape, like mare's tails)
+    const curve = (Math.random() - 0.5) * 0.3;
 
     for (let i = 0; i < length; i++) {
-      const ox = baseX + i * scale * 1.8 + (Math.random() - 0.5) * scale;
-      const oy = baseY + (Math.random() - 0.5) * scale * 0.5;
-      const r = (0.8 + Math.random() * 0.8) * scale;
+      const t = i / length;
+      const ox = baseX + i * scale * 4 + (Math.random() - 0.5) * scale;
+      const oy = baseY + t * t * curve * scale * 15 + (Math.random() - 0.5) * scale * 0.5;
+      // Thinner toward the trailing edge
+      const r = (1.5 + Math.random() * 1.5) * scale * (1 - t * 0.4);
       puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
     }
   }
@@ -404,18 +424,23 @@ function generateCirrus(scale: number): Puff[] {
   return puffs;
 }
 
-/** Generate a stratus cloud: wide, flat, layered. */
+/** Generate a stratus cloud: wide flat blanket that can cover large areas.
+ *  Real stratus: 60-120 cells wide, 3-6 cells tall. Uniform gray layer. */
 function generateStratus(scale: number): Puff[] {
   const puffs: Puff[] = [];
-  const width = 8 + Math.floor(Math.random() * 6);
+  const width = 12 + Math.floor(Math.random() * 8);
 
-  for (let i = 0; i < width; i++) {
-    const t = (i / (width - 1)) * 2 - 1;
-    const ox = t * scale * 7;
-    // Very flat: minimal vertical variation
-    const oy = (Math.random() - 0.5) * scale * 0.8;
-    const r = (1.5 + Math.random() * 1) * scale;
-    puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
+  // Two overlapping rows for thickness
+  for (let row = 0; row < 2; row++) {
+    for (let i = 0; i < width; i++) {
+      const t = (i / (width - 1)) * 2 - 1;
+      const ox = t * scale * 18;
+      const oy = (row - 0.5) * scale * 1.5 + (Math.random() - 0.5) * scale;
+      // Edges taper off (thinner at sides)
+      const edgeFade = 1 - Math.abs(t) * 0.3;
+      const r = (2.5 + Math.random() * 1.5) * scale * edgeFade;
+      puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
+    }
   }
 
   return puffs;
@@ -479,28 +504,28 @@ function trySpawnCloud(atmo: Atmosphere, gridWidth: number): void {
     type = "stratus"; // Flat (wide)
   }
 
-  // Scale varies by type
-  const scale = type === "cirrus" ? 0.5 + Math.random() * 0.3
-    : type === "stratus" ? 0.5 + Math.random() * 0.4
-    : 0.6 + Math.random() * 0.7;
+  // Scale: realistic proportions for a pixel world
+  const scale = type === "cirrus" ? 0.8 + Math.random() * 0.5
+    : type === "stratus" ? 0.7 + Math.random() * 0.5
+    : 1.0 + Math.random() * 1.0;
 
   const { puffs, halfW, halfH } = generateCloud(type, scale);
 
   const fromLeft = Math.random() < 0.5;
   const x = fromLeft ? -halfW : gridWidth + halfW;
 
-  // Speed varies by type: cirrus fast, stratus slow, cumulus medium
-  const baseSpeed = type === "cirrus" ? 0.06 : type === "stratus" ? 0.02 : 0.04;
-  const drift = (fromLeft ? 1 : -1) * (baseSpeed + Math.random() * 0.04);
+  // Speed varies by type: cirrus fast (jet stream), stratus slow (low drift), cumulus medium
+  const baseSpeed = type === "cirrus" ? 0.08 : type === "stratus" ? 0.015 : 0.03;
+  const drift = (fromLeft ? 1 : -1) * (baseSpeed + Math.random() * 0.03);
 
-  // Height varies by type: cirrus high, stratus mid, cumulus varies
+  // Height varies by type: cirrus high, cumulus mid-high, stratus mid-low
   let y: number;
   if (type === "cirrus") {
-    y = CLOUD_Y_MIN + 1 + Math.random() * 3;
+    y = CLOUD_Y_MIN + Math.random() * 8;
   } else if (type === "stratus") {
-    y = CLOUD_Y_MIN + 4 + Math.random() * 4;
+    y = CLOUD_Y_MIN + 15 + Math.random() * 15;
   } else {
-    y = CLOUD_Y_MIN + 2 + Math.random() * (CLOUD_Y_MAX - CLOUD_Y_MIN - 4);
+    y = CLOUD_Y_MIN + 8 + Math.random() * 15;
   }
 
   atmo.clouds.push({
@@ -514,6 +539,55 @@ function trySpawnCloud(atmo: Atmosphere, gridWidth: number): void {
     type,
     age: 0,
     driftY: (Math.random() - 0.5) * 0.005,
+  });
+}
+
+/**
+ * Spawn ambient clouds that form naturally (no steam required).
+ * Cirrus and light stratus drift across the sky for visual atmosphere.
+ * More frequent at dawn/dusk, sparse at midday and night.
+ */
+function trySpawnAmbientCloud(atmo: Atmosphere, gridWidth: number): void {
+  if (atmo.clouds.length >= MAX_CLOUDS) return;
+
+  // Spawn chance varies with time of day: higher at dawn/dusk transitions
+  const tod = atmo.timeOfDay;
+  let spawnChance = 0.0004; // base: very rare
+  if ((tod > 0.15 && tod < 0.35) || (tod > 0.65 && tod < 0.85)) {
+    spawnChance = 0.002; // dawn/dusk: more frequent
+  }
+  // Humidity boosts ambient clouds
+  spawnChance += atmo.humidity * 0.001;
+
+  if (Math.random() > spawnChance) return;
+
+  // Ambient clouds are mostly cirrus (wispy) and light stratus (haze)
+  const roll = Math.random();
+  const type: CloudType = roll < 0.6 ? "cirrus" : "stratus";
+
+  const scale = type === "cirrus"
+    ? 0.6 + Math.random() * 0.5  // wispy streaks
+    : 0.5 + Math.random() * 0.4; // light haze
+
+  const { puffs, halfW, halfH } = generateCloud(type, scale);
+
+  const fromLeft = Math.random() < 0.5;
+  const x = fromLeft ? -halfW : gridWidth + halfW;
+  const baseSpeed = type === "cirrus" ? 0.06 : 0.012;
+  const drift = (fromLeft ? 1 : -1) * (baseSpeed + Math.random() * 0.02);
+
+  const y = type === "cirrus"
+    ? CLOUD_Y_MIN + Math.random() * 8
+    : CLOUD_Y_MIN + 10 + Math.random() * 15;
+
+  atmo.clouds.push({
+    x, y,
+    moisture: 0, // ambient clouds start dry
+    drift,
+    puffs, halfW, halfH,
+    type,
+    age: 0,
+    driftY: (Math.random() - 0.5) * 0.003,
   });
 }
 
@@ -532,14 +606,68 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
     cloud.y = Math.max(CLOUD_Y_MIN, Math.min(CLOUD_Y_MAX, cloud.y));
     cloud.age++;
 
-    // Slow morphing: puffs gently shift over time
-    if (cloud.age % 60 === 0) {
+    // --- Continuous morphing: clouds are always shifting ---
+    // Gentle per-frame drift for organic feel
+    if (cloud.age % 3 === 0) {
       for (const puff of cloud.puffs) {
-        puff.ox += (Math.random() - 0.5) * 0.3;
-        puff.oy += (Math.random() - 0.5) * 0.2;
-        puff.r += (Math.random() - 0.5) * 0.1;
-        puff.r = Math.max(0.5, puff.r);
+        puff.ox += (Math.random() - 0.5) * 0.06;
+        puff.oy += (Math.random() - 0.5) * 0.04;
       }
+    }
+
+    // --- Moisture-driven evolution (every 30 frames) ---
+    if (cloud.age % 30 === 0) {
+      if (cloud.moisture > 0.4) {
+        // Building up: puffs swell, cloud grows taller (anvil/towering effect)
+        for (const puff of cloud.puffs) {
+          puff.r += 0.03 + Math.random() * 0.04;
+          // Upper puffs rise higher (convective tower)
+          if (puff.oy < -2) puff.oy -= 0.1 + Math.random() * 0.1;
+        }
+        // Spawn new puffs on top when heavily loaded (cumulus towers)
+        if (cloud.moisture > 0.7 && cloud.type === "cumulus" && Math.random() < 0.3) {
+          const topPuff = cloud.puffs.reduce((a, b) => a.oy < b.oy ? a : b);
+          cloud.puffs.push({
+            ox: topPuff.ox + (Math.random() - 0.5) * 4,
+            oy: topPuff.oy - 1 - Math.random() * 2,
+            r: 2 + Math.random() * 2,
+            seed: Math.random() * 1000,
+          });
+        }
+      } else if (cloud.moisture > 0.1) {
+        // Holding steady: gentle internal churn
+        for (const puff of cloud.puffs) {
+          puff.ox += (Math.random() - 0.5) * 0.2;
+          puff.oy += (Math.random() - 0.5) * 0.15;
+          puff.r += (Math.random() - 0.5) * 0.04;
+          puff.r = Math.max(0.5, puff.r);
+        }
+      } else {
+        // Drying out: edges dissolve, cloud flattens and spreads
+        for (const puff of cloud.puffs) {
+          // Outer puffs shrink faster (dissolve from edges)
+          const distFromCenter = Math.sqrt(puff.ox * puff.ox + puff.oy * puff.oy);
+          const edgeFactor = Math.min(1, distFromCenter / 10);
+          puff.r -= 0.02 + edgeFactor * 0.04;
+          // Flatten: vertical compression, horizontal spread
+          puff.oy *= 0.995;
+          puff.ox *= 1.002;
+          puff.r = Math.max(0.3, puff.r);
+        }
+        // Remove tiny dead puffs
+        for (let p = cloud.puffs.length - 1; p >= 0; p--) {
+          if (cloud.puffs[p]!.r < 0.4) cloud.puffs.splice(p, 1);
+        }
+      }
+
+      // Update bounding box to match current shape
+      let maxX = 0, maxY = 0;
+      for (const p of cloud.puffs) {
+        maxX = Math.max(maxX, Math.abs(p.ox) + p.r);
+        maxY = Math.max(maxY, Math.abs(p.oy) + p.r);
+      }
+      cloud.halfW = maxX + 1;
+      cloud.halfH = maxY + 1;
     }
 
     // Remove if fully off-screen
@@ -656,6 +784,7 @@ export function updateAtmosphere(
   absorbSteam(atmo, grid);
   feedClouds(atmo);
   trySpawnCloud(atmo, grid.width);
+  trySpawnAmbientCloud(atmo, grid.width);
   updateClouds(atmo, grid);
 
   // Dawn dew: condense water on cold surfaces when humid
@@ -776,6 +905,7 @@ export function getCloudPixel(
   let bestOpacity = 0;
   let bestBrightness = 0;
   let bestMoisture = 0;
+  let bestType: CloudType = "cumulus";
 
   for (const cloud of atmo.clouds) {
     // Quick bounding box rejection
@@ -825,19 +955,30 @@ export function getCloudPixel(
       bestOpacity = cloudOpacity;
       bestBrightness = cloudBrightness;
       bestMoisture = cloud.moisture;
+      bestType = cloud.type;
     }
   }
 
   if (bestOpacity < 0.01) return null;
 
   // Cloud base brightness scales with daylight
-  // Night: dim gray (50-70), Dawn/Dusk: warm tint, Day: bright white (200-250)
   const nightBase = 55 - Math.floor(bestMoisture * 30);
   const dayBase = 245 - Math.floor(bestMoisture * 65);
   const baseVal = nightBase + (dayBase - nightBase) * atmo.daylight;
 
   // Apply top-lit brightness
   const lit = Math.floor(baseVal * bestBrightness);
+
+  // Type-specific color tints
+  let typeR = 0, typeG = 0, typeB = 0;
+  if (bestType === "cirrus") {
+    // Icy blue-white (ice crystals at high altitude)
+    typeR = -5; typeG = 2; typeB = 12;
+  } else if (bestType === "stratus") {
+    // Flat blue-gray (overcast haze)
+    typeR = -8; typeG = -3; typeB = 5;
+  }
+  // Cumulus: no tint (pure white tops, natural gray bottoms from lighting)
 
   // Dawn/dusk warm tint on clouds
   const tod = atmo.timeOfDay;
@@ -858,14 +999,42 @@ export function getCloudPixel(
     warmB = Math.floor(f * -15);
   }
 
-  // Rain clouds get a blue-gray tint
-  const moistureTint = bestMoisture > 0.5 ? (bestMoisture - 0.5) * 40 : 0;
+  // Rain clouds get a dark blue-gray underside
+  const moistureTint = bestMoisture > 0.3 ? (bestMoisture - 0.3) * 60 : 0;
 
-  const r = Math.max(0, Math.min(255, lit + warmR - Math.floor(moistureTint * 0.3)));
-  const g = Math.max(0, Math.min(255, lit + warmG - Math.floor(moistureTint * 0.1)));
-  const b = Math.max(0, Math.min(255, lit + warmB + Math.floor(moistureTint * 0.3)));
+  const r = Math.max(0, Math.min(255, lit + warmR + typeR - Math.floor(moistureTint * 0.4)));
+  const g = Math.max(0, Math.min(255, lit + warmG + typeG - Math.floor(moistureTint * 0.2)));
+  const b = Math.max(0, Math.min(255, lit + warmB + typeB + Math.floor(moistureTint * 0.2)));
 
   return [r, g, b, Math.min(0.8, bestOpacity)];
+}
+
+/**
+ * Get the shade factor at a given x position (0 = full sun, 1 = fully shaded).
+ * Shadow offset shifts with sun angle: left at dawn, center at noon, right at dusk.
+ */
+export function getCloudShade(atmo: Atmosphere, gx: number): number {
+  // Sun progress: 0=rise(left), 0.5=noon(center), 1=set(right)
+  const tod = atmo.timeOfDay;
+  const sunRise = 0.22;
+  const sunSet = 0.78;
+  const sunProgress = Math.max(0, Math.min(1, (tod - sunRise) / (sunSet - sunRise)));
+  // Shadow offset: positive = shadow cast to the right, negative = to the left
+  // At dawn (progress~0) sun is left, shadow goes right (+20..+30)
+  // At noon (progress~0.5) sun is overhead, shadow is directly below (0)
+  // At dusk (progress~1) sun is right, shadow goes left (-20..-30)
+  const shadowOffset = (0.5 - sunProgress) * -50;
+
+  let shade = 0;
+  for (const cloud of atmo.clouds) {
+    const dx = Math.abs(gx - (cloud.x + shadowOffset));
+    if (dx > cloud.halfW) continue;
+    const coverage = 1 - dx / cloud.halfW;
+    const intensity = cloud.type === "cirrus" ? 0.1 : cloud.type === "stratus" ? 0.25 : 0.4;
+    const moistureBoost = cloud.moisture * 0.3;
+    shade = Math.max(shade, coverage * (intensity + moistureBoost));
+  }
+  return Math.min(shade, 0.6);
 }
 
 /**
