@@ -24,8 +24,7 @@ function countCreatures(grid: Grid): {
   let bees = 0;
   let humans = 0;
   let birds = 0;
-  for (let i = 0; i < grid.cells.length; i++) {
-    const cell = grid.cells[i];
+  for (const cell of grid.cells) {
     if (!cell) continue;
     if (cell.element === "worm") worms++;
     else if (cell.element === "bee") bees++;
@@ -42,7 +41,7 @@ export function Sandbox() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gridRef = useRef<Grid | null>(null);
   const tickRef = useRef(0);
-  const rafRef = useRef<number>(0);
+  const rafRef = useRef(0);
   const atmoRef = useRef(createAtmosphere());
 
   const [selectedElement, setSelectedElement] = useState<ElementType>("sand");

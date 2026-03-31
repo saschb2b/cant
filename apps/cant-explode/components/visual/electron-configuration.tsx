@@ -21,6 +21,59 @@ const GROUP_GAP = 16;
 const LABEL_H = 16;
 const PAD = 12;
 
+/** Pre-computed layout for a single orbital box. */
+interface BoxLayout {
+  gi: number;
+  bi: number;
+  x: number;
+  y: number;
+  electrons: number;
+}
+
+/** Pre-computed layout for a group of orbital boxes. */
+interface GroupLayout {
+  gi: number;
+  label: string;
+  labelX: number;
+  boxes: BoxLayout[];
+}
+
+function computeLayout(groups: OrbitalGroup[]) {
+  let totalBoxes = 0;
+  let totalGroupGaps = 0;
+  for (const [i, g] of groups.entries()) {
+    totalBoxes += g.boxes;
+    if (i > 0) totalGroupGaps += 1;
+  }
+  const contentW =
+    totalBoxes * BOX_W +
+    (totalBoxes - groups.length) * BOX_GAP +
+    totalGroupGaps * GROUP_GAP;
+  const svgW = contentW + PAD * 2;
+  const svgH = LABEL_H + BOX_H + PAD * 2 + 4;
+
+  let cursorX = PAD;
+  const groupLayouts: GroupLayout[] = [];
+
+  for (const [gi, group] of groups.entries()) {
+    if (gi > 0) cursorX += GROUP_GAP;
+    const groupStartX = cursorX;
+    const boxes: BoxLayout[] = [];
+
+    for (const [bi, electrons] of group.fill.entries()) {
+      const x = cursorX;
+      cursorX += BOX_W + (bi < group.boxes - 1 ? BOX_GAP : 0);
+      boxes.push({ gi, bi, x, y: PAD, electrons });
+    }
+
+    const groupEndX = cursorX;
+    const labelX = (groupStartX + groupEndX) / 2;
+    groupLayouts.push({ gi, label: group.label, labelX, boxes });
+  }
+
+  return { svgW, svgH, groupLayouts };
+}
+
 function OrbitalDiagram({
   title,
   groups,
@@ -33,21 +86,7 @@ function OrbitalDiagram({
   const arrowColor = "var(--mui-palette-text-primary)";
   const labelColor = "var(--mui-palette-text-secondary)";
 
-  // Calculate total width
-  let totalBoxes = 0;
-  let totalGroupGaps = 0;
-  groups.forEach((g, i) => {
-    totalBoxes += g.boxes;
-    if (i > 0) totalGroupGaps += 1;
-  });
-  const contentW =
-    totalBoxes * BOX_W +
-    (totalBoxes - groups.length) * BOX_GAP +
-    totalGroupGaps * GROUP_GAP;
-  const svgW = contentW + PAD * 2;
-  const svgH = LABEL_H + BOX_H + PAD * 2 + 4;
-
-  let cursorX = PAD;
+  const { svgW, svgH, groupLayouts } = computeLayout(groups);
 
   return (
     <Box sx={{ width: 300, p: 1.5 }}>
@@ -66,23 +105,17 @@ function OrbitalDiagram({
         <svg
           width={svgW}
           height={svgH}
-          viewBox={`0 0 ${svgW} ${svgH}`}
+          viewBox={`0 0 ${String(svgW)} ${String(svgH)}`}
           style={{ display: "block" }}
         >
-          {groups.map((group, gi) => {
-            if (gi > 0) cursorX += GROUP_GAP;
-            const groupStartX = cursorX;
-            const boxes = group.fill.map((electrons, bi) => {
-              const x = cursorX;
-              cursorX += BOX_W + (bi < group.boxes - 1 ? BOX_GAP : 0);
-              const y = PAD;
-
-              return (
-                <g key={`${gi}-${bi}`}>
+          {groupLayouts.map((gl) => (
+            <g key={gl.gi}>
+              {gl.boxes.map((box) => (
+                <g key={`${String(box.gi)}-${String(box.bi)}`}>
                   {/* Box */}
                   <rect
-                    x={x}
-                    y={y}
+                    x={box.x}
+                    y={box.y}
                     width={BOX_W}
                     height={BOX_H}
                     fill={boxFill}
@@ -91,12 +124,14 @@ function OrbitalDiagram({
                     rx={2}
                   />
                   {/* Up arrow */}
-                  {electrons >= 1 &&
+                  {box.electrons >= 1 &&
                     (() => {
                       const ax =
-                        electrons === 2 ? x + BOX_W / 2 - 7 : x + BOX_W / 2;
-                      const top = y + 6;
-                      const bot = y + BOX_H - 6;
+                        box.electrons === 2
+                          ? box.x + BOX_W / 2 - 7
+                          : box.x + BOX_W / 2;
+                      const top = box.y + 6;
+                      const bot = box.y + BOX_H - 6;
                       return (
                         <g>
                           <line
@@ -108,18 +143,18 @@ function OrbitalDiagram({
                             strokeWidth={2.5}
                           />
                           <polygon
-                            points={`${ax},${top - 1} ${ax - 5},${top + 7} ${ax + 5},${top + 7}`}
+                            points={`${String(ax)},${String(top - 1)} ${String(ax - 5)},${String(top + 7)} ${String(ax + 5)},${String(top + 7)}`}
                             fill={arrowColor}
                           />
                         </g>
                       );
                     })()}
                   {/* Down arrow */}
-                  {electrons === 2 &&
+                  {box.electrons === 2 &&
                     (() => {
-                      const ax = x + BOX_W / 2 + 7;
-                      const top = y + 6;
-                      const bot = y + BOX_H - 6;
+                      const ax = box.x + BOX_W / 2 + 7;
+                      const top = box.y + 6;
+                      const bot = box.y + BOX_H - 6;
                       return (
                         <g>
                           <line
@@ -131,35 +166,25 @@ function OrbitalDiagram({
                             strokeWidth={2.5}
                           />
                           <polygon
-                            points={`${ax},${bot + 1} ${ax - 5},${bot - 7} ${ax + 5},${bot - 7}`}
+                            points={`${String(ax)},${String(bot + 1)} ${String(ax - 5)},${String(bot - 7)} ${String(ax + 5)},${String(bot - 7)}`}
                             fill={arrowColor}
                           />
                         </g>
                       );
                     })()}
                 </g>
-              );
-            });
-
-            // Group label centered under boxes
-            const groupEndX = cursorX;
-            const labelX = (groupStartX + groupEndX) / 2;
-
-            return (
-              <g key={gi}>
-                {boxes}
-                <text
-                  x={labelX}
-                  y={PAD + BOX_H + LABEL_H}
-                  textAnchor="middle"
-                  fontSize={10}
-                  fill={labelColor}
-                >
-                  {group.label}
-                </text>
-              </g>
-            );
-          })}
+              ))}
+              <text
+                x={gl.labelX}
+                y={PAD + BOX_H + LABEL_H}
+                textAnchor="middle"
+                fontSize={10}
+                fill={labelColor}
+              >
+                {gl.label}
+              </text>
+            </g>
+          ))}
         </svg>
       </Box>
     </Box>

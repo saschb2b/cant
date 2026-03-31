@@ -57,7 +57,7 @@ function hasNeighbor(
   ];
   for (const [dx, dy] of offsets) {
     const cell = getCell(grid, x + dx, y + dy);
-    if (cell && cell.element === element) return true;
+    if (cell?.element === element) return true;
   }
   return false;
 }
@@ -108,7 +108,7 @@ function countNearby(
     for (let dx = -radius; dx <= radius; dx++) {
       if (dx === 0 && dy === 0) continue;
       const cell = getCell(grid, x + dx, y + dy);
-      if (cell && cell.element === element) count++;
+      if (cell?.element === element) count++;
     }
   }
   return count;
@@ -146,7 +146,7 @@ function consumeWater(grid: Grid, x: number, y: number): boolean {
   // First try actual water particles
   for (const [dx, dy] of dirs) {
     const cell = getCell(grid, x + dx, y + dy);
-    if (cell && cell.element === "water") {
+    if (cell?.element === "water") {
       setCell(grid, x + dx, y + dy, null);
       return true;
     }
@@ -154,7 +154,7 @@ function consumeWater(grid: Grid, x: number, y: number): boolean {
   // Then try drawing from wet soil moisture
   for (const [dx, dy] of dirs) {
     const cell = getCell(grid, x + dx, y + dy);
-    if (cell && cell.element === "soil" && cell.lifetime > 20) {
+    if (cell?.element === "soil" && cell.lifetime > 20) {
       cell.lifetime -= 20;
       return true;
     }
@@ -213,7 +213,6 @@ function tryMove(
   const source = getCell(grid, x, y);
   if (
     source &&
-    target &&
     !target.updated &&
     ELEMENTS[source.element].density > ELEMENTS[target.element].density &&
     ELEMENTS[target.element].behavior !== "static" &&
@@ -573,7 +572,7 @@ function updateStem(
       if (!isEmpty(grid, x + dx, y + dy)) continue;
       // Check if the other side of the gap has a stem (bridging a hole)
       const beyond = getCell(grid, x + dx * 2, y + dy * 2);
-      if (beyond && beyond.element === "stem") {
+      if (beyond?.element === "stem") {
         consumeWater(grid, x, y);
         const heal = createParticle("stem");
         heal.lifetime = 0;
@@ -593,7 +592,7 @@ function updateStem(
   ) {
     // Only extend if this is near the top of the trunk (has air or leaf above, stem below)
     const below = getCell(grid, x, y + 1);
-    if (below && below.element === "stem") {
+    if (below?.element === "stem") {
       consumeWater(grid, x, y);
       // Push the leaf up by replacing it with stem and placing leaf above
       const newStem = createParticle("stem");
@@ -661,7 +660,7 @@ function updateStem(
     const rd = rootDirs[Math.floor(Math.random() * rootDirs.length)];
     if (rd) {
       const target = getCell(grid, x + rd[0], y + rd[1]);
-      if (target && target.element === "sand") {
+      if (target?.element === "sand") {
         const soil = createParticle("soil");
         soil.lifetime = 20; // slightly moist from root activity
         soil.updated = true;
@@ -897,11 +896,9 @@ function updateGrass(
   let grew = false;
   const side = randomBool() ? -1 : 1;
   const belowTarget = getCell(grid, x + side, y + 1);
-  const onSoil = belowTarget && belowTarget.element === "soil";
+  const onSoil = belowTarget?.element === "soil";
   const onWetSand =
-    belowTarget &&
-    belowTarget.element === "sand" &&
-    countMoisture(grid, x + side, y, 2) > 0;
+    belowTarget?.element === "sand" && countMoisture(grid, x + side, y, 2) > 0;
   if (
     isEmpty(grid, x + side, y) &&
     (onSoil ||
@@ -920,7 +917,7 @@ function updateGrass(
   // Grass roots slowly convert sand below into soil (succession)
   if (particle.lifetime > 150 && Math.random() < 0.0005) {
     const below = getCell(grid, x, y + 1);
-    if (below && below.element === "sand") {
+    if (below?.element === "sand") {
       const soil = createParticle("soil");
       soil.updated = true;
       setCell(grid, x, y + 1, soil);
@@ -991,7 +988,7 @@ function updateAlgae(grid: Grid, x: number, y: number): void {
   if (!dir) return;
   const [dx, dy] = dir;
   const cell = getCell(grid, x + dx, y + dy);
-  if (cell && cell.element === "water") {
+  if (cell?.element === "water") {
     const algae = createParticle("algae");
     algae.updated = true;
     setCell(grid, x + dx, y + dy, algae);
@@ -999,12 +996,7 @@ function updateAlgae(grid: Grid, x: number, y: number): void {
 }
 
 // ===== Vine: creeps along surfaces =====
-function updateVine(
-  grid: Grid,
-  x: number,
-  y: number,
-  _particle: Particle,
-): void {
+function updateVine(grid: Grid, x: number, y: number): void {
   const waterNearby = countMoisture(grid, x, y, 2);
   if (waterNearby === 0 && Math.random() > 0.001) return;
   if (Math.random() > 0.02) return;
@@ -1179,8 +1171,7 @@ function updateSoil(grid: Grid, x: number, y: number): void {
     if (dir) {
       const neighbor = getCell(grid, x + dir[0], y + dir[1]);
       if (
-        neighbor &&
-        neighbor.element === "soil" &&
+        neighbor?.element === "soil" &&
         neighbor.lifetime < particle.lifetime - 20
       ) {
         neighbor.lifetime += 10;
@@ -1419,7 +1410,7 @@ function updateWorm(
     const dir = dirs[Math.floor(Math.random() * dirs.length)];
     if (dir) {
       const food = getCell(grid, x + dir[0], y + dir[1]);
-      if (food && food.element === "compost") {
+      if (food?.element === "compost") {
         // Eat compost, convert to enriched soil, restore lifetime
         const soil = createParticle("soil");
         soil.lifetime = waterNearby > 0 ? 60 : 0; // pass on some moisture
@@ -1446,7 +1437,7 @@ function updateWorm(
       return;
     }
     const burrowable = ["soil", "compost", "ash", "sand"];
-    if (below && burrowable.includes(below.element)) {
+    if (burrowable.includes(below.element)) {
       swapCells(grid, x, y, x, y + 1);
       const moved = getCell(grid, x, y + 1);
       if (moved) moved.updated = true;
@@ -1457,7 +1448,7 @@ function updateWorm(
     const sideCell = getCell(grid, x + side, y + 1);
     if (!sideCell) {
       tryMove(grid, x, y, x + side, y + 1);
-    } else if (sideCell && burrowable.includes(sideCell.element)) {
+    } else if (burrowable.includes(sideCell.element)) {
       swapCells(grid, x, y, x + side, y + 1);
       const moved = getCell(grid, x + side, y + 1);
       if (moved) moved.updated = true;
@@ -1685,7 +1676,7 @@ function updateBird(
     ];
     for (const [dx, dy] of dirs8) {
       const cell = getCell(grid, x + dx, y + dy);
-      if (cell && cell.element === "fruit") {
+      if (cell?.element === "fruit") {
         setCell(grid, x + dx, y + dy, null);
         particle.r = Math.min(255, particle.r + 80);
         particle.g = Math.min(3, particle.g + 1); // carry a seed
@@ -1841,7 +1832,7 @@ function findNearest(
     for (let dx = -radius; dx <= radius; dx++) {
       if (dx === 0 && dy === 0) continue;
       const cell = getCell(grid, x + dx, y + dy);
-      if (cell && cell.element === element) {
+      if (cell?.element === element) {
         const dist = Math.abs(dx) + Math.abs(dy);
         if (dist < bestDist) {
           bestDist = dist;
@@ -1939,7 +1930,7 @@ function updateHuman(
   if (thirsty) {
     for (const [dx, dy] of dirs8) {
       const cell = getCell(grid, x + dx, y + dy);
-      if (cell && cell.element === "water") {
+      if (cell?.element === "water") {
         setCell(grid, x + dx, y + dy, null);
         particle.g = Math.min(255, particle.g + 100);
         return;
@@ -1948,7 +1939,7 @@ function updateHuman(
     // Drink from wet soil underfoot
     for (const [dx, dy] of dirs8) {
       const cell = getCell(grid, x + dx, y + dy);
-      if (cell && cell.element === "soil" && cell.lifetime > 40) {
+      if (cell?.element === "soil" && cell.lifetime > 40) {
         cell.lifetime -= 40;
         particle.g = Math.min(255, particle.g + 50);
         return;
@@ -2011,8 +2002,7 @@ function updateHuman(
     for (const [dx, dy] of dirs8) {
       const neighbor = getCell(grid, x + dx, y + dy);
       if (
-        neighbor &&
-        neighbor.element === "human" &&
+        neighbor?.element === "human" &&
         getSex(neighbor) !== getSex(particle)
       ) {
         if (neighbor.r > 120 && neighbor.g > 120) {
@@ -2196,12 +2186,7 @@ function updateHuman(
   }
 }
 
-function updateFuse(
-  grid: Grid,
-  x: number,
-  y: number,
-  _particle: Particle,
-): void {
+function updateFuse(grid: Grid, x: number, y: number): void {
   if (!hasAnyNeighbor(grid, x, y, ["fire", "spark", "lava"])) return;
   if (Math.random() > 0.08) return; // Slow burn rate = suspense
 
@@ -2275,12 +2260,7 @@ function explode(grid: Grid, cx: number, cy: number, radius: number): void {
   }
 }
 
-function updateExplosive(
-  grid: Grid,
-  x: number,
-  y: number,
-  _particle: Particle,
-): void {
+function updateExplosive(grid: Grid, x: number, y: number): void {
   if (!hasAnyNeighbor(grid, x, y, ["fire", "spark", "lava"])) return;
 
   // TNT goes boom
@@ -2345,17 +2325,12 @@ function checkReactions(grid: Grid, x: number, y: number): void {
   }
 }
 
-export function tickSimulation(
-  grid: Grid,
-  tick: number,
-  daylight: number = 1,
-): void {
+export function tickSimulation(grid: Grid, tick: number, daylight = 1): void {
   currentDaylight = daylight;
   currentWindDir = Math.sin(tick * 0.008) > 0 ? 1 : -1;
 
   // Reset updated flags
-  for (let i = 0; i < grid.cells.length; i++) {
-    const cell = grid.cells[i];
+  for (const cell of grid.cells) {
     if (cell) cell.updated = false;
   }
 
@@ -2495,8 +2470,7 @@ export function tickSimulation(
               if (ed) {
                 const target = getCell(grid, x + ed[0], y + ed[1]);
                 if (
-                  target &&
-                  target.element === "soil" &&
+                  target?.element === "soil" &&
                   isEmpty(grid, x + ed[0], y + ed[1] - 1)
                 ) {
                   swapCells(
@@ -2554,13 +2528,13 @@ export function tickSimulation(
           updatePlant(grid, x, y, particle);
           break;
         case "vine":
-          updateVine(grid, x, y, particle);
+          updateVine(grid, x, y);
           break;
         case "fuse":
-          updateFuse(grid, x, y, particle);
+          updateFuse(grid, x, y);
           break;
         case "explosive":
-          updateExplosive(grid, x, y, particle);
+          updateExplosive(grid, x, y);
           break;
         case "critter":
           if (particle.element === "worm") {

@@ -145,7 +145,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 color="error.main"
                 fontFamily="var(--font-geist-mono), monospace"
               >
-                Why it's wrong
+                Why it&apos;s wrong
               </Typography>
               <Box
                 sx={{
@@ -179,7 +179,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 color="success.main"
                 fontFamily="var(--font-geist-mono), monospace"
               >
-                Why it's correct
+                Why it&apos;s correct
               </Typography>
               <Box
                 sx={{

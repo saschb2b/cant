@@ -8,6 +8,27 @@ const W = 300;
 const H = 250;
 const PAD = { top: 20, right: 20, bottom: 30, left: 45 };
 
+/** Convert number to string for use in SVG template literals. */
+const S = String;
+
+/** Build a simple cubic bezier path for a single-hump reaction curve. */
+function singleHumpPath(
+  x0: number,
+  rY: number,
+  x1: number,
+  tsY: number,
+  x2: number,
+  pY: number,
+  cpSpread = 40,
+  cpSpreadMid = 50,
+): string {
+  return [
+    `M ${S(x0)} ${S(rY)}`,
+    `C ${S(x0 + cpSpread)} ${S(rY)}, ${S(x1 - cpSpreadMid)} ${S(tsY)}, ${S(x1)} ${S(tsY)}`,
+    `C ${S(x1 + cpSpreadMid)} ${S(tsY)}, ${S(x2 - cpSpread)} ${S(pY)}, ${S(x2)} ${S(pY)}`,
+  ].join(" ");
+}
+
 /** Render common axes and labels for a reaction coordinate diagram. */
 function DiagramShell({
   title,
@@ -29,7 +50,7 @@ function DiagramShell({
       }}
     >
       <svg
-        viewBox={`0 0 ${W} ${H}`}
+        viewBox={`0 0 ${S(W)} ${S(H)}`}
         width={W}
         height={H}
         style={{ maxWidth: "100%" }}
@@ -58,7 +79,7 @@ function DiagramShell({
           y={H / 2}
           textAnchor="middle"
           dominantBaseline="middle"
-          transform={`rotate(-90, 14, ${H / 2})`}
+          transform={`rotate(-90, 14, ${S(H / 2)})`}
           fill={axisColor}
           fontSize={11}
           fontFamily="inherit"
@@ -104,7 +125,7 @@ export function ExothermicProfile() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 20;
 
-  const path = `M ${x0} ${rY} C ${x0 + 40} ${rY}, ${x1 - 50} ${tsY}, ${x1} ${tsY} C ${x1 + 50} ${tsY}, ${x2 - 40} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY);
 
   return (
     <DiagramShell title="Exothermic reaction profile">
@@ -207,7 +228,7 @@ export function EndothermicProfile() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 20;
 
-  const path = `M ${x0} ${rY} C ${x0 + 40} ${rY}, ${x1 - 50} ${tsY}, ${x1} ${tsY} C ${x1 + 50} ${tsY}, ${x2 - 40} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY);
 
   return (
     <DiagramShell title="Endothermic reaction profile">
@@ -311,7 +332,7 @@ export function CatalyzedReaction() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 20;
 
-  const path = `M ${x0} ${rY} C ${x0 + 40} ${rY}, ${x1 - 50} ${tsY}, ${x1} ${tsY} C ${x1 + 50} ${tsY}, ${x2 - 40} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY);
 
   return (
     <DiagramShell title="Catalyzed reaction (lower Ea)">
@@ -384,7 +405,7 @@ export function UncatalyzedReaction() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 20;
 
-  const path = `M ${x0} ${rY} C ${x0 + 40} ${rY}, ${x1 - 50} ${tsY}, ${x1} ${tsY} C ${x1 + 50} ${tsY}, ${x2 - 40} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY);
 
   return (
     <DiagramShell title="Uncatalyzed reaction (higher Ea)">
@@ -465,11 +486,11 @@ export function SN1EnergyProfile() {
   const x2 = W - PAD.right - 15;
 
   const path = [
-    `M ${x0} ${rY}`,
-    `C ${x0 + 25} ${rY}, ${xA - 25} ${ts1Y}, ${xA} ${ts1Y}`,
-    `C ${xA + 25} ${ts1Y}, ${xMid - 20} ${intY}, ${xMid} ${intY}`,
-    `C ${xMid + 20} ${intY}, ${xB - 25} ${ts2Y}, ${xB} ${ts2Y}`,
-    `C ${xB + 25} ${ts2Y}, ${x2 - 25} ${pY}, ${x2} ${pY}`,
+    `M ${S(x0)} ${S(rY)}`,
+    `C ${S(x0 + 25)} ${S(rY)}, ${S(xA - 25)} ${S(ts1Y)}, ${S(xA)} ${S(ts1Y)}`,
+    `C ${S(xA + 25)} ${S(ts1Y)}, ${S(xMid - 20)} ${S(intY)}, ${S(xMid)} ${S(intY)}`,
+    `C ${S(xMid + 20)} ${S(intY)}, ${S(xB - 25)} ${S(ts2Y)}, ${S(xB)} ${S(ts2Y)}`,
+    `C ${S(xB + 25)} ${S(ts2Y)}, ${S(x2 - 25)} ${S(pY)}, ${S(x2)} ${S(pY)}`,
   ].join(" ");
 
   return (
@@ -543,7 +564,7 @@ export function SN2EnergyProfile() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 15;
 
-  const path = `M ${x0} ${rY} C ${x0 + 50} ${rY}, ${x1 - 60} ${tsY}, ${x1} ${tsY} C ${x1 + 60} ${tsY}, ${x2 - 50} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY, 50, 60);
 
   return (
     <DiagramShell title="SN2 profile (one-step, concerted)">
@@ -599,7 +620,7 @@ export function LowActivationEnergy() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 20;
 
-  const path = `M ${x0} ${rY} C ${x0 + 40} ${rY}, ${x1 - 50} ${tsY}, ${x1} ${tsY} C ${x1 + 50} ${tsY}, ${x2 - 40} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY);
 
   return (
     <DiagramShell title="Low activation energy (fast reaction)">
@@ -672,7 +693,7 @@ export function HighActivationEnergy() {
   const x1 = (PAD.left + W - PAD.right) / 2;
   const x2 = W - PAD.right - 20;
 
-  const path = `M ${x0} ${rY} C ${x0 + 40} ${rY}, ${x1 - 50} ${tsY}, ${x1} ${tsY} C ${x1 + 50} ${tsY}, ${x2 - 40} ${pY}, ${x2} ${pY}`;
+  const path = singleHumpPath(x0, rY, x1, tsY, x2, pY);
 
   return (
     <DiagramShell title="High activation energy (slow reaction)">

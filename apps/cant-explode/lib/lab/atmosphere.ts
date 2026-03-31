@@ -388,7 +388,7 @@ function absorbSteam(atmo: Atmosphere, grid: Grid): void {
   for (let y = 0; y < absorptionZone; y++) {
     for (let x = 0; x < grid.width; x++) {
       const cell = getCell(grid, x, y);
-      if (cell && cell.element === "steam") {
+      if (cell?.element === "steam") {
         atmo.steamBuffer += 1;
         setCell(grid, x, y, null);
       }
@@ -659,7 +659,8 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
   const toRemove: number[] = [];
 
   for (let i = 0; i < atmo.clouds.length; i++) {
-    const cloud = atmo.clouds[i]!;
+    const cloud = atmo.clouds[i];
+    if (!cloud) continue;
 
     // Drift horizontally and slightly vertically
     cloud.x += cloud.drift;
@@ -723,7 +724,8 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
         }
         // Remove tiny dead puffs
         for (let p = cloud.puffs.length - 1; p >= 0; p--) {
-          if (cloud.puffs[p]!.r < 0.4) cloud.puffs.splice(p, 1);
+          const puff = cloud.puffs[p];
+          if (puff && puff.r < 0.4) cloud.puffs.splice(p, 1);
         }
       }
 
@@ -785,7 +787,8 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
 
   // Remove dead clouds (iterate backwards to preserve indices)
   for (let i = toRemove.length - 1; i >= 0; i--) {
-    atmo.clouds.splice(toRemove[i]!, 1);
+    const idx = toRemove[i];
+    if (idx !== undefined) atmo.clouds.splice(idx, 1);
   }
 }
 

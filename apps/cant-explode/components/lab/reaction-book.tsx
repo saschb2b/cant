@@ -17,8 +17,8 @@ function capitalize(s: string): string {
 }
 
 function colorStr(element: string): string {
+  if (!(element in ELEMENTS)) return "transparent";
   const def = ELEMENTS[element as ElementType];
-  if (!def) return "transparent";
   const [r, g, b] = def.baseColor;
   return `rgb(${String(r)}, ${String(g)}, ${String(b)})`;
 }
@@ -135,15 +135,6 @@ function ReactionRow({ rule }: { rule: ReactionRule }) {
         {rule.desc}
       </Typography>
     </Box>
-  );
-}
-
-function matchesFilter(rule: ReactionRule, filter: ElementType): boolean {
-  return (
-    rule.a === filter ||
-    rule.b === filter ||
-    rule.produceA === filter ||
-    rule.produceB === filter
   );
 }
 

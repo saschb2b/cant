@@ -56,19 +56,6 @@ const HUMAN_FRAME_B: SpritePixel[] = [
   [0, 0, 2], //  LL   connecting
 ];
 
-// Idle frame: standing still
-const HUMAN_FRAME_IDLE: SpritePixel[] = [
-  [0, -4, 0], //  H    head
-  [-1, -3, 1],
-  [0, -3, 1],
-  [1, -3, 1], // HHH  shoulders
-  [0, -2, 1], //  H    torso
-  [-1, -1, 2],
-  [1, -1, 2], // L R   legs even
-  [-1, 0, 2],
-  [1, 0, 2], // L R   feet even
-];
-
 // Sleeping: lying on the ground
 const HUMAN_FRAME_SLEEP: SpritePixel[] = [
   [-2, 0, 0], // H        head
@@ -120,7 +107,7 @@ export function renderGrid(
   }
 
   for (let gy = 0; gy < grid.height; gy++) {
-    const bg = skyColors[gy]!;
+    const bg = skyColors[gy] ?? ([0, 0, 0] as [number, number, number]);
 
     for (let gx = 0; gx < grid.width; gx++) {
       const particle = grid.cells[gy * grid.width + gx];
@@ -287,7 +274,7 @@ export function renderGrid(
   for (let gy = 0; gy < grid.height; gy++) {
     for (let gx = 0; gx < grid.width; gx++) {
       const particle = grid.cells[gy * grid.width + gx];
-      if (!particle || particle.element !== "human") continue;
+      if (particle?.element !== "human") continue;
 
       // Determine health-based skin tone
       const health = Math.min(particle.r, particle.g);
@@ -344,9 +331,10 @@ export function renderGrid(
 
         // Draw over everything except tree trunks (depth effect)
         const targetCell = grid.cells[py * grid.width + px];
-        if (targetCell && targetCell.element === "stem") continue;
+        if (targetCell?.element === "stem") continue;
 
-        const color = palette[colorIdx]!;
+        const color = palette[colorIdx];
+        if (!color) continue;
         const pixX = px * cellSize;
         const pixY = py * cellSize;
         for (let pdy = 0; pdy < cellSize; pdy++) {

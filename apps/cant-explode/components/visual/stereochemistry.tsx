@@ -26,7 +26,7 @@ function DiagramShell({
       }}
     >
       <svg
-        viewBox={`0 0 ${W} ${H}`}
+        viewBox={`0 0 ${String(W)} ${String(H)}`}
         width={W}
         height={H}
         style={{ maxWidth: "100%" }}
@@ -72,7 +72,7 @@ export function NewmanStaggered() {
         const outer = polarPoint(CX, CY, BOND_LEN, a);
         const edge = polarPoint(CX, CY, CIRCLE_R, a);
         return (
-          <g key={`back-${a}`}>
+          <g key={`back-${String(a)}`}>
             <line
               x1={edge.x}
               y1={edge.y}
@@ -107,7 +107,7 @@ export function NewmanStaggered() {
       {frontAngles.map((a) => {
         const outer = polarPoint(CX, CY, BOND_LEN, a);
         return (
-          <g key={`front-${a}`}>
+          <g key={`front-${String(a)}`}>
             <line
               x1={CX}
               y1={CY}
@@ -162,7 +162,7 @@ export function NewmanEclipsed() {
         const outer = polarPoint(CX, CY, BOND_LEN + 8, a + 8);
         const edge = polarPoint(CX, CY, CIRCLE_R, a + 8);
         return (
-          <g key={`back-${a}`}>
+          <g key={`back-${String(a)}`}>
             <line
               x1={edge.x}
               y1={edge.y}
@@ -198,7 +198,7 @@ export function NewmanEclipsed() {
       {angles.map((a) => {
         const outer = polarPoint(CX, CY, BOND_LEN, a);
         return (
-          <g key={`front-${a}`}>
+          <g key={`front-${String(a)}`}>
             <line
               x1={CX}
               y1={CY}
@@ -386,9 +386,9 @@ const CHAIR_POINTS = [
 
 function chairPath(): string {
   return (
-    CHAIR_POINTS.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(
-      " ",
-    ) + " Z"
+    CHAIR_POINTS.map(
+      (p, i) => `${i === 0 ? "M" : "L"} ${String(p.x)} ${String(p.y)}`,
+    ).join(" ") + " Z"
   );
 }
 
@@ -563,11 +563,13 @@ export function CisDecalin() {
   ];
 
   const leftPath =
-    leftRing.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") +
-    " Z";
+    leftRing
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${String(p.x)} ${String(p.y)}`)
+      .join(" ") + " Z";
   const rightPath =
-    rightRing.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") +
-    " Z";
+    rightRing
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${String(p.x)} ${String(p.y)}`)
+      .join(" ") + " Z";
 
   // Cis: both ring-junction H atoms on same side
   // Junction carbons are at the shared edge (indices 2 and 3 of leftRing)
@@ -667,11 +669,13 @@ export function TransDecalin() {
   ];
 
   const leftPath =
-    leftRing.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") +
-    " Z";
+    leftRing
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${String(p.x)} ${String(p.y)}`)
+      .join(" ") + " Z";
   const rightPath =
-    rightRing.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") +
-    " Z";
+    rightRing
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${String(p.x)} ${String(p.y)}`)
+      .join(" ") + " Z";
 
   // Junction carbons at the shared edge
   const j1 = { x: 125, y: 130 };

@@ -20,7 +20,7 @@ function interpolateColor(
   const r = Math.round(low[0] + (high[0] - low[0]) * t);
   const g = Math.round(low[1] + (high[1] - low[1]) * t);
   const b = Math.round(low[2] + (high[2] - low[2]) * t);
-  return `rgb(${r},${g},${b})`;
+  return `rgb(${String(r)},${String(g)},${String(b)})`;
 }
 
 function MiniPeriodicTable({
@@ -57,14 +57,14 @@ function MiniPeriodicTable({
         {ROWS.flatMap((row, ri) =>
           row.map((el, ci) => {
             if (!el) {
-              return <Box key={`${ri}-${ci}`} />;
+              return <Box key={`${String(ri)}-${String(ci)}`} />;
             }
             const t = getValue(ri, ci);
             const bg = interpolateColor(lowColor, highColor, t);
             const textColor = t > 0.6 ? "#fff" : "#000";
             return (
               <Box
-                key={`${ri}-${ci}`}
+                key={`${String(ri)}-${String(ci)}`}
                 sx={{
                   bgcolor: bg,
                   color: textColor,
