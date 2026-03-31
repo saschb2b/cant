@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --check --ignore-path ../../.prettierignore .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
