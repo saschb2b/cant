@@ -163,4 +163,16 @@ export const ALL_APPS: CantApp[] = [
     colorTo: "#991B1B",
     iconSvgContent: `<rect x="40" y="68" width="40" height="12" rx="4" fill="#FFFFFF"/><rect x="54" y="54" width="12" height="40" rx="4" fill="#FFFFFF"/><circle cx="125" cy="70" r="10" fill="#FCA5A5"/><circle cx="115" cy="90" r="10" fill="#FCA5A5"/><rect x="45" y="120" width="90" height="6" rx="3" fill="#FCA5A5" opacity="0.5"/>`,
   },
+  {
+    name: "Can't Trust",
+    desc: "Money, banking, and Bitcoin. From fiat failures to trustless solutions.",
+    href: appUrl("https://cant-trust.saschb2b.com", 3012),
+    category: "Finance",
+    playPitch:
+      "Think you understand money? Test your instincts across inflation, banking, cryptography, and Bitcoin.",
+    tags: "Money, banking, inflation, Bitcoin, Cardano, cryptography",
+    colorFrom: "#C28A1A",
+    colorTo: "#8B6914",
+    iconSvgContent: `<rect x="72" y="38" width="5" height="104" rx="2.5" fill="#FFFFFF"/><rect x="103" y="38" width="5" height="104" rx="2.5" fill="#FFFFFF"/><path d="M80 50h18c10 0 18 7 18 16s-4 12-10 14c8 2 14 8 14 18 0 11-9 20-20 20H80V50z" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linejoin="round"/><line x1="80" y1="80" x2="106" y2="80" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>`,
+  },
 ];
