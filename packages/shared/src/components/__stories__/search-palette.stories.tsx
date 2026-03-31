@@ -96,18 +96,51 @@ const meta: Meta<typeof SearchPalette> = {
   },
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "Full-screen search dialog triggered by Ctrl+K or the search button in the site header. Supports fuzzy search across pages, categories, and challenges using Fuse.js, with keyboard navigation and match highlighting. When idle it shows a browsable directory grouped by section. Used by every app via the SiteHeader `renderSearchPalette` slot.",
+      },
+    },
+  },
+  argTypes: {
+    open: {
+      description: "Whether the dialog is visible.",
+      control: "boolean",
+    },
+    onClose: {
+      description: "Callback invoked when the dialog should close.",
+      control: false,
+    },
+    items: {
+      description:
+        "Flat array of searchable items (pages, categories, challenges) fed into Fuse.js.",
+      control: "object",
+    },
+    sections: {
+      description:
+        "Category sections used to render the browse view when the search query is empty.",
+      control: "object",
+    },
+    config: {
+      description:
+        "App-specific configuration: placeholder text, no-results hint, challenge group label, and optional extra page icons.",
+      control: "object",
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof SearchPalette>;
 
+/** Default browse view showing pages and categories grouped by section. */
 export const Browse: Story = {
   args: {
     open: true,
   },
 };
 
+/** Search results after typing "clamp", showing fuzzy match highlighting. */
 export const WithQuery: Story = {
   args: {
     open: true,
@@ -129,6 +162,7 @@ export const WithQuery: Story = {
   },
 };
 
+/** Empty state shown when no items match the query. */
 export const NoResults: Story = {
   args: {
     open: true,

@@ -65,9 +65,18 @@ const meta: Meta = {
   title: "Foundation/Theme",
   component: ThemeShowcase,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Previews the active MUI theme by rendering buttons, chips, paper, and color swatches. Used to verify that light and dark mode tokens, palette colors, and surface colors render correctly across all apps.",
+      },
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj;
 
+/** Default showcase displaying buttons, difficulty chips, a paper surface, and background color swatches. */
 export const Default: Story = {};

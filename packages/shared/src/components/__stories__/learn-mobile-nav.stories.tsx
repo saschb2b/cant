@@ -8,12 +8,30 @@ const meta: Meta<typeof LearnMobileNav> = {
   parameters: {
     viewport: { defaultViewport: "mobile1" },
     nextjs: { appDirectory: true, navigation: { pathname: "/learn/generics" } },
+    docs: {
+      description: {
+        component:
+          "Horizontally scrollable category pill navigation shown on mobile (below md breakpoint) on learn pages. Auto-scrolls to the active category on route change. Hidden on desktop where LearnSidebar is used instead. Used on every learn/[category] page across all apps.",
+      },
+    },
+  },
+  argTypes: {
+    sections: {
+      description:
+        "Grouped sections of category slugs. Categories are flattened into a single scrollable row.",
+      control: "object",
+    },
+    categoryLabels: {
+      description: "Map from category slug to human-readable display label.",
+      control: "object",
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof LearnMobileNav>;
 
+/** Scrollable pill row with 'Generics' highlighted as the active category. */
 export const Default: Story = {
   args: {
     sections: [

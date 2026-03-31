@@ -47,6 +47,21 @@ const meta: Meta<typeof ChallengeListToggle> = {
   title: "Content/Challenge List Toggle",
   component: ChallengeListToggle,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Toggle control that switches challenge lists between "Full" (side-by-side good/bad panels) and "Compact" (good panel only) view modes. Persists the user preference in localStorage. Used on learn/[category] pages across all apps.',
+      },
+    },
+  },
+  argTypes: {
+    children: {
+      description:
+        "Challenge list content. Elements with class `compact-hide` are hidden in compact mode, and elements with `compact-full-width` expand to fill the row.",
+      control: false,
+    },
+  },
   decorators: [
     (Story) => (
       <div style={{ maxWidth: 800, padding: 16 }}>
@@ -59,6 +74,7 @@ const meta: Meta<typeof ChallengeListToggle> = {
 export default meta;
 type Story = StoryObj<typeof ChallengeListToggle>;
 
+/** Toggle with a mock challenge list showing both full and compact behavior. */
 export const Default: Story = {
   args: {
     children: <MockChallengeList />,

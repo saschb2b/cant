@@ -25,12 +25,57 @@ const meta: Meta<typeof Hero> = {
   title: "Layout/Hero",
   component: Hero,
   tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "Full-width hero section used on every app landing page. Displays a two-line title (second line accented), subtitle, CTA buttons via HeroCta, a caption, and a right-side visual slot for animations or code previews. Includes a subtle radial gradient background with an optional overlay.",
+      },
+    },
+  },
+  argTypes: {
+    titleLine1: {
+      description:
+        "First line of the hero title, rendered in default text color.",
+      control: "text",
+    },
+    titleLine2: {
+      description:
+        "Second line of the hero title, rendered in the primary accent color.",
+      control: "text",
+    },
+    subtitle: {
+      description: "Descriptive text displayed below the title.",
+      control: "text",
+    },
+    caption: {
+      description:
+        "Small caption text below the CTA buttons (e.g. challenge count, signup info).",
+      control: "text",
+    },
+    gimmick: {
+      description:
+        "Optional gimmick tool passed through to HeroCta as an additional button.",
+      control: "object",
+    },
+    visual: {
+      description:
+        "ReactNode rendered on the right side (animation, code preview, etc.).",
+      control: false,
+    },
+    gradientOverlay: {
+      description:
+        "Optional ReactNode rendered inside the fixed gradient background layer.",
+      control: false,
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Hero>;
 
+/** Standard hero with title, subtitle, caption, and a placeholder visual. */
 export const Default: Story = {
   args: {
     titleLine1: "One component.",
@@ -42,6 +87,7 @@ export const Default: Story = {
   },
 };
 
+/** Hero with a gimmick tool (Sandbox) adding an extra CTA button. */
 export const WithGimmick: Story = {
   args: {
     ...Default.args,
@@ -49,6 +95,7 @@ export const WithGimmick: Story = {
   },
 };
 
+/** Hero with a longer subtitle and gimmick to verify text wrapping at various widths. */
 export const LongSubtitle: Story = {
   args: {
     ...Default.args,

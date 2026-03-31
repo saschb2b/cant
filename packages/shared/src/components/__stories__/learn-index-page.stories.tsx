@@ -26,8 +26,7 @@ const MOCK_SECTIONS = [
   {
     category: "prop-specificity",
     label: "Prop Specificity",
-    description:
-      "When to use specific props vs generic catch-all objects.",
+    description: "When to use specific props vs generic catch-all objects.",
     count: 10,
     preview: { goodHtml: MOCK_CODE_GOOD, badHtml: MOCK_CODE_BAD },
   },
@@ -50,7 +49,68 @@ const meta: Meta<typeof LearnIndexPage> = {
   title: "Content/Learn Index Page",
   component: LearnIndexPage,
   tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "Full learn index page rendered at /learn in every app. Displays a title, subtitle, total counts, an optional learning-path section, and a list of category cards with code/visual/molecule preview snippets. Each category card links to its learn/[category] detail page.",
+      },
+    },
+  },
+  argTypes: {
+    title: {
+      description: 'Page heading, e.g. "Learn Responsive Design".',
+      control: "text",
+    },
+    subtitle: {
+      description: "Introductory text displayed below the title.",
+      control: "text",
+    },
+    totalChallenges: {
+      description:
+        "Total number of challenges across all categories, shown in the intro text.",
+      control: "number",
+    },
+    totalCategories: {
+      description: "Total number of categories, shown in the intro text.",
+      control: "number",
+    },
+    sections: {
+      description:
+        "Array of category sections with label, description, count, and optional preview content (code HTML, visual, or molecule).",
+      control: "object",
+    },
+    learningPath: {
+      description:
+        'Optional ordered list of categories for the "Start here" section. Each item has a category slug and label.',
+      control: "object",
+    },
+    learningPathDescription: {
+      description: "Short description shown above the learning path chips.",
+      control: "text",
+    },
+    badLabel: {
+      description: 'Label for the "avoid" panel header in previews.',
+      control: "text",
+      table: { defaultValue: { summary: '"Avoid"' } },
+    },
+    goodLabel: {
+      description: 'Label for the "prefer" panel header in previews.',
+      control: "text",
+      table: { defaultValue: { summary: '"Prefer"' } },
+    },
+    renderPreview: {
+      description:
+        "Custom preview renderer for non-code content types. Receives a category slug and returns a ReactNode.",
+      control: false,
+    },
+    visualRegistry: {
+      description:
+        "Component registry mapping componentId strings to React components for visual previews.",
+      control: false,
+    },
+  },
   decorators: [
     (Story) => (
       <div style={{ maxWidth: 960, margin: "0 auto", padding: 24 }}>
@@ -63,6 +123,7 @@ const meta: Meta<typeof LearnIndexPage> = {
 export default meta;
 type Story = StoryObj<typeof LearnIndexPage>;
 
+/** Index page with four category sections, some with code previews. */
 export const Default: Story = {
   args: {
     title: "Learn Component APIs",
@@ -74,6 +135,7 @@ export const Default: Story = {
   },
 };
 
+/** Index page with an ordered learning path section above the category list. */
 export const WithLearningPath: Story = {
   args: {
     ...Default.args,
