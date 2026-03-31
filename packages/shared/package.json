@@ -27,11 +27,11 @@
     "fuse.js": "^7.1.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "*",
-    "server-only": "^0.0.1",
-    "smiles-drawer": "^2.2.1",
     "next": ">=16.1.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "smiles-drawer": "^2.2.1"
   },
   "peerDependenciesMeta": {
     "3dmol": {
@@ -42,21 +42,27 @@
     }
   },
   "devDependencies": {
-    "@types/react": "19.2.14",
-    "typescript": "6.0.2",
-    "storybook": "^10.3.3",
-    "@storybook/react-vite": "^10.3.3",
     "@chromatic-com/storybook": "^5.1.1",
-    "@storybook/addon-vitest": "^10.3.3",
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-a11y": "^10.3.3",
     "@storybook/addon-docs": "^10.3.3",
     "@storybook/addon-onboarding": "^10.3.3",
-    "vitest": "^4.1.1",
-    "playwright": "^1.58.2",
+    "@storybook/addon-vitest": "^10.3.3",
+    "@storybook/react-vite": "^10.3.3",
+    "@types/react": "19.2.14",
     "@vitest/browser-playwright": "^4.1.1",
-    "@vitest/coverage-v8": "^4.1.1"
+    "@vitest/coverage-v8": "^4.1.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "playwright": "^1.58.2",
+    "storybook": "^10.3.3",
+    "typescript": "6.0.2",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^4.1.1"
   },
   "scripts": {
+    "format:check": "prettier --check --ignore-path ../../.prettierignore .",
+    "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   }
