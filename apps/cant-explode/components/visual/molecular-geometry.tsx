@@ -1,6 +1,6 @@
 "use client";
 
-import { MoleculeViewer } from "./molecule-viewer";
+import { MoleculeViewer } from "@cant/shared/components/molecule-viewer";
 
 // ---------------------------------------------------------------------------
 // mg-001: Water molecule geometry

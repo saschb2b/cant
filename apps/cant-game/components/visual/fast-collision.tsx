@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
+import {
+  CanvasSimulation,
+  useIsDarkMode,
+} from "@cant/shared/components/canvas-simulation";
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -23,17 +23,6 @@ const FLASH_DURATION = 0.25;
 /* ------------------------------------------------------------------ */
 /*  Shared paper style                                                 */
 /* ------------------------------------------------------------------ */
-
-const paperSx = {
-  width: "100%",
-  minHeight: 200,
-  overflow: "hidden",
-  p: 1.5,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 1,
-} as const;
 
 /* ------------------------------------------------------------------ */
 /*  Colors helper                                                      */
@@ -215,8 +204,7 @@ function drawContinuous(
 /* ------------------------------------------------------------------ */
 
 export function CollisionDiscrete() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -289,24 +277,7 @@ export function CollisionDiscrete() {
   }, [isDark]);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Bullet tunnels through wall
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Bullet tunnels through wall" canvasRef={canvasRef} />
   );
 }
 
@@ -315,8 +286,7 @@ export function CollisionDiscrete() {
 /* ------------------------------------------------------------------ */
 
 export function CollisionContinuous() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -404,23 +374,6 @@ export function CollisionContinuous() {
   }, [isDark]);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Bullet stops at contact point
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Bullet stops at contact point" canvasRef={canvasRef} />
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
+import {
+  CanvasSimulation,
+  useIsDarkMode,
+} from "@cant/shared/components/canvas-simulation";
 
 /* ------------------------------------------------------------------ */
 /*  Shared constants and types                                         */
@@ -137,20 +137,8 @@ function drawScene(
 /*  Variable timestep component                                        */
 /* ------------------------------------------------------------------ */
 
-const paperSx = {
-  width: "100%",
-  minHeight: 200,
-  overflow: "hidden",
-  p: 1.5,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 1,
-} as const;
-
 export function TimestepVariable() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const colors: Colors = {
@@ -230,24 +218,7 @@ export function TimestepVariable() {
   }, []);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Variable delta time
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Variable delta time" canvasRef={canvasRef} />
   );
 }
 
@@ -258,8 +229,7 @@ export function TimestepVariable() {
 const FIXED_DT = 1 / 60;
 
 export function TimestepFixed() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const colors: Colors = {
@@ -345,23 +315,6 @@ export function TimestepFixed() {
   }, []);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Fixed timestep with accumulator
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Fixed timestep with accumulator" canvasRef={canvasRef} />
   );
 }

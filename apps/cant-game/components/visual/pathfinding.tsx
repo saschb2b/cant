@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
+import {
+  CanvasSimulation,
+  useIsDarkMode,
+} from "@cant/shared/components/canvas-simulation";
 
 /* ------------------------------------------------------------------ */
 /*  Grid and A* types                                                  */
@@ -467,20 +467,8 @@ function usePathfindingAnimation(result: AStarResult, colors: Colors) {
 /*  Exported components                                                */
 /* ------------------------------------------------------------------ */
 
-const paperSx = {
-  width: "100%",
-  minHeight: 200,
-  overflow: "hidden",
-  p: 1.5,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 1,
-} as const;
-
 export function PathfindingManhattan() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors: Colors = {
     wall: isDark ? "#B8A8A8" : "#4B5563",
@@ -495,30 +483,12 @@ export function PathfindingManhattan() {
   const canvasRef = usePathfindingAnimation(MANHATTAN_RESULT, colors);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Manhattan distance heuristic
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Manhattan distance heuristic" canvasRef={canvasRef} />
   );
 }
 
 export function PathfindingOctile() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors: Colors = {
     wall: isDark ? "#B8A8A8" : "#4B5563",
@@ -533,23 +503,6 @@ export function PathfindingOctile() {
   const canvasRef = usePathfindingAnimation(OCTILE_RESULT, colors);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Octile distance heuristic
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Octile distance heuristic" canvasRef={canvasRef} />
   );
 }

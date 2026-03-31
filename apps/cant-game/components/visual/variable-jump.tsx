@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
+import {
+  CanvasSimulation,
+  useIsDarkMode,
+} from "@cant/shared/components/canvas-simulation";
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -425,20 +425,8 @@ function useVariableJumpSim(variable: boolean, colors: DrawColors) {
 /*  Exported components                                                */
 /* ------------------------------------------------------------------ */
 
-const paperSx = {
-  width: "100%",
-  minHeight: 200,
-  overflow: "hidden",
-  p: 1.5,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 1,
-} as const;
-
 export function JumpFixed() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors: DrawColors = {
     character: isDark ? "#F87171" : "#DC2626",
@@ -453,30 +441,12 @@ export function JumpFixed() {
   const canvasRef = useVariableJumpSim(false, colors);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        {"Fixed height: hold duration ignored"}
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label={"Fixed height: hold duration ignored"} canvasRef={canvasRef} />
   );
 }
 
 export function JumpVariable() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors: DrawColors = {
     character: isDark ? "#F87171" : "#DC2626",
@@ -491,23 +461,6 @@ export function JumpVariable() {
   const canvasRef = useVariableJumpSim(true, colors);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        {"Variable height: hold duration controls arc"}
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label={"Variable height: hold duration controls arc"} canvasRef={canvasRef} />
   );
 }

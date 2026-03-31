@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
+import {
+  CanvasSimulation,
+  useIsDarkMode,
+} from "@cant/shared/components/canvas-simulation";
 
 /* ------------------------------------------------------------------ */
 /*  Shared simulation types and helpers                                */
@@ -267,20 +267,8 @@ function useSimulation(
 /*  Exported components                                                */
 /* ------------------------------------------------------------------ */
 
-const paperSx = {
-  width: "100%",
-  minHeight: 200,
-  overflow: "hidden",
-  p: 1.5,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 1,
-} as const;
-
 export function CollisionBruteForce() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors = {
     entity: isDark ? "#F87171" : "#DC2626",
@@ -294,30 +282,12 @@ export function CollisionBruteForce() {
   });
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        {"O(n\u00B2) pairwise checks"}
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label={"O(n\u00B2) pairwise checks"} canvasRef={canvasRef} />
   );
 }
 
 export function CollisionSpatialHash() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors = {
     entity: isDark ? "#F87171" : "#DC2626",
@@ -332,23 +302,6 @@ export function CollisionSpatialHash() {
   });
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Spatial hash: nearby checks only
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Spatial hash: nearby checks only" canvasRef={canvasRef} />
   );
 }

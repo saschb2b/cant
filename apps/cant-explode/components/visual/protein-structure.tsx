@@ -1,6 +1,6 @@
 "use client";
 
-import { PdbViewer } from "./pdb-viewer";
+import { PdbViewer } from "@cant/shared/components/pdb-viewer";
 
 /* ==========================================================================
  * Real PDB structures from RCSB:

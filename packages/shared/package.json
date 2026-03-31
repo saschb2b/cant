@@ -16,6 +16,7 @@
     "./lib/app-theme-context": "./src/lib/app-theme-context.tsx"
   },
   "peerDependencies": {
+    "3dmol": "^2.5.4",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@mui/material": "^7.3.8",
@@ -27,9 +28,14 @@
     "lottie-react": "^2.4.1",
     "lucide-react": "*",
     "server-only": "^0.0.1",
+    "smiles-drawer": "^2.2.1",
     "next": ">=16.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "3dmol": { "optional": true },
+    "smiles-drawer": { "optional": true }
   },
   "devDependencies": {
     "@types/react": "19.2.14",

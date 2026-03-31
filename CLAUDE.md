@@ -177,7 +177,14 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 
 **Use npm packages for visual rendering.** Search for a well-maintained npm package that handles the domain-specific rendering (e.g. `3dmol` for 3D molecules, `smiles-drawer` for chemical structures, `recharts` for charts). Using a proven library produces better visuals with less custom code. For interactive simulations (physics, pathfinding, particle effects), Canvas 2D with `requestAnimationFrame` is a good fit. Only fall back to static SVG when no animated or library-based approach applies.
 
-**Contribute reusable visual components to `@cant/shared`.** When a visual component (chart renderer, diagram viewer, interactive widget) could serve multiple apps, build it in `packages/shared/src/components/` rather than keeping it app-local. For domain-specific renderers that only one app needs (e.g. molecule viewers for cant-explode), keep them per-app in `components/visual/`.
+**Contribute reusable visual components to `@cant/shared`.** When a visual component (chart renderer, diagram viewer, interactive widget) could serve multiple apps, build it in `packages/shared/src/components/` rather than keeping it app-local. The following shared renderers are already available:
+
+- `@cant/shared/components/molecule-viewer` - 3D molecule viewer (`3dmol`, XYZ format, auto-rotating)
+- `@cant/shared/components/pdb-viewer` - 3D protein structure viewer (`3dmol`, PDB format, fetches from RCSB)
+- `@cant/shared/components/smiles-canvas` - 2D chemical structure renderer (`smiles-drawer`, SMILES notation, dark/light theme)
+- `@cant/shared/components/canvas-simulation` - Canvas 2D simulation shell (Paper + label + bordered canvas) plus `useIsDarkMode` hook
+
+`3dmol` and `smiles-drawer` are optional peer deps of `@cant/shared`. Only apps that import the molecule/SMILES components need to install them. `CanvasSimulation` uses only MUI (no extra deps).
 
 ### Challenge content types
 

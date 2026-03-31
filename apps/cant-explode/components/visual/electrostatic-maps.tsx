@@ -1,6 +1,6 @@
 "use client";
 
-import { MoleculeViewer } from "./molecule-viewer";
+import { MoleculeViewer } from "@cant/shared/components/molecule-viewer";
 
 // ---------------------------------------------------------------------------
 // em-001: Polar vs nonpolar molecule charge distribution

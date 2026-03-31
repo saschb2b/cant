@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
+import {
+  CanvasSimulation,
+  useIsDarkMode,
+} from "@cant/shared/components/canvas-simulation";
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -420,20 +420,8 @@ function useJumpSim(useCoyoteTime: boolean, colors: DrawColors) {
 /*  Exported components                                                */
 /* ------------------------------------------------------------------ */
 
-const paperSx = {
-  width: "100%",
-  minHeight: 200,
-  overflow: "hidden",
-  p: 1.5,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 1,
-} as const;
-
 export function JumpStrict() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors: DrawColors = {
     character: isDark ? "#F87171" : "#DC2626",
@@ -448,30 +436,12 @@ export function JumpStrict() {
   const canvasRef = useJumpSim(false, colors);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        Jump only while grounded
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label="Jump only while grounded" canvasRef={canvasRef} />
   );
 }
 
 export function JumpCoyoteTime() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+  const isDark = useIsDarkMode();
 
   const colors: DrawColors = {
     character: isDark ? "#F87171" : "#DC2626",
@@ -486,23 +456,6 @@ export function JumpCoyoteTime() {
   const canvasRef = useJumpSim(true, colors);
 
   return (
-    <Paper sx={paperSx}>
-      <Typography
-        sx={{ fontSize: 11, fontFamily: "monospace", color: "text.secondary" }}
-      >
-        {"Coyote time: " + String(COYOTE_WINDOW * 1000) + "ms grace window"}
-      </Typography>
-      <Box
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          overflow: "hidden",
-          lineHeight: 0,
-        }}
-      >
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H} />
-      </Box>
-    </Paper>
+    <CanvasSimulation label={"Coyote time: " + String(COYOTE_WINDOW * 1000) + "ms grace window"} canvasRef={canvasRef} />
   );
 }

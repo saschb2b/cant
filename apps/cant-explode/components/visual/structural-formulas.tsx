@@ -1,150 +1,26 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-
-const CANVAS_WIDTH = 300;
-const CANVAS_HEIGHT = 250;
-
-function useColorScheme() {
-  const [isDark, setIsDark] = useState(() =>
-    typeof document !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : false,
-  );
-
-  useEffect(() => {
-    const el = document.documentElement;
-    const observer = new MutationObserver(() => {
-      setIsDark(el.classList.contains("dark"));
-    });
-    observer.observe(el, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
-  return isDark;
-}
-
-function useSmilesDrawer(
-  canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  smiles: string,
-) {
-  const isDark = useColorScheme();
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    let cancelled = false;
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-
-    canvas.width = CANVAS_WIDTH * dpr;
-    canvas.height = CANVAS_HEIGHT * dpr;
-    canvas.style.width = `${String(CANVAS_WIDTH)}px`;
-    canvas.style.height = `${String(CANVAS_HEIGHT)}px`;
-
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.scale(dpr, dpr);
-    }
-
-    void import("smiles-drawer").then((mod) => {
-      if (cancelled) return;
-      const SmilesDrawer =
-        (mod.default as typeof import("smiles-drawer") | undefined) ?? mod;
-      const drawer = new SmilesDrawer.Drawer({
-        width: CANVAS_WIDTH,
-        height: CANVAS_HEIGHT,
-        themes: {
-          dark: {
-            C: "#ffffff",
-            O: "#ff6666",
-            N: "#6699ff",
-            S: "#ffcc33",
-            F: "#66ff66",
-            Cl: "#66ff66",
-            Br: "#cc6633",
-            I: "#cc66ff",
-            H: "#cccccc",
-            BACKGROUND: "transparent",
-          },
-          light: {
-            C: "#000000",
-            O: "#cc0000",
-            N: "#0033cc",
-            S: "#cc9900",
-            F: "#009900",
-            Cl: "#009900",
-            Br: "#993300",
-            I: "#6600cc",
-            H: "#666666",
-            BACKGROUND: "transparent",
-          },
-        },
-        bondThickness: isDark ? 2 : 1.5,
-      });
-      SmilesDrawer.parse(
-        smiles,
-        (tree: unknown) => {
-          if (!cancelled) {
-            drawer.draw(tree, canvas, isDark ? "dark" : "light", false);
-          }
-        },
-        () => {
-          // parse error, silently ignore
-        },
-      );
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [canvasRef, smiles, isDark]);
-}
+import { SmilesCanvas } from "@cant/shared/components/smiles-canvas";
 
 // ---------------------------------------------------------------------------
 // sf-001: Benzene representation
 // ---------------------------------------------------------------------------
 
 export function BenzeneKekule() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "C1=CC=CC=C1");
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        Kekul&eacute; structure with alternating double bonds
-      </Typography>
-    </Box>
+    <SmilesCanvas
+      smiles="C1=CC=CC=C1"
+      label="Kekulé structure with alternating double bonds"
+    />
   );
 }
 
 export function BenzeneDelocalized() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "c1ccccc1");
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        Aromatic ring with delocalized electrons
-      </Typography>
-    </Box>
+    <SmilesCanvas
+      smiles="c1ccccc1"
+      label="Aromatic ring with delocalized electrons"
+    />
   );
 }
 
@@ -153,45 +29,11 @@ export function BenzeneDelocalized() {
 // ---------------------------------------------------------------------------
 
 export function EthanolStructure() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "CCO");
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        Ethanol (CH3CH2OH)
-      </Typography>
-    </Box>
-  );
+  return <SmilesCanvas smiles="CCO" label="Ethanol (CH3CH2OH)" />;
 }
 
 export function DimethylEtherStructure() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "COC");
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        Dimethyl ether (CH3OCH3)
-      </Typography>
-    </Box>
-  );
+  return <SmilesCanvas smiles="COC" label="Dimethyl ether (CH3OCH3)" />;
 }
 
 // ---------------------------------------------------------------------------
@@ -199,45 +41,11 @@ export function DimethylEtherStructure() {
 // ---------------------------------------------------------------------------
 
 export function Cis2Butene() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "C/C=C\\C");
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        cis-2-Butene (Z isomer)
-      </Typography>
-    </Box>
-  );
+  return <SmilesCanvas smiles="C/C=C\C" label="cis-2-Butene (Z isomer)" />;
 }
 
 export function Trans2Butene() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "C/C=C/C");
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        trans-2-Butene (E isomer)
-      </Typography>
-    </Box>
-  );
+  return <SmilesCanvas smiles="C/C=C/C" label="trans-2-Butene (E isomer)" />;
 }
 
 // ---------------------------------------------------------------------------
@@ -245,43 +53,19 @@ export function Trans2Butene() {
 // ---------------------------------------------------------------------------
 
 export function GlucoseOpenChain() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "OC[C@@H](O)[C@H](O)[C@@H](O)[C@@H](O)C=O");
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        D-Glucose open-chain (Fischer projection)
-      </Typography>
-    </Box>
+    <SmilesCanvas
+      smiles="OC[C@@H](O)[C@H](O)[C@@H](O)[C@@H](O)C=O"
+      label="D-Glucose open-chain (Fischer projection)"
+    />
   );
 }
 
 export function GlucoseRingForm() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useSmilesDrawer(ref, "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O");
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 1,
-        p: 2,
-      }}
-    >
-      <canvas ref={ref} style={{ maxWidth: "100%" }} />
-      <Typography variant="caption" color="text.secondary">
-        D-Glucopyranose (Haworth ring form)
-      </Typography>
-    </Box>
+    <SmilesCanvas
+      smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
+      label="D-Glucopyranose (Haworth ring form)"
+    />
   );
 }

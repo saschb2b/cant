@@ -1022,6 +1022,9 @@ importers:
 
   packages/shared:
     dependencies:
+      3dmol:
+        specifier: ^2.5.4
+        version: 2.5.4
       '@emotion/cache':
         specifier: ^11.14.0
         version: 11.14.0
@@ -1064,6 +1067,9 @@ importers:
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
+      smiles-drawer:
+        specifier: ^2.2.1
+        version: 2.2.1
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^5.1.1
