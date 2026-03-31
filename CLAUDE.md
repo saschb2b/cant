@@ -2,7 +2,7 @@
 
 ## Monorepo structure
 
-This is a pnpm + Turborepo monorepo. Five Next.js apps share code via `@cant/shared`.
+This is a pnpm + Turborepo monorepo. Multiple Next.js apps share code via `@cant/shared`.
 
 ```
 apps/cant-maintain    # React component API patterns
@@ -11,6 +11,8 @@ apps/cant-type        # TypeScript patterns
 apps/cant-orchestrate # Container orchestration patterns
 apps/cant-seo         # SEO best practices for Next.js
 apps/cant-test        # Testing patterns (+ Bug Hunt game)
+apps/cant-explode     # Chemistry patterns (molecules, reactions, structures)
+apps/cant-game        # Game development patterns
 packages/shared       # @cant/shared - components, game logic, utilities
 ```
 
@@ -150,18 +152,32 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 ## Adding a new challenge
 
 1. Open the relevant category file in the app's `lib/learn/challenges/` (or `lib/game/challenges/`)
-2. Append a `Challenge` object with a `content` block and both `explanationCorrect` and `explanationWrong`
-3. Link to an authoritative source (React docs, MDN, TypeScript docs)
-4. Follow visual parity rules: both sides should have similar length and structure
-5. The `correctSide` value is randomized at runtime in game mode
-6. **Keep the hub in sync.** Update the challenge count in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` and `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx` whenever challenges are added or removed
-7. **Keep titles and code comments neutral.** Titles and inline code comments must not hint at which side is correct. This is critical for game mode, where players choose the better pattern.
+2. **Pick the best content type before writing anything.** Do not default to `type: "code"`. For each challenge, decide:
+   - Can this concept be **animated or simulated**? Use `type: "visual"` with a Canvas 2D or library-backed component (e.g. pathfinding grids, physics simulations, shading comparisons, steering behaviors)
+   - Can this concept be **drawn as a structure or diagram**? Use `type: "visual"` with SVG or an npm renderer (e.g. molecular structures, file trees, flow diagrams, git graphs)
+   - Is the concept **domain-specific data** with a shared renderer? Use a specialized type like `type: "molecule"`
+   - Is this purely a **syntax or API pattern** where the code itself is the point? Only then use `type: "code"`
+   - Look at existing visual components in the app's `components/visual/` directory. Reuse or extend them when possible.
+3. Append a `Challenge` object with a `content` block and both `explanationCorrect` and `explanationWrong`
+4. Link to an authoritative source (React docs, MDN, TypeScript docs)
+5. Follow visual parity rules: both sides should have similar length and structure
+6. The `correctSide` value is randomized at runtime in game mode
+7. **Keep the hub in sync.** Update the challenge count in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` and `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx` whenever challenges are added or removed
+8. **Keep titles and code comments neutral.** Titles and inline code comments must not hint at which side is correct. This is critical for game mode, where players choose the better pattern.
    - Titles should describe the topic, not name the solution (e.g. "Pagination strategy" not "Cursor-based pagination")
    - Do not use value-laden words in titles like "proper", "robust", "structured", "over-fetching", "minimal"
    - Inline code comments should describe what the code does, not judge it
    - Do not add comments listing downsides only on the wrong side (e.g. "// No error handling", "// Crackable in seconds")
    - Do not add comments listing advantages only on the correct side (e.g. "// Fully typed, auto-generated", "// Single source of truth")
    - Both sides should feel equally plausible at first glance. Value judgments belong in `explanationCorrect` and `explanationWrong`, not in titles or code
+
+### Choosing the right content type
+
+**Do not default to code challenges.** `type: "code"` is only appropriate when the challenge is specifically about syntax or API usage. Most concepts are far more engaging and educational as live visuals: animated simulations, interactive diagrams, rendered structures, or side-by-side component comparisons. If a concept can be visualized, it must be visualized.
+
+**Use npm packages for visual rendering.** Search for a well-maintained npm package that handles the domain-specific rendering (e.g. `3dmol` for 3D molecules, `smiles-drawer` for chemical structures, `recharts` for charts). Using a proven library produces better visuals with less custom code. For interactive simulations (physics, pathfinding, particle effects), Canvas 2D with `requestAnimationFrame` is a good fit. Only fall back to static SVG when no animated or library-based approach applies.
+
+**Contribute reusable visual components to `@cant/shared`.** When a visual component (chart renderer, diagram viewer, interactive widget) could serve multiple apps, build it in `packages/shared/src/components/` rather than keeping it app-local. For domain-specific renderers that only one app needs (e.g. molecule viewers for cant-explode), keep them per-app in `components/visual/`.
 
 ### Challenge content types
 
@@ -227,19 +243,69 @@ Every challenge has a `content` field that describes what is being compared. The
 }
 ```
 
+**Molecule challenge** (two chemical structures with properties):
+
+```ts
+{
+  id: "mol-001",
+  category: "structural-formulas",
+  difficulty: "medium",
+  title: "Benzene representation",
+  content: {
+    type: "molecule",
+    left: {
+      name: "Cyclohexatriene",
+      formula: "C₆H₆",
+      smiles: "C1=CC=CC=C1",
+      properties: { "Bond lengths": "Alternating" },
+    },
+    right: {
+      name: "Benzene",
+      formula: "C₆H₆",
+      smiles: "c1ccccc1",
+      properties: { "Bond lengths": "Equal (1.40 A)" },
+    },
+  },
+  correctSide: "right",
+  // ...
+}
+```
+
+**Game simulation challenge** (two animated Canvas 2D components, e.g. pathfinding, physics, shading):
+
+```ts
+{
+  id: "ai-002",
+  category: "ai",
+  difficulty: "medium",
+  title: "Pathfinding heuristic",
+  prompt: "Which A* heuristic produces shorter paths on a grid that allows diagonal movement?",
+  content: {
+    type: "visual",
+    left: { componentId: "PathfindingManhattan" },
+    right: { componentId: "PathfindingOctile" },
+  },
+  correctSide: "right",
+  // ...
+}
+```
+
+Each component renders a live animated canvas (collision detection, rope physics, shading models, steering behaviors, etc.) using `requestAnimationFrame` loops. See `apps/cant-game/components/visual/` for examples of canvas-based game simulations that visualize concepts far more effectively than code snippets.
+
 ### Using visual challenges in an app
 
-Visual challenges render live React components instead of code snippets. They require per-app wiring since the component registry is app-specific. Prefer visual challenges over plain-text code when the content is structural (file trees, diagrams, flows) rather than syntax.
+Visual challenges render live React components instead of code snippets. They require per-app wiring since the component registry is app-specific. Prefer visual challenges over plain-text code when the content is structural (file trees, diagrams, flows, molecules, charts) rather than syntax.
 
-**Per-app setup** (see cant-branch or cant-test for full examples):
+**Per-app setup** (see cant-branch, cant-test, or cant-explode for full examples):
 
-1. Create visual components in `components/visual/` (e.g. `file-tree.tsx`, `git-graph.tsx`)
-2. Create a registry in `components/visual/registry.tsx` that maps `componentId` strings to components
-3. Create a `components/game/visual-panel.tsx` wrapper that looks up the registry and renders via `SharedVisualPanel`
-4. Pass `visualPanel: VisualPanelWrapper` in the `slots` prop of `SharedGame` in `components/game/game.tsx`
-5. In `app/learn/[category]/page.tsx`, add a `renderContentPanel` function that checks for `entry?.type === "visual"` and renders the component from the registry, falling back to `LearnContentPanel` for code/image types
+1. **Find an npm package** that handles the domain-specific rendering (e.g. `3dmol` for 3D molecules, `smiles-drawer` for 2D chemical structures, `recharts` for charts). Prefer proven libraries over hand-rolled SVG.
+2. Create visual components in `components/visual/` (e.g. `file-tree.tsx`, `git-graph.tsx`, `molecule-viewer.tsx`)
+3. Create a registry in `components/visual/registry.tsx` that maps `componentId` strings to components
+4. Create a `components/game/visual-panel.tsx` wrapper that looks up the registry and renders via `SharedVisualPanel`
+5. Pass `visualPanel: VisualPanelWrapper` in the `slots` prop of `SharedGame` in `components/game/game.tsx`
+6. In `app/learn/[category]/page.tsx`, add a `renderContentPanel` function that checks for `entry?.type === "visual"` and renders the component from the registry, falling back to `LearnContentPanel` for code/image types
 
-**Apps with visual challenges:** cant-branch (git graphs, file trees, diffs, terminals, flow diagrams), cant-ux (visual component comparisons), cant-test (file trees)
+**Apps with visual challenges:** cant-game (animated Canvas 2D game simulations: pathfinding, collision detection, shading, rope physics, steering, state machines), cant-explode (3D molecules via `3dmol`, 2D structures via `smiles-drawer`, SVG orbital/energy diagrams, periodic table visualizations), cant-branch (git graphs, file trees, diffs, terminals, flow diagrams), cant-ux (visual component comparisons), cant-test (file trees)
 
 ### Shared infrastructure
 
@@ -248,8 +314,11 @@ Challenge rendering is centralized in `@cant/shared`:
 - `buildContentMap()` processes challenges into a render-ready content map, handling `correctSide` mapping and Shiki highlighting for code challenges
 - `LearnCategoryPage` renders the full learn/[category] page; apps provide a `renderExplanation` slot and optionally a `renderContentPanel` slot for visual challenges
 - `LearnIndexPage` renders the learn index page with optional learning path
-- `LearnContentPanel` renders the Avoid/Prefer content panels (code, image, or visual)
-- `ImagePanel` and `VisualPanel` are game-mode panel components for non-code challenges
+- `LearnContentPanel` renders the Avoid/Prefer content panels (code, image, visual, or molecule)
+- `ImagePanel`, `VisualPanel`, and `MoleculePanel` are game-mode panel components for non-code challenges
+- Content types are defined as a discriminated union (`ChallengeContent`) in `packages/shared/src/lib/game/types.ts`: `code`, `image`, `visual`, `molecule`
+
+When building visual components that could serve multiple apps, add them to `@cant/shared` so other apps can reuse them. New content type variants can be added to the `ChallengeContent` union when an existing type does not fit.
 
 ## Deployment
 
