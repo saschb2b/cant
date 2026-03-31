@@ -109,13 +109,13 @@ The screening and assessment features that generate revenue.
 
 ## Key Decisions to Make
 
-| Decision | Options | Notes |
-|---|---|---|
-| **Hub domain** | `cant.saschb2b.com` | Central branding matters for recruiter trust |
-| **Keep individual app domains?** | Yes, the Hub is a portal that links out | Each app keeps its own domain and experience |
-| **Auth provider** | NextAuth.js, Clerk, Auth.js, Supabase Auth | Needs to support email + OAuth |
-| **Database** | Postgres (Coolify), Supabase, PlanetScale | Self-hosted aligns with current Coolify setup |
-| **Payments** | Stripe, Lemon Squeezy | Stripe is the standard for SaaS |
+| Decision                         | Options                                    | Notes                                         |
+| -------------------------------- | ------------------------------------------ | --------------------------------------------- |
+| **Hub domain**                   | `cant.saschb2b.com`                        | Central branding matters for recruiter trust  |
+| **Keep individual app domains?** | Yes, the Hub is a portal that links out    | Each app keeps its own domain and experience  |
+| **Auth provider**                | NextAuth.js, Clerk, Auth.js, Supabase Auth | Needs to support email + OAuth                |
+| **Database**                     | Postgres (Coolify), Supabase, PlanetScale  | Self-hosted aligns with current Coolify setup |
+| **Payments**                     | Stripe, Lemon Squeezy                      | Stripe is the standard for SaaS               |
 
 ---
 
@@ -129,12 +129,12 @@ The screening and assessment features that generate revenue.
 
 ## Revenue Model
 
-| Tier | Price | Includes |
-|---|---|---|
-| **Free (learner)** | $0 | Full access to all series, progress tracking, learning paths |
-| **Starter (recruiter)** | ~$49/mo | 5 active screenings, 50 candidates/mo, basic dashboard |
-| **Pro (recruiter)** | ~$149/mo | Unlimited screenings, unlimited candidates, exports, analytics |
-| **Enterprise** | Custom | White-label, API access, SSO, dedicated support |
+| Tier                    | Price    | Includes                                                       |
+| ----------------------- | -------- | -------------------------------------------------------------- |
+| **Free (learner)**      | $0       | Full access to all series, progress tracking, learning paths   |
+| **Starter (recruiter)** | ~$49/mo  | 5 active screenings, 50 candidates/mo, basic dashboard         |
+| **Pro (recruiter)**     | ~$149/mo | Unlimited screenings, unlimited candidates, exports, analytics |
+| **Enterprise**          | Custom   | White-label, API access, SSO, dedicated support                |
 
 Learner access stays free. The game content is the moat, and recruiter tooling is the monetization layer.
 

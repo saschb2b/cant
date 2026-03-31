@@ -47,13 +47,13 @@ For each app, create a new resource in Coolify:
 
 ### Per-app settings
 
-| App | Dockerfile location | Domain |
-|-----|---------------------|--------|
-| cant-maintain | `apps/cant-maintain/Dockerfile` | cant-maintain.saschb2b.com |
-| cant-resize | `apps/cant-resize/Dockerfile` | cant-resize.saschb2b.com |
-| cant-type | `apps/cant-type/Dockerfile` | cant-type.saschb2b.com |
+| App              | Dockerfile location                | Domain                        |
+| ---------------- | ---------------------------------- | ----------------------------- |
+| cant-maintain    | `apps/cant-maintain/Dockerfile`    | cant-maintain.saschb2b.com    |
+| cant-resize      | `apps/cant-resize/Dockerfile`      | cant-resize.saschb2b.com      |
+| cant-type        | `apps/cant-type/Dockerfile`        | cant-type.saschb2b.com        |
 | cant-orchestrate | `apps/cant-orchestrate/Dockerfile` | cant-orchestrate.saschb2b.com |
-| cant-seo | `apps/cant-seo/Dockerfile` | cant-seo.saschb2b.com |
+| cant-seo         | `apps/cant-seo/Dockerfile`         | cant-seo.saschb2b.com         |
 
 Enable HTTPS via Coolify's built-in Let's Encrypt integration.
 
@@ -105,6 +105,7 @@ Each Coolify service runs in its own container, so all can use port 3000 interna
 ### Large Docker images
 
 The multi-stage Dockerfile keeps the final image small (~150-200MB). If images are too large, check that:
+
 - `.dockerignore` excludes `node_modules`, `.next`, `.git`
 - The final stage only copies from the standalone output
 

@@ -2,16 +2,16 @@
 
 Educational platforms where you pick the better option in side-by-side comparisons, covering code patterns, design, chemistry, and more.
 
-| App | Topic | Tool | Live |
-|-----|-------|------|------|
-| [cant-maintain](apps/cant-maintain) | React component API design | Changelog | [cant-maintain.saschb2b.com](https://cant-maintain.saschb2b.com) |
-| [cant-resize](apps/cant-resize) | Responsive design patterns | Multi-device viewer | [cant-resize.saschb2b.com](https://cant-resize.saschb2b.com) |
-| [cant-type](apps/cant-type) | TypeScript patterns | TS Playground | [cant-type.saschb2b.com](https://cant-type.saschb2b.com) |
-| [cant-orchestrate](apps/cant-orchestrate) | Container orchestration | Dockerfile explorer | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
-| [cant-seo](apps/cant-seo) | SEO for Next.js | Link inspector | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com) |
-| [cant-ux](apps/cant-ux) | UX design patterns | Visual comparisons | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com) |
-| [cant-explode](apps/cant-explode) | Chemistry and biochemistry | 3D molecule viewer | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com) |
-| [cant-hub](apps/cant-hub) | Series hub / landing | App directory | [cant.saschb2b.com](https://cant.saschb2b.com) |
+| App                                       | Topic                      | Tool                | Live                                                                   |
+| ----------------------------------------- | -------------------------- | ------------------- | ---------------------------------------------------------------------- |
+| [cant-maintain](apps/cant-maintain)       | React component API design | Changelog           | [cant-maintain.saschb2b.com](https://cant-maintain.saschb2b.com)       |
+| [cant-resize](apps/cant-resize)           | Responsive design patterns | Multi-device viewer | [cant-resize.saschb2b.com](https://cant-resize.saschb2b.com)           |
+| [cant-type](apps/cant-type)               | TypeScript patterns        | TS Playground       | [cant-type.saschb2b.com](https://cant-type.saschb2b.com)               |
+| [cant-orchestrate](apps/cant-orchestrate) | Container orchestration    | Dockerfile explorer | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
+| [cant-seo](apps/cant-seo)                 | SEO for Next.js            | Link inspector      | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com)                 |
+| [cant-ux](apps/cant-ux)                   | UX design patterns         | Visual comparisons  | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com)                   |
+| [cant-explode](apps/cant-explode)         | Chemistry and biochemistry | 3D molecule viewer  | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com)         |
+| [cant-hub](apps/cant-hub)                 | Series hub / landing       | App directory       | [cant.saschb2b.com](https://cant.saschb2b.com)                         |
 
 ## Tech stack
 
@@ -88,31 +88,31 @@ cant/
 
 Run from the repo root:
 
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start all apps with cross-app linking |
-| `pnpm dev:hub` | Start cant-hub only (:3000) |
-| `pnpm dev:maintain` | Start cant-maintain only (:3001) |
-| `pnpm dev:resize` | Start cant-resize only (:3002) |
-| `pnpm dev:type` | Start cant-type only (:3003) |
-| `pnpm dev:orchestrate` | Start cant-orchestrate only (:3004) |
-| `pnpm dev:seo` | Start cant-seo only (:3005) |
-| `pnpm dev:ux` | Start cant-ux only (:3006) |
-| `pnpm dev:explode` | Start cant-explode only (:3007) |
-| `pnpm build` | Production build all apps (parallel) |
-| `pnpm build:maintain` | Build cant-maintain only |
-| `pnpm build:resize` | Build cant-resize only |
-| `pnpm build:type` | Build cant-type only |
-| `pnpm build:orchestrate` | Build cant-orchestrate only |
-| `pnpm build:seo` | Build cant-seo only |
-| `pnpm build:ux` | Build cant-ux only |
-| `pnpm build:hub` | Build cant-hub only |
-| `pnpm build:explode` | Build cant-explode only |
-| `pnpm lint` | Lint all apps |
-| `pnpm typecheck` | Type-check all apps |
-| `pnpm format:check` | Check formatting |
-| `pnpm storybook` | Launch Storybook for shared package |
-| `pnpm build-storybook` | Build static Storybook |
+| Script                   | Description                           |
+| ------------------------ | ------------------------------------- |
+| `pnpm dev`               | Start all apps with cross-app linking |
+| `pnpm dev:hub`           | Start cant-hub only (:3000)           |
+| `pnpm dev:maintain`      | Start cant-maintain only (:3001)      |
+| `pnpm dev:resize`        | Start cant-resize only (:3002)        |
+| `pnpm dev:type`          | Start cant-type only (:3003)          |
+| `pnpm dev:orchestrate`   | Start cant-orchestrate only (:3004)   |
+| `pnpm dev:seo`           | Start cant-seo only (:3005)           |
+| `pnpm dev:ux`            | Start cant-ux only (:3006)            |
+| `pnpm dev:explode`       | Start cant-explode only (:3007)       |
+| `pnpm build`             | Production build all apps (parallel)  |
+| `pnpm build:maintain`    | Build cant-maintain only              |
+| `pnpm build:resize`      | Build cant-resize only                |
+| `pnpm build:type`        | Build cant-type only                  |
+| `pnpm build:orchestrate` | Build cant-orchestrate only           |
+| `pnpm build:seo`         | Build cant-seo only                   |
+| `pnpm build:ux`          | Build cant-ux only                    |
+| `pnpm build:hub`         | Build cant-hub only                   |
+| `pnpm build:explode`     | Build cant-explode only               |
+| `pnpm lint`              | Lint all apps                         |
+| `pnpm typecheck`         | Type-check all apps                   |
+| `pnpm format:check`      | Check formatting                      |
+| `pnpm storybook`         | Launch Storybook for shared package   |
+| `pnpm build-storybook`   | Build static Storybook                |
 
 ## Shared package (`@cant/shared`)
 
@@ -148,7 +148,10 @@ Each app creates `components/app-theme-wrapper.tsx`:
 
 ```tsx
 "use client";
-import { AppThemeProvider, createAppTheme } from "@cant/shared/lib/app-theme-context";
+import {
+  AppThemeProvider,
+  createAppTheme,
+} from "@cant/shared/lib/app-theme-context";
 import checkmarkAnimation from "./game/checkmark-animation.json";
 
 const appTheme = createAppTheme({
@@ -180,16 +183,16 @@ import { createAppTheme } from "@cant/shared/lib/app-theme";
 
 **Configurable values:**
 
-| Field | Type | Default | Used by |
-|-------|------|---------|---------|
-| `labels.betterLabel` | `ReactNode` | `"Better"` | Game panels (correct answer) |
-| `labels.worseLabel` | `ReactNode` | `"Worse"` | Game panels (wrong answer) |
-| `labels.badLabel` | `string` | `"Avoid"` | Learn pages (bad side header) |
-| `labels.goodLabel` | `string` | `"Prefer"` | Learn pages (good side header) |
-| `styling.headerBackground` | `string` | `"action.selected"` | Panel headers, lobby cards |
-| `styling.codeBackground` | `string` | `"background.paper"` | Code panel background |
-| `slots.checkmarkAnimation` | `JSON` | `undefined` | Lottie checkmark on correct answer |
-| `slots.overlaySlot` | `ReactNode` | `undefined` | Extra overlay (e.g. sparkle effects) |
+| Field                      | Type        | Default              | Used by                              |
+| -------------------------- | ----------- | -------------------- | ------------------------------------ |
+| `labels.betterLabel`       | `ReactNode` | `"Better"`           | Game panels (correct answer)         |
+| `labels.worseLabel`        | `ReactNode` | `"Worse"`            | Game panels (wrong answer)           |
+| `labels.badLabel`          | `string`    | `"Avoid"`            | Learn pages (bad side header)        |
+| `labels.goodLabel`         | `string`    | `"Prefer"`           | Learn pages (good side header)       |
+| `styling.headerBackground` | `string`    | `"action.selected"`  | Panel headers, lobby cards           |
+| `styling.codeBackground`   | `string`    | `"background.paper"` | Code panel background                |
+| `slots.checkmarkAnimation` | `JSON`      | `undefined`          | Lottie checkmark on correct answer   |
+| `slots.overlaySlot`        | `ReactNode` | `undefined`          | Extra overlay (e.g. sparkle effects) |
 
 ### App registry
 
@@ -207,6 +210,7 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
 ## Adding a new app
 
 1. Copy an existing app as a starting point:
+
    ```bash
    cp -r apps/cant-resize apps/cant-newapp
    ```
@@ -229,6 +233,7 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
 5. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content.
 
 6. Add root scripts to `package.json`:
+
    ```json
    "dev:newapp": "turbo dev --filter=cant-newapp",
    "build:newapp": "turbo build --filter=cant-newapp"

@@ -13,12 +13,14 @@ You are a UX research coordinator. Your job is to run a usability test on one of
 Parse the arguments string: `$ARGUMENTS`
 
 Accepted formats:
+
 - `<app-name>` -- test one app with 3 personas (e.g. `cant-type`)
 - `<app-name> <count>` -- test one app with N personas (e.g. `cant-type 5`)
 - `<url>` -- test any URL with 3 personas
 - `<url> <count>` -- test any URL with N personas
 
 Known apps and their dev ports:
+
 - cant-hub: 3000
 - cant-maintain: 3001
 - cant-resize: 3002
@@ -83,6 +85,7 @@ Generate the requested number of diverse usability testing personas. Each person
 IMPORTANT: Include at least one non-developer and one person with accessibility considerations.
 
 For EACH persona, also generate a **concrete task** tailored to their motivation. Do NOT use generic tasks like "explore the site". Tasks should be specific and measurable, for example:
+
 - "Find the Generics category in Learn mode, read at least 2 patterns, and explain what you learned"
 - "Complete a full 10-question game and report your final score"
 - "Use the Sandbox to test 3 different type presets and evaluate if they help you understand the concepts"
@@ -189,45 +192,59 @@ After ALL agents complete, synthesize their reports into a single consolidated r
 
 ```markdown
 ## Usability Test Report: [app-name]
+
 Tested [date] with [N] AI personas via agent-browser (DOM snapshots).
 
 > **Note:** This test was conducted using agent-browser, which provides text-based DOM snapshots rather than visual rendering. Findings about information architecture, content, interaction flows, and labeling are reliable. Findings about visual design, color, spacing, and animations could not be verified and are not included. Issues marked UNCERTAIN could be agent-browser limitations rather than real bugs. **Manually verify critical issues before acting on them.**
 
 ### Scores
+
 - Average: X.X/10
 - Range: X-X/10
 
 ### Task Completion
-| Persona | Task | Completed | Outcome |
-|---------|------|-----------|---------|
-| Name | Their specific task | Yes/Partially/No | What happened |
+
+| Persona | Task                | Completed        | Outcome       |
+| ------- | ------------------- | ---------------- | ------------- |
+| Name    | Their specific task | Yes/Partially/No | What happened |
 
 ### Confirmed Issues
+
 Issues that agents could reliably detect (content, labeling, IA, interaction flow). Highest priority first.
+
 1. **[Issue]** (found by: persona1, persona2) -- [description + evidence]
 
 ### Suspected Issues (needs manual verification)
+
 Issues that may be real bugs or may be agent-browser limitations. Verify these manually.
+
 1. **[Issue]** (reported by: persona1) -- [what was observed, why it is uncertain]
 
 ### Positive Patterns
+
 Things that consistently worked well across personas.
 
 ### Suggestions (prioritized by impact)
+
 1. [Most impactful suggestion]
 2. [Next suggestion]
 
 ### Accessibility Notes
+
 Limited to what DOM inspection can verify: ARIA attributes, labels, keyboard navigation, semantic HTML, focus management.
+
 - [finding]
 
 ### Per-Persona Summary
-| Persona | Role | Rating | Task Completed | Key Finding |
-|---------|------|--------|----------------|-------------|
-| Name | Role | X/10 | Yes/Partially/No | One-liner |
+
+| Persona | Role | Rating | Task Completed   | Key Finding |
+| ------- | ---- | ------ | ---------------- | ----------- |
+| Name    | Role | X/10   | Yes/Partially/No | One-liner   |
 
 ### Manual Verification Checklist
+
 Based on this test, manually check the following:
+
 - [ ] [Critical issue 1 that needs human eyes]
 - [ ] [Suspected issue that needs visual verification]
 - [ ] [Any color/contrast concerns raised by accessibility personas]

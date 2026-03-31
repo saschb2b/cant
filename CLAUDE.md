@@ -65,7 +65,11 @@ const NAV_LINKS = [
   { href: "/canvas", label: "Viewer" },
   { href: "/play", label: "Play" },
   { href: "/learn", label: "Learn" },
-  { href: "https://github.com/saschb2b/cant-resize", label: "GitHub", external: true },
+  {
+    href: "https://github.com/saschb2b/cant-resize",
+    label: "GitHub",
+    external: true,
+  },
 ];
 
 export function SiteFooter() {
@@ -120,7 +124,7 @@ Use space-separated readable titles grouped by function:
 
 ```tsx
 const meta: Meta<typeof MyComponent> = {
-  title: "Layout/My Component",  // not "Layout/MyComponent"
+  title: "Layout/My Component", // not "Layout/MyComponent"
   component: MyComponent,
   tags: ["autodocs"],
 };
@@ -158,8 +162,8 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
    - `apps/<name>/app/icon.tsx` (generated PNG favicon, 32x32, using `ImageResponse`)
    - `apps/<name>/app/apple-icon.tsx` (generated Apple touch icon, 180x180, using `ImageResponse`)
 7. Create `apps/cant-newapp/Dockerfile` (copy from an existing app, replace the app name)
-7. Add the app to the hub: add an entry in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` with challenge/category counts, and update `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx`
-8. Run `pnpm install`
+8. Add the app to the hub: add an entry in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` with challenge/category counts, and update `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx`
+9. Run `pnpm install`
 
 ## Adding a new challenge
 
@@ -344,6 +348,7 @@ When building visual components that could serve multiple apps, add them to `@ca
 Each app deploys as a Docker container via Coolify. See `docs/coolify-deployment.md` for full details.
 
 Key files:
+
 - `apps/<name>/Dockerfile` per app
 - `.dockerignore` at repo root
 - `output: "standalone"` in each `next.config.mjs`

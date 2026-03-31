@@ -477,7 +477,10 @@ export AGENT_BROWSER_ACTION_POLICY=./policy.json
 Example `policy.json`:
 
 ```json
-{ "default": "deny", "allow": ["navigate", "snapshot", "click", "scroll", "wait", "get"] }
+{
+  "default": "deny",
+  "allow": ["navigate", "snapshot", "click", "scroll", "wait", "get"]
+}
 ```
 
 Auth vault operations (`auth login`, etc.) bypass action policy but domain allowlist still applies.
@@ -707,6 +710,7 @@ agent-browser --engine lightpanda --executable-path /path/to/lightpanda open exa
 ```
 
 Supported engines:
+
 - `chrome` (default) -- Chrome/Chromium via CDP
 - `lightpanda` -- Lightpanda headless browser via CDP (10x faster, 10x less memory than Chrome)
 
