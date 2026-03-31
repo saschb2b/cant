@@ -45,6 +45,7 @@ To check a single app: `pnpm turbo lint --filter=cant-maintain`
 
 - Component exists in 2+ apps with identical or near-identical code
 - Utility function is used across apps
+- **Every shared component must have a Storybook story.** When adding or modifying a component in `packages/shared/src/components/`, create or update its story in the `__stories__/` directory next to it. This is not optional.
 
 ### When to keep per-app
 
