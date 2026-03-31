@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,14 +9,39 @@ import Divider from "@mui/material/Divider";
 import { ArrowRight, Check, X } from "lucide-react";
 import { codeBlockStyles } from "../lib/code-styles";
 
+interface CodePreview {
+  type: "code";
+  goodHtml: string;
+  badHtml: string;
+}
+
+interface VisualPreview {
+  type: "visual";
+  goodComponentId: string;
+  badComponentId: string;
+}
+
+interface MoleculePreview {
+  type: "molecule";
+  good: { name: string; formula: string };
+  bad: { name: string; formula: string };
+}
+
+type SectionPreview = CodePreview | VisualPreview | MoleculePreview;
+
 interface LearnSection {
   category: string;
   label: string;
   description: string;
   count: number;
-  preview: { goodHtml: string; badHtml: string } | null;
+  /**
+   * @deprecated Use `sectionPreview` instead. Kept for backwards compatibility.
+   */
+  preview?: { goodHtml: string; badHtml: string } | null;
   /** Whether a non-code preview exists for this category (used with renderPreview). */
   hasPreview?: boolean;
+  /** Typed preview data. Supports code, visual, and molecule previews natively. */
+  sectionPreview?: SectionPreview | null;
 }
 
 interface LearnIndexPageProps {
@@ -45,6 +70,188 @@ interface LearnIndexPageProps {
    * Receives the category slug and returns a ReactNode with both sides.
    */
   renderPreview?: (category: string) => ReactNode;
+  /**
+   * Component registry mapping componentId strings to React components.
+   * Required for rendering visual previews via `sectionPreview`.
+   */
+  visualRegistry?: Record<string, ComponentType>;
+}
+
+function PreviewSideLabel({
+  side,
+  label,
+}: {
+  side: "good" | "bad";
+  label: string;
+}) {
+  const isGood = side === "good";
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={0.75}
+      sx={{ px: 2, pt: 1.5 }}
+    >
+      <Box
+        sx={{
+          width: 16,
+          height: 16,
+          borderRadius: "50%",
+          bgcolor: isGood
+            ? "rgba(var(--mui-palette-success-mainChannel) / 0.12)"
+            : "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: isGood ? "success.main" : "error.main",
+        }}
+      >
+        {isGood ? (
+          <Check size={9} strokeWidth={3} />
+        ) : (
+          <X size={9} strokeWidth={3} />
+        )}
+      </Box>
+      <Typography
+        variant="caption"
+        fontWeight={600}
+        fontFamily="var(--font-geist-mono), monospace"
+        color={isGood ? "success.main" : "error.main"}
+      >
+        {label}
+      </Typography>
+    </Stack>
+  );
+}
+
+function VisualPreviewPanel({
+  preview,
+  badLabel,
+  goodLabel,
+  visualRegistry,
+}: {
+  preview: VisualPreview;
+  badLabel: string;
+  goodLabel: string;
+  visualRegistry: Record<string, ComponentType>;
+}) {
+  const BadComponent = visualRegistry[preview.badComponentId];
+  const GoodComponent = visualRegistry[preview.goodComponentId];
+  return (
+    <>
+      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+        <PreviewSideLabel side="bad" label={badLabel} />
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 80,
+          }}
+        >
+          {BadComponent ? <BadComponent /> : null}
+        </Box>
+      </Box>
+      <Divider sx={{ display: { sm: "none" } }} />
+      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+        <PreviewSideLabel side="good" label={goodLabel} />
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 80,
+          }}
+        >
+          {GoodComponent ? <GoodComponent /> : null}
+        </Box>
+      </Box>
+    </>
+  );
+}
+
+function MoleculePreviewPanel({
+  preview,
+  badLabel,
+  goodLabel,
+}: {
+  preview: MoleculePreview;
+  badLabel: string;
+  goodLabel: string;
+}) {
+  return (
+    <>
+      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+        <PreviewSideLabel side="bad" label={badLabel} />
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 0.5,
+            minHeight: 80,
+          }}
+        >
+          <Typography
+            variant="body2"
+            fontWeight={700}
+            sx={{ textAlign: "center", color: "text.primary" }}
+          >
+            {preview.bad.name}
+          </Typography>
+          <Typography
+            variant="caption"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{
+              textAlign: "center",
+              color: "text.secondary",
+              letterSpacing: "0.05em",
+            }}
+          >
+            {preview.bad.formula}
+          </Typography>
+        </Box>
+      </Box>
+      <Divider sx={{ display: { sm: "none" } }} />
+      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+        <PreviewSideLabel side="good" label={goodLabel} />
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 0.5,
+            minHeight: 80,
+          }}
+        >
+          <Typography
+            variant="body2"
+            fontWeight={700}
+            sx={{ textAlign: "center", color: "text.primary" }}
+          >
+            {preview.good.name}
+          </Typography>
+          <Typography
+            variant="caption"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{
+              textAlign: "center",
+              color: "text.secondary",
+              letterSpacing: "0.05em",
+            }}
+          >
+            {preview.good.formula}
+          </Typography>
+        </Box>
+      </Box>
+    </>
+  );
 }
 
 export function LearnIndexPage({
@@ -58,6 +265,7 @@ export function LearnIndexPage({
   badLabel = "Avoid",
   goodLabel = "Prefer",
   renderPreview,
+  visualRegistry,
 }: LearnIndexPageProps) {
   return (
     <>
@@ -200,7 +408,9 @@ export function LearnIndexPage({
                 </Typography>
               </Box>
 
-              {(section.preview || (section.hasPreview && renderPreview)) && (
+              {(section.sectionPreview ||
+                section.preview ||
+                (section.hasPreview && renderPreview)) && (
                 <Stack
                   direction={{ xs: "column", sm: "row" }}
                   divider={
@@ -216,93 +426,69 @@ export function LearnIndexPage({
                     bgcolor: "background.paper",
                   }}
                 >
-                  {section.preview ? (
+                  {section.sectionPreview?.type === "visual" &&
+                  visualRegistry ? (
+                    <VisualPreviewPanel
+                      preview={section.sectionPreview}
+                      badLabel={badLabel}
+                      goodLabel={goodLabel}
+                      visualRegistry={visualRegistry}
+                    />
+                  ) : section.sectionPreview?.type === "molecule" ? (
+                    <MoleculePreviewPanel
+                      preview={section.sectionPreview}
+                      badLabel={badLabel}
+                      goodLabel={goodLabel}
+                    />
+                  ) : section.sectionPreview?.type === "code" ? (
                     <>
                       <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                        <Stack
-                          direction="row"
-                          alignItems="center"
-                          spacing={0.75}
-                          sx={{ px: 2, pt: 1.5 }}
-                        >
-                          <Box
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              borderRadius: "50%",
-                              bgcolor:
-                                "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              color: "error.main",
-                            }}
-                          >
-                            <X size={9} strokeWidth={3} />
-                          </Box>
-                          <Typography
-                            variant="caption"
-                            fontWeight={600}
-                            fontFamily="var(--font-geist-mono), monospace"
-                            color="error.main"
-                          >
-                            {badLabel}
-                          </Typography>
-                        </Stack>
+                        <PreviewSideLabel side="bad" label={badLabel} />
                         <Box
                           sx={{
                             ...codeBlockStyles,
-                            "& pre": {
-                              fontSize: "0.75rem",
-                              p: 1.5,
-                            },
+                            "& pre": { fontSize: "0.75rem", p: 1.5 },
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: section.sectionPreview.badHtml,
+                          }}
+                        />
+                      </Box>
+                      <Divider sx={{ display: { sm: "none" } }} />
+                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                        <PreviewSideLabel side="good" label={goodLabel} />
+                        <Box
+                          sx={{
+                            ...codeBlockStyles,
+                            "& pre": { fontSize: "0.75rem", p: 1.5 },
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: section.sectionPreview.goodHtml,
+                          }}
+                        />
+                      </Box>
+                    </>
+                  ) : section.preview ? (
+                    <>
+                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                        <PreviewSideLabel side="bad" label={badLabel} />
+                        <Box
+                          sx={{
+                            ...codeBlockStyles,
+                            "& pre": { fontSize: "0.75rem", p: 1.5 },
                           }}
                           dangerouslySetInnerHTML={{
                             __html: section.preview.badHtml,
                           }}
                         />
                       </Box>
-
                       <Divider sx={{ display: { sm: "none" } }} />
-
                       <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                        <Stack
-                          direction="row"
-                          alignItems="center"
-                          spacing={0.75}
-                          sx={{ px: 2, pt: 1.5 }}
-                        >
-                          <Box
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              borderRadius: "50%",
-                              bgcolor:
-                                "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              color: "success.main",
-                            }}
-                          >
-                            <Check size={9} strokeWidth={3} />
-                          </Box>
-                          <Typography
-                            variant="caption"
-                            fontWeight={600}
-                            fontFamily="var(--font-geist-mono), monospace"
-                            color="success.main"
-                          >
-                            {goodLabel}
-                          </Typography>
-                        </Stack>
+                        <PreviewSideLabel side="good" label={goodLabel} />
                         <Box
                           sx={{
                             ...codeBlockStyles,
-                            "& pre": {
-                              fontSize: "0.75rem",
-                              p: 1.5,
-                            },
+                            "& pre": { fontSize: "0.75rem", p: 1.5 },
                           }}
                           dangerouslySetInnerHTML={{
                             __html: section.preview.goodHtml,

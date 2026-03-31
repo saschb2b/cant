@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
+import { visualRegistry } from "@/components/visual/registry";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,
@@ -32,15 +33,28 @@ export default async function LearnPage() {
     const count = challenges.filter((c) => c.category === category).length;
     const preview = previewChallenges.find((c) => c.category === category);
     const entry = preview ? previewContentMap[preview.id] : undefined;
+
+    let sectionPreview = undefined;
+    if (entry?.type === "code") {
+      sectionPreview = {
+        type: "code" as const,
+        goodHtml: entry.goodHtml,
+        badHtml: entry.badHtml,
+      };
+    } else if (entry?.type === "visual") {
+      sectionPreview = {
+        type: "visual" as const,
+        goodComponentId: entry.goodComponentId,
+        badComponentId: entry.badComponentId,
+      };
+    }
+
     return {
       category,
       label: CATEGORY_LABELS[category],
       description: CATEGORY_DESCRIPTIONS[category],
       count,
-      preview:
-        entry?.type === "code"
-          ? { goodHtml: entry.goodHtml, badHtml: entry.badHtml }
-          : null,
+      sectionPreview,
     };
   });
 
@@ -51,6 +65,7 @@ export default async function LearnPage() {
       totalChallenges={challenges.length}
       totalCategories={CATEGORY_ORDER.length}
       sections={sections}
+      visualRegistry={visualRegistry}
       learningPath={LEARNING_PATH.map((cat) => ({
         category: cat,
         label: CATEGORY_LABELS[cat],
