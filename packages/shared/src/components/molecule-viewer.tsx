@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import type { GLViewer } from "3dmol";
 
 interface MoleculeViewerProps {
   /** XYZ-format string to render. */
@@ -22,12 +23,11 @@ export function MoleculeViewer({
 
   useEffect(() => {
     if (!containerRef.current) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let viewer: any;
+    let viewer: GLViewer | null = null;
     let cancelled = false;
     let spinInterval: ReturnType<typeof setInterval> | null = null;
 
-    import("3dmol").then(($3Dmol) => {
+    void import("3dmol").then(($3Dmol) => {
       if (cancelled || !containerRef.current) return;
       viewer = $3Dmol.createViewer(containerRef.current, {});
       viewer.setBackgroundColor(0xffffff, 0);
@@ -50,7 +50,7 @@ export function MoleculeViewer({
         );
       }
 
-      viewer.zoomTo(undefined, undefined, undefined, 0.5);
+      viewer.zoomTo();
       viewer.render();
 
       spinInterval = setInterval(() => {

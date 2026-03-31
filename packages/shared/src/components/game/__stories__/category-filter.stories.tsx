@@ -37,7 +37,7 @@ export default meta;
 type Story = StoryObj<typeof CategoryFilter>;
 
 function InteractiveFilter() {
-  const [excluded, setExcluded] = useState<Set<string>>(new Set());
+  const [excluded, setExcluded] = useState(new Set<string>());
   const allCategories = SECTIONS.flatMap((s) => s.categories);
 
   const toggleCategory = (cat: string) => {
@@ -87,8 +87,8 @@ export const SomeExcluded: Story = {
     sections: SECTIONS,
     categoryLabels: LABELS,
     excluded: new Set(["type-assertions", "strict-mode"]),
-    onToggleCategory: () => {},
-    onToggleSection: () => {},
+    onToggleCategory: () => undefined,
+    onToggleSection: () => undefined,
   },
 };
 
@@ -97,8 +97,8 @@ export const Disabled: Story = {
     sections: SECTIONS,
     categoryLabels: LABELS,
     excluded: new Set(),
-    onToggleCategory: () => {},
-    onToggleSection: () => {},
+    onToggleCategory: () => undefined,
+    onToggleSection: () => undefined,
     disabled: true,
   },
 };

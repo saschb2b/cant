@@ -67,7 +67,7 @@ export function PdbViewer({
     async function init() {
       const [$3Dmol, data] = await Promise.all([
         import("3dmol"),
-        pdbId ? fetchPdb(pdbId) : Promise.resolve(pdbData!),
+        pdbId ? fetchPdb(pdbId) : Promise.resolve(pdbData ?? ""),
       ]);
 
       if (cancelled || !containerRef.current) return;

@@ -17,8 +17,8 @@ import type { ShikiHighlighter, HighlightDualFn } from "./shiki";
  * @param highlighter - A Shiki highlighter instance (from `getHighlighter()`).
  * @param highlight - The `highlightDual` function (or an app-specific wrapper).
  */
-export function buildContentMap<C extends BaseChallenge>(
-  challenges: C[],
+export function buildContentMap(
+  challenges: BaseChallenge[],
   highlighter?: ShikiHighlighter,
   highlight?: HighlightDualFn,
 ): Record<string, ContentMapEntry> {

@@ -36,8 +36,6 @@ export function CategoryFilter({
   return (
     <Stack spacing={2}>
       {sections.map((section) => {
-        const allDisabled = section.categories.every((c) => excluded.has(c));
-
         return (
           <Box key={section.label}>
             <Typography

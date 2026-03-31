@@ -7,7 +7,7 @@ import { defaultAppTheme } from "./app-theme";
 export type { AppTheme } from "./app-theme";
 export { createAppTheme } from "./app-theme";
 
-const AppThemeContext = createContext<AppTheme>(defaultAppTheme);
+const AppThemeContext = createContext(defaultAppTheme);
 
 export const AppThemeProvider = AppThemeContext.Provider;
 

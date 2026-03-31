@@ -262,7 +262,7 @@ export function useGame<T extends BaseChallenge>(
       bestStreak: state.bestStreak,
       durationSec: Math.round((state.finishedAt - state.startedAt) / 1000),
     });
-  }, [state?.isFinished]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state?.isFinished]);
 
   const restartGame = useCallback(() => {
     if (state) {

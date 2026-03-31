@@ -27,7 +27,7 @@ export interface CantApp {
 }
 
 function appUrl(prodUrl: string, devPort: number): string {
-  return isDev ? `http://localhost:${devPort}` : prodUrl;
+  return isDev ? `http://localhost:${String(devPort)}` : prodUrl;
 }
 
 export const ALL_APPS: CantApp[] = [

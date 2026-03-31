@@ -35,7 +35,7 @@ interface LearnSection {
   description: string;
   count: number;
   /**
-   * @deprecated Use `sectionPreview` instead. Kept for backwards compatibility.
+   * Legacy code preview data. Prefer `sectionPreview` for new code.
    */
   preview?: { goodHtml: string; badHtml: string } | null;
   /** Whether a non-code preview exists for this category (used with renderPreview). */
@@ -256,7 +256,6 @@ function MoleculePreviewPanel({
 
 export function LearnIndexPage({
   title,
-  subtitle,
   totalChallenges,
   totalCategories,
   sections,
@@ -342,168 +341,172 @@ export function LearnIndexPage({
       )}
 
       <Stack spacing={3}>
-        {sections.map((section) => (
-          <NextLink
-            key={section.category}
-            href={section.count > 0 ? `/learn/${section.category}` : "#"}
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              ...(section.count === 0 && { pointerEvents: "none" }),
-            }}
-          >
-            <Paper
-              elevation={0}
-              sx={{
-                border: 1,
-                borderColor: "divider",
-                overflow: "hidden",
-                transition: "all 0.2s ease",
-                ...(section.count > 0 && {
-                  "&:hover": {
-                    borderColor: "text.secondary",
-                    boxShadow: 8,
-                    transform: "translateY(-2px)",
-                  },
-                }),
-                ...(section.count === 0 && { opacity: 0.5 }),
+        {sections.map((section) => {
+          // Read the legacy `preview` field for backward compatibility.
+          const legacyPreview = section.preview;
+          return (
+            <NextLink
+              key={section.category}
+              href={section.count > 0 ? `/learn/${section.category}` : "#"}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                ...(section.count === 0 && { pointerEvents: "none" }),
               }}
             >
-              <Box sx={{ px: 2.5, pt: 2.5, pb: 1.5 }}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Stack direction="row" alignItems="center" spacing={1.5}>
-                    <Typography variant="h6" fontWeight={600}>
-                      {section.label}
-                    </Typography>
-                    <Chip
-                      label={
-                        section.count > 0
-                          ? `${String(section.count)} patterns`
-                          : "coming soon"
-                      }
-                      size="small"
-                      sx={{
-                        height: 22,
-                        fontSize: "0.7rem",
-                        bgcolor: "background.paper",
-                      }}
-                    />
+              <Paper
+                elevation={0}
+                sx={{
+                  border: 1,
+                  borderColor: "divider",
+                  overflow: "hidden",
+                  transition: "all 0.2s ease",
+                  ...(section.count > 0 && {
+                    "&:hover": {
+                      borderColor: "text.secondary",
+                      boxShadow: 8,
+                      transform: "translateY(-2px)",
+                    },
+                  }),
+                  ...(section.count === 0 && { opacity: 0.5 }),
+                }}
+              >
+                <Box sx={{ px: 2.5, pt: 2.5, pb: 1.5 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Stack direction="row" alignItems="center" spacing={1.5}>
+                      <Typography variant="h6" fontWeight={600}>
+                        {section.label}
+                      </Typography>
+                      <Chip
+                        label={
+                          section.count > 0
+                            ? `${String(section.count)} patterns`
+                            : "coming soon"
+                        }
+                        size="small"
+                        sx={{
+                          height: 22,
+                          fontSize: "0.7rem",
+                          bgcolor: "background.paper",
+                        }}
+                      />
+                    </Stack>
+                    {section.count > 0 && (
+                      <Box sx={{ color: "text.secondary", display: "flex" }}>
+                        <ArrowRight size={18} />
+                      </Box>
+                    )}
                   </Stack>
-                  {section.count > 0 && (
-                    <Box sx={{ color: "text.secondary", display: "flex" }}>
-                      <ArrowRight size={18} />
-                    </Box>
-                  )}
-                </Stack>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mt: 0.75, lineHeight: 1.6 }}
-                >
-                  {section.description}
-                </Typography>
-              </Box>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 0.75, lineHeight: 1.6 }}
+                  >
+                    {section.description}
+                  </Typography>
+                </Box>
 
-              {(section.sectionPreview ||
-                section.preview ||
-                (section.hasPreview && renderPreview)) && (
-                <Stack
-                  direction={{ xs: "column", sm: "row" }}
-                  divider={
-                    <Divider
-                      orientation="vertical"
-                      flexItem
-                      sx={{ display: { xs: "none", sm: "block" } }}
-                    />
-                  }
-                  sx={{
-                    borderTop: 1,
-                    borderColor: "divider",
-                    bgcolor: "background.paper",
-                  }}
-                >
-                  {section.sectionPreview?.type === "visual" &&
-                  visualRegistry ? (
-                    <VisualPreviewPanel
-                      preview={section.sectionPreview}
-                      badLabel={badLabel}
-                      goodLabel={goodLabel}
-                      visualRegistry={visualRegistry}
-                    />
-                  ) : section.sectionPreview?.type === "molecule" ? (
-                    <MoleculePreviewPanel
-                      preview={section.sectionPreview}
-                      badLabel={badLabel}
-                      goodLabel={goodLabel}
-                    />
-                  ) : section.sectionPreview?.type === "code" ? (
-                    <>
-                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                        <PreviewSideLabel side="bad" label={badLabel} />
-                        <Box
-                          sx={{
-                            ...codeBlockStyles,
-                            "& pre": { fontSize: "0.75rem", p: 1.5 },
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: section.sectionPreview.badHtml,
-                          }}
-                        />
-                      </Box>
-                      <Divider sx={{ display: { sm: "none" } }} />
-                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                        <PreviewSideLabel side="good" label={goodLabel} />
-                        <Box
-                          sx={{
-                            ...codeBlockStyles,
-                            "& pre": { fontSize: "0.75rem", p: 1.5 },
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: section.sectionPreview.goodHtml,
-                          }}
-                        />
-                      </Box>
-                    </>
-                  ) : section.preview ? (
-                    <>
-                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                        <PreviewSideLabel side="bad" label={badLabel} />
-                        <Box
-                          sx={{
-                            ...codeBlockStyles,
-                            "& pre": { fontSize: "0.75rem", p: 1.5 },
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: section.preview.badHtml,
-                          }}
-                        />
-                      </Box>
-                      <Divider sx={{ display: { sm: "none" } }} />
-                      <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
-                        <PreviewSideLabel side="good" label={goodLabel} />
-                        <Box
-                          sx={{
-                            ...codeBlockStyles,
-                            "& pre": { fontSize: "0.75rem", p: 1.5 },
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: section.preview.goodHtml,
-                          }}
-                        />
-                      </Box>
-                    </>
-                  ) : (
-                    renderPreview?.(section.category)
-                  )}
-                </Stack>
-              )}
-            </Paper>
-          </NextLink>
-        ))}
+                {(section.sectionPreview ??
+                  legacyPreview ??
+                  (section.hasPreview && renderPreview)) && (
+                  <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    divider={
+                      <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ display: { xs: "none", sm: "block" } }}
+                      />
+                    }
+                    sx={{
+                      borderTop: 1,
+                      borderColor: "divider",
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    {section.sectionPreview?.type === "visual" &&
+                    visualRegistry ? (
+                      <VisualPreviewPanel
+                        preview={section.sectionPreview}
+                        badLabel={badLabel}
+                        goodLabel={goodLabel}
+                        visualRegistry={visualRegistry}
+                      />
+                    ) : section.sectionPreview?.type === "molecule" ? (
+                      <MoleculePreviewPanel
+                        preview={section.sectionPreview}
+                        badLabel={badLabel}
+                        goodLabel={goodLabel}
+                      />
+                    ) : section.sectionPreview?.type === "code" ? (
+                      <>
+                        <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                          <PreviewSideLabel side="bad" label={badLabel} />
+                          <Box
+                            sx={{
+                              ...codeBlockStyles,
+                              "& pre": { fontSize: "0.75rem", p: 1.5 },
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: section.sectionPreview.badHtml,
+                            }}
+                          />
+                        </Box>
+                        <Divider sx={{ display: { sm: "none" } }} />
+                        <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                          <PreviewSideLabel side="good" label={goodLabel} />
+                          <Box
+                            sx={{
+                              ...codeBlockStyles,
+                              "& pre": { fontSize: "0.75rem", p: 1.5 },
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: section.sectionPreview.goodHtml,
+                            }}
+                          />
+                        </Box>
+                      </>
+                    ) : legacyPreview ? (
+                      <>
+                        <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                          <PreviewSideLabel side="bad" label={badLabel} />
+                          <Box
+                            sx={{
+                              ...codeBlockStyles,
+                              "& pre": { fontSize: "0.75rem", p: 1.5 },
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: legacyPreview.badHtml,
+                            }}
+                          />
+                        </Box>
+                        <Divider sx={{ display: { sm: "none" } }} />
+                        <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+                          <PreviewSideLabel side="good" label={goodLabel} />
+                          <Box
+                            sx={{
+                              ...codeBlockStyles,
+                              "& pre": { fontSize: "0.75rem", p: 1.5 },
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: legacyPreview.goodHtml,
+                            }}
+                          />
+                        </Box>
+                      </>
+                    ) : (
+                      renderPreview?.(section.category)
+                    )}
+                  </Stack>
+                )}
+              </Paper>
+            </NextLink>
+          );
+        })}
       </Stack>
     </>
   );

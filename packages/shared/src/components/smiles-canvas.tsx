@@ -7,6 +7,26 @@ import Typography from "@mui/material/Typography";
 const DEFAULT_WIDTH = 300;
 const DEFAULT_HEIGHT = 250;
 
+/** Minimal type surface for the smiles-drawer library (untyped). */
+interface SmilesDrawerModule {
+  Drawer: new (options: Record<string, unknown>) => SmilesDrawerInstance;
+  parse: (
+    smiles: string,
+    onSuccess: (tree: unknown) => void,
+    onError: () => void,
+  ) => void;
+  default?: SmilesDrawerModule;
+}
+
+interface SmilesDrawerInstance {
+  draw: (
+    tree: unknown,
+    canvas: HTMLCanvasElement,
+    theme: string,
+    debug: boolean,
+  ) => void;
+}
+
 function useColorScheme() {
   const [isDark, setIsDark] = useState(() =>
     typeof document !== "undefined"
@@ -64,10 +84,10 @@ export function SmilesCanvas({
       ctx.scale(dpr, dpr);
     }
 
-    void import("smiles-drawer").then((mod) => {
+    void import("smiles-drawer").then((rawMod: unknown) => {
       if (cancelled) return;
-      const SmilesDrawer =
-        (mod.default as typeof import("smiles-drawer") | undefined) ?? mod;
+      const mod = rawMod as SmilesDrawerModule;
+      const SmilesDrawer = mod.default ?? mod;
       const drawer = new SmilesDrawer.Drawer({
         width,
         height,

@@ -89,7 +89,7 @@ const meta: Meta<typeof SearchPalette> = {
   tags: ["autodocs"],
   args: {
     open: true,
-    onClose: () => {},
+    onClose: () => undefined,
     items: mockItems,
     sections: mockSections,
     config,
@@ -145,17 +145,18 @@ export const WithQuery: Story = {
   args: {
     open: true,
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     // Type into the search input after render
     const input = canvasElement
       .closest("body")
       ?.querySelector<HTMLInputElement>('input[placeholder*="Search"]');
     if (input) {
-      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      // Use the native setter to programmatically set the input value
+      // so React's synthetic event system picks up the change.
+      Object.getOwnPropertyDescriptor(
         window.HTMLInputElement.prototype,
         "value",
-      )?.set;
-      nativeInputValueSetter?.call(input, "clamp");
+      )?.set?.call(input, "clamp");
       input.dispatchEvent(new Event("input", { bubbles: true }));
       input.dispatchEvent(new Event("change", { bubbles: true }));
     }

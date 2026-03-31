@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import type { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -77,7 +76,7 @@ interface ResultsScreenProps<S extends ResultsGameState = ResultsGameState> {
   /** Extra content inside the hero card (e.g. sparkle field). */
   heroExtra?: ReactNode;
   /** Extra hero Paper sx overrides. */
-  heroSx?: SxProps<Theme>;
+  heroSx?: Record<string, unknown>;
 }
 
 export function ResultsScreen<S extends ResultsGameState>({
@@ -190,7 +189,7 @@ export function ResultsScreen<S extends ResultsGameState>({
       `/play/results?r=${resultsParam}&seed=${state.seed}`,
     );
     return () => window.history.replaceState(null, "", "/play");
-  }, [resultsParam]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [resultsParam]);
 
   return (
     <Stack spacing={4} sx={{ py: { xs: 0, sm: 4 } }}>
@@ -198,18 +197,20 @@ export function ResultsScreen<S extends ResultsGameState>({
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Paper
           elevation={0}
-          sx={{
-            position: "relative",
-            overflow: "hidden",
-            border: 1,
-            borderColor: "divider",
-            py: { xs: 3, sm: 4 },
-            px: { xs: 2, sm: 3 },
-            textAlign: "center",
-            maxWidth: { md: 600 },
-            width: "100%",
-            ...heroSx,
-          }}
+          sx={[
+            {
+              position: "relative",
+              overflow: "hidden",
+              border: 1,
+              borderColor: "divider",
+              py: { xs: 3, sm: 4 },
+              px: { xs: 2, sm: 3 },
+              textAlign: "center",
+              maxWidth: { md: 600 },
+              width: "100%",
+            },
+            ...(heroSx ? [heroSx] : []),
+          ]}
         >
           {heroExtra}
 

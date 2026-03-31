@@ -599,7 +599,7 @@ export function Game<C extends BaseChallenge>({
       >
         {resolvedContentType === "code" && (
           <CodePanelComponent
-            highlightedHtml={(leftContent as string) ?? ""}
+            highlightedHtml={leftContent ?? ""}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("left")}
@@ -609,10 +609,8 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "image" && ImagePanelComponent && (
           <ImagePanelComponent
-            imageSrc={(leftContent as { src: string; alt: string })?.src ?? ""}
-            imageAlt={
-              (leftContent as { src: string; alt: string })?.alt ?? "Option A"
-            }
+            imageSrc={leftContent.src}
+            imageAlt={leftContent.alt}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("left")}
@@ -622,7 +620,7 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "visual" && VisualPanelComponent && (
           <VisualPanelComponent
-            componentId={(leftContent as string) ?? ""}
+            componentId={leftContent}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("left")}
@@ -632,12 +630,7 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "molecule" && MoleculePanelComponent && (
           <MoleculePanelComponent
-            molecule={
-              (leftContent as MoleculeChallengeEntry["goodMolecule"]) ?? {
-                name: "",
-                formula: "",
-              }
-            }
+            molecule={leftContent}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("left")}
@@ -673,7 +666,7 @@ export function Game<C extends BaseChallenge>({
 
         {resolvedContentType === "code" && (
           <CodePanelComponent
-            highlightedHtml={(rightContent as string) ?? ""}
+            highlightedHtml={rightContent ?? ""}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("right")}
@@ -683,10 +676,8 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "image" && ImagePanelComponent && (
           <ImagePanelComponent
-            imageSrc={(rightContent as { src: string; alt: string })?.src ?? ""}
-            imageAlt={
-              (rightContent as { src: string; alt: string })?.alt ?? "Option B"
-            }
+            imageSrc={rightContent.src}
+            imageAlt={rightContent.alt}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("right")}
@@ -696,7 +687,7 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "visual" && VisualPanelComponent && (
           <VisualPanelComponent
-            componentId={(rightContent as string) ?? ""}
+            componentId={rightContent}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("right")}
@@ -706,12 +697,7 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "molecule" && MoleculePanelComponent && (
           <MoleculePanelComponent
-            molecule={
-              (rightContent as MoleculeChallengeEntry["goodMolecule"]) ?? {
-                name: "",
-                formula: "",
-              }
-            }
+            molecule={rightContent}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("right")}

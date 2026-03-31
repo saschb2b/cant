@@ -6,7 +6,11 @@ import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
 
-type ActivityDay = { date: Date; dateKey: string; count: number };
+interface ActivityDay {
+  date: Date;
+  dateKey: string;
+  count: number;
+}
 
 interface ActivityGraphProps {
   /** Function that returns activity grid data for N weeks. */

@@ -278,7 +278,7 @@ export function LobbyScreen({
     setHistory(gameUtils.getHistory());
     setDailyResult(gameUtils.getEntryBySeed(dailySeed));
     setWeeklyResult(gameUtils.getEntryBySeed(weeklySeed));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const hasSeed = seedInput.trim().length > 0;
   const seedDecoded = hasSeed
