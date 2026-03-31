@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SmilesCanvas } from "../smiles-canvas";
 
 const meta: Meta<typeof SmilesCanvas> = {
-  title: "Content/Smiles Canvas",
+  title: "Visual Renderers/Smiles Canvas",
   component: SmilesCanvas,
   tags: ["autodocs"],
   decorators: [

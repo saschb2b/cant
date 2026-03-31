@@ -115,7 +115,7 @@ const meta: Meta<typeof MyComponent> = {
 };
 ```
 
-Groups: `Foundation`, `Layout`, `Content`, `Game` (sorted in this order).
+Groups: `Foundation`, `Layout`, `Content`, `Visual Renderers`, `Game` (sorted in this order). Use `Visual Renderers` for shared rendering components (Canvas Simulation, Smiles Canvas, Molecule Viewer, PDB Viewer). Use `Content` for challenge UI components (Learn Content Panel, Challenge Anchor, Source Link, etc.).
 
 ### Next.js in Storybook
 

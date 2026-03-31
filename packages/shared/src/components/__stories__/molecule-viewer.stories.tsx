@@ -16,7 +16,7 @@ H  -0.629   0.629  -0.629
 H   0.629  -0.629  -0.629`;
 
 const meta: Meta<typeof MoleculeViewer> = {
-  title: "Content/Molecule Viewer",
+  title: "Visual Renderers/Molecule Viewer",
   component: MoleculeViewer,
   tags: ["autodocs"],
   decorators: [

@@ -48,7 +48,7 @@ function BouncingBallDemo() {
 }
 
 const meta: Meta<typeof CanvasSimulation> = {
-  title: "Content/Canvas Simulation",
+  title: "Visual Renderers/Canvas Simulation",
   component: CanvasSimulation,
   tags: ["autodocs"],
   decorators: [

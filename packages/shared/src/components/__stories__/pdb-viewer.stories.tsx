@@ -12,7 +12,7 @@ ATOM      8  O   ALA A   2       6.000   1.500   2.500  1.00  0.00           O
 END`;
 
 const meta: Meta<typeof PdbViewer> = {
-  title: "Content/PDB Viewer",
+  title: "Visual Renderers/PDB Viewer",
   component: PdbViewer,
   tags: ["autodocs"],
   decorators: [
