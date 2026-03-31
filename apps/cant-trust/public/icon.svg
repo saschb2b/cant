@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="7" fill="url(#g)"/>
+  <!-- Bitcoin B with vertical strokes -->
+  <rect x="11" y="5" width="1.5" height="22" rx="0.75" fill="#FFFFFF"/>
+  <rect x="19.5" y="5" width="1.5" height="22" rx="0.75" fill="#FFFFFF"/>
+  <path d="M13 8h5c3 0 5 2 5 4.5s-1.2 3.4-3 4c2.4 0.6 4 2.3 4 5 0 3.2-2.6 5.5-5.8 5.5H13V8z" stroke="#FFFFFF" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <line x1="13" y1="16.5" x2="20" y2="16.5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="32" y2="32">
+      <stop stop-color="#C28A1A"/>
+      <stop offset="1" stop-color="#8B6914"/>
+    </linearGradient>
+  </defs>
+</svg>
