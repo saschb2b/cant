@@ -99,7 +99,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ["Foundation", "Layout", "Content", "Game"],
+        order: ["Foundation", "Layout", "Content", "Visual Renderers", "Game"],
       },
     },
     controls: {

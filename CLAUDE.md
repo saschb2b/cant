@@ -103,6 +103,17 @@ packages/shared/src/components/__stories__/my-component.stories.tsx
 packages/shared/src/components/game/__stories__/my-game-component.stories.tsx
 ```
 
+### Story quality standard
+
+Stories should work as component documentation, not just render tests. Every story file must include:
+
+1. **`parameters.docs.description.component`** - a 1-3 sentence description of what the component does, where it is used, and any peer dependencies it requires
+2. **`argTypes`** - every prop should have a `description`, appropriate `control` type, and `table.defaultValue.summary` for props with defaults
+3. **JSDoc comments on exported stories** - a one-line description explaining what the variant demonstrates
+4. **Multiple variants** - show default usage, edge cases, and customization options (different sizes, styles, data)
+
+See `packages/shared/src/components/__stories__/smiles-canvas.stories.tsx` for a reference example.
+
 ### Story naming conventions
 
 Use space-separated readable titles grouped by function:
