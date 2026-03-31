@@ -55,9 +55,7 @@ function renderContentPanel(
   if (entry?.type === "visual") {
     const componentId =
       side === "good" ? entry.goodComponentId : entry.badComponentId;
-    const Component = visualRegistry[componentId] as
-      | ComponentType
-      | undefined;
+    const Component = visualRegistry[componentId] as ComponentType | undefined;
     if (!Component) return null;
     return (
       <Box

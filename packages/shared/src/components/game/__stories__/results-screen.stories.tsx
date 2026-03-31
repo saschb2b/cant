@@ -9,17 +9,16 @@ function makeChallenges(count: number) {
     id: `c${String(i + 1)}`,
     title: `Challenge ${String(i + 1)}`,
     category: i % 2 === 0 ? "naming" : "patterns",
-    explanationCorrect: "This approach is better because it follows established conventions and improves readability.",
-    explanationWrong: "This approach is problematic because it makes the code harder to maintain.",
+    explanationCorrect:
+      "This approach is better because it follows established conventions and improves readability.",
+    explanationWrong:
+      "This approach is problematic because it makes the code harder to maintain.",
     sourceUrl: "https://react.dev",
     sourceLabel: "React Docs",
   }));
 }
 
-function makeAnswers(
-  challenges: { id: string }[],
-  correctCount: number,
-) {
+function makeAnswers(challenges: { id: string }[], correctCount: number) {
   const answers: Record<
     string,
     { result: "correct" | "wrong"; side: "left" | "right" }

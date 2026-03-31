@@ -164,7 +164,10 @@ export function NetcodeSnapping() {
   }, [entityColor, pathColor, dotColor, textColor]);
 
   return (
-    <CanvasSimulation label="Teleport to each server update" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Teleport to each server update"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -300,6 +303,9 @@ export function NetcodeInterpolation() {
   }, [entityColor, ghostColor, pathColor, dotColor, textColor]);
 
   return (
-    <CanvasSimulation label="Smooth lerp between updates (slight delay)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Smooth lerp between updates (slight delay)"
+      canvasRef={canvasRef}
+    />
   );
 }

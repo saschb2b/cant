@@ -7,7 +7,9 @@ import { SmilesCanvas } from "@cant/shared/components/smiles-canvas";
 // ---------------------------------------------------------------------------
 
 export function CarboxylicAcidStructure() {
-  return <SmilesCanvas smiles="CC(=O)O" label="Acetic acid (carboxylic acid)" />;
+  return (
+    <SmilesCanvas smiles="CC(=O)O" label="Acetic acid (carboxylic acid)" />
+  );
 }
 
 export function AlcoholStructure() {

@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { ExternalLink } from "lucide-react";
-import { getHighlighter, highlightDual, buildContentMap } from "@cant/shared/lib";
+import {
+  getHighlighter,
+  highlightDual,
+  buildContentMap,
+} from "@cant/shared/lib";
 import { LearnCategoryPage, FormattedText } from "@cant/shared/components";
 import { challenges } from "@/lib/game/challenges";
 import {

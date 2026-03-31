@@ -99,7 +99,10 @@ function ReactionRow({ rule }: { rule: ReactionRule }) {
         </Typography>
         {products.length > 0 ? (
           products.map((p, i) => (
-            <Box key={`${p}-${String(i)}`} sx={{ display: "inline-flex", alignItems: "center" }}>
+            <Box
+              key={`${p}-${String(i)}`}
+              sx={{ display: "inline-flex", alignItems: "center" }}
+            >
               {i > 0 && (
                 <Typography
                   component="span"
@@ -181,7 +184,10 @@ export function ReactionBookButton() {
     );
   }, [search]);
 
-  const totalVisible = filteredGroups.reduce((s, g) => s + g.reactions.length, 0);
+  const totalVisible = filteredGroups.reduce(
+    (s, g) => s + g.reactions.length,
+    0,
+  );
 
   return (
     <>
@@ -202,7 +208,12 @@ export function ReactionBookButton() {
         onClose={() => setOpen(false)}
         slotProps={{
           paper: {
-            sx: { width: { xs: "100%", sm: 420 }, p: 0, display: "flex", flexDirection: "column" },
+            sx: {
+              width: { xs: "100%", sm: 420 },
+              p: 0,
+              display: "flex",
+              flexDirection: "column",
+            },
           },
         }}
       >
@@ -296,7 +307,10 @@ export function ReactionBookButton() {
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
                 {group.reactions.map((rule) => (
-                  <ReactionRow key={`${rule.a}-${rule.b}-${rule.produceA ?? "x"}-${rule.produceB ?? "x"}`} rule={rule} />
+                  <ReactionRow
+                    key={`${rule.a}-${rule.b}-${rule.produceA ?? "x"}-${rule.produceB ?? "x"}`}
+                    rule={rule}
+                  />
                 ))}
               </Box>
             </Box>
@@ -330,7 +344,9 @@ export function ReactionBookButton() {
                       bgcolor: "action.hover",
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                    >
                       <ElementTag element={nr.a} />
                       <Typography
                         component="span"
@@ -364,7 +380,11 @@ export function ReactionBookButton() {
           )}
 
           {totalVisible === 0 && filteredNonReactions.length === 0 && (
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 4 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ textAlign: "center", py: 4 }}
+            >
               No reactions found for &quot;{search}&quot;.
             </Typography>
           )}

@@ -225,7 +225,7 @@ core.filemode=true
 core.bare=false`}
       </Output>
       {"\n"}
-      <Prompt>{"git commit -m \"Add feature\""}</Prompt>
+      <Prompt>{'git commit -m "Add feature"'}</Prompt>
       {"\n"}
       <Output>
         {`[main 3f2a1b0] Add feature
@@ -264,7 +264,7 @@ rerere.enabled=true
 diff.algorithm=histogram`}
       </Output>
       {"\n"}
-      <Prompt>{"git commit -m \"Add feature\""}</Prompt>
+      <Prompt>{'git commit -m "Add feature"'}</Prompt>
       {"\n"}
       <Output color="#27c93f">
         {`[main 7c4d8e2] Add feature

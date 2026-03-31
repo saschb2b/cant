@@ -385,6 +385,9 @@ export function DeadzoneCircular() {
   const canvasRef = useDeadzoneAnimation(true, colors);
 
   return (
-    <CanvasSimulation label="Circular deadzone (radius 0.2)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Circular deadzone (radius 0.2)"
+      canvasRef={canvasRef}
+    />
   );
 }

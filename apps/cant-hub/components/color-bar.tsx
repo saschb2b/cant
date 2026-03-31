@@ -46,7 +46,7 @@ export function ColorBar({
               ...(animated && {
                 opacity: 0,
                 transform: "scaleX(0)",
-                animation: `colorbar-in 0.5s ease-out ${i * 0.08}s forwards, colorbar-glow 3s ease-in-out ${2.5 + i * 0.3}s infinite`,
+                animation: `colorbar-in 0.5s ease-out ${String(i * 0.08)}s forwards, colorbar-glow 3s ease-in-out ${String(2.5 + i * 0.3)}s infinite`,
               }),
             }}
           />

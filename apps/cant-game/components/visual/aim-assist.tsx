@@ -279,9 +279,8 @@ function drawScene(
   const cy = state.crossY;
   // Color crosshair green when on target
   const onTarget =
-    Math.sqrt(
-      (cx - tgt.x) * (cx - tgt.x) + (cy - tgt.y) * (cy - tgt.y),
-    ) < HIT_RADIUS;
+    Math.sqrt((cx - tgt.x) * (cx - tgt.x) + (cy - tgt.y) * (cy - tgt.y)) <
+    HIT_RADIUS;
   const chColor = onTarget ? colors.hit : colors.crosshair;
 
   ctx.strokeStyle = chColor;
@@ -375,15 +374,16 @@ function useAimSim(assist: boolean) {
 export function AimRaw() {
   const canvasRef = useAimSim(false);
 
-  return (
-    <CanvasSimulation label="Raw analog input" canvasRef={canvasRef} />
-  );
+  return <CanvasSimulation label="Raw analog input" canvasRef={canvasRef} />;
 }
 
 export function AimAssist() {
   const canvasRef = useAimSim(true);
 
   return (
-    <CanvasSimulation label="Aim assist with magnetism radius" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Aim assist with magnetism radius"
+      canvasRef={canvasRef}
+    />
   );
 }

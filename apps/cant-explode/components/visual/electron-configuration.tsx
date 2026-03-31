@@ -91,29 +91,52 @@ function OrbitalDiagram({
                     rx={2}
                   />
                   {/* Up arrow */}
-                  {electrons >= 1 && (() => {
-                    const ax = electrons === 2 ? x + BOX_W / 2 - 7 : x + BOX_W / 2;
-                    const top = y + 6;
-                    const bot = y + BOX_H - 6;
-                    return (
-                      <g>
-                        <line x1={ax} y1={bot} x2={ax} y2={top} stroke={arrowColor} strokeWidth={2.5} />
-                        <polygon points={`${ax},${top - 1} ${ax - 5},${top + 7} ${ax + 5},${top + 7}`} fill={arrowColor} />
-                      </g>
-                    );
-                  })()}
+                  {electrons >= 1 &&
+                    (() => {
+                      const ax =
+                        electrons === 2 ? x + BOX_W / 2 - 7 : x + BOX_W / 2;
+                      const top = y + 6;
+                      const bot = y + BOX_H - 6;
+                      return (
+                        <g>
+                          <line
+                            x1={ax}
+                            y1={bot}
+                            x2={ax}
+                            y2={top}
+                            stroke={arrowColor}
+                            strokeWidth={2.5}
+                          />
+                          <polygon
+                            points={`${ax},${top - 1} ${ax - 5},${top + 7} ${ax + 5},${top + 7}`}
+                            fill={arrowColor}
+                          />
+                        </g>
+                      );
+                    })()}
                   {/* Down arrow */}
-                  {electrons === 2 && (() => {
-                    const ax = x + BOX_W / 2 + 7;
-                    const top = y + 6;
-                    const bot = y + BOX_H - 6;
-                    return (
-                      <g>
-                        <line x1={ax} y1={top} x2={ax} y2={bot} stroke={arrowColor} strokeWidth={2.5} />
-                        <polygon points={`${ax},${bot + 1} ${ax - 5},${bot - 7} ${ax + 5},${bot - 7}`} fill={arrowColor} />
-                      </g>
-                    );
-                  })()}
+                  {electrons === 2 &&
+                    (() => {
+                      const ax = x + BOX_W / 2 + 7;
+                      const top = y + 6;
+                      const bot = y + BOX_H - 6;
+                      return (
+                        <g>
+                          <line
+                            x1={ax}
+                            y1={top}
+                            x2={ax}
+                            y2={bot}
+                            stroke={arrowColor}
+                            strokeWidth={2.5}
+                          />
+                          <polygon
+                            points={`${ax},${bot + 1} ${ax - 5},${bot - 7} ${ax + 5},${bot - 7}`}
+                            fill={arrowColor}
+                          />
+                        </g>
+                      );
+                    })()}
                 </g>
               );
             });

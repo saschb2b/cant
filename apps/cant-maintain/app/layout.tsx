@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
-import { ThemeProvider, AnalyticsProviderWrapper } from "@cant/shared/components";
+import {
+  ThemeProvider,
+  AnalyticsProviderWrapper,
+} from "@cant/shared/components";
 import theme from "@/lib/theme";
 import { AppThemeWrapper } from "@/components/app-theme-wrapper";
 import Script from "next/script";

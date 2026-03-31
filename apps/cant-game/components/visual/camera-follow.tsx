@@ -270,7 +270,10 @@ export function CameraSnap() {
   const canvasRef = useCameraFollow(false, colors);
 
   return (
-    <CanvasSimulation label="Camera snaps to character each frame" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Camera snaps to character each frame"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -287,6 +290,9 @@ export function CameraSmooth() {
   const canvasRef = useCameraFollow(true, colors);
 
   return (
-    <CanvasSimulation label={"Smooth follow: lerp factor " + String(SMOOTH_FACTOR)} canvasRef={canvasRef} />
+    <CanvasSimulation
+      label={"Smooth follow: lerp factor " + String(SMOOTH_FACTOR)}
+      canvasRef={canvasRef}
+    />
   );
 }

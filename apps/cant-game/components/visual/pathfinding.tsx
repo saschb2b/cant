@@ -483,7 +483,10 @@ export function PathfindingManhattan() {
   const canvasRef = usePathfindingAnimation(MANHATTAN_RESULT, colors);
 
   return (
-    <CanvasSimulation label="Manhattan distance heuristic" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Manhattan distance heuristic"
+      canvasRef={canvasRef}
+    />
   );
 }
 

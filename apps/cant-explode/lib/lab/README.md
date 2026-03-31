@@ -18,16 +18,16 @@ lib/lab/
 
 ## Elements (62 types)
 
-| Category | Elements | Behavior |
-|---|---|---|
-| Solids | sand, stone, iron, copper, gold, coal, wood, ice, glass, gunpowder, salt, rust, ash, charcoal, patina | powder/static |
-| Reactive metals | sodium, potassium, magnesium | powder |
-| Liquids | water, acid, oil, lava, mercury | liquid |
-| Gases | chlorine, hydrogen, oxygen, smoke, steam, co2, methane | gas |
-| Energy | fire, spark | fire |
-| Organic | seed, plant, stem, leaf, vine, flower, grass, moss, algae, fruit, mushroom, pollen, soil, compost | various |
-| Creatures | worm, bee | critter |
-| Engineered | fuse, tnt, wax, dust | fuse/explosive/static/powder |
+| Category        | Elements                                                                                              | Behavior                     |
+| --------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Solids          | sand, stone, iron, copper, gold, coal, wood, ice, glass, gunpowder, salt, rust, ash, charcoal, patina | powder/static                |
+| Reactive metals | sodium, potassium, magnesium                                                                          | powder                       |
+| Liquids         | water, acid, oil, lava, mercury                                                                       | liquid                       |
+| Gases           | chlorine, hydrogen, oxygen, smoke, steam, co2, methane                                                | gas                          |
+| Energy          | fire, spark                                                                                           | fire                         |
+| Organic         | seed, plant, stem, leaf, vine, flower, grass, moss, algae, fruit, mushroom, pollen, soil, compost     | various                      |
+| Creatures       | worm, bee                                                                                             | critter                      |
+| Engineered      | fuse, tnt, wax, dust                                                                                  | fuse/explosive/static/powder |
 
 ## Physics
 
@@ -68,12 +68,12 @@ sand + fire/wood -> ash -> ash + sand -> SOIL
 
 Tree shape is determined by position using low-frequency spatial noise. Nearby seeds grow similar trees:
 
-| Biome | Chance | Trunk Height | Canopy | Notes |
-|---|---|---|---|---|
-| Scrubland | 20% | 3-6 cells | wide, low | Ground-hugging bushes |
-| Temperate | 35% | 7-12 cells | moderate | Standard mixed forest |
-| Tall forest | 30% | 10-18 cells | narrow | Dense vertical growth |
-| Ancient grove | 15% | 16-25 cells | massive | Rare mammoth trees |
+| Biome         | Chance | Trunk Height | Canopy    | Notes                 |
+| ------------- | ------ | ------------ | --------- | --------------------- |
+| Scrubland     | 20%    | 3-6 cells    | wide, low | Ground-hugging bushes |
+| Temperate     | 35%    | 7-12 cells   | moderate  | Standard mixed forest |
+| Tall forest   | 30%    | 10-18 cells  | narrow    | Dense vertical growth |
+| Ancient grove | 15%    | 16-25 cells  | massive   | Rare mammoth trees    |
 
 ### Tree DNA
 
@@ -95,12 +95,14 @@ Trees lean left, right, or stay straight. Branches fork as new growth tips going
 ### Creatures
 
 **Worms** (lifetime: 800 ticks)
+
 - Spawn in wet soil or compost
 - Burrow through soil, sand, ash, compost
 - Enrich ground: convert sand/ash/compost to soil as they pass
 - Die into compost
 
 **Bees** (lifetime: 600 ticks, extendable to 800)
+
 - Spawn near mature flowers
 - Fly toward flowers within 6 cells (purposeful AI)
 - Pollinate: boost pollen production at visited flowers
@@ -130,6 +132,7 @@ Trees lean left, right, or stay straight. Branches fork as new growth tips going
 ```
 
 **Effects on simulation:**
+
 - Plants, stems, leaves, grass only grow when daylight > 0.1
 - Flowers only release pollen when daylight > 0.3
 - Seeds sprout rate scales with daylight
@@ -146,11 +149,11 @@ Trees lean left, right, or stay straight. Branches fork as new growth tips going
 
 Three types generated from absorbed steam:
 
-| Type | Spawn Rate | Speed | Height | Shape |
-|---|---|---|---|---|
-| Cumulus | 45% | medium | varies | Puffy, flat bottom, billowy peaks |
-| Cirrus | 30% | fast | high | Thin wispy streaks |
-| Stratus | 25% | slow | mid | Wide flat layers |
+| Type    | Spawn Rate | Speed  | Height | Shape                             |
+| ------- | ---------- | ------ | ------ | --------------------------------- |
+| Cumulus | 45%        | medium | varies | Puffy, flat bottom, billowy peaks |
+| Cirrus  | 30%        | fast   | high   | Thin wispy streaks                |
+| Stratus | 25%        | slow   | mid    | Wide flat layers                  |
 
 **Cloud lifecycle**: water evaporates (sun) -> steam rises -> absorbed in upper grid half -> steam buffer fills -> cloud spawns from edge -> drifts across -> accumulates moisture -> darkens -> rains real water particles -> moisture depletes -> cloud shrinks and fades.
 

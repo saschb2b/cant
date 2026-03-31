@@ -5,7 +5,11 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
-import { LearnCategoryPage, FormattedText, SourceLink } from "@cant/shared/components";
+import {
+  LearnCategoryPage,
+  FormattedText,
+  SourceLink,
+} from "@cant/shared/components";
 import { challenges } from "@/lib/learn/challenges";
 import {
   CATEGORY_ORDER,

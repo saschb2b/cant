@@ -3,7 +3,13 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Gamepad2, BookOpen, FlaskConical, Sparkles } from "lucide-react";
-import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner, MeshGradient } from "@cant/shared/components";
+import {
+  Hero,
+  FeatureGrid,
+  CantSeriesGrid,
+  OpenSourceBanner,
+  MeshGradient,
+} from "@cant/shared/components";
 import { LiveRibbon } from "@cant/shared/components/game";
 import { fetchRecentResults } from "@/lib/game/actions";
 import { SiteHeader } from "@/components/site-header";

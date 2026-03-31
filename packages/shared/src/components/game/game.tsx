@@ -386,12 +386,8 @@ export function Game<C extends BaseChallenge>({
       }
       case "molecule": {
         return {
-          leftContent: isLeftCorrect
-            ? entry.goodMolecule
-            : entry.badMolecule,
-          rightContent: isLeftCorrect
-            ? entry.badMolecule
-            : entry.goodMolecule,
+          leftContent: isLeftCorrect ? entry.goodMolecule : entry.badMolecule,
+          rightContent: isLeftCorrect ? entry.badMolecule : entry.goodMolecule,
           resolvedContentType: "molecule" as const,
         };
       }
@@ -583,11 +579,7 @@ export function Game<C extends BaseChallenge>({
             height: 22,
           }}
         />
-        <Typography
-          variant="h6"
-          fontWeight={600}
-          sx={{}}
-        >
+        <Typography variant="h6" fontWeight={600} sx={{}}>
           {displayChallenge.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -640,7 +632,12 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "molecule" && MoleculePanelComponent && (
           <MoleculePanelComponent
-            molecule={(leftContent as MoleculeChallengeEntry["goodMolecule"]) ?? { name: "", formula: "" }}
+            molecule={
+              (leftContent as MoleculeChallengeEntry["goodMolecule"]) ?? {
+                name: "",
+                formula: "",
+              }
+            }
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("left")}
@@ -709,7 +706,12 @@ export function Game<C extends BaseChallenge>({
         )}
         {resolvedContentType === "molecule" && MoleculePanelComponent && (
           <MoleculePanelComponent
-            molecule={(rightContent as MoleculeChallengeEntry["goodMolecule"]) ?? { name: "", formula: "" }}
+            molecule={
+              (rightContent as MoleculeChallengeEntry["goodMolecule"]) ?? {
+                name: "",
+                formula: "",
+              }
+            }
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => submitAnswer("right")}

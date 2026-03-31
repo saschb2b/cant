@@ -346,7 +346,10 @@ export function ShadingGouraud() {
   }, [isDark]);
 
   return (
-    <CanvasSimulation label="Gouraud shading (per-vertex)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Gouraud shading (per-vertex)"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -388,6 +391,9 @@ export function ShadingPhong() {
   }, [isDark]);
 
   return (
-    <CanvasSimulation label="Phong shading (per-fragment)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Phong shading (per-fragment)"
+      canvasRef={canvasRef}
+    />
   );
 }

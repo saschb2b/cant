@@ -52,7 +52,12 @@ export function HowItWorks() {
               fontFamily="var(--font-geist-mono), monospace"
               fontWeight={700}
               color="secondary"
-              sx={{ fontSize: "0.75rem", letterSpacing: "0.05em", mb: 1.5, opacity: 0.7 }}
+              sx={{
+                fontSize: "0.75rem",
+                letterSpacing: "0.05em",
+                mb: 1.5,
+                opacity: 0.7,
+              }}
             >
               {step.number}
             </Typography>

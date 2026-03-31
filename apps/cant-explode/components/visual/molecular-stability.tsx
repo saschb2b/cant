@@ -12,7 +12,10 @@ export function BenzeneAromatic() {
 
 export function CyclohexadieneNonAromatic() {
   return (
-    <SmilesCanvas smiles="C1=CC=CCC1" label="1,3-Cyclohexadiene (non-aromatic)" />
+    <SmilesCanvas
+      smiles="C1=CC=CCC1"
+      label="1,3-Cyclohexadiene (non-aromatic)"
+    />
   );
 }
 

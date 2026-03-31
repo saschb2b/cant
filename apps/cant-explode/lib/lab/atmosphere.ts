@@ -65,9 +65,9 @@ export interface Atmosphere {
  * Each phase defines top and bottom gradient colors.
  */
 const SKY_NIGHT = { top: [8, 10, 25] as RGB, bottom: [12, 15, 22] as RGB };
-const SKY_DAWN  = { top: [55, 35, 75] as RGB, bottom: [200, 120, 70] as RGB };
-const SKY_DAY   = { top: [95, 155, 215] as RGB, bottom: [165, 205, 235] as RGB };
-const SKY_DUSK  = { top: [65, 35, 55] as RGB, bottom: [210, 100, 50] as RGB };
+const SKY_DAWN = { top: [55, 35, 75] as RGB, bottom: [200, 120, 70] as RGB };
+const SKY_DAY = { top: [95, 155, 215] as RGB, bottom: [165, 205, 235] as RGB };
+const SKY_DUSK = { top: [65, 35, 55] as RGB, bottom: [210, 100, 50] as RGB };
 
 /** Frames per full day-night cycle. ~60fps * 120s = 2 minute cycle. */
 const CYCLE_LENGTH = 7200;
@@ -132,22 +132,38 @@ function getBaseSky(t: number): { top: RGB; bottom: RGB; daylight: number } {
   } else if (t < 0.27) {
     // Night -> Dawn (longer transition)
     const f = ease((t - 0.15) / 0.12);
-    return { top: lerpC(SKY_NIGHT.top, SKY_DAWN.top, f), bottom: lerpC(SKY_NIGHT.bottom, SKY_DAWN.bottom, f), daylight: f * 0.3 };
+    return {
+      top: lerpC(SKY_NIGHT.top, SKY_DAWN.top, f),
+      bottom: lerpC(SKY_NIGHT.bottom, SKY_DAWN.bottom, f),
+      daylight: f * 0.3,
+    };
   } else if (t < 0.38) {
     // Dawn -> Day
     const f = ease((t - 0.27) / 0.11);
-    return { top: lerpC(SKY_DAWN.top, SKY_DAY.top, f), bottom: lerpC(SKY_DAWN.bottom, SKY_DAY.bottom, f), daylight: 0.3 + f * 0.7 };
+    return {
+      top: lerpC(SKY_DAWN.top, SKY_DAY.top, f),
+      bottom: lerpC(SKY_DAWN.bottom, SKY_DAY.bottom, f),
+      daylight: 0.3 + f * 0.7,
+    };
   } else if (t < 0.62) {
     // Full day
     return { top: SKY_DAY.top, bottom: SKY_DAY.bottom, daylight: 1 };
   } else if (t < 0.73) {
     // Day -> Dusk
     const f = ease((t - 0.62) / 0.11);
-    return { top: lerpC(SKY_DAY.top, SKY_DUSK.top, f), bottom: lerpC(SKY_DAY.bottom, SKY_DUSK.bottom, f), daylight: 1 - f * 0.7 };
+    return {
+      top: lerpC(SKY_DAY.top, SKY_DUSK.top, f),
+      bottom: lerpC(SKY_DAY.bottom, SKY_DUSK.bottom, f),
+      daylight: 1 - f * 0.7,
+    };
   } else if (t < 0.85) {
     // Dusk -> Night (longer transition)
     const f = ease((t - 0.73) / 0.12);
-    return { top: lerpC(SKY_DUSK.top, SKY_NIGHT.top, f), bottom: lerpC(SKY_DUSK.bottom, SKY_NIGHT.bottom, f), daylight: 0.3 - f * 0.3 };
+    return {
+      top: lerpC(SKY_DUSK.top, SKY_NIGHT.top, f),
+      bottom: lerpC(SKY_DUSK.bottom, SKY_NIGHT.bottom, f),
+      daylight: 0.3 - f * 0.3,
+    };
   } else {
     // Night
     return { top: SKY_NIGHT.top, bottom: SKY_NIGHT.bottom, daylight: 0 };
@@ -176,7 +192,10 @@ function celestialArc(
  * Get the sun's position. Sun rises at t=0.22, peaks at t=0.50, sets at t=0.78.
  * Returns null only if fully below horizon.
  */
-function getSunPosition(t: number, gridWidth: number): { x: number; y: number; intensity: number; nearHorizon: number } | null {
+function getSunPosition(
+  t: number,
+  gridWidth: number,
+): { x: number; y: number; intensity: number; nearHorizon: number } | null {
   const rise = 0.22;
   const set = 0.78;
   if (t < rise - 0.03 || t > set + 0.03) return null;
@@ -201,14 +220,17 @@ function getSunPosition(t: number, gridWidth: number): { x: number; y: number; i
  * Get the moon's position. Moon rises at t=0.76, peaks at midnight, sets at t=0.24.
  * Returns null only if fully below horizon.
  */
-function getMoonPosition(t: number, gridWidth: number): { x: number; y: number; intensity: number } | null {
+function getMoonPosition(
+  t: number,
+  gridWidth: number,
+): { x: number; y: number; intensity: number } | null {
   const rise = 0.76;
   const set = 0.24;
 
   // Map time to 0-1 progress across the night
   let progress: number;
   if (t >= rise) {
-    progress = (t - rise) / (1 - rise + set) * 0.5;
+    progress = ((t - rise) / (1 - rise + set)) * 0.5;
   } else if (t <= set) {
     progress = 0.5 + (t / set) * 0.5;
   } else {
@@ -248,7 +270,7 @@ export function getCelestialPixel(
     // Sun color shifts orange/red near horizon (atmospheric scattering)
     const h = sun.nearHorizon;
     const coreR = 255;
-    const coreG = Math.round(250 - h * 80);  // 250 -> 170 (orange)
+    const coreG = Math.round(250 - h * 80); // 250 -> 170 (orange)
     const coreB = Math.round(200 - h * 150); // 200 -> 50 (red-orange)
 
     if (dist < SUN_RADIUS) {
@@ -292,9 +314,18 @@ export function getCelestialPixel(
       // Crescent effect: darken the left side slightly
       const crescent = dx < 0 ? 0.7 : 1.0;
       return [
-        Math.min(255, Math.round(bg[0] + (215 - bg[0]) * brightness * crescent)),
-        Math.min(255, Math.round(bg[1] + (222 - bg[1]) * brightness * crescent)),
-        Math.min(255, Math.round(bg[2] + (240 - bg[2]) * brightness * crescent)),
+        Math.min(
+          255,
+          Math.round(bg[0] + (215 - bg[0]) * brightness * crescent),
+        ),
+        Math.min(
+          255,
+          Math.round(bg[1] + (222 - bg[1]) * brightness * crescent),
+        ),
+        Math.min(
+          255,
+          Math.round(bg[2] + (240 - bg[2]) * brightness * crescent),
+        ),
       ];
     }
 
@@ -328,13 +359,22 @@ function lerpRGB(current: RGB, target: RGB, speed: number): RGB {
   ];
 }
 
-
 /** Element categories for counting. */
 const FIRE_ELEMENTS = new Set(["fire", "spark"]);
 const WATER_ELEMENTS = new Set(["water", "steam", "ice"]);
 const PLANT_ELEMENTS = new Set([
-  "plant", "stem", "leaf", "flower", "grass", "vine", "moss", "algae",
-  "seed", "fruit", "mushroom", "pollen",
+  "plant",
+  "stem",
+  "leaf",
+  "flower",
+  "grass",
+  "vine",
+  "moss",
+  "algae",
+  "seed",
+  "fruit",
+  "mushroom",
+  "pollen",
 ]);
 const SMOKE_ELEMENTS = new Set(["smoke", "co2", "ash"]);
 const LAVA_ELEMENTS = new Set(["lava"]);
@@ -414,7 +454,10 @@ function generateCirrus(scale: number): Puff[] {
     for (let i = 0; i < length; i++) {
       const t = i / length;
       const ox = baseX + i * scale * 4 + (Math.random() - 0.5) * scale;
-      const oy = baseY + t * t * curve * scale * 15 + (Math.random() - 0.5) * scale * 0.5;
+      const oy =
+        baseY +
+        t * t * curve * scale * 15 +
+        (Math.random() - 0.5) * scale * 0.5;
       // Thinner toward the trailing edge
       const r = (1.5 + Math.random() * 1.5) * scale * (1 - t * 0.4);
       puffs.push({ ox, oy, r, seed: Math.random() * 1000 });
@@ -447,12 +490,21 @@ function generateStratus(scale: number): Puff[] {
 }
 
 /** Generate puffs for a given cloud type. */
-function generateCloud(type: CloudType, scale: number): { puffs: Puff[]; halfW: number; halfH: number } {
+function generateCloud(
+  type: CloudType,
+  scale: number,
+): { puffs: Puff[]; halfW: number; halfH: number } {
   let puffs: Puff[];
   switch (type) {
-    case "cumulus": puffs = generateCumulus(scale); break;
-    case "cirrus": puffs = generateCirrus(scale); break;
-    case "stratus": puffs = generateStratus(scale); break;
+    case "cumulus":
+      puffs = generateCumulus(scale);
+      break;
+    case "cirrus":
+      puffs = generateCirrus(scale);
+      break;
+    case "stratus":
+      puffs = generateStratus(scale);
+      break;
   }
 
   let maxX = 0;
@@ -505,9 +557,12 @@ function trySpawnCloud(atmo: Atmosphere, gridWidth: number): void {
   }
 
   // Scale: realistic proportions for a pixel world
-  const scale = type === "cirrus" ? 0.8 + Math.random() * 0.5
-    : type === "stratus" ? 0.7 + Math.random() * 0.5
-    : 1.0 + Math.random() * 1.0;
+  const scale =
+    type === "cirrus"
+      ? 0.8 + Math.random() * 0.5
+      : type === "stratus"
+        ? 0.7 + Math.random() * 0.5
+        : 1.0 + Math.random() * 1.0;
 
   const { puffs, halfW, halfH } = generateCloud(type, scale);
 
@@ -515,7 +570,8 @@ function trySpawnCloud(atmo: Atmosphere, gridWidth: number): void {
   const x = fromLeft ? -halfW : gridWidth + halfW;
 
   // Speed varies by type: cirrus fast (jet stream), stratus slow (low drift), cumulus medium
-  const baseSpeed = type === "cirrus" ? 0.08 : type === "stratus" ? 0.015 : 0.03;
+  const baseSpeed =
+    type === "cirrus" ? 0.08 : type === "stratus" ? 0.015 : 0.03;
   const drift = (fromLeft ? 1 : -1) * (baseSpeed + Math.random() * 0.03);
 
   // Height varies by type: cirrus high, cumulus mid-high, stratus mid-low
@@ -565,9 +621,10 @@ function trySpawnAmbientCloud(atmo: Atmosphere, gridWidth: number): void {
   const roll = Math.random();
   const type: CloudType = roll < 0.6 ? "cirrus" : "stratus";
 
-  const scale = type === "cirrus"
-    ? 0.6 + Math.random() * 0.5  // wispy streaks
-    : 0.5 + Math.random() * 0.4; // light haze
+  const scale =
+    type === "cirrus"
+      ? 0.6 + Math.random() * 0.5 // wispy streaks
+      : 0.5 + Math.random() * 0.4; // light haze
 
   const { puffs, halfW, halfH } = generateCloud(type, scale);
 
@@ -576,15 +633,19 @@ function trySpawnAmbientCloud(atmo: Atmosphere, gridWidth: number): void {
   const baseSpeed = type === "cirrus" ? 0.06 : 0.012;
   const drift = (fromLeft ? 1 : -1) * (baseSpeed + Math.random() * 0.02);
 
-  const y = type === "cirrus"
-    ? CLOUD_Y_MIN + Math.random() * 8
-    : CLOUD_Y_MIN + 10 + Math.random() * 15;
+  const y =
+    type === "cirrus"
+      ? CLOUD_Y_MIN + Math.random() * 8
+      : CLOUD_Y_MIN + 10 + Math.random() * 15;
 
   atmo.clouds.push({
-    x, y,
+    x,
+    y,
     moisture: 0, // ambient clouds start dry
     drift,
-    puffs, halfW, halfH,
+    puffs,
+    halfW,
+    halfH,
     type,
     age: 0,
     driftY: (Math.random() - 0.5) * 0.003,
@@ -625,8 +686,12 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
           if (puff.oy < -2) puff.oy -= 0.1 + Math.random() * 0.1;
         }
         // Spawn new puffs on top when heavily loaded (cumulus towers)
-        if (cloud.moisture > 0.7 && cloud.type === "cumulus" && Math.random() < 0.3) {
-          const topPuff = cloud.puffs.reduce((a, b) => a.oy < b.oy ? a : b);
+        if (
+          cloud.moisture > 0.7 &&
+          cloud.type === "cumulus" &&
+          Math.random() < 0.3
+        ) {
+          const topPuff = cloud.puffs.reduce((a, b) => (a.oy < b.oy ? a : b));
           cloud.puffs.push({
             ox: topPuff.ox + (Math.random() - 0.5) * 4,
             oy: topPuff.oy - 1 - Math.random() * 2,
@@ -646,7 +711,9 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
         // Drying out: edges dissolve, cloud flattens and spreads
         for (const puff of cloud.puffs) {
           // Outer puffs shrink faster (dissolve from edges)
-          const distFromCenter = Math.sqrt(puff.ox * puff.ox + puff.oy * puff.oy);
+          const distFromCenter = Math.sqrt(
+            puff.ox * puff.ox + puff.oy * puff.oy,
+          );
           const edgeFactor = Math.min(1, distFromCenter / 10);
           puff.r -= 0.02 + edgeFactor * 0.04;
           // Flatten: vertical compression, horizontal spread
@@ -661,7 +728,8 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
       }
 
       // Update bounding box to match current shape
-      let maxX = 0, maxY = 0;
+      let maxX = 0,
+        maxY = 0;
       for (const p of cloud.puffs) {
         maxX = Math.max(maxX, Math.abs(p.ox) + p.r);
         maxY = Math.max(maxY, Math.abs(p.oy) + p.r);
@@ -688,7 +756,9 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
     // Rain when moisture is high
     if (cloud.moisture > 0.6 && Math.random() < (cloud.moisture - 0.6) * 0.06) {
       // Pick a random x position under the cloud
-      const rx = Math.floor(cloud.x - cloud.halfW * 0.6 + Math.random() * cloud.halfW * 1.2);
+      const rx = Math.floor(
+        cloud.x - cloud.halfW * 0.6 + Math.random() * cloud.halfW * 1.2,
+      );
       const ry = Math.floor(cloud.y + cloud.halfH + 1 + Math.random() * 2);
 
       if (rx >= 0 && rx < grid.width && ry < grid.height) {
@@ -723,10 +793,7 @@ function updateClouds(atmo: Atmosphere, grid: Grid): void {
  * Analyze the grid and smoothly update the atmosphere toward the current mood.
  * Call once per frame.
  */
-export function updateAtmosphere(
-  atmo: Atmosphere,
-  grid: Grid,
-): void {
+export function updateAtmosphere(atmo: Atmosphere, grid: Grid): void {
   atmo.frame++;
 
   // Advance day-night cycle
@@ -776,9 +843,10 @@ export function updateAtmosphere(
   atmo.skyBottom = lerpRGB(atmo.skyBottom, base.bottom, 0.03);
 
   // Humidity: builds from water/steam presence, decays slowly
-  atmo.humidity = Math.min(1, Math.max(0,
-    atmo.humidity + atmo.water * 0.002 - 0.0003,
-  ));
+  atmo.humidity = Math.min(
+    1,
+    Math.max(0, atmo.humidity + atmo.water * 0.002 - 0.0003),
+  );
 
   // Cloud system
   absorbSteam(atmo, grid);
@@ -793,7 +861,15 @@ export function updateAtmosphere(
 
 /** Surfaces that collect dew at dawn. */
 const DEW_SURFACES = new Set([
-  "stone", "glass", "iron", "copper", "leaf", "grass", "moss", "flower", "stem",
+  "stone",
+  "glass",
+  "iron",
+  "copper",
+  "leaf",
+  "grass",
+  "moss",
+  "flower",
+  "stem",
 ]);
 
 /**
@@ -802,7 +878,7 @@ const DEW_SURFACES = new Set([
 function applyDawnDew(atmo: Atmosphere, grid: Grid): void {
   // Only during dawn (18-30% of cycle)
   const t = atmo.timeOfDay;
-  if (t < 0.20 || t > 0.30) return;
+  if (t < 0.2 || t > 0.3) return;
 
   // Need meaningful humidity
   if (atmo.humidity < 0.15) return;
@@ -822,11 +898,23 @@ function applyDawnDew(atmo: Atmosphere, grid: Grid): void {
     if (Math.random() > dewChance) continue;
 
     // Place water droplet in an empty adjacent cell (prefer above and sides)
-    const dirs: [number, number][] = [[0, -1], [-1, 0], [1, 0], [-1, -1], [1, -1]];
+    const dirs: [number, number][] = [
+      [0, -1],
+      [-1, 0],
+      [1, 0],
+      [-1, -1],
+      [1, -1],
+    ];
     for (const [dx, dy] of dirs) {
       const nx = x + dx;
       const ny = y + dy;
-      if (!getCell(grid, nx, ny) && nx >= 0 && nx < grid.width && ny >= 0 && ny < grid.height) {
+      if (
+        !getCell(grid, nx, ny) &&
+        nx >= 0 &&
+        nx < grid.width &&
+        ny >= 0 &&
+        ny < grid.height
+      ) {
         const drop = createParticle("water");
         drop.updated = true;
         setCell(grid, nx, ny, drop);
@@ -841,11 +929,21 @@ function applyDawnDew(atmo: Atmosphere, grid: Grid): void {
  * Get the background RGB for a specific grid row, interpolating the gradient
  * with horizon glow during dawn and dusk.
  */
-export function getSkyColor(atmo: Atmosphere, row: number, totalRows: number): RGB {
+export function getSkyColor(
+  atmo: Atmosphere,
+  row: number,
+  totalRows: number,
+): RGB {
   const t = row / (totalRows - 1);
-  const r = Math.round(atmo.skyTop[0] + (atmo.skyBottom[0] - atmo.skyTop[0]) * t);
-  const g = Math.round(atmo.skyTop[1] + (atmo.skyBottom[1] - atmo.skyTop[1]) * t);
-  const b = Math.round(atmo.skyTop[2] + (atmo.skyBottom[2] - atmo.skyTop[2]) * t);
+  const r = Math.round(
+    atmo.skyTop[0] + (atmo.skyBottom[0] - atmo.skyTop[0]) * t,
+  );
+  const g = Math.round(
+    atmo.skyTop[1] + (atmo.skyBottom[1] - atmo.skyTop[1]) * t,
+  );
+  const b = Math.round(
+    atmo.skyTop[2] + (atmo.skyBottom[2] - atmo.skyTop[2]) * t,
+  );
 
   // Horizon glow: warm band near the bottom during dawn and dusk
   const tod = atmo.timeOfDay;
@@ -926,12 +1024,19 @@ export function getCloudPixel(
       const t = dist / puff.r;
 
       // Multi-octave noise for organic wispy edges
-      const n1 = hash(gx + Math.floor(puff.seed), gy + Math.floor(puff.seed * 3));
-      const n2 = hash(gx * 2 + Math.floor(puff.seed * 7), gy * 2 + Math.floor(puff.seed * 11));
+      const n1 = hash(
+        gx + Math.floor(puff.seed),
+        gy + Math.floor(puff.seed * 3),
+      );
+      const n2 = hash(
+        gx * 2 + Math.floor(puff.seed * 7),
+        gy * 2 + Math.floor(puff.seed * 11),
+      );
       const noiseVal = n1 * 0.6 + n2 * 0.4;
 
       // Cirrus clouds have wispier edges, cumulus have harder edges
-      const edgeHardness = cloud.type === "cirrus" ? 0.15 : cloud.type === "stratus" ? 0.35 : 0.25;
+      const edgeHardness =
+        cloud.type === "cirrus" ? 0.15 : cloud.type === "stratus" ? 0.35 : 0.25;
       const edgeCutoff = edgeHardness + noiseVal * 0.5;
       if (t > edgeCutoff && t > 0.5) continue;
 
@@ -939,12 +1044,15 @@ export function getCloudPixel(
       const falloff = 1 - t * t;
 
       // Opacity varies by cloud type
-      const baseOpacity = cloud.type === "cirrus" ? 0.25 : cloud.type === "stratus" ? 0.4 : 0.5;
+      const baseOpacity =
+        cloud.type === "cirrus" ? 0.25 : cloud.type === "stratus" ? 0.4 : 0.5;
       const puffOpacity = falloff * baseOpacity;
 
       // Top-lit with noise variation for internal texture
       const verticalPos = py / puff.r;
-      const internalNoise = hash(gx + Math.floor(puff.seed * 5), gy + Math.floor(puff.seed * 13)) * 0.15;
+      const internalNoise =
+        hash(gx + Math.floor(puff.seed * 5), gy + Math.floor(puff.seed * 13)) *
+        0.15;
       const lighting = 0.5 - verticalPos * 0.35 + internalNoise;
 
       cloudOpacity = cloudOpacity + puffOpacity * (1 - cloudOpacity);
@@ -970,13 +1078,19 @@ export function getCloudPixel(
   const lit = Math.floor(baseVal * bestBrightness);
 
   // Type-specific color tints
-  let typeR = 0, typeG = 0, typeB = 0;
+  let typeR = 0,
+    typeG = 0,
+    typeB = 0;
   if (bestType === "cirrus") {
     // Icy blue-white (ice crystals at high altitude)
-    typeR = -5; typeG = 2; typeB = 12;
+    typeR = -5;
+    typeG = 2;
+    typeB = 12;
   } else if (bestType === "stratus") {
     // Flat blue-gray (overcast haze)
-    typeR = -8; typeG = -3; typeB = 5;
+    typeR = -8;
+    typeG = -3;
+    typeB = 5;
   }
   // Cumulus: no tint (pure white tops, natural gray bottoms from lighting)
 
@@ -1002,9 +1116,18 @@ export function getCloudPixel(
   // Rain clouds get a dark blue-gray underside
   const moistureTint = bestMoisture > 0.3 ? (bestMoisture - 0.3) * 60 : 0;
 
-  const r = Math.max(0, Math.min(255, lit + warmR + typeR - Math.floor(moistureTint * 0.4)));
-  const g = Math.max(0, Math.min(255, lit + warmG + typeG - Math.floor(moistureTint * 0.2)));
-  const b = Math.max(0, Math.min(255, lit + warmB + typeB + Math.floor(moistureTint * 0.2)));
+  const r = Math.max(
+    0,
+    Math.min(255, lit + warmR + typeR - Math.floor(moistureTint * 0.4)),
+  );
+  const g = Math.max(
+    0,
+    Math.min(255, lit + warmG + typeG - Math.floor(moistureTint * 0.2)),
+  );
+  const b = Math.max(
+    0,
+    Math.min(255, lit + warmB + typeB + Math.floor(moistureTint * 0.2)),
+  );
 
   return [r, g, b, Math.min(0.8, bestOpacity)];
 }
@@ -1018,7 +1141,10 @@ export function getCloudShade(atmo: Atmosphere, gx: number): number {
   const tod = atmo.timeOfDay;
   const sunRise = 0.22;
   const sunSet = 0.78;
-  const sunProgress = Math.max(0, Math.min(1, (tod - sunRise) / (sunSet - sunRise)));
+  const sunProgress = Math.max(
+    0,
+    Math.min(1, (tod - sunRise) / (sunSet - sunRise)),
+  );
   // Shadow offset: positive = shadow cast to the right, negative = to the left
   // At dawn (progress~0) sun is left, shadow goes right (+20..+30)
   // At noon (progress~0.5) sun is overhead, shadow is directly below (0)
@@ -1030,7 +1156,8 @@ export function getCloudShade(atmo: Atmosphere, gx: number): number {
     const dx = Math.abs(gx - (cloud.x + shadowOffset));
     if (dx > cloud.halfW) continue;
     const coverage = 1 - dx / cloud.halfW;
-    const intensity = cloud.type === "cirrus" ? 0.1 : cloud.type === "stratus" ? 0.25 : 0.4;
+    const intensity =
+      cloud.type === "cirrus" ? 0.1 : cloud.type === "stratus" ? 0.25 : 0.4;
     const moistureBoost = cloud.moisture * 0.3;
     shade = Math.max(shade, coverage * (intensity + moistureBoost));
   }
@@ -1063,11 +1190,29 @@ export function getAmbientSparkle(
       const brightness = twinkle * nightness;
       // Star color: use hash for type so each star has consistent color
       const colorVal = hash3(gx, gy, 42);
-      let sr = 255, sg = 255, sb = 255;
-      if (colorVal < 0.2) { sr = 190; sg = 210; sb = 255; }       // Blue-white
-      else if (colorVal < 0.35) { sr = 255; sg = 235; sb = 170; } // Yellow
-      else if (colorVal < 0.45) { sr = 255; sg = 190; sb = 140; } // Orange
-      else if (colorVal < 0.5) { sr = 255; sg = 160; sb = 130; }  // Red
+      let sr = 255,
+        sg = 255,
+        sb = 255;
+      if (colorVal < 0.2) {
+        sr = 190;
+        sg = 210;
+        sb = 255;
+      } // Blue-white
+      else if (colorVal < 0.35) {
+        sr = 255;
+        sg = 235;
+        sb = 170;
+      } // Yellow
+      else if (colorVal < 0.45) {
+        sr = 255;
+        sg = 190;
+        sb = 140;
+      } // Orange
+      else if (colorVal < 0.5) {
+        sr = 255;
+        sg = 160;
+        sb = 130;
+      } // Red
       return [
         Math.round(bg[0] + (sr - bg[0]) * brightness * 0.85),
         Math.round(bg[1] + (sg - bg[1]) * brightness * 0.85),
@@ -1110,7 +1255,7 @@ export function getAmbientSparkle(
     const bandDist = Math.abs(bandCenter - 50);
     if (bandDist < 14 && gy < 65) {
       const bandNoise = hash3(gx, gy, 77);
-      const bandFade = (1 - bandDist / 14);
+      const bandFade = 1 - bandDist / 14;
       // Dense star clusters within the band
       if (bandNoise < 0.06 * bandFade) {
         const brightness = nightness * 0.22 * bandFade;
@@ -1159,7 +1304,8 @@ export function getAmbientSparkle(
 
   // Fireflies: soft yellow-green dots that drift when lots of plants
   if (atmo.plant > 0.15) {
-    const flyHash = ((gx * 3571 + gy * 6553 + Math.floor(atmo.frame / 8) * 97) >>> 0) % 10000;
+    const flyHash =
+      ((gx * 3571 + gy * 6553 + Math.floor(atmo.frame / 8) * 97) >>> 0) % 10000;
     if (flyHash < Math.floor(atmo.plant * 8)) {
       const pulse = Math.sin((atmo.frame + gx * 7) * 0.08) * 0.5 + 0.5;
       if (pulse > 0.6) {
@@ -1195,7 +1341,8 @@ export function getAmbientSparkle(
   if (atmo.smoke > 0.25) {
     const hash = ((gx * 7919 + gy * 104729 + atmo.frame * 31) >>> 0) % 10000;
     if (hash < Math.floor(atmo.smoke * 10)) {
-      const drift = Math.sin((atmo.frame + gx * 5 + gy * 11) * 0.02) * 0.3 + 0.3;
+      const drift =
+        Math.sin((atmo.frame + gx * 5 + gy * 11) * 0.02) * 0.3 + 0.3;
       const intensity = drift * atmo.smoke * 0.3;
       return [
         Math.round(bg[0] + (160 - bg[0]) * intensity),

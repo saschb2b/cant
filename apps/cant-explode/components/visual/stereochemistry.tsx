@@ -260,29 +260,81 @@ function FischerProjection({
   return (
     <DiagramShell title={title}>
       {/* Vertical line (carbon chain) */}
-      <line x1={cx} y1={cy - vLen} x2={cx} y2={cy + vLen} stroke={bond} strokeWidth={2} />
+      <line
+        x1={cx}
+        y1={cy - vLen}
+        x2={cx}
+        y2={cy + vLen}
+        stroke={bond}
+        strokeWidth={2}
+      />
       {/* Horizontal line (substituents) */}
-      <line x1={cx - hLen} y1={cy} x2={cx + hLen} y2={cy} stroke={bond} strokeWidth={2} />
+      <line
+        x1={cx - hLen}
+        y1={cy}
+        x2={cx + hLen}
+        y2={cy}
+        stroke={bond}
+        strokeWidth={2}
+      />
       {/* Center dot (chiral carbon) */}
       <circle cx={cx} cy={cy} r={3} fill={bond} />
       {/* Top group: CHO */}
-      <text x={cx} y={cy - vLen - 10} textAnchor="middle" fill={labelColor} fontSize={13} fontFamily="inherit" fontWeight={600}>
+      <text
+        x={cx}
+        y={cy - vLen - 10}
+        textAnchor="middle"
+        fill={labelColor}
+        fontSize={13}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         CHO
       </text>
       {/* Bottom group: CH2OH */}
-      <text x={cx} y={cy + vLen + 18} textAnchor="middle" fill={labelColor} fontSize={13} fontFamily="inherit" fontWeight={600}>
+      <text
+        x={cx}
+        y={cy + vLen + 18}
+        textAnchor="middle"
+        fill={labelColor}
+        fontSize={13}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         CH&#x2082;OH
       </text>
       {/* Left group */}
-      <text x={cx - hLen - 10} y={cy + 4} textAnchor="end" fill={labelColor} fontSize={13} fontFamily="inherit" fontWeight={600}>
+      <text
+        x={cx - hLen - 10}
+        y={cy + 4}
+        textAnchor="end"
+        fill={labelColor}
+        fontSize={13}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         {leftGroup}
       </text>
       {/* Right group */}
-      <text x={cx + hLen + 10} y={cy + 4} textAnchor="start" fill={labelColor} fontSize={13} fontFamily="inherit" fontWeight={600}>
+      <text
+        x={cx + hLen + 10}
+        y={cy + 4}
+        textAnchor="start"
+        fill={labelColor}
+        fontSize={13}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         {rightGroup}
       </text>
       {/* Chiral center label */}
-      <text x={cx + 10} y={cy - 8} fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={cx + 10}
+        y={cy - 8}
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         C*
       </text>
     </DiagramShell>
@@ -323,7 +375,14 @@ const CHAIR_C3 = { x: 170, y: 160 };
 const CHAIR_C4 = { x: 220, y: 130 };
 const CHAIR_C5 = { x: 190, y: 100 };
 const CHAIR_C6 = { x: 130, y: 100 };
-const CHAIR_POINTS = [CHAIR_C1, CHAIR_C2, CHAIR_C3, CHAIR_C4, CHAIR_C5, CHAIR_C6];
+const CHAIR_POINTS = [
+  CHAIR_C1,
+  CHAIR_C2,
+  CHAIR_C3,
+  CHAIR_C4,
+  CHAIR_C5,
+  CHAIR_C6,
+];
 
 function chairPath(): string {
   return (
@@ -345,12 +404,33 @@ export function ChairAxialMethyl() {
     <DiagramShell title="Chair cyclohexane: axial methyl (less stable)">
       <path d={chairPath()} fill="none" stroke={bond} strokeWidth={2} />
       {/* Axial bond (vertical up from C1) */}
-      <line x1={sub.x} y1={sub.y} x2={sub.x} y2={sub.y - 45} stroke={accent} strokeWidth={2.5} />
-      <text x={sub.x} y={sub.y - 52} textAnchor="middle" fill={accent} fontSize={12} fontFamily="inherit" fontWeight={700}>
+      <line
+        x1={sub.x}
+        y1={sub.y}
+        x2={sub.x}
+        y2={sub.y - 45}
+        stroke={accent}
+        strokeWidth={2.5}
+      />
+      <text
+        x={sub.x}
+        y={sub.y - 52}
+        textAnchor="middle"
+        fill={accent}
+        fontSize={12}
+        fontFamily="inherit"
+        fontWeight={700}
+      >
         CH&#x2083;
       </text>
       {/* Label "axial" */}
-      <text x={sub.x + 25} y={sub.y - 30} fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={sub.x + 25}
+        y={sub.y - 30}
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         axial
       </text>
       {/* H atoms on other carbons (simplified, just show a couple) */}
@@ -368,7 +448,14 @@ export function ChairAxialMethyl() {
         </g>
       ))}
       {/* 1,3-diaxial strain indicator */}
-      <text x={W / 2} y={H - 18} textAnchor="middle" fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={W / 2}
+        y={H - 18}
+        textAnchor="middle"
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         1,3-diaxial interactions cause strain
       </text>
     </DiagramShell>
@@ -387,12 +474,33 @@ export function ChairEquatorialMethyl() {
     <DiagramShell title="Chair cyclohexane: equatorial methyl (more stable)">
       <path d={chairPath()} fill="none" stroke={bond} strokeWidth={2} />
       {/* Equatorial bond (out to the left and slightly down) */}
-      <line x1={sub.x} y1={sub.y} x2={sub.x - 40} y2={sub.y + 20} stroke={accent} strokeWidth={2.5} />
-      <text x={sub.x - 52} y={sub.y + 28} textAnchor="middle" fill={accent} fontSize={12} fontFamily="inherit" fontWeight={700}>
+      <line
+        x1={sub.x}
+        y1={sub.y}
+        x2={sub.x - 40}
+        y2={sub.y + 20}
+        stroke={accent}
+        strokeWidth={2.5}
+      />
+      <text
+        x={sub.x - 52}
+        y={sub.y + 28}
+        textAnchor="middle"
+        fill={accent}
+        fontSize={12}
+        fontFamily="inherit"
+        fontWeight={700}
+      >
         CH&#x2083;
       </text>
       {/* Label "equatorial" */}
-      <text x={sub.x - 20} y={sub.y + 42} fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={sub.x - 20}
+        y={sub.y + 42}
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         equatorial
       </text>
       {/* Simplified H atoms */}
@@ -409,7 +517,14 @@ export function ChairEquatorialMethyl() {
           />
         </g>
       ))}
-      <text x={W / 2} y={H - 18} textAnchor="middle" fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={W / 2}
+        y={H - 18}
+        textAnchor="middle"
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         Minimal steric strain
       </text>
     </DiagramShell>
@@ -464,19 +579,63 @@ export function CisDecalin() {
       <path d={leftPath} fill="none" stroke={bond} strokeWidth={2} />
       <path d={rightPath} fill="none" stroke={bond} strokeWidth={2} />
       {/* Junction H atoms both pointing up (cis) */}
-      <line x1={j1.x} y1={j1.y} x2={j1.x} y2={j1.y - 25} stroke={accent} strokeWidth={2} />
-      <text x={j1.x} y={j1.y - 30} textAnchor="middle" fill={accent} fontSize={10} fontFamily="inherit" fontWeight={600}>
+      <line
+        x1={j1.x}
+        y1={j1.y}
+        x2={j1.x}
+        y2={j1.y - 25}
+        stroke={accent}
+        strokeWidth={2}
+      />
+      <text
+        x={j1.x}
+        y={j1.y - 30}
+        textAnchor="middle"
+        fill={accent}
+        fontSize={10}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         H
       </text>
-      <line x1={j2.x} y1={j2.y} x2={j2.x} y2={j2.y - 25} stroke={accent} strokeWidth={2} />
-      <text x={j2.x} y={j2.y - 30} textAnchor="middle" fill={accent} fontSize={10} fontFamily="inherit" fontWeight={600}>
+      <line
+        x1={j2.x}
+        y1={j2.y}
+        x2={j2.x}
+        y2={j2.y - 25}
+        stroke={accent}
+        strokeWidth={2}
+      />
+      <text
+        x={j2.x}
+        y={j2.y - 30}
+        textAnchor="middle"
+        fill={accent}
+        fontSize={10}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         H
       </text>
       {/* "cis" label */}
-      <text x={(j1.x + j2.x) / 2} y={j1.y - 42} textAnchor="middle" fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={(j1.x + j2.x) / 2}
+        y={j1.y - 42}
+        textAnchor="middle"
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         cis (same side)
       </text>
-      <text x={W / 2} y={H - 10} textAnchor="middle" fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={W / 2}
+        y={H - 10}
+        textAnchor="middle"
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         Flexible, can ring-flip
       </text>
     </DiagramShell>
@@ -523,25 +682,81 @@ export function TransDecalin() {
       <path d={leftPath} fill="none" stroke={bond} strokeWidth={2} />
       <path d={rightPath} fill="none" stroke={bond} strokeWidth={2} />
       {/* Junction H atoms: one up, one down (trans) */}
-      <line x1={j1.x} y1={j1.y} x2={j1.x} y2={j1.y + 25} stroke={accent} strokeWidth={2} />
-      <text x={j1.x} y={j1.y + 38} textAnchor="middle" fill={accent} fontSize={10} fontFamily="inherit" fontWeight={600}>
+      <line
+        x1={j1.x}
+        y1={j1.y}
+        x2={j1.x}
+        y2={j1.y + 25}
+        stroke={accent}
+        strokeWidth={2}
+      />
+      <text
+        x={j1.x}
+        y={j1.y + 38}
+        textAnchor="middle"
+        fill={accent}
+        fontSize={10}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         H
       </text>
-      <line x1={j2.x} y1={j2.y} x2={j2.x} y2={j2.y - 25} stroke={accent} strokeWidth={2} />
-      <text x={j2.x} y={j2.y - 30} textAnchor="middle" fill={accent} fontSize={10} fontFamily="inherit" fontWeight={600}>
+      <line
+        x1={j2.x}
+        y1={j2.y}
+        x2={j2.x}
+        y2={j2.y - 25}
+        stroke={accent}
+        strokeWidth={2}
+      />
+      <text
+        x={j2.x}
+        y={j2.y - 30}
+        textAnchor="middle"
+        fill={accent}
+        fontSize={10}
+        fontFamily="inherit"
+        fontWeight={600}
+      >
         H
       </text>
       {/* "trans" labels */}
-      <text x={j1.x - 20} y={j1.y + 32} fill={secondary} fontSize={8} fontFamily="inherit">
+      <text
+        x={j1.x - 20}
+        y={j1.y + 32}
+        fill={secondary}
+        fontSize={8}
+        fontFamily="inherit"
+      >
         down
       </text>
-      <text x={j2.x + 12} y={j2.y - 24} fill={secondary} fontSize={8} fontFamily="inherit">
+      <text
+        x={j2.x + 12}
+        y={j2.y - 24}
+        fill={secondary}
+        fontSize={8}
+        fontFamily="inherit"
+      >
         up
       </text>
-      <text x={(j1.x + j2.x) / 2} y={30} textAnchor="middle" fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={(j1.x + j2.x) / 2}
+        y={30}
+        textAnchor="middle"
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         trans (opposite sides)
       </text>
-      <text x={W / 2} y={H - 10} textAnchor="middle" fill={secondary} fontSize={9} fontFamily="inherit">
+      <text
+        x={W / 2}
+        y={H - 10}
+        textAnchor="middle"
+        fill={secondary}
+        fontSize={9}
+        fontFamily="inherit"
+      >
         Rigid, locked conformation
       </text>
     </DiagramShell>

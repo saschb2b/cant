@@ -316,7 +316,10 @@ export function SteerSeek() {
   const canvasRef = useSteeringAnimation(steerSeek, colors, false);
 
   return (
-    <CanvasSimulation label="Seek behavior (no deceleration)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Seek behavior (no deceleration)"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -335,6 +338,9 @@ export function SteerArrive() {
   const canvasRef = useSteeringAnimation(steerArrive, colors, true);
 
   return (
-    <CanvasSimulation label="Arrive behavior (slowing radius)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Arrive behavior (slowing radius)"
+      canvasRef={canvasRef}
+    />
   );
 }

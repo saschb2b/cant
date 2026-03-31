@@ -351,6 +351,9 @@ export function RopeVerlet() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <CanvasSimulation label="Verlet integration (stable)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Verlet integration (stable)"
+      canvasRef={canvasRef}
+    />
   );
 }

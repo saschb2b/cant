@@ -277,7 +277,10 @@ export function CollisionDiscrete() {
   }, [isDark]);
 
   return (
-    <CanvasSimulation label="Bullet tunnels through wall" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Bullet tunnels through wall"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -374,6 +377,9 @@ export function CollisionContinuous() {
   }, [isDark]);
 
   return (
-    <CanvasSimulation label="Bullet stops at contact point" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Bullet stops at contact point"
+      canvasRef={canvasRef}
+    />
   );
 }

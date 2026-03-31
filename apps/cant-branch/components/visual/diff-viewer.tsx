@@ -402,7 +402,9 @@ export function DiffReviewThorough() {
             mb: 0.3,
           }}
         >
-          <Typography sx={{ fontSize: 9, color: "error.main", fontWeight: 600 }}>
+          <Typography
+            sx={{ fontSize: 9, color: "error.main", fontWeight: 600 }}
+          >
             SQL injection risk: use parameterized query
           </Typography>
         </Box>

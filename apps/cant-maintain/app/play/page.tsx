@@ -5,7 +5,11 @@ import { Game } from "@/components/game/game";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@cant/shared/components";
-import { getHighlighter, highlightDual, buildContentMap } from "@cant/shared/lib";
+import {
+  getHighlighter,
+  highlightDual,
+  buildContentMap,
+} from "@cant/shared/lib";
 import { challenges } from "@/lib/game/challenges";
 
 export const metadata: Metadata = {

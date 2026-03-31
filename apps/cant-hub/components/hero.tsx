@@ -252,7 +252,10 @@ export function Hero() {
               ))}
 
               {/* Small degree ticks (every 15 degrees) */}
-              {[15, 30, 60, 75, 105, 120, 150, 165, 195, 210, 240, 255, 285, 300, 330, 345].map((deg) => (
+              {[
+                15, 30, 60, 75, 105, 120, 150, 165, 195, 210, 240, 255, 285,
+                300, 330, 345,
+              ].map((deg) => (
                 <line
                   key={`tiny-${String(deg)}`}
                   x1="100"
@@ -267,10 +270,53 @@ export function Hero() {
               ))}
 
               {/* Cardinal letters */}
-              <text x="100" y="34" textAnchor="middle" fill="#E9C46A" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif">N</text>
-              <text x="100" y="177" textAnchor="middle" fill="currentColor" opacity="0.2" fontSize="9" fontWeight="600" fontFamily="system-ui, sans-serif">S</text>
-              <text x="175" y="104" textAnchor="middle" fill="currentColor" opacity="0.2" fontSize="9" fontWeight="600" fontFamily="system-ui, sans-serif">E</text>
-              <text x="25" y="104" textAnchor="middle" fill="currentColor" opacity="0.2" fontSize="9" fontWeight="600" fontFamily="system-ui, sans-serif">W</text>
+              <text
+                x="100"
+                y="34"
+                textAnchor="middle"
+                fill="#E9C46A"
+                fontSize="11"
+                fontWeight="700"
+                fontFamily="system-ui, sans-serif"
+              >
+                N
+              </text>
+              <text
+                x="100"
+                y="177"
+                textAnchor="middle"
+                fill="currentColor"
+                opacity="0.2"
+                fontSize="9"
+                fontWeight="600"
+                fontFamily="system-ui, sans-serif"
+              >
+                S
+              </text>
+              <text
+                x="175"
+                y="104"
+                textAnchor="middle"
+                fill="currentColor"
+                opacity="0.2"
+                fontSize="9"
+                fontWeight="600"
+                fontFamily="system-ui, sans-serif"
+              >
+                E
+              </text>
+              <text
+                x="25"
+                y="104"
+                textAnchor="middle"
+                fill="currentColor"
+                opacity="0.2"
+                fontSize="9"
+                fontWeight="600"
+                fontFamily="system-ui, sans-serif"
+              >
+                W
+              </text>
 
               {/* Inner circle (compass face edge) */}
               <circle
@@ -283,10 +329,42 @@ export function Hero() {
               />
 
               {/* Crosshair lines */}
-              <line x1="100" y1="45" x2="100" y2="55" stroke="currentColor" strokeWidth="0.5" opacity="0.1" />
-              <line x1="100" y1="145" x2="100" y2="155" stroke="currentColor" strokeWidth="0.5" opacity="0.1" />
-              <line x1="45" y1="100" x2="55" y2="100" stroke="currentColor" strokeWidth="0.5" opacity="0.1" />
-              <line x1="145" y1="100" x2="155" y2="100" stroke="currentColor" strokeWidth="0.5" opacity="0.1" />
+              <line
+                x1="100"
+                y1="45"
+                x2="100"
+                y2="55"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.1"
+              />
+              <line
+                x1="100"
+                y1="145"
+                x2="100"
+                y2="155"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.1"
+              />
+              <line
+                x1="45"
+                y1="100"
+                x2="55"
+                y2="100"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.1"
+              />
+              <line
+                x1="145"
+                y1="100"
+                x2="155"
+                y2="100"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.1"
+              />
 
               {/* Needle group - settles with oscillation */}
               <g
@@ -297,16 +375,39 @@ export function Hero() {
               >
                 {/* North needle (gold diamond) */}
                 <polygon points="100,38 95,100 100,96 105,100" fill="#E9C46A" />
-                <polygon points="100,38 95,100 100,104 105,100" fill="#C4943A" />
+                <polygon
+                  points="100,38 95,100 100,104 105,100"
+                  fill="#C4943A"
+                />
                 {/* South needle (muted diamond) */}
-                <polygon points="100,162 95,100 100,96 105,100" fill="currentColor" opacity="0.12" />
-                <polygon points="100,162 95,100 100,104 105,100" fill="currentColor" opacity="0.08" />
+                <polygon
+                  points="100,162 95,100 100,96 105,100"
+                  fill="currentColor"
+                  opacity="0.12"
+                />
+                <polygon
+                  points="100,162 95,100 100,104 105,100"
+                  fill="currentColor"
+                  opacity="0.08"
+                />
               </g>
 
               {/* Center cap */}
-              <circle cx="100" cy="100" r="7" fill="currentColor" opacity="0.15" />
+              <circle
+                cx="100"
+                cy="100"
+                r="7"
+                fill="currentColor"
+                opacity="0.15"
+              />
               <circle cx="100" cy="100" r="4" fill="#E9C46A" />
-              <circle cx="100" cy="100" r="1.5" fill="currentColor" opacity="0.3" />
+              <circle
+                cx="100"
+                cy="100"
+                r="1.5"
+                fill="currentColor"
+                opacity="0.3"
+              />
             </svg>
           </Box>
         </Stack>

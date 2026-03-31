@@ -17,8 +17,7 @@ export const molecularGeometryChallenges: Challenge[] = [
       "Water is bent at 104.5 degrees because oxygen has two lone pairs that repel the bonding pairs. VSEPR theory predicts a tetrahedral electron geometry with a bent molecular geometry for molecules with two bonding pairs and two lone pairs.",
     explanationWrong:
       "A linear geometry would require 180 degrees between the H-O-H bonds. This only occurs when there are no lone pairs on the central atom (like CO2). The two lone pairs on oxygen compress the bond angle below the tetrahedral ideal of 109.5 degrees.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/VSEPR_theory#AX2E2:_Bent",
+    sourceUrl: "https://en.wikipedia.org/wiki/VSEPR_theory#AX2E2:_Bent",
     sourceLabel: "Wikipedia: VSEPR bent geometry",
   },
   {
@@ -37,8 +36,7 @@ export const molecularGeometryChallenges: Challenge[] = [
       "Methane adopts a tetrahedral geometry with bond angles of 109.5 degrees. With four equivalent bonding pairs and no lone pairs, VSEPR theory predicts maximum separation in three dimensions, resulting in a tetrahedron.",
     explanationWrong:
       "Square planar geometry has 90 degree bond angles, placing all atoms in one plane. This arrangement would bring the hydrogen atoms closer together than necessary. Square planar geometry typically requires d-orbital participation, as seen in certain transition metal complexes.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/VSEPR_theory#AX4:_Tetrahedral",
+    sourceUrl: "https://en.wikipedia.org/wiki/VSEPR_theory#AX4:_Tetrahedral",
     sourceLabel: "Wikipedia: VSEPR tetrahedral geometry",
   },
   {

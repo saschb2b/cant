@@ -282,7 +282,10 @@ export function CollisionBruteForce() {
   });
 
   return (
-    <CanvasSimulation label={"O(n\u00B2) pairwise checks"} canvasRef={canvasRef} />
+    <CanvasSimulation
+      label={"O(n\u00B2) pairwise checks"}
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -302,6 +305,9 @@ export function CollisionSpatialHash() {
   });
 
   return (
-    <CanvasSimulation label="Spatial hash: nearby checks only" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Spatial hash: nearby checks only"
+      canvasRef={canvasRef}
+    />
   );
 }

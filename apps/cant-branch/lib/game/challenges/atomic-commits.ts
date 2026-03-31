@@ -235,8 +235,7 @@ git checkout main && git merge feature`,
       "Atomic commits each contain a single logical change. This makes code review focused, git bisect precise, and reverts safe. If one change introduces a bug, you can revert just that commit without affecting unrelated work.",
     explanationWrong:
       "A monolith commit that bundles many unrelated changes is difficult to review and impossible to partially revert. If any part of the commit needs to be undone, you lose all other changes along with it. Splitting work into atomic commits keeps each change independent and manageable.",
-    sourceUrl:
-      "https://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History",
+    sourceUrl: "https://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History",
     sourceLabel: "Git Book: Rewriting History",
   },
 ];

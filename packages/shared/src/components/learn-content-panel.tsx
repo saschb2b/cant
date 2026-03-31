@@ -70,8 +70,7 @@ export function LearnContentPanel({ entry, side }: LearnContentPanelProps) {
       );
     }
     case "molecule": {
-      const molecule =
-        side === "good" ? entry.goodMolecule : entry.badMolecule;
+      const molecule = side === "good" ? entry.goodMolecule : entry.badMolecule;
       return (
         <Box
           sx={{

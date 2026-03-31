@@ -34,8 +34,12 @@
     "react-dom": "^19.0.0"
   },
   "peerDependenciesMeta": {
-    "3dmol": { "optional": true },
-    "smiles-drawer": { "optional": true }
+    "3dmol": {
+      "optional": true
+    },
+    "smiles-drawer": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "19.2.14",

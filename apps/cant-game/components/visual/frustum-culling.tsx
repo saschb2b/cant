@@ -228,7 +228,10 @@ export function RenderAll() {
   });
 
   return (
-    <CanvasSimulation label="No culling: every object rendered" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="No culling: every object rendered"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -246,6 +249,9 @@ export function RenderCulled() {
   });
 
   return (
-    <CanvasSimulation label="Frustum culling: skip off-screen objects" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Frustum culling: skip off-screen objects"
+      canvasRef={canvasRef}
+    />
   );
 }

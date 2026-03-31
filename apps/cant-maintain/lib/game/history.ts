@@ -1,7 +1,4 @@
-import {
-  createHistoryStore,
-  formatRelativeDate,
-} from "@cant/shared/lib/game";
+import { createHistoryStore, formatRelativeDate } from "@cant/shared/lib/game";
 
 const store = createHistoryStore("cant-maintain:history");
 

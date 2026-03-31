@@ -36,8 +36,7 @@ export const electronConfigurationChallenges: Challenge[] = [
       "Chromium adopts [Ar] 4s1 3d5 instead of the expected [Ar] 4s2 3d4. A half-filled d subshell provides extra stability through maximized exchange energy. The energy gained from five unpaired d electrons outweighs the cost of leaving 4s half-filled.",
     explanationWrong:
       "The [Ar] 4s2 3d4 configuration follows the standard filling order but is not what chromium actually adopts. The extra exchange energy from having all five d orbitals singly occupied makes the 4s1 3d5 configuration about 8 kJ/mol more stable.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Chromium#Electron_configuration",
+    sourceUrl: "https://en.wikipedia.org/wiki/Chromium#Electron_configuration",
     sourceLabel: "Wikipedia: Chromium electron configuration",
   },
   {
@@ -75,8 +74,7 @@ export const electronConfigurationChallenges: Challenge[] = [
       "Iron ([Ar] 4s2 3d6) fills its five 3d orbitals singly first, then pairs the sixth electron in the first orbital. This gives four unpaired electrons, consistent with iron's observed paramagnetism and its common +2 and +3 oxidation states.",
     explanationWrong:
       "Filling three orbitals completely while leaving two empty violates Hund's rule. This arrangement would give only two unpaired electrons and predict weaker paramagnetism than what is experimentally observed for iron compounds.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Iron#Electron_configuration",
+    sourceUrl: "https://en.wikipedia.org/wiki/Iron#Electron_configuration",
     sourceLabel: "Wikipedia: Iron electron configuration",
   },
 ];

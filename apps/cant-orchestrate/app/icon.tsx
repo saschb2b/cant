@@ -39,13 +39,53 @@ export default function Icon() {
         />
       </div>
       {/* Spoke top */}
-      <div style={{ position: "absolute", top: 4, left: 14.5, width: 3, height: 5, background: "#FFFFFF", borderRadius: 1 }} />
+      <div
+        style={{
+          position: "absolute",
+          top: 4,
+          left: 14.5,
+          width: 3,
+          height: 5,
+          background: "#FFFFFF",
+          borderRadius: 1,
+        }}
+      />
       {/* Spoke bottom */}
-      <div style={{ position: "absolute", bottom: 4, left: 14.5, width: 3, height: 5, background: "#FFFFFF", borderRadius: 1 }} />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 4,
+          left: 14.5,
+          width: 3,
+          height: 5,
+          background: "#FFFFFF",
+          borderRadius: 1,
+        }}
+      />
       {/* Spoke left */}
-      <div style={{ position: "absolute", left: 4, top: 14.5, width: 5, height: 3, background: "#FFFFFF", borderRadius: 1 }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 4,
+          top: 14.5,
+          width: 5,
+          height: 3,
+          background: "#FFFFFF",
+          borderRadius: 1,
+        }}
+      />
       {/* Spoke right */}
-      <div style={{ position: "absolute", right: 4, top: 14.5, width: 5, height: 3, background: "#FFFFFF", borderRadius: 1 }} />
+      <div
+        style={{
+          position: "absolute",
+          right: 4,
+          top: 14.5,
+          width: 5,
+          height: 3,
+          background: "#FFFFFF",
+          borderRadius: 1,
+        }}
+      />
     </div>,
     { ...size },
   );

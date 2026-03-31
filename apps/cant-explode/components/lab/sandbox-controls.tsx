@@ -75,10 +75,7 @@ export function SandboxControls({
         </IconButton>
       </Tooltip>
 
-      <Dialog
-        open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
-      >
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
         <DialogTitle>Clear the entire canvas?</DialogTitle>
         <DialogActions>
           <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>

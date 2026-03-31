@@ -91,10 +91,7 @@ export function SandboxCanvas({
           ? e.nativeEvent.getCoalescedEvents()
           : null;
 
-      const points =
-        events && events.length > 0
-          ? events
-          : [e.nativeEvent];
+      const points = events && events.length > 0 ? events : [e.nativeEvent];
 
       for (const pe of points) {
         const pos = toGridCoords(pe.clientX, pe.clientY);
@@ -129,8 +126,14 @@ export function SandboxCanvas({
       // Use CSS pixels, not physical pixels
       const cssW = entry.contentRect.width;
       const cssH = entry.contentRect.height;
-      const gw = Math.min(MAX_GRID_W, Math.max(1, Math.floor(cssW / CELL_SIZE)));
-      const gh = Math.min(MAX_GRID_H, Math.max(1, Math.floor(cssH / CELL_SIZE)));
+      const gw = Math.min(
+        MAX_GRID_W,
+        Math.max(1, Math.floor(cssW / CELL_SIZE)),
+      );
+      const gh = Math.min(
+        MAX_GRID_H,
+        Math.max(1, Math.floor(cssH / CELL_SIZE)),
+      );
 
       // Only recreate grid if dimensions actually changed
       const prev = gridDimsRef.current;

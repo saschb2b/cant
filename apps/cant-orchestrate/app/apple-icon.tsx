@@ -39,13 +39,53 @@ export default function AppleIcon() {
         />
       </div>
       {/* Spoke top */}
-      <div style={{ position: "absolute", top: 22, left: 82, width: 16, height: 26, background: "#FFFFFF", borderRadius: 8 }} />
+      <div
+        style={{
+          position: "absolute",
+          top: 22,
+          left: 82,
+          width: 16,
+          height: 26,
+          background: "#FFFFFF",
+          borderRadius: 8,
+        }}
+      />
       {/* Spoke bottom */}
-      <div style={{ position: "absolute", bottom: 22, left: 82, width: 16, height: 26, background: "#FFFFFF", borderRadius: 8 }} />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 22,
+          left: 82,
+          width: 16,
+          height: 26,
+          background: "#FFFFFF",
+          borderRadius: 8,
+        }}
+      />
       {/* Spoke left */}
-      <div style={{ position: "absolute", left: 22, top: 82, width: 26, height: 16, background: "#FFFFFF", borderRadius: 8 }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 22,
+          top: 82,
+          width: 26,
+          height: 16,
+          background: "#FFFFFF",
+          borderRadius: 8,
+        }}
+      />
       {/* Spoke right */}
-      <div style={{ position: "absolute", right: 22, top: 82, width: 26, height: 16, background: "#FFFFFF", borderRadius: 8 }} />
+      <div
+        style={{
+          position: "absolute",
+          right: 22,
+          top: 82,
+          width: 26,
+          height: 16,
+          background: "#FFFFFF",
+          borderRadius: 8,
+        }}
+      />
     </div>,
     { ...size },
   );

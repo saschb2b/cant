@@ -441,7 +441,10 @@ export function JumpFixed() {
   const canvasRef = useVariableJumpSim(false, colors);
 
   return (
-    <CanvasSimulation label={"Fixed height: hold duration ignored"} canvasRef={canvasRef} />
+    <CanvasSimulation
+      label={"Fixed height: hold duration ignored"}
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -461,6 +464,9 @@ export function JumpVariable() {
   const canvasRef = useVariableJumpSim(true, colors);
 
   return (
-    <CanvasSimulation label={"Variable height: hold duration controls arc"} canvasRef={canvasRef} />
+    <CanvasSimulation
+      label={"Variable height: hold duration controls arc"}
+      canvasRef={canvasRef}
+    />
   );
 }

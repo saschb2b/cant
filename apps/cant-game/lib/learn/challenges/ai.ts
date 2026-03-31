@@ -109,8 +109,7 @@ export const aiChallenges: Challenge[] = [
       "Arrive behavior scales the steering force based on distance to the target. Outside the slowing radius it behaves like seek, but inside it reduces desired speed proportionally, causing the agent to decelerate smoothly to a stop. This is the standard approach for any AI that needs to reach a specific position, from RTS unit movement to NPC navigation.",
     explanationWrong:
       "Pure seek always applies maximum steering force toward the target regardless of distance. When the agent reaches the target it is still at full speed, so it overshoots, turns around, overshoots again, and oscillates indefinitely. Clamping speed near the target is a hack that produces abrupt stops. The arrive behavior solves this naturally.",
-    sourceUrl:
-      "https://www.red3d.com/cwr/steer/gdc99/",
+    sourceUrl: "https://www.red3d.com/cwr/steer/gdc99/",
     sourceLabel: "Craig Reynolds: Steering Behaviors for Autonomous Characters",
   },
 ];

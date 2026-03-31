@@ -402,7 +402,10 @@ export function StateBooleanFlags() {
   }, []);
 
   return (
-    <CanvasSimulation label="Boolean flags (no validation)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Boolean flags (no validation)"
+      canvasRef={canvasRef}
+    />
   );
 }
 
@@ -650,6 +653,9 @@ export function StateFiniteMachine() {
   }, []);
 
   return (
-    <CanvasSimulation label="Finite state machine (validated transitions)" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Finite state machine (validated transitions)"
+      canvasRef={canvasRef}
+    />
   );
 }

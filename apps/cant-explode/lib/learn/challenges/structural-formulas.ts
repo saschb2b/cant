@@ -36,8 +36,7 @@ export const structuralFormulasChallenges: Challenge[] = [
       "Ethanol (CH3CH2OH) has an O-H group that can donate and accept hydrogen bonds with water. This makes ethanol miscible with water in all proportions and gives it a much higher boiling point than dimethyl ether.",
     explanationWrong:
       "Dimethyl ether (CH3OCH3) has the same molecular formula C2H6O but lacks an O-H group. It can only accept hydrogen bonds, not donate them, resulting in much weaker intermolecular interactions with water.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Ethanol#Physical_properties",
+    sourceUrl: "https://en.wikipedia.org/wiki/Ethanol#Physical_properties",
     sourceLabel: "Wikipedia: Ethanol physical properties",
   },
   {

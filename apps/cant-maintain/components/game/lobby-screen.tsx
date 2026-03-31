@@ -50,11 +50,8 @@ export function LobbyScreen(props: LobbyScreenProps) {
       }}
       slots={{ activityGraph: ActivityGraph }}
       crossPromoSlot={
-          <CantSeriesGrid
-            currentAppName="Can't Maintain"
-            variant="compact"
-          />
-        }
+        <CantSeriesGrid currentAppName="Can't Maintain" variant="compact" />
+      }
     />
   );
 }

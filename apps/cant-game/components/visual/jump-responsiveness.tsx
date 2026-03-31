@@ -456,6 +456,9 @@ export function JumpCoyoteTime() {
   const canvasRef = useJumpSim(true, colors);
 
   return (
-    <CanvasSimulation label={"Coyote time: " + String(COYOTE_WINDOW * 1000) + "ms grace window"} canvasRef={canvasRef} />
+    <CanvasSimulation
+      label={"Coyote time: " + String(COYOTE_WINDOW * 1000) + "ms grace window"}
+      canvasRef={canvasRef}
+    />
   );
 }

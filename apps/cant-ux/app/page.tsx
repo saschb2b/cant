@@ -1,6 +1,12 @@
 import Box from "@mui/material/Box";
 import { Gamepad2, BookOpen } from "lucide-react";
-import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner, MeshGradient } from "@cant/shared/components";
+import {
+  Hero,
+  FeatureGrid,
+  CantSeriesGrid,
+  OpenSourceBanner,
+  MeshGradient,
+} from "@cant/shared/components";
 import { LiveRibbon } from "@cant/shared/components/game";
 import { fetchRecentResults } from "@/lib/game/actions";
 import { SiteHeader } from "@/components/site-header";

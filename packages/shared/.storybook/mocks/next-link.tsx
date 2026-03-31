@@ -6,14 +6,15 @@ interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children?: ReactNode;
 }
 
-const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  function MockLink({ href, children, style, ...rest }, ref) {
-    return (
-      <a ref={ref} href={href} style={style} {...rest}>
-        {children}
-      </a>
-    );
-  },
-);
+const Link = forwardRef<HTMLAnchorElement, LinkProps>(function MockLink(
+  { href, children, style, ...rest },
+  ref,
+) {
+  return (
+    <a ref={ref} href={href} style={style} {...rest}>
+      {children}
+    </a>
+  );
+});
 
 export default Link;

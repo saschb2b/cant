@@ -5,9 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function getAbsolutePath(value: string) {
-  return dirname(
-    fileURLToPath(import.meta.resolve(`${value}/package.json`)),
-  );
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
 }
 
 const config: StorybookConfig = {

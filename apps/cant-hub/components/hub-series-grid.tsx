@@ -134,10 +134,23 @@ function SeriesCard({ app }: { app: CantApp }) {
           <AppIcon app={app} />
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Typography variant="h6" component="h3" fontWeight={700} sx={{ lineHeight: 1.2 }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                fontWeight={700}
+                sx={{ lineHeight: 1.2 }}
+              >
                 {app.name}
               </Typography>
-              <Box sx={{ ml: "auto", pl: 1, color: "text.disabled", display: "flex", flexShrink: 0 }}>
+              <Box
+                sx={{
+                  ml: "auto",
+                  pl: 1,
+                  color: "text.disabled",
+                  display: "flex",
+                  flexShrink: 0,
+                }}
+              >
                 <ExternalLink size={14} />
               </Box>
             </Stack>
@@ -257,7 +270,9 @@ export function HubSeriesGrid() {
   const groups = groupByCategory([...ALL_APPS]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 5, md: 7 } }}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: { xs: 5, md: 7 } }}
+    >
       {groups.map((group) => (
         <Box key={group.category}>
           <Typography
@@ -280,10 +295,13 @@ export function HubSeriesGrid() {
               display: "grid",
               gridTemplateColumns: {
                 xs: "1fr",
-                sm: `repeat(${Math.min(group.apps.length, 2)}, 1fr)`,
-                lg: `repeat(${Math.min(group.apps.length, 3)}, 1fr)`,
+                sm: `repeat(${String(Math.min(group.apps.length, 2))}, 1fr)`,
+                lg: `repeat(${String(Math.min(group.apps.length, 3))}, 1fr)`,
               },
-              maxWidth: group.apps.length === 1 ? { sm: "50%", lg: "33.33%" } : undefined,
+              maxWidth:
+                group.apps.length === 1
+                  ? { sm: "50%", lg: "33.33%" }
+                  : undefined,
               gap: { xs: 2.5, md: 3 },
             }}
           >

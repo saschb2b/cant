@@ -19,11 +19,7 @@ export interface FeatureGridProps {
   cards: FeatureCard[];
 }
 
-export function FeatureGrid({
-  title,
-  subtitle,
-  cards,
-}: FeatureGridProps) {
+export function FeatureGrid({ title, subtitle, cards }: FeatureGridProps) {
   return (
     <Box
       sx={{

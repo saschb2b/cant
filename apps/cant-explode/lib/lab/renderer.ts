@@ -1,6 +1,12 @@
 import type { Grid } from "./types";
 import type { Atmosphere } from "./atmosphere";
-import { getSkyColor, getAmbientSparkle, getCloudPixel, getCelestialPixel, getCloudShade } from "./atmosphere";
+import {
+  getSkyColor,
+  getAmbientSparkle,
+  getCloudPixel,
+  getCelestialPixel,
+  getCloudShade,
+} from "./atmosphere";
 
 /** Elements that render translucent (blended with background). */
 const TRANSLUCENT: Record<string, number> = {
@@ -26,36 +32,51 @@ type SpritePixel = [number, number, number];
 
 // Walk frame 1: left leg forward
 const HUMAN_FRAME_A: SpritePixel[] = [
-  [0, -4, 0],                         //  H    head
-  [-1, -3, 1], [0, -3, 1], [1, -3, 1], // HHH  shoulders
-  [0, -2, 1],                          //  H    torso
-  [-1, -1, 2], [1, 0, 2],              // L  R  legs staggered
-  [0, -1, 2], [0, 0, 2],              //  LL   connecting
+  [0, -4, 0], //  H    head
+  [-1, -3, 1],
+  [0, -3, 1],
+  [1, -3, 1], // HHH  shoulders
+  [0, -2, 1], //  H    torso
+  [-1, -1, 2],
+  [1, 0, 2], // L  R  legs staggered
+  [0, -1, 2],
+  [0, 0, 2], //  LL   connecting
 ];
 
 // Walk frame 2: right leg forward
 const HUMAN_FRAME_B: SpritePixel[] = [
-  [0, -4, 0],                         //  H    head
-  [-1, -3, 1], [0, -3, 1], [1, -3, 1], // HHH  shoulders
-  [0, -2, 1],                          //  H    torso
-  [1, -1, 2], [-1, 0, 2],              //  R L  legs staggered
-  [0, -1, 2], [0, 0, 2],              //  LL   connecting
+  [0, -4, 0], //  H    head
+  [-1, -3, 1],
+  [0, -3, 1],
+  [1, -3, 1], // HHH  shoulders
+  [0, -2, 1], //  H    torso
+  [1, -1, 2],
+  [-1, 0, 2], //  R L  legs staggered
+  [0, -1, 2],
+  [0, 0, 2], //  LL   connecting
 ];
 
 // Idle frame: standing still
 const HUMAN_FRAME_IDLE: SpritePixel[] = [
-  [0, -4, 0],                         //  H    head
-  [-1, -3, 1], [0, -3, 1], [1, -3, 1], // HHH  shoulders
-  [0, -2, 1],                          //  H    torso
-  [-1, -1, 2], [1, -1, 2],            // L R   legs even
-  [-1, 0, 2], [1, 0, 2],              // L R   feet even
+  [0, -4, 0], //  H    head
+  [-1, -3, 1],
+  [0, -3, 1],
+  [1, -3, 1], // HHH  shoulders
+  [0, -2, 1], //  H    torso
+  [-1, -1, 2],
+  [1, -1, 2], // L R   legs even
+  [-1, 0, 2],
+  [1, 0, 2], // L R   feet even
 ];
 
 // Sleeping: lying on the ground
 const HUMAN_FRAME_SLEEP: SpritePixel[] = [
-  [-2, 0, 0],                                     // H        head
-  [-1, 0, 1], [0, 0, 1], [1, 0, 1],               //  BBB     body
-  [2, 0, 2], [3, 0, 2],                            //      LL  legs
+  [-2, 0, 0], // H        head
+  [-1, 0, 1],
+  [0, 0, 1],
+  [1, 0, 1], //  BBB     body
+  [2, 0, 2],
+  [3, 0, 2], //      LL  legs
 ];
 
 /**
@@ -87,7 +108,6 @@ export function renderGrid(
   for (let gy = 0; gy < grid.height; gy++) {
     skyColors.push(getSkyColor(atmo, gy, grid.height));
   }
-
 
   // Pre-compute cloud shade per column, scaled by daylight for smooth transition
   const shadeMap: number[] = [];
@@ -136,16 +156,24 @@ export function renderGrid(
           case "lava": {
             const nightBoost = lavaGlow;
             r = Math.min(255, r + 20 + nightBoost);
-            g = Math.min(255, g + 5 + ((nightBoost * 3 + 5) / 10) | 0);
+            g = Math.min(255, (g + 5 + (nightBoost * 3 + 5) / 10) | 0);
             break;
           }
           case "spark":
-            r = 255; g = 245; b = 140;
+            r = 255;
+            g = 245;
+            b = 140;
             break;
           case "flower":
             if (Math.random() < 0.005) {
-              particle.r = Math.min(255, Math.max(150, particle.r + Math.floor(Math.random() * 4 - 2)));
-              particle.b = Math.min(255, Math.max(80, particle.b + Math.floor(Math.random() * 4 - 2)));
+              particle.r = Math.min(
+                255,
+                Math.max(150, particle.r + Math.floor(Math.random() * 4 - 2)),
+              );
+              particle.b = Math.min(
+                255,
+                Math.max(80, particle.b + Math.floor(Math.random() * 4 - 2)),
+              );
             }
             break;
           case "tnt":
@@ -162,7 +190,7 @@ export function renderGrid(
             g = Math.min(255, g + 10);
             break;
           case "bee": {
-            const stripe = ((gx + gy) % 2 === 0);
+            const stripe = (gx + gy) % 2 === 0;
             r = stripe ? 230 : 40;
             g = stripe ? 190 : 30;
             b = stripe ? 20 : 10;
@@ -170,15 +198,22 @@ export function renderGrid(
           }
           case "human":
             // Humans are drawn as multi-pixel sprites in a second pass
-            r = bg[0]; g = bg[1]; b = bg[2];
+            r = bg[0];
+            g = bg[1];
+            b = bg[2];
             break;
           case "bird":
             // Small dark silhouette
-            r = 50; g = 40; b = 35;
+            r = 50;
+            g = 40;
+            b = 35;
             break;
           case "leaf":
             if (Math.random() < 0.005) {
-              particle.g = Math.min(255, Math.max(30, particle.g + Math.floor(Math.random() * 4 - 2)));
+              particle.g = Math.min(
+                255,
+                Math.max(30, particle.g + Math.floor(Math.random() * 4 - 2)),
+              );
             }
             break;
           case "algae": {
@@ -258,11 +293,17 @@ export function renderGrid(
       const health = Math.min(particle.r, particle.g);
       let skinR: number, skinG: number, skinB: number;
       if (health > 150) {
-        skinR = 210; skinG = 170; skinB = 130;
+        skinR = 210;
+        skinG = 170;
+        skinB = 130;
       } else if (health > 60) {
-        skinR = 195; skinG = 175; skinB = 155;
+        skinR = 195;
+        skinG = 175;
+        skinB = 155;
       } else {
-        skinR = 175; skinG = 120; skinB = 100;
+        skinR = 175;
+        skinG = 120;
+        skinB = 100;
       }
 
       // Shirt color: muted earth tones based on sex bit (b >> 7)
@@ -272,7 +313,9 @@ export function renderGrid(
       const shirtB = sex ? 70 : 150;
 
       // Pants: dark brown
-      const pantsR = 70, pantsG = 50, pantsB = 35;
+      const pantsR = 70,
+        pantsG = 50,
+        pantsB = 35;
 
       const palette: [number, number, number][] = [
         [skinR, skinG, skinB],
@@ -284,8 +327,11 @@ export function renderGrid(
       // Slow, smooth walk cycle: alternate legs every 12 ticks
       const sleeping = atmo.daylight < 0.2;
       const walkPhase = Math.floor(particle.lifetime / 12) % 4; // 0,1=frame A, 2,3=frame B
-      const frame = sleeping ? HUMAN_FRAME_SLEEP
-        : walkPhase < 2 ? HUMAN_FRAME_A : HUMAN_FRAME_B;
+      const frame = sleeping
+        ? HUMAN_FRAME_SLEEP
+        : walkPhase < 2
+          ? HUMAN_FRAME_A
+          : HUMAN_FRAME_B;
 
       // Direction: flip sprite horizontally if facing left
       const facingLeft = (particle.b & 0x01) === 0;

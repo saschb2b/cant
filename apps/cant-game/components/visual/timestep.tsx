@@ -217,9 +217,7 @@ export function TimestepVariable() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  return (
-    <CanvasSimulation label="Variable delta time" canvasRef={canvasRef} />
-  );
+  return <CanvasSimulation label="Variable delta time" canvasRef={canvasRef} />;
 }
 
 /* ------------------------------------------------------------------ */
@@ -315,6 +313,9 @@ export function TimestepFixed() {
   }, []);
 
   return (
-    <CanvasSimulation label="Fixed timestep with accumulator" canvasRef={canvasRef} />
+    <CanvasSimulation
+      label="Fixed timestep with accumulator"
+      canvasRef={canvasRef}
+    />
   );
 }

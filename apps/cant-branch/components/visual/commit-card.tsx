@@ -40,13 +40,19 @@ export function CommitCardBadMessage() {
   return (
     <Paper sx={cardSx} elevation={3}>
       <Box sx={headerSx}>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, color: "#ffbd2e" }}>
+        <Typography
+          sx={{ fontFamily: "monospace", fontSize: 10, color: "#ffbd2e" }}
+        >
           commit a3f7c2d1e8b9
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}>
+        <Typography
+          sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}
+        >
           Author: dev@company.com
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}>
+        <Typography
+          sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}
+        >
           Date: Mon Mar 10 14:23:01 2025
         </Typography>
       </Box>
@@ -89,7 +95,8 @@ export function CommitCardBadMessage() {
             wordBreak: "break-word",
           }}
         >
-          {"    "}{subject}
+          {"    "}
+          {subject}
         </Typography>
       </Box>
 
@@ -110,13 +117,19 @@ adds a null check before accessing token.claims.`;
   return (
     <Paper sx={cardSx} elevation={3}>
       <Box sx={headerSx}>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, color: "#27c93f" }}>
+        <Typography
+          sx={{ fontFamily: "monospace", fontSize: 10, color: "#27c93f" }}
+        >
           commit a3f7c2d1e8b9
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}>
+        <Typography
+          sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}
+        >
           Author: dev@company.com
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}>
+        <Typography
+          sx={{ fontFamily: "monospace", fontSize: 10, color: "#888" }}
+        >
           Date: Mon Mar 10 14:23:01 2025
         </Typography>
       </Box>
@@ -157,14 +170,20 @@ adds a null check before accessing token.claims.`;
             color: "#e0e0e0",
           }}
         >
-          {"    "}{subject}
+          {"    "}
+          {subject}
         </Typography>
       </Box>
 
       {/* Body */}
       <Box sx={{ ...bodySx, mt: 1, color: "#aaa" }}>
         <Typography
-          sx={{ fontFamily: "monospace", fontSize: 10, lineHeight: 1.6, color: "#aaa" }}
+          sx={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            lineHeight: 1.6,
+            color: "#aaa",
+          }}
         >
           {body}
         </Typography>
@@ -224,7 +243,8 @@ export function ChangelogUnstructured() {
               color: "#777",
             }}
           >
-            {"- "}{item}
+            {"- "}
+            {item}
           </Typography>
         ))}
       </Box>
@@ -265,10 +285,24 @@ export function ChangelogStructured() {
         >
           ### Added
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, lineHeight: 1.7, color: "#ccc" }}>
+        <Typography
+          sx={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            lineHeight: 1.7,
+            color: "#ccc",
+          }}
+        >
           - Dark mode support
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, lineHeight: 1.7, color: "#ccc" }}>
+        <Typography
+          sx={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            lineHeight: 1.7,
+            color: "#ccc",
+          }}
+        >
           - Export feature
         </Typography>
       </Box>
@@ -286,10 +320,24 @@ export function ChangelogStructured() {
         >
           ### Fixed
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, lineHeight: 1.7, color: "#ccc" }}>
+        <Typography
+          sx={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            lineHeight: 1.7,
+            color: "#ccc",
+          }}
+        >
           - Login redirect bug
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, lineHeight: 1.7, color: "#ccc" }}>
+        <Typography
+          sx={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            lineHeight: 1.7,
+            color: "#ccc",
+          }}
+        >
           - Docs typo
         </Typography>
       </Box>
@@ -307,7 +355,14 @@ export function ChangelogStructured() {
         >
           ### Removed
         </Typography>
-        <Typography sx={{ fontFamily: "monospace", fontSize: 10, lineHeight: 1.7, color: "#ccc" }}>
+        <Typography
+          sx={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            lineHeight: 1.7,
+            color: "#ccc",
+          }}
+        >
           - Deprecated API endpoint
         </Typography>
       </Box>

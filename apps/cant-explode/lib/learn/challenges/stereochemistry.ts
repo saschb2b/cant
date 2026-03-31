@@ -17,8 +17,7 @@ export const stereochemistryChallenges: Challenge[] = [
       "The staggered conformation has a 60-degree dihedral angle between adjacent C-H bonds, maximizing the distance between electron clouds. It is about 12.5 kJ/mol more stable than the eclipsed form due to reduced torsional strain.",
     explanationWrong:
       "The eclipsed conformation has a 0-degree dihedral angle, placing all bonds directly behind each other. This maximizes electron-electron repulsion (torsional strain) and represents an energy maximum during rotation about the C-C bond.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Conformational_isomerism#Ethane",
+    sourceUrl: "https://en.wikipedia.org/wiki/Conformational_isomerism#Ethane",
     sourceLabel: "Wikipedia: Ethane conformations",
   },
   {
@@ -37,8 +36,7 @@ export const stereochemistryChallenges: Challenge[] = [
       "In a Fischer projection of (R)-glyceraldehyde, the OH group appears on the right side. This corresponds to D-glyceraldehyde, which serves as the reference compound for assigning D/L configuration to sugars and amino acids.",
     explanationWrong:
       "With OH on the left, this is (S)-glyceraldehyde (L-glyceraldehyde). While it has the same connectivity, the mirror-image arrangement at the chiral center gives it opposite optical rotation and different biological activity.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Fischer_projection",
+    sourceUrl: "https://en.wikipedia.org/wiki/Fischer_projection",
     sourceLabel: "Wikipedia: Fischer projection",
   },
   {
@@ -46,8 +44,7 @@ export const stereochemistryChallenges: Challenge[] = [
     category: "stereochemistry",
     difficulty: "medium",
     title: "Chair cyclohexane substitution",
-    prompt:
-      "Which chair conformation is more stable for methylcyclohexane?",
+    prompt: "Which chair conformation is more stable for methylcyclohexane?",
     content: {
       type: "visual",
       left: { componentId: "ChairAxialMethyl" },

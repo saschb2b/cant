@@ -5,10 +5,7 @@ import {
   CATEGORY_SECTIONS,
 } from "@/lib/game/categories";
 import { challenges } from "@/lib/game/challenges";
-import {
-  buildSearchItems,
-  type SearchItem,
-} from "@cant/shared/lib";
+import { buildSearchItems, type SearchItem } from "@cant/shared/lib";
 
 export type { SearchItem };
 

@@ -14,7 +14,12 @@ import { SandboxControls } from "./sandbox-controls";
 import { ReactionBookButton } from "./reaction-book";
 
 /** Count specific creature types in the grid. */
-function countCreatures(grid: Grid): { worms: number; bees: number; humans: number; birds: number } {
+function countCreatures(grid: Grid): {
+  worms: number;
+  bees: number;
+  humans: number;
+  birds: number;
+} {
   let worms = 0;
   let bees = 0;
   let humans = 0;
@@ -44,7 +49,12 @@ export function Sandbox() {
   const [eraserActive, setEraserActive] = useState(false);
   const [paused, setPaused] = useState(false);
   const creaturesRef = useRef({ worms: 0, bees: 0, humans: 0, birds: 0 });
-  const [creatures, setCreatures] = useState({ worms: 0, bees: 0, humans: 0, birds: 0 });
+  const [creatures, setCreatures] = useState({
+    worms: 0,
+    bees: 0,
+    humans: 0,
+    birds: 0,
+  });
   const isMobile = typeof window !== "undefined" && window.innerWidth < 600;
   const [brushSize, setBrushSize] = useState(isMobile ? 3 : 2);
 
@@ -202,7 +212,10 @@ export function Sandbox() {
         </SandboxControls>
 
         {/* Creature population counter */}
-        {(creatures.worms > 0 || creatures.bees > 0 || creatures.humans > 0 || creatures.birds > 0) && (
+        {(creatures.worms > 0 ||
+          creatures.bees > 0 ||
+          creatures.humans > 0 ||
+          creatures.birds > 0) && (
           <Box
             sx={{
               position: "absolute",

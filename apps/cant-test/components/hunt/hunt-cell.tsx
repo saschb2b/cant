@@ -106,8 +106,7 @@ export const HuntCell = memo(function HuntCell({
           bgcolor: "primary.main",
           borderRadius: 0.5,
           cursor: isGameOver ? "default" : "pointer",
-          animation:
-            "hunt-flag-pop 0.3s cubic-bezier(0.2, 0, 0, 1.5) both",
+          animation: "hunt-flag-pop 0.3s cubic-bezier(0.2, 0, 0, 1.5) both",
           "@keyframes hunt-flag-pop": {
             "0%": { transform: "scale(0.6) rotate(-15deg)", opacity: 0.5 },
             "70%": { transform: "scale(1.15) rotate(3deg)", opacity: 1 },

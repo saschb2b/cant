@@ -17,8 +17,7 @@ export const energyDiagramsChallenges: Challenge[] = [
       "An exothermic reaction has products at lower energy than reactants, giving a negative enthalpy change. Energy is released to the surroundings, often as heat. Combustion reactions and many neutralization reactions are exothermic.",
     explanationWrong:
       "An endothermic reaction has products at higher energy than reactants, requiring continuous energy input. The positive enthalpy change means the system absorbs heat from the surroundings. Photosynthesis and thermal decomposition are endothermic processes.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Exothermic_reaction",
+    sourceUrl: "https://en.wikipedia.org/wiki/Exothermic_reaction",
     sourceLabel: "Wikipedia: Exothermic reaction",
   },
   {
@@ -56,8 +55,7 @@ export const energyDiagramsChallenges: Challenge[] = [
       "The SN1 mechanism is a two-step process with a carbocation intermediate. The energy diagram shows two humps (two transition states) separated by an energy minimum (the intermediate). The first step, ionization, is typically rate-determining.",
     explanationWrong:
       "The SN2 mechanism is a one-step concerted process with a single transition state. The nucleophile attacks as the leaving group departs simultaneously, producing only one energy maximum. No intermediate is formed.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/SN1_reaction",
+    sourceUrl: "https://en.wikipedia.org/wiki/SN1_reaction",
     sourceLabel: "Wikipedia: SN1 reaction",
   },
   {

@@ -5,10 +5,7 @@ import {
   CATEGORY_SECTIONS,
 } from "@/lib/learn/categories";
 import { challenges } from "@/lib/learn/challenges";
-import {
-  buildSearchItems,
-  type SearchItem,
-} from "@cant/shared/lib";
+import { buildSearchItems, type SearchItem } from "@cant/shared/lib";
 
 export type { SearchItem };
 

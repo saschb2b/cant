@@ -75,7 +75,12 @@ export function Hero({
               textAlign: { xs: "center", md: "left" },
             }}
           >
-            <Typography variant="h2" component="h1" fontWeight="bold" sx={{ mb: 2.5 }}>
+            <Typography
+              variant="h2"
+              component="h1"
+              fontWeight="bold"
+              sx={{ mb: 2.5 }}
+            >
               {titleLine1}
               <br />
               <Box component="span" sx={{ color: "primary.main" }}>

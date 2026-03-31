@@ -6,10 +6,20 @@ import Divider from "@mui/material/Divider";
 import { Check, X, Gamepad2, BookOpen, Zap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { Hero, FeatureGrid, CantSeriesGrid, OpenSourceBanner, MeshGradient } from "@cant/shared/components";
+import {
+  Hero,
+  FeatureGrid,
+  CantSeriesGrid,
+  OpenSourceBanner,
+  MeshGradient,
+} from "@cant/shared/components";
 import { LiveRibbon } from "@cant/shared/components/game";
 import { fetchRecentResults } from "@/lib/game/actions";
-import { getHighlighter, highlightDual, codeBlockStyles } from "@cant/shared/lib";
+import {
+  getHighlighter,
+  highlightDual,
+  codeBlockStyles,
+} from "@cant/shared/lib";
 
 const BAD_CODE = `interface UserCardProps {
   data: User;
