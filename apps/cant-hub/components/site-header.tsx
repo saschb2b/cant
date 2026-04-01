@@ -167,7 +167,6 @@ export function SiteHeader() {
             sx={{ ml: "auto" }}
           >
             <ColorSchemeToggle />
-            <UserMenu />
             <Tooltip title="GitHub">
               <IconButton
                 component="a"
@@ -188,6 +187,7 @@ export function SiteHeader() {
                 </svg>
               </IconButton>
             </Tooltip>
+            <UserMenu />
           </Stack>
         </Stack>
       </Container>
