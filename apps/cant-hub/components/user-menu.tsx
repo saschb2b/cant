@@ -109,9 +109,10 @@ function UserPill({
       sx={{
         display: "flex",
         alignItems: "center",
-        gap: 0.75,
-        px: 0.75,
-        py: 0.5,
+        gap: 1,
+        pl: 0.75,
+        pr: 1,
+        py: 0.75,
         border: 1,
         borderColor: "divider",
         borderRadius: 2,
@@ -168,22 +169,44 @@ function UserPill({
         )}
       </Box>
 
-      {/* Name (hidden on mobile) */}
-      <Typography
-        variant="body2"
+      {/* Label + name (hidden on mobile) */}
+      <Box
         sx={{
-          fontWeight: 500,
-          color: "text.primary",
-          maxWidth: 120,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          display: { xs: "none", sm: "block" },
-          lineHeight: 1,
+          display: { xs: "none", sm: "flex" },
+          flexDirection: "column",
+          alignItems: "flex-start",
+          minWidth: 0,
+          gap: 0.25,
         }}
       >
-        {name.split(" ")[0]}
-      </Typography>
+        <Typography
+          sx={{
+            fontSize: "0.65rem",
+            fontWeight: 600,
+            color: "text.secondary",
+            lineHeight: 1,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}
+        >
+          My Account
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 500,
+            color: "text.primary",
+            maxWidth: 120,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            lineHeight: 1.2,
+            fontSize: "0.8rem",
+          }}
+        >
+          {name}
+        </Typography>
+      </Box>
 
       {/* Chevron */}
       <Box
