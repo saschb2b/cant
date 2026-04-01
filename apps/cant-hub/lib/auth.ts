@@ -1,15 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { betterAuth } from "better-auth";
-import Database from "better-sqlite3";
 
 const dbDir = path.join(process.cwd(), "data");
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
+const database = new DatabaseSync(path.join(dbDir, "auth.db"));
+
 export const auth = betterAuth({
-  database: new Database(path.join(dbDir, "auth.db")),
+  database,
   emailAndPassword: {
     enabled: false,
   },
