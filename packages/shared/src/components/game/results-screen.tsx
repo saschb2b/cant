@@ -48,6 +48,7 @@ interface ResultsGameState<C extends ResultsChallenge = ResultsChallenge> {
   bestStreak: number;
   startedAt: number;
   finishedAt: number | null;
+  thinkingTimeSec: number;
   seed: string;
 }
 
@@ -94,9 +95,7 @@ export function ResultsScreen<S extends ResultsGameState>({
     (a) => a.result === "correct",
   ).length;
   const percentage = Math.round((correct / total) * 100);
-  const elapsed = Math.round(
-    ((state.finishedAt ?? state.startedAt) - state.startedAt) / 1000,
-  );
+  const elapsed = state.thinkingTimeSec;
   const minutes = Math.floor(elapsed / 60);
   const seconds = elapsed % 60;
 

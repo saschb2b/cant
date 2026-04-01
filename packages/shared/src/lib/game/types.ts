@@ -96,6 +96,8 @@ export interface GameState<T extends BaseChallenge = BaseChallenge> {
   isFinished: boolean;
   startedAt: number;
   finishedAt: number | null;
+  /** Accumulated thinking time in seconds (only counts time spent deciding). */
+  thinkingTimeSec: number;
   seed: string;
   gameType: "daily" | "weekly" | "custom";
 }

@@ -82,6 +82,7 @@ function createInitialState<T extends BaseChallenge>(
     isFinished: false,
     startedAt: Date.now(),
     finishedAt: null,
+    thinkingTimeSec: 0,
     seed: encodeSeed(rawSeed, excludedCategories),
     gameType,
   };
@@ -207,6 +208,7 @@ export function useGame<T extends BaseChallenge>(
           score: isCorrect ? prev.score + 1 : prev.score,
           streak: newStreak,
           bestStreak: Math.max(prev.bestStreak, newStreak),
+          thinkingTimeSec: prev.thinkingTimeSec + timeSec,
           answers: {
             ...prev.answers,
             [challengeId]: {
@@ -244,7 +246,7 @@ export function useGame<T extends BaseChallenge>(
       score: state.score,
       total: state.challenges.length,
       bestStreak: state.bestStreak,
-      durationSec: Math.round((state.finishedAt - state.startedAt) / 1000),
+      durationSec: state.thinkingTimeSec,
       seed: state.seed,
       gameType: state.gameType,
     });
@@ -260,7 +262,7 @@ export function useGame<T extends BaseChallenge>(
       score: state.score,
       total: state.challenges.length,
       bestStreak: state.bestStreak,
-      durationSec: Math.round((state.finishedAt - state.startedAt) / 1000),
+      durationSec: state.thinkingTimeSec,
     });
   }, [state?.isFinished]);
 

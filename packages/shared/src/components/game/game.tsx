@@ -171,6 +171,7 @@ interface GameState<C extends BaseChallenge> {
   isFinished: boolean;
   startedAt: number;
   finishedAt: number | null;
+  thinkingTimeSec: number;
   seed: string;
   gameType: "daily" | "weekly" | "custom";
 }
