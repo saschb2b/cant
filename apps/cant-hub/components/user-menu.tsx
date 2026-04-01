@@ -3,15 +3,15 @@
 import { useState } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import { authClient } from "@/lib/auth-client";
 
 function DashboardIcon() {
@@ -53,10 +53,159 @@ function LogOutIcon() {
   );
 }
 
+function ChevronDownIcon() {
+  return (
+    <svg
+      width={14}
+      height={14}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+/** Stable gradient from a string (name or email). */
+function stringToGradient(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const h1 = Math.abs(hash) % 360;
+  const h2 = (h1 + 45) % 360;
+  return `linear-gradient(135deg, hsl(${h1}, 65%, 55%), hsl(${h2}, 55%, 45%))`;
+}
+
+function UserPill({
+  name,
+  image,
+  onClick,
+  open,
+}: {
+  name: string;
+  image?: string | null;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
+  open: boolean;
+}) {
+  const initials = name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  return (
+    <Box
+      component="button"
+      onClick={onClick}
+      aria-label="Account menu"
+      aria-expanded={open}
+      aria-haspopup="menu"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 0.75,
+        px: 0.75,
+        py: 0.5,
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 2,
+        bgcolor: "transparent",
+        cursor: "pointer",
+        transition: "border-color 0.15s, background-color 0.15s",
+        "&:hover": {
+          borderColor: "text.disabled",
+          bgcolor: "action.hover",
+        },
+        ...(open && {
+          borderColor: "text.disabled",
+          bgcolor: "action.hover",
+        }),
+      }}
+    >
+      {/* Avatar */}
+      <Box
+        sx={{
+          width: 24,
+          height: 24,
+          borderRadius: "50%",
+          overflow: "hidden",
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          ...(image
+            ? {}
+            : {
+                background: stringToGradient(name),
+              }),
+        }}
+      >
+        {image ? (
+          <Box
+            component="img"
+            src={image}
+            alt={name}
+            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <Typography
+            sx={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "#fff",
+              lineHeight: 1,
+              letterSpacing: "0.02em",
+            }}
+          >
+            {initials}
+          </Typography>
+        )}
+      </Box>
+
+      {/* Name (hidden on mobile) */}
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 500,
+          color: "text.primary",
+          maxWidth: 120,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          display: { xs: "none", sm: "block" },
+          lineHeight: 1,
+        }}
+      >
+        {name.split(" ")[0]}
+      </Typography>
+
+      {/* Chevron */}
+      <Box
+        sx={{
+          color: "text.secondary",
+          display: "flex",
+          alignItems: "center",
+          transition: "transform 0.15s",
+          transform: open ? "rotate(180deg)" : "none",
+        }}
+      >
+        <ChevronDownIcon />
+      </Box>
+    </Box>
+  );
+}
+
 export function UserMenu() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   if (isPending) return null;
 
@@ -78,26 +227,19 @@ export function UserMenu() {
 
   return (
     <>
-      <IconButton
-        size="small"
+      <UserPill
+        name={user.name}
+        image={user.image}
         onClick={(e) => setAnchorEl(e.currentTarget)}
-        aria-label="Account menu"
-      >
-        <Avatar
-          src={user.image ?? undefined}
-          alt={user.name}
-          sx={{ width: 28, height: 28, fontSize: 14 }}
-        >
-          {user.name?.charAt(0).toUpperCase()}
-        </Avatar>
-      </IconButton>
+        open={open}
+      />
       <Menu
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        open={open}
         onClose={() => setAnchorEl(null)}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        slotProps={{ paper: { sx: { minWidth: 200, mt: 1 } } }}
+        slotProps={{ paper: { sx: { minWidth: 220, mt: 1 } } }}
       >
         <MenuItem disabled sx={{ opacity: "1 !important" }}>
           <ListItemText
