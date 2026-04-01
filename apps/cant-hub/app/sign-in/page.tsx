@@ -4,12 +4,11 @@ import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { authClient } from "@/lib/auth-client";
 import { SiteHeader } from "@/components/site-header";
+import { CompassIcon } from "@/components/compass-icon";
 
 function GitHubIcon() {
   return (
@@ -68,6 +67,16 @@ function GitLabIcon() {
   );
 }
 
+const BUTTON_SX = {
+  justifyContent: "flex-start",
+  px: 3,
+  py: 1.5,
+  borderColor: "divider",
+  color: "text.primary",
+  fontWeight: 500,
+  "&:hover": { borderColor: "text.disabled", bgcolor: "action.hover" },
+} as const;
+
 export default function SignInPage() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
@@ -98,71 +107,158 @@ export default function SignInPage() {
           flex: 1,
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
+          overflow: "hidden",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(ellipse at 40% 50%, rgba(212,168,67,0.12) 0%, rgba(61,139,114,0.06) 35%, transparent 65%), radial-gradient(ellipse at 65% 60%, rgba(124,58,237,0.06) 0%, transparent 50%)",
+            pointerEvents: "none",
+          },
         }}
       >
-        <Container maxWidth="xs">
-          <Paper variant="outlined" sx={{ p: 4, textAlign: "center" }}>
-            <Typography variant="h5" fontWeight={700} gutterBottom>
-              Sign in
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Continue with your preferred account
-            </Typography>
-
-            <Stack spacing={1.5}>
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<GitHubIcon />}
-                onClick={() =>
-                  authClient.signIn.social({
-                    provider: "github",
-                    callbackURL: "/onboarding",
-                  })
-                }
-                sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
+        <Container maxWidth="lg" sx={{ position: "relative" }}>
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={{ xs: 6, md: 10 }}
+            alignItems="center"
+            sx={{ py: { xs: 8, md: 0 } }}
+          >
+            {/* Left: branding and message */}
+            <Box
+              sx={{
+                flex: 1,
+                textAlign: { xs: "center", md: "left" },
+                order: { xs: 2, md: 1 },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  mb: 3,
+                  mx: { xs: "auto", md: 0 },
+                }}
               >
-                Continue with GitHub
-              </Button>
-
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<GoogleIcon />}
-                onClick={() =>
-                  authClient.signIn.social({
-                    provider: "google",
-                    callbackURL: "/onboarding",
-                  })
-                }
-                sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
+                <CompassIcon size={48} />
+              </Box>
+              <Typography
+                variant="h2"
+                component="h1"
+                fontWeight={800}
+                sx={{
+                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.02em",
+                }}
               >
-                Continue with Google
-              </Button>
-
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<GitLabIcon />}
-                onClick={() =>
-                  authClient.signIn.social({
-                    provider: "gitlab",
-                    callbackURL: "/onboarding",
-                  })
-                }
-                sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
+                Welcome back
+              </Typography>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  mt: 2,
+                  lineHeight: 1.7,
+                  maxWidth: { md: 400 },
+                  mx: { xs: "auto", md: 0 },
+                }}
               >
-                Continue with GitLab
-              </Button>
-            </Stack>
+                Sign in to manage your screening courses, review candidates, and
+                track results across the series.
+              </Typography>
+              <Typography
+                variant="caption"
+                color="text.disabled"
+                fontFamily="var(--font-geist-mono), monospace"
+                sx={{
+                  mt: 3,
+                  display: "block",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Learning content is always free.
+              </Typography>
+            </Box>
 
-            <Divider sx={{ my: 3 }} />
+            {/* Right: sign-in card */}
+            <Box
+              sx={{
+                width: { xs: "100%", sm: 400 },
+                flexShrink: 0,
+                order: { xs: 1, md: 2 },
+              }}
+            >
+              <Stack
+                spacing={1.5}
+                sx={{
+                  p: { xs: 3, sm: 4 },
+                  borderRadius: 3,
+                  border: 1,
+                  borderColor: "divider",
+                  bgcolor: "background.paper",
+                }}
+              >
+                <Typography variant="h6" fontWeight={700} sx={{ mb: 1 }}>
+                  Sign in
+                </Typography>
 
-            <Typography variant="caption" color="text.secondary">
-              By signing in you agree to our terms of service.
-            </Typography>
-          </Paper>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  startIcon={<GitHubIcon />}
+                  onClick={() =>
+                    authClient.signIn.social({
+                      provider: "github",
+                      callbackURL: "/onboarding",
+                    })
+                  }
+                  sx={BUTTON_SX}
+                >
+                  Continue with GitHub
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  startIcon={<GoogleIcon />}
+                  onClick={() =>
+                    authClient.signIn.social({
+                      provider: "google",
+                      callbackURL: "/onboarding",
+                    })
+                  }
+                  sx={BUTTON_SX}
+                >
+                  Continue with Google
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  startIcon={<GitLabIcon />}
+                  onClick={() =>
+                    authClient.signIn.social({
+                      provider: "gitlab",
+                      callbackURL: "/onboarding",
+                    })
+                  }
+                  sx={BUTTON_SX}
+                >
+                  Continue with GitLab
+                </Button>
+
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  sx={{ pt: 1, textAlign: "center" }}
+                >
+                  By signing in you agree to our terms of service.
+                </Typography>
+              </Stack>
+            </Box>
+          </Stack>
         </Container>
       </Box>
     </Box>
