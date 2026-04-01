@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import { getSession } from "@/lib/auth-session";
+import { DashboardNav } from "@/components/dashboard-nav";
 
 export default async function DashboardLayout({
   children,
@@ -20,5 +23,18 @@ export default async function DashboardLayout({
     redirect("/");
   }
 
-  return <>{children}</>;
+  return (
+    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: { xs: 3, md: 5 },
+        }}
+      >
+        <DashboardNav />
+        <Box sx={{ flex: 1, minWidth: 0 }}>{children}</Box>
+      </Box>
+    </Container>
+  );
 }
