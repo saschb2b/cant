@@ -5,12 +5,34 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { authClient } from "@/lib/auth-client";
+
+function DashboardIcon() {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+    </svg>
+  );
+}
 
 function LogOutIcon() {
   return (
@@ -52,6 +74,7 @@ export function UserMenu() {
   }
 
   const user = session.user;
+  const isRecruiter = user.role === "recruiter";
 
   return (
     <>
@@ -74,20 +97,56 @@ export function UserMenu() {
         onClose={() => setAnchorEl(null)}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        slotProps={{ paper: { sx: { minWidth: 180, mt: 1 } } }}
+        slotProps={{ paper: { sx: { minWidth: 200, mt: 1 } } }}
       >
-        <MenuItem disabled>
+        <MenuItem disabled sx={{ opacity: "1 !important" }}>
           <ListItemText
             primary={user.name}
-            secondary={user.email}
+            secondary={
+              <>
+                {user.email}
+                {user.role && (
+                  <Chip
+                    label={user.role}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      ml: 1,
+                      height: 20,
+                      fontSize: "0.7rem",
+                      textTransform: "capitalize",
+                    }}
+                  />
+                )}
+              </>
+            }
             primaryTypographyProps={{ fontWeight: 600, variant: "body2" }}
-            secondaryTypographyProps={{ variant: "caption" }}
+            secondaryTypographyProps={{
+              variant: "caption",
+              component: "div",
+              sx: { display: "flex", alignItems: "center", mt: 0.25 },
+            }}
           />
         </MenuItem>
+        <Divider />
+        {isRecruiter && (
+          <MenuItem
+            onClick={() => {
+              setAnchorEl(null);
+              router.push("/dashboard");
+            }}
+          >
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText>Dashboard</ListItemText>
+          </MenuItem>
+        )}
         <MenuItem
           onClick={async () => {
             setAnchorEl(null);
             await authClient.signOut();
+            router.push("/");
             router.refresh();
           }}
         >

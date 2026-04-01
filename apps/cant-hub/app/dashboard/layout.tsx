@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { getSession } from "@/lib/auth-session";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { DashboardNav } from "@/components/dashboard-nav";
 
 export default async function DashboardLayout({
@@ -24,17 +26,32 @@ export default async function DashboardLayout({
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: { xs: 3, md: 5 },
-        }}
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "background.default",
+      }}
+    >
+      <SiteHeader />
+      <Container
+        maxWidth="lg"
+        component="main"
+        sx={{ py: { xs: 4, md: 6 }, flex: 1 }}
       >
-        <DashboardNav />
-        <Box sx={{ flex: 1, minWidth: 0 }}>{children}</Box>
-      </Box>
-    </Container>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: { xs: 3, md: 5 },
+          }}
+        >
+          <DashboardNav />
+          <Box sx={{ flex: 1, minWidth: 0 }}>{children}</Box>
+        </Box>
+      </Container>
+      <SiteFooter />
+    </Box>
   );
 }

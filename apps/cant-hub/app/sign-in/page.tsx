@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -8,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { authClient } from "@/lib/auth-client";
+import { SiteHeader } from "@/components/site-header";
 
 function GitHubIcon() {
   return (
@@ -67,78 +69,102 @@ function GitLabIcon() {
 }
 
 export default function SignInPage() {
+  const { data: session, isPending } = authClient.useSession();
+  const router = useRouter();
+
+  if (!isPending && session) {
+    if (!session.user.role) {
+      router.replace("/onboarding");
+    } else if (session.user.role === "recruiter") {
+      router.replace("/dashboard");
+    } else {
+      router.replace("/");
+    }
+    return null;
+  }
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: "column",
+        bgcolor: "background.default",
       }}
     >
-      <Container maxWidth="xs">
-        <Paper variant="outlined" sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h5" fontWeight={700} gutterBottom>
-            Sign in
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            Continue with your preferred account
-          </Typography>
+      <SiteHeader />
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Container maxWidth="xs">
+          <Paper variant="outlined" sx={{ p: 4, textAlign: "center" }}>
+            <Typography variant="h5" fontWeight={700} gutterBottom>
+              Sign in
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              Continue with your preferred account
+            </Typography>
 
-          <Stack spacing={1.5}>
-            <Button
-              variant="outlined"
-              fullWidth
-              startIcon={<GitHubIcon />}
-              onClick={() =>
-                authClient.signIn.social({
-                  provider: "github",
-                  callbackURL: "/onboarding",
-                })
-              }
-              sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
-            >
-              Continue with GitHub
-            </Button>
+            <Stack spacing={1.5}>
+              <Button
+                variant="outlined"
+                fullWidth
+                startIcon={<GitHubIcon />}
+                onClick={() =>
+                  authClient.signIn.social({
+                    provider: "github",
+                    callbackURL: "/onboarding",
+                  })
+                }
+                sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
+              >
+                Continue with GitHub
+              </Button>
 
-            <Button
-              variant="outlined"
-              fullWidth
-              startIcon={<GoogleIcon />}
-              onClick={() =>
-                authClient.signIn.social({
-                  provider: "google",
-                  callbackURL: "/onboarding",
-                })
-              }
-              sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
-            >
-              Continue with Google
-            </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                startIcon={<GoogleIcon />}
+                onClick={() =>
+                  authClient.signIn.social({
+                    provider: "google",
+                    callbackURL: "/onboarding",
+                  })
+                }
+                sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
+              >
+                Continue with Google
+              </Button>
 
-            <Button
-              variant="outlined"
-              fullWidth
-              startIcon={<GitLabIcon />}
-              onClick={() =>
-                authClient.signIn.social({
-                  provider: "gitlab",
-                  callbackURL: "/onboarding",
-                })
-              }
-              sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
-            >
-              Continue with GitLab
-            </Button>
-          </Stack>
+              <Button
+                variant="outlined"
+                fullWidth
+                startIcon={<GitLabIcon />}
+                onClick={() =>
+                  authClient.signIn.social({
+                    provider: "gitlab",
+                    callbackURL: "/onboarding",
+                  })
+                }
+                sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
+              >
+                Continue with GitLab
+              </Button>
+            </Stack>
 
-          <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3 }} />
 
-          <Typography variant="caption" color="text.secondary">
-            By signing in you agree to our terms of service.
-          </Typography>
-        </Paper>
-      </Container>
+            <Typography variant="caption" color="text.secondary">
+              By signing in you agree to our terms of service.
+            </Typography>
+          </Paper>
+        </Container>
+      </Box>
     </Box>
   );
 }

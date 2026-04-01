@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { authClient } from "@/lib/auth-client";
+import { SiteHeader } from "@/components/site-header";
 import { setUserRole } from "./actions";
 
 function RoleCard({
@@ -74,43 +75,53 @@ export default function OnboardingPage() {
       sx={{
         minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: "column",
+        bgcolor: "background.default",
       }}
     >
-      <Container maxWidth="sm">
-        <Typography
-          variant="h4"
-          fontWeight={700}
-          textAlign="center"
-          gutterBottom
-        >
-          Welcome, {session.user.name}
-        </Typography>
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          textAlign="center"
-          sx={{ mb: 4 }}
-        >
-          How will you use the platform?
-        </Typography>
+      <SiteHeader />
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Container maxWidth="sm">
+          <Typography
+            variant="h4"
+            fontWeight={700}
+            textAlign="center"
+            gutterBottom
+          >
+            Welcome, {session.user.name}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            textAlign="center"
+            sx={{ mb: 4 }}
+          >
+            How will you use the platform?
+          </Typography>
 
-        <Stack spacing={2}>
-          <RoleCard
-            title="Developer"
-            description="Take screening challenges shared by recruiters and track your results."
-            onClick={() => handleRoleSelect("developer")}
-            disabled={false}
-          />
-          <RoleCard
-            title="Recruiter"
-            description="Create screening courses from existing challenges, share them with candidates, and review results."
-            onClick={() => handleRoleSelect("recruiter")}
-            disabled={false}
-          />
-        </Stack>
-      </Container>
+          <Stack spacing={2}>
+            <RoleCard
+              title="Developer"
+              description="Take screening challenges shared by recruiters and track your results."
+              onClick={() => handleRoleSelect("developer")}
+              disabled={false}
+            />
+            <RoleCard
+              title="Recruiter"
+              description="Create screening courses from existing challenges, share them with candidates, and review results."
+              onClick={() => handleRoleSelect("recruiter")}
+              disabled={false}
+            />
+          </Stack>
+        </Container>
+      </Box>
     </Box>
   );
 }
