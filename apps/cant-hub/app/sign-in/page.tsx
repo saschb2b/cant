@@ -93,7 +93,7 @@ export default function SignInPage() {
               onClick={() =>
                 authClient.signIn.social({
                   provider: "github",
-                  callbackURL: "/",
+                  callbackURL: "/onboarding",
                 })
               }
               sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
@@ -108,7 +108,7 @@ export default function SignInPage() {
               onClick={() =>
                 authClient.signIn.social({
                   provider: "google",
-                  callbackURL: "/",
+                  callbackURL: "/onboarding",
                 })
               }
               sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}
@@ -123,7 +123,7 @@ export default function SignInPage() {
               onClick={() =>
                 authClient.signIn.social({
                   provider: "gitlab",
-                  callbackURL: "/",
+                  callbackURL: "/onboarding",
                 })
               }
               sx={{ justifyContent: "flex-start", px: 3, py: 1.2 }}

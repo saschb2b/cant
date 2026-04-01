@@ -2,39 +2,31 @@
 
 ## Quick start (no OAuth needed)
 
-1. Seed the database with test accounts:
-
-```bash
-cd apps/cant-hub
-pnpm db:seed
-```
-
-2. Start the dev server:
+1. Start the dev server:
 
 ```bash
 pnpm dev:hub
 ```
 
-3. Open the browser console and set a session cookie to log in as a test user:
+2. Log in as a test user by visiting one of these URLs:
 
-```js
-// Log in as recruiter
-document.cookie = "better-auth.session_token=test-session-recruiter; path=/";
+- **Recruiter**: http://localhost:3000/api/dev-login?role=recruiter
+- **Developer**: http://localhost:3000/api/dev-login?role=developer
+- **New user** (no role, triggers onboarding): http://localhost:3000/api/dev-login?role=new
 
-// Log in as developer
-document.cookie = "better-auth.session_token=test-session-developer; path=/";
-```
+This creates a real user and session in the database and sets a signed session cookie. You'll be redirected to the appropriate page.
 
-4. Refresh the page.
+3. To sign out, click the avatar in the header and select "Sign out".
 
 ## Resetting the database
 
-Delete the SQLite file and re-seed:
+Delete the SQLite file and restart:
 
 ```bash
 rm apps/cant-hub/data/auth.db
-cd apps/cant-hub && pnpm db:seed
 ```
+
+The database and tables are created automatically on first request.
 
 ## Setting up real OAuth apps (for integration testing)
 

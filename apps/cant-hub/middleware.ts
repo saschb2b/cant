@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
-
-const protectedPaths = ["/dashboard"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
 
-  if (!isProtected) return NextResponse.next();
+  const hasSession = request.cookies
+    .getAll()
+    .some(
+      (c) =>
+        c.name.includes("session_token") || c.name.includes("session-token"),
+    );
 
-  const sessionCookie = getSessionCookie(request);
-  if (!sessionCookie) {
+  if (!hasSession) {
     const signInUrl = new URL("/sign-in", request.url);
     signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
@@ -20,5 +20,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/onboarding/:path*"],
 };

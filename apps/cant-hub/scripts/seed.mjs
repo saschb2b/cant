@@ -6,7 +6,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { randomUUID } from "node:crypto";
 
 const dbDir = path.join(import.meta.dirname, "..", "data");
 if (!fs.existsSync(dbDir)) {
@@ -15,7 +14,7 @@ if (!fs.existsSync(dbDir)) {
 
 const db = new DatabaseSync(path.join(dbDir, "auth.db"));
 
-// Ensure tables exist
+// Ensure tables exist (including role column for user roles)
 db.exec(`
   CREATE TABLE IF NOT EXISTS user (
     id TEXT PRIMARY KEY,
@@ -23,6 +22,7 @@ db.exec(`
     email TEXT NOT NULL UNIQUE,
     emailVerified INTEGER NOT NULL DEFAULT 0,
     image TEXT,
+    role TEXT,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
   );
@@ -71,21 +71,29 @@ const users = [
     id: "test-recruiter-001",
     name: "Test Recruiter",
     email: "recruiter@test.local",
+    role: "recruiter",
   },
   {
     id: "test-developer-001",
     name: "Test Developer",
     email: "developer@test.local",
+    role: "developer",
+  },
+  {
+    id: "test-new-user-001",
+    name: "Test New User",
+    email: "newuser@test.local",
+    role: null,
   },
 ];
 
 const insert = db.prepare(`
-  INSERT OR IGNORE INTO user (id, name, email, emailVerified, createdAt, updatedAt)
-  VALUES (?, ?, ?, 1, ?, ?)
+  INSERT OR REPLACE INTO user (id, name, email, emailVerified, role, createdAt, updatedAt)
+  VALUES (?, ?, ?, 1, ?, ?, ?)
 `);
 
 for (const user of users) {
-  insert.run(user.id, user.name, user.email, now, now);
+  insert.run(user.id, user.name, user.email, user.role, now, now);
 }
 
 // Create long-lived sessions for local dev (expires in 1 year)
@@ -104,10 +112,15 @@ const sessions = [
     token: "test-session-developer",
     userId: "test-developer-001",
   },
+  {
+    id: "session-new-user",
+    token: "test-session-new-user",
+    userId: "test-new-user-001",
+  },
 ];
 
 const insertSession = db.prepare(`
-  INSERT OR IGNORE INTO session (id, expiresAt, token, createdAt, updatedAt, userId)
+  INSERT OR REPLACE INTO session (id, expiresAt, token, createdAt, updatedAt, userId)
   VALUES (?, ?, ?, ?, ?, ?)
 `);
 
@@ -124,11 +137,14 @@ for (const session of sessions) {
 
 console.log("Seeded test accounts:");
 for (const user of users) {
-  console.log(`  ${user.name} (${user.email})`);
+  console.log(
+    `  ${user.name} (${user.email}) - role: ${user.role ?? "(none, needs onboarding)"}`,
+  );
 }
 console.log("\nSession tokens:");
-console.log("  Recruiter: test-session-recruiter");
-console.log("  Developer: test-session-developer");
+console.log("  Recruiter:  test-session-recruiter");
+console.log("  Developer:  test-session-developer");
+console.log("  New user:   test-session-new-user");
 console.log(
   '\nSet cookie "better-auth.session_token=<token>" to log in as a test user.',
 );
