@@ -2,6 +2,15 @@
 
 Paid feature that lets recruiters/HR create technical screening assessments using challenges from the cant app ecosystem. Learning remains free.
 
+**Design principles** (based on how Codility, HackerRank, TestGorilla, HackerEarth work):
+
+- Recruiters screen hundreds of candidates. Every click counts. Assessment creation must take minutes.
+- The shareable link is the product. Recruiter creates, copies link, pastes into job posting or email.
+- Candidates must not need an account. Name + email, then start. Show time estimate upfront.
+- Results must support bulk comparison (ranking, sorting, filtering), not just individual review.
+- Recruiters reuse assessments across similar roles. Duplicate + tweak is essential.
+- Auto-scoring with instant results. No manual grading.
+
 ---
 
 ## Milestone 1: Authentication (done)
@@ -49,49 +58,80 @@ Recruiters compose an assessment by picking topics from cant apps.
 - [ ] Show apps as selectable cards (icon, name, description, category count)
 - [ ] Expanding an app reveals its categories as a checklist
 - [ ] Selected categories are summarized in a sidebar/panel
+- [ ] Show total question count updating live as categories are toggled
 
 **Step 2: Per-category configuration**
 
-- [ ] For each selected category, configure: number of questions (default: all)
-- [ ] Optional difficulty filter (easy, medium, hard) if applicable
-- [ ] Optional time limit per category or for the whole assessment
+- [ ] For each selected category, configure: number of questions (default: all available)
+- [ ] Optional difficulty filter (easy, medium, hard) if the app supports it
+- [ ] Global time limit for the entire assessment (optional)
 
 **Step 3: Persistence**
 
-- [ ] `assessment` table (rename from `course`): id, title, description, status, userId, timeLimit, createdAt, updatedAt
+- [ ] `assessment` table: id, title, description, status, userId, timeLimit, createdAt, updatedAt
 - [ ] `assessment_category` table: assessmentId, appId, categoryId, questionCount, difficulty
 - [ ] Save/update assessment with its selected categories
+
+**Step 4: Share**
+
 - [ ] Generate a unique shareable link per assessment (e.g. `/s/:assessmentId`)
+- [ ] Copy-to-clipboard button on the assessment detail page
+- [ ] Link only works when assessment status is "active"
 
-**Step 4: Preview**
+**Step 5: Duplicate**
 
-- [ ] Summary view showing: total questions, estimated time, topics covered per app
-- [ ] Option to copy the shareable link
+- [ ] "Duplicate" action on any existing assessment
+- [ ] Creates a new draft with the same categories and config, new title ("Copy of ...")
 
 ---
 
 ## Milestone 5: Candidate Experience
 
-Candidates open an assessment link and solve the challenges.
+Candidates open an assessment link and complete the challenges. No account required.
 
-- [ ] Public `/s/:assessmentId` landing page: assessment title, topics, estimated time, recruiter name
-- [ ] Candidate enters name and email (no account required)
-- [ ] Challenge player: loads questions from the selected apps/categories in sequence
-- [ ] Timer (if configured) and progress indicator
-- [ ] On completion, store results (answers, score, time per question) linked to the assessment
-- [ ] Completion page with thank-you message
+**Landing page**
+
+- [ ] Public `/s/:assessmentId` shows: assessment title, number of topics, estimated time, recruiter/company name
+- [ ] Candidate enters name and email to start (stored, not verified)
+- [ ] Clear expectations: "This will take approximately X minutes"
+
+**Challenge player**
+
+- [ ] Load questions from the selected apps/categories in randomized order
+- [ ] One question at a time, with progress indicator (e.g. "12 of 30")
+- [ ] Countdown timer if time limit is configured (visible but not obtrusive)
+- [ ] Auto-submit when timer expires
+- [ ] Each answer is stored immediately (no data loss on disconnect)
+
+**Completion**
+
+- [ ] Thank-you page with a summary (questions answered, time taken)
+- [ ] Results are auto-scored instantly (correct/wrong per question)
+- [ ] Recruiter is notified (in-app, later via email)
 
 ---
 
-## Milestone 6: Results Dashboard
+## Milestone 6: Results and Comparison
 
-Recruiters review candidate submissions.
+Recruiters review and compare candidate submissions.
 
-- [ ] Per-assessment candidate list: name, score, completion time, date
-- [ ] Sort/filter candidates by score, date, status
-- [ ] Candidate detail view: per-question breakdown (correct/wrong, time spent, category)
-- [ ] Mark candidates as "proceed" / "reject" / "review"
-- [ ] Export results (CSV)
+**Candidate ranking table**
+
+- [ ] Per-assessment table: candidate name, email, score (%), time taken, date, status
+- [ ] Default sort by score descending
+- [ ] Filter by status: all, pending review, proceed, rejected
+- [ ] Search by candidate name/email
+- [ ] Inline status toggle (proceed / reject / pending) without leaving the list
+
+**Candidate detail view**
+
+- [ ] Per-question breakdown: correct/wrong, time spent, category, difficulty
+- [ ] Score by category (e.g. "TypeScript: 8/10, React: 6/8")
+- [ ] Compare side-by-side with another candidate (stretch goal)
+
+**Export**
+
+- [ ] CSV export of candidate list with scores and status
 
 ---
 
@@ -100,21 +140,24 @@ Recruiters review candidate submissions.
 Gate assessment creation behind a paid plan.
 
 - [ ] Integrate payment provider (Stripe or Lemon Squeezy)
-- [ ] Define pricing model (per-assessment, subscription, or usage-based)
-- [ ] Recruiter billing page: plan status, invoices, upgrade/downgrade
-- [ ] Enforce limits: free tier (if any) vs paid tier
-- [ ] Webhook handling for payment events
+- [ ] Pricing model: per active assessment per month, or monthly subscription with assessment limit
+- [ ] Recruiter billing page: current plan, usage, invoices
+- [ ] Free tier: 1 active assessment, up to 10 candidates per assessment
+- [ ] Paid tier: unlimited assessments and candidates
+- [ ] Webhook handling for payment events (upgrade, downgrade, cancellation)
 
 ---
 
 ## Milestone 8: Polish and Launch
 
-- [ ] Email notifications: candidate completed, assessment shared
-- [ ] Recruiter branding: company name/logo on assessment link page
-- [ ] Analytics: completion rates, average scores, drop-off points
-- [ ] Rate limiting and abuse prevention on public assessment links
-- [ ] Documentation for recruiters (how to create, share, review)
+- [ ] Email notifications: candidate completed (to recruiter), assessment link sent (to candidate)
+- [ ] Recruiter branding: company name on assessment landing page
+- [ ] Dashboard analytics: completion rate, average score, candidate funnel per assessment
+- [ ] Rate limiting on public assessment links (prevent abuse/bots)
+- [ ] Assessment expiry: optional deadline after which the link stops accepting new candidates
+- [ ] Documentation/help page for recruiters
 - [ ] Landing page marketing section for the screening product
+- [ ] SEO and Open Graph tags for assessment landing pages
 
 ---
 
