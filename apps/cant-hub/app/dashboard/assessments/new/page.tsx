@@ -8,9 +8,9 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { createCourseAction } from "./actions";
+import { createAssessmentAction } from "./actions";
 
-export default function NewCoursePage() {
+export default function NewAssessmentPage() {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
@@ -18,9 +18,9 @@ export default function NewCoursePage() {
     e.preventDefault();
     setPending(true);
     const formData = new FormData(e.currentTarget);
-    const result = await createCourseAction(formData);
+    const result = await createAssessmentAction(formData);
     if (result?.id) {
-      router.push(`/dashboard/courses/${result.id}`);
+      router.push(`/dashboard/assessments/${result.id}`);
     } else {
       setPending(false);
     }
@@ -35,10 +35,10 @@ export default function NewCoursePage() {
           lineHeight={1.15}
           letterSpacing="-0.02em"
         >
-          New course
+          New assessment
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          Set up the basics, then add challenges from the series
+          Set up the basics, then pick topics from the series
         </Typography>
       </Box>
 
@@ -55,7 +55,7 @@ export default function NewCoursePage() {
         <Stack spacing={3}>
           <TextField
             name="title"
-            label="Course title"
+            label="Assessment title"
             placeholder="e.g. Frontend Senior Screening"
             required
             fullWidth
@@ -85,7 +85,7 @@ export default function NewCoursePage() {
               disabled={pending}
               sx={{ px: 4, py: 1, fontSize: "0.9rem" }}
             >
-              {pending ? "Creating..." : "Create course"}
+              {pending ? "Creating..." : "Create assessment"}
             </Button>
           </Stack>
         </Stack>

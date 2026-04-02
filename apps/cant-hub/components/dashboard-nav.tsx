@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Courses", exact: true },
+  { href: "/dashboard", label: "Assessments", exact: true },
   { href: "/dashboard/settings", label: "Settings" },
 ];
 

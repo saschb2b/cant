@@ -6,28 +6,31 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
-import type { CourseStatus } from "@/lib/courses";
-import { updateCourseStatusAction, deleteCourseAction } from "./actions";
+import type { AssessmentStatus } from "@/lib/assessments";
+import {
+  updateAssessmentStatusAction,
+  deleteAssessmentAction,
+} from "./actions";
 
-export function CourseActions({
-  courseId,
+export function AssessmentActions({
+  assessmentId,
   status,
 }: {
-  courseId: string;
-  status: CourseStatus;
+  assessmentId: string;
+  status: AssessmentStatus;
 }) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleStatus = async (newStatus: CourseStatus) => {
+  const handleStatus = async (newStatus: AssessmentStatus) => {
     setAnchorEl(null);
-    await updateCourseStatusAction(courseId, newStatus);
+    await updateAssessmentStatusAction(assessmentId, newStatus);
     router.refresh();
   };
 
   const handleDelete = async () => {
     setAnchorEl(null);
-    await deleteCourseAction(courseId);
+    await deleteAssessmentAction(assessmentId);
   };
 
   return (

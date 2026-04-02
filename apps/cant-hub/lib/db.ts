@@ -9,9 +9,9 @@ if (!fs.existsSync(dbDir)) {
 
 export const db = new DatabaseSync(path.join(dbDir, "auth.db"));
 
-// Screening course tables
+// Screening assessment tables
 db.exec(`
-  CREATE TABLE IF NOT EXISTS course (
+  CREATE TABLE IF NOT EXISTS assessment (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,

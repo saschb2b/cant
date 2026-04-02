@@ -4,66 +4,82 @@ Paid feature that lets recruiters/HR create technical screening assessments usin
 
 ---
 
-## Milestone 1: Authentication
+## Milestone 1: Authentication (done)
 
 Users can sign in to cant-hub via social login.
 
-- [ ] Set up local dev OAuth apps (GitHub, Google, GitLab) with `localhost` callback URLs and document the setup steps in `docs/local-auth-setup.md`
-- [ ] Add a seed/dev script that pre-populates a test recruiter and test developer account in SQLite for quick local testing without OAuth
-- [ ] Run better-auth DB migrations (user, session, account tables)
-- [ ] Create sign-in page with social login buttons
-- [ ] Add user menu to site header (avatar, sign out)
-- [ ] Persist session across page navigations
-- [ ] Add middleware to protect authenticated routes
+- [x] Dev-login endpoint for local testing without OAuth
+- [x] Better-auth with node:sqlite, auto-migration on startup
+- [x] Sign-in page with social login buttons (GitHub, Google, GitLab)
+- [x] User pill menu in site header with sign out
+- [x] Middleware to protect authenticated routes
+- [x] Local auth setup docs
 
 ---
 
-## Milestone 2: Role Model
+## Milestone 2: Role Model (done)
 
 Distinguish between developers (free) and recruiters (paid).
 
-- [ ] Define user roles: `developer`, `recruiter`
-- [ ] Add role selection after first sign-in (onboarding step)
-- [ ] Store role in the database (better-auth metadata or custom table)
-- [ ] Gate recruiter routes behind role check
+- [x] User role field (developer, recruiter, null)
+- [x] Onboarding page for role selection after first sign-in
+- [x] Dashboard layout with server-side recruiter role check
+- [x] Gate recruiter routes behind role check
 
 ---
 
-## Milestone 3: Recruiter Dashboard
+## Milestone 3: Recruiter Dashboard (done)
 
-Recruiters get a dashboard to manage their screening courses.
+Recruiters get a dashboard to manage their assessments.
 
-- [ ] Create `/dashboard` layout with sidebar navigation
-- [ ] Build empty state for new recruiters (no courses yet)
-- [ ] List existing courses with status (draft, active, archived)
-- [ ] Add create/edit/delete actions for courses
+- [x] `/dashboard` layout with sidebar navigation, header, footer
+- [x] Empty state for new recruiters
+- [x] List assessments with status (draft, active, archived)
+- [x] Create/delete assessments, status transitions
 
 ---
 
-## Milestone 4: Course Builder
+## Milestone 4: Assessment Builder
 
-Recruiters compose a screening course by picking from cant apps.
+Recruiters compose an assessment by picking topics from cant apps.
 
-- [ ] Fetch available apps and their categories from the app registry
-- [ ] UI to select which cant apps to include (e.g. cant-type, cant-resize)
-- [ ] For each selected app, show categories and let recruiter pick which to include
-- [ ] Configure parameters per category: number of questions, difficulty filter, time limit
-- [ ] Preview the course structure before saving
-- [ ] Save course to database (course, course_apps, course_categories tables)
-- [ ] Generate a unique shareable link per course (e.g. `/s/:courseId`)
+**Step 1: App and category selection**
+
+- [ ] Read available apps and their categories from the shared app registry (`cant-apps.ts`)
+- [ ] Show apps as selectable cards (icon, name, description, category count)
+- [ ] Expanding an app reveals its categories as a checklist
+- [ ] Selected categories are summarized in a sidebar/panel
+
+**Step 2: Per-category configuration**
+
+- [ ] For each selected category, configure: number of questions (default: all)
+- [ ] Optional difficulty filter (easy, medium, hard) if applicable
+- [ ] Optional time limit per category or for the whole assessment
+
+**Step 3: Persistence**
+
+- [ ] `assessment` table (rename from `course`): id, title, description, status, userId, timeLimit, createdAt, updatedAt
+- [ ] `assessment_category` table: assessmentId, appId, categoryId, questionCount, difficulty
+- [ ] Save/update assessment with its selected categories
+- [ ] Generate a unique shareable link per assessment (e.g. `/s/:assessmentId`)
+
+**Step 4: Preview**
+
+- [ ] Summary view showing: total questions, estimated time, topics covered per app
+- [ ] Option to copy the shareable link
 
 ---
 
 ## Milestone 5: Candidate Experience
 
-Developers open a screening link and solve the challenges.
+Candidates open an assessment link and solve the challenges.
 
-- [ ] Public `/s/:courseId` landing page showing course overview (apps, categories, estimated time)
-- [ ] Candidate enters name/email (no account required, or optional social login)
-- [ ] Challenge player: loads questions from selected apps/categories in sequence
-- [ ] Timer and progress indicator
-- [ ] On completion, store results (answers, score, time per question) linked to the course
-- [ ] Thank-you/completion page
+- [ ] Public `/s/:assessmentId` landing page: assessment title, topics, estimated time, recruiter name
+- [ ] Candidate enters name and email (no account required)
+- [ ] Challenge player: loads questions from the selected apps/categories in sequence
+- [ ] Timer (if configured) and progress indicator
+- [ ] On completion, store results (answers, score, time per question) linked to the assessment
+- [ ] Completion page with thank-you message
 
 ---
 
@@ -71,9 +87,9 @@ Developers open a screening link and solve the challenges.
 
 Recruiters review candidate submissions.
 
-- [ ] Per-course candidate list with scores, completion time, date
+- [ ] Per-assessment candidate list: name, score, completion time, date
 - [ ] Sort/filter candidates by score, date, status
-- [ ] Candidate detail view: per-question breakdown (correct/wrong, time spent)
+- [ ] Candidate detail view: per-question breakdown (correct/wrong, time spent, category)
 - [ ] Mark candidates as "proceed" / "reject" / "review"
 - [ ] Export results (CSV)
 
@@ -81,10 +97,10 @@ Recruiters review candidate submissions.
 
 ## Milestone 7: Payments
 
-Gate course creation behind a paid plan.
+Gate assessment creation behind a paid plan.
 
 - [ ] Integrate payment provider (Stripe or Lemon Squeezy)
-- [ ] Define pricing model (per-course, subscription, or usage-based)
+- [ ] Define pricing model (per-assessment, subscription, or usage-based)
 - [ ] Recruiter billing page: plan status, invoices, upgrade/downgrade
 - [ ] Enforce limits: free tier (if any) vs paid tier
 - [ ] Webhook handling for payment events
@@ -93,10 +109,10 @@ Gate course creation behind a paid plan.
 
 ## Milestone 8: Polish and Launch
 
-- [ ] Email notifications: candidate completed, course shared
-- [ ] Recruiter branding: add company name/logo to screening link
-- [ ] Analytics: course completion rates, average scores
-- [ ] Rate limiting and abuse prevention on public screening links
+- [ ] Email notifications: candidate completed, assessment shared
+- [ ] Recruiter branding: company name/logo on assessment link page
+- [ ] Analytics: completion rates, average scores, drop-off points
+- [ ] Rate limiting and abuse prevention on public assessment links
 - [ ] Documentation for recruiters (how to create, share, review)
 - [ ] Landing page marketing section for the screening product
 
@@ -106,8 +122,8 @@ Gate course creation behind a paid plan.
 
 All milestones should be testable locally without external services.
 
-- **Auth**: seed script creates test accounts so OAuth apps are not required for day-to-day dev. Document how to set up real OAuth apps for integration testing.
+- **Auth**: dev-login endpoint creates real sessions. No OAuth apps needed for day-to-day dev.
 - **Database**: SQLite file at `data/auth.db`, gitignored. Delete to reset.
 - **Payments**: use Stripe test mode / Lemon Squeezy sandbox. No real charges in dev.
-- **Screening link**: works on `localhost:3000/s/:courseId` with seeded course data.
+- **Assessment link**: works on `localhost:3000/s/:assessmentId` with seeded data.
 - **Multi-app challenges**: `pnpm dev` starts all apps, but for screening dev you only need cant-hub running. Mock challenge data locally so you don't need every cant app running simultaneously.

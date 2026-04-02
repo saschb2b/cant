@@ -4,7 +4,7 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { getSession } from "@/lib/auth-session";
-import { getCoursesByUser, type Course } from "@/lib/courses";
+import { getAssessmentsByUser, type Assessment } from "@/lib/assessments";
 
 const STATUS_COLOR: Record<string, "default" | "success" | "warning"> = {
   draft: "default",
@@ -12,10 +12,10 @@ const STATUS_COLOR: Record<string, "default" | "success" | "warning"> = {
   archived: "warning",
 };
 
-function CourseCard({ course }: { course: Course }) {
+function AssessmentCard({ assessment }: { assessment: Assessment }) {
   return (
     <Link
-      href={`/dashboard/courses/${course.id}`}
+      href={`/dashboard/assessments/${assessment.id}`}
       style={{ textDecoration: "none", color: "inherit", display: "block" }}
     >
       <Box
@@ -39,23 +39,23 @@ function CourseCard({ course }: { course: Course }) {
         >
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="h6" fontWeight={700} lineHeight={1.2} noWrap>
-              {course.title}
+              {assessment.title}
             </Typography>
-            {course.description && (
+            {assessment.description && (
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{ mt: 0.5, lineHeight: 1.7 }}
                 noWrap
               >
-                {course.description}
+                {assessment.description}
               </Typography>
             )}
           </Box>
           <Chip
-            label={course.status}
+            label={assessment.status}
             size="small"
-            color={STATUS_COLOR[course.status]}
+            color={STATUS_COLOR[assessment.status]}
             sx={{ textTransform: "capitalize", flexShrink: 0 }}
           />
         </Stack>
@@ -66,7 +66,7 @@ function CourseCard({ course }: { course: Course }) {
           sx={{ mt: 1.5, display: "block" }}
         >
           Updated{" "}
-          {new Date(course.updatedAt).toLocaleDateString("en-US", {
+          {new Date(assessment.updatedAt).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
             year: "numeric",
@@ -90,17 +90,17 @@ function EmptyState() {
       }}
     >
       <Typography variant="h6" fontWeight={700} gutterBottom>
-        No courses yet
+        No assessments yet
       </Typography>
       <Typography
         variant="body2"
         color="text.secondary"
         sx={{ mb: 3, maxWidth: 360, mx: "auto" }}
       >
-        Create your first screening course to start evaluating candidates across
-        the series.
+        Create your first assessment to start evaluating candidates across the
+        series.
       </Typography>
-      <Link href="/dashboard/courses/new">
+      <Link href="/dashboard/assessments/new">
         <Box
           component="span"
           sx={{
@@ -115,7 +115,7 @@ function EmptyState() {
             textDecoration: "none",
           }}
         >
-          Create course
+          Create assessment
         </Box>
       </Link>
     </Box>
@@ -124,7 +124,7 @@ function EmptyState() {
 
 export default async function DashboardPage() {
   const session = await getSession();
-  const courses = getCoursesByUser(session!.user.id);
+  const assessments = getAssessmentsByUser(session!.user.id);
 
   return (
     <Stack spacing={{ xs: 3, md: 4 }}>
@@ -136,14 +136,14 @@ export default async function DashboardPage() {
             lineHeight={1.15}
             letterSpacing="-0.02em"
           >
-            Courses
+            Assessments
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            Manage your screening courses
+            Manage your screening assessments
           </Typography>
         </Box>
-        {courses.length > 0 && (
-          <Link href="/dashboard/courses/new">
+        {assessments.length > 0 && (
+          <Link href="/dashboard/assessments/new">
             <Box
               component="span"
               sx={{
@@ -158,18 +158,18 @@ export default async function DashboardPage() {
                 textDecoration: "none",
               }}
             >
-              New course
+              New assessment
             </Box>
           </Link>
         )}
       </Stack>
 
-      {courses.length === 0 ? (
+      {assessments.length === 0 ? (
         <EmptyState />
       ) : (
         <Stack spacing={2}>
-          {courses.map((course) => (
-            <CourseCard key={course.id} course={course} />
+          {assessments.map((assessment) => (
+            <AssessmentCard key={assessment.id} assessment={assessment} />
           ))}
         </Stack>
       )}

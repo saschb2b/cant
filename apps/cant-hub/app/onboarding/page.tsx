@@ -115,7 +115,7 @@ export default function OnboardingPage() {
             />
             <RoleCard
               title="Recruiter"
-              description="Create screening courses from existing challenges, share them with candidates, and review results."
+              description="Create screening assessments from existing challenges, share them with candidates, and review results."
               onClick={() => handleRoleSelect("recruiter")}
               disabled={false}
             />

@@ -1,9 +1,9 @@
 "use server";
 
 import { getSession } from "@/lib/auth-session";
-import { createCourse } from "@/lib/courses";
+import { createAssessment } from "@/lib/assessments";
 
-export async function createCourseAction(formData: FormData) {
+export async function createAssessmentAction(formData: FormData) {
   const session = await getSession();
   if (!session || session.user.role !== "recruiter") {
     throw new Error("Unauthorized");
@@ -16,10 +16,10 @@ export async function createCourseAction(formData: FormData) {
     throw new Error("Title is required");
   }
 
-  const course = createCourse(
+  const assessment = createAssessment(
     session.user.id,
     title.trim(),
     description?.trim(),
   );
-  return { id: course.id };
+  return { id: assessment.id };
 }

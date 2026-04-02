@@ -4,8 +4,8 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { getSession } from "@/lib/auth-session";
-import { getCourseById } from "@/lib/courses";
-import { CourseActions } from "./course-actions";
+import { getAssessmentById } from "@/lib/assessments";
+import { AssessmentActions } from "./assessment-actions";
 
 const STATUS_COLOR: Record<string, "default" | "success" | "warning"> = {
   draft: "default",
@@ -13,16 +13,16 @@ const STATUS_COLOR: Record<string, "default" | "success" | "warning"> = {
   archived: "warning",
 };
 
-export default async function CourseDetailPage({
+export default async function AssessmentDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
   const session = await getSession();
-  const course = getCourseById(id);
+  const assessment = getAssessmentById(id);
 
-  if (!course || course.userId !== session!.user.id) {
+  if (!assessment || assessment.userId !== session!.user.id) {
     notFound();
   }
 
@@ -43,22 +43,22 @@ export default async function CourseDetailPage({
               letterSpacing="-0.02em"
               noWrap
             >
-              {course.title}
+              {assessment.title}
             </Typography>
             <Chip
-              label={course.status}
+              label={assessment.status}
               size="small"
-              color={STATUS_COLOR[course.status]}
+              color={STATUS_COLOR[assessment.status]}
               sx={{ textTransform: "capitalize" }}
             />
           </Stack>
-          {course.description && (
+          {assessment.description && (
             <Typography
               variant="body2"
               color="text.secondary"
               sx={{ mt: 1, lineHeight: 1.7 }}
             >
-              {course.description}
+              {assessment.description}
             </Typography>
           )}
           <Typography
@@ -68,14 +68,17 @@ export default async function CourseDetailPage({
             sx={{ mt: 1.5, display: "block" }}
           >
             Created{" "}
-            {new Date(course.createdAt).toLocaleDateString("en-US", {
+            {new Date(assessment.createdAt).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",
             })}
           </Typography>
         </Box>
-        <CourseActions courseId={course.id} status={course.status} />
+        <AssessmentActions
+          assessmentId={assessment.id}
+          status={assessment.status}
+        />
       </Stack>
 
       <Box
@@ -89,15 +92,15 @@ export default async function CourseDetailPage({
         }}
       >
         <Typography variant="h6" fontWeight={700} gutterBottom>
-          No challenges configured
+          No topics configured
         </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
           sx={{ maxWidth: 360, mx: "auto" }}
         >
-          The course builder will let you pick apps, categories, and configure
-          parameters. Coming in the next milestone.
+          The assessment builder will let you pick apps, categories, and
+          configure parameters. Coming in the next milestone.
         </Typography>
       </Box>
     </Stack>

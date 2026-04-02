@@ -165,8 +165,8 @@ export default function SignInPage() {
                   mx: { xs: "auto", md: 0 },
                 }}
               >
-                Sign in to manage your screening courses, review candidates, and
-                track results across the series.
+                Sign in to manage your screening assessments, review candidates,
+                and track results across the series.
               </Typography>
               <Typography
                 variant="caption"
