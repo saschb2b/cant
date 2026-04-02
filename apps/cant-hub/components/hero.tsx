@@ -5,8 +5,13 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { ArrowDown } from "lucide-react";
 import { ALL_APPS } from "@cant/shared/lib/cant-apps";
+import { APP_CATALOG_LIST } from "@cant/shared/lib/app-catalog";
 
-const TOTAL_CHALLENGES = 770;
+const TOTAL_CHALLENGES = APP_CATALOG_LIST.reduce(
+  (sum, entry) =>
+    sum + entry.categories.reduce((s, c) => s + c.questionCount, 0),
+  0,
+);
 
 export function Hero() {
   return (

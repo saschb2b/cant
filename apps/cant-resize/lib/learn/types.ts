@@ -1,26 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and (future) game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "media-queries"
-  | "container-queries"
-  | "fluid-typography"
-  | "viewport-units"
-  | "flexbox-patterns"
-  | "grid-patterns"
-  | "responsive-spacing"
-  | "overflow-handling"
-  | "breakpoint-hooks"
-  | "responsive-props"
-  | "conditional-rendering"
-  | "responsive-images"
-  | "mui-responsive"
-  | "tailwind-responsive"
-  | "common-mistakes"
-  | "testing-responsive";
+  (typeof APP_CATALOG)["cant-resize"]["categories"][number]["slug"];
 
 /**
  * A single responsive-design challenge.

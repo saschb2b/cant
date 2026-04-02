@@ -1,17 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and (future) game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "rest-api-design"
-  | "graphql-patterns"
-  | "websockets-realtime"
-  | "auth-patterns"
-  | "error-handling"
-  | "api-consumption"
-  | "docs-contracts";
+  (typeof APP_CATALOG)["cant-query"]["categories"][number]["slug"];
 
 /**
  * A single API endpoint challenge.

@@ -1,26 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "molecular-stability"
-  | "acid-strength"
-  | "bond-energy"
-  | "electronegativity"
-  | "reaction-favorability"
-  | "solubility"
-  | "oxidation-reduction"
-  | "functional-groups"
-  | "structural-formulas"
-  | "molecular-geometry"
-  | "periodic-trends"
-  | "electron-configuration"
-  | "energy-diagrams"
-  | "stereochemistry"
-  | "electrostatic-maps"
-  | "protein-structure";
+  (typeof APP_CATALOG)["cant-explode"]["categories"][number]["slug"];
 
 /**
  * A single chemistry challenge.

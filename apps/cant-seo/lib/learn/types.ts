@@ -1,18 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "meta-tags"
-  | "open-graph"
-  | "twitter-cards"
-  | "structured-data"
-  | "canonical-urls"
-  | "sitemaps-robots"
-  | "image-optimization"
-  | "internationalization";
+  (typeof APP_CATALOG)["cant-seo"]["categories"][number]["slug"];
 
 /**
  * A single SEO challenge.

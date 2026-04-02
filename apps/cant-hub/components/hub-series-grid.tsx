@@ -5,64 +5,20 @@ import Stack from "@mui/material/Stack";
 import { ExternalLink } from "lucide-react";
 import { ALL_APPS } from "@cant/shared/lib/cant-apps";
 import type { CantApp } from "@cant/shared/lib/cant-apps";
+import {
+  appNameToSlug,
+  getAppChallengeCount,
+  getAppCategoryCount,
+} from "@cant/shared/lib/app-catalog";
 
-interface SeriesMeta {
-  challenges: number;
-  categories: number;
-  tool?: { label: string; href: string };
-}
-
-const SERIES_META: Record<string, SeriesMeta> = {
-  "Can't Maintain": {
-    challenges: 117,
-    categories: 18,
-  },
-  "Can't Resize": {
-    challenges: 90,
-    categories: 16,
-    tool: { label: "Viewer", href: "/canvas" },
-  },
-  "Can't Type": {
-    challenges: 81,
-    categories: 16,
-    tool: { label: "Sandbox", href: "/playground" },
-  },
-  "Can't Orchestrate": {
-    challenges: 70,
-    categories: 16,
-    tool: { label: "Explorer", href: "/explorer" },
-  },
-  "Can't SEO": {
-    challenges: 66,
-    categories: 8,
-    tool: { label: "Inspector", href: "/inspector" },
-  },
-  "Can't UX": {
-    challenges: 60,
-    categories: 15,
-  },
-  "Can't Explode": {
-    challenges: 59,
-    categories: 16,
-    tool: { label: "Lab", href: "/lab" },
-  },
-  "Can't Branch": {
-    challenges: 141,
-    categories: 20,
-  },
-  "Can't Test": {
-    challenges: 56,
-    categories: 7,
-    tool: { label: "Bug Hunt", href: "/hunt" },
-  },
-  "Can't Query": {
-    challenges: 65,
-    categories: 7,
-  },
-  "Can't Game": {
-    challenges: 24,
-    categories: 8,
-  },
+/** Per-app tools that are hub-specific (not part of the shared catalog). */
+const APP_TOOLS: Record<string, { label: string; href: string }> = {
+  "Can't Resize": { label: "Viewer", href: "/canvas" },
+  "Can't Type": { label: "Sandbox", href: "/playground" },
+  "Can't Orchestrate": { label: "Explorer", href: "/explorer" },
+  "Can't SEO": { label: "Inspector", href: "/inspector" },
+  "Can't Explode": { label: "Lab", href: "/lab" },
+  "Can't Test": { label: "Bug Hunt", href: "/hunt" },
 };
 
 function AppIcon({ app, size = 56 }: { app: CantApp; size?: number }) {
@@ -97,7 +53,10 @@ function AppIcon({ app, size = 56 }: { app: CantApp; size?: number }) {
 }
 
 function SeriesCard({ app }: { app: CantApp }) {
-  const meta = SERIES_META[app.name];
+  const slug = appNameToSlug(app.name);
+  const challenges = slug ? getAppChallengeCount(slug) : undefined;
+  const categories = slug ? getAppCategoryCount(slug) : undefined;
+  const tool = APP_TOOLS[app.name];
 
   return (
     <NextLink
@@ -181,23 +140,19 @@ function SeriesCard({ app }: { app: CantApp }) {
         </Typography>
 
         {/* Stats row */}
-        {meta && (
+        {challenges != null && (
           <Stack
             direction="row"
             spacing={2}
             sx={{ mt: "auto", flexWrap: "nowrap", alignItems: "baseline" }}
           >
+            <Stat value={challenges} label="challenges" color={app.colorFrom} />
             <Stat
-              value={meta.challenges}
-              label="challenges"
-              color={app.colorFrom}
-            />
-            <Stat
-              value={meta.categories}
+              value={categories ?? 0}
               label="categories"
               color={app.colorFrom}
             />
-            {meta.tool && (
+            {tool && (
               <Stack direction="row" spacing={0.5} alignItems="baseline">
                 <Box
                   sx={{
@@ -214,7 +169,7 @@ function SeriesCard({ app }: { app: CantApp }) {
                   fontFamily="var(--font-geist-mono), monospace"
                   sx={{ fontSize: "0.7rem" }}
                 >
-                  {meta.tool.label}
+                  {tool.label}
                 </Typography>
               </Stack>
             )}

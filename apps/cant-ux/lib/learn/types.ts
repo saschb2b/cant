@@ -1,25 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and (future) game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "typography"
-  | "spacing"
-  | "color"
-  | "hierarchy"
-  | "layout"
-  | "forms"
-  | "feedback"
-  | "navigation"
-  | "accessibility"
-  | "micro-interactions"
-  | "content-copy"
-  | "data-display"
-  | "modals-overlays"
-  | "lists-cards"
-  | "icons-imagery";
+  (typeof APP_CATALOG)["cant-ux"]["categories"][number]["slug"];
 
 /**
  * A single UX design challenge.

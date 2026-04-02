@@ -1,4 +1,5 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 import { type GameState as SharedGameState } from "@cant/shared/lib/game";
 
 /** Difficulty tier that determines when a challenge appears in the game. */
@@ -6,26 +7,7 @@ export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "commit-messages"
-  | "atomic-commits"
-  | "branching-naming"
-  | "branching-strategies"
-  | "merge-strategies"
-  | "conflict-resolution"
-  | "clean-history"
-  | "undoing-changes"
-  | "git-bisect"
-  | "pull-requests"
-  | "code-review"
-  | "git-hooks"
-  | "gitignore"
-  | "large-files"
-  | "repo-structure"
-  | "tagging-releases"
-  | "changelogs"
-  | "git-config"
-  | "worktrees-stashing"
-  | "ci-integration";
+  (typeof APP_CATALOG)["cant-branch"]["categories"][number]["slug"];
 
 export interface Challenge {
   /** Unique identifier, prefixed by category abbreviation (e.g. "cm-001"). */

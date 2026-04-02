@@ -1,26 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "type-narrowing"
-  | "generics"
-  | "utility-types"
-  | "union-intersection"
-  | "type-assertions"
-  | "enums-literals"
-  | "function-types"
-  | "interface-vs-type"
-  | "strict-mode"
-  | "template-literals"
-  | "mapped-types"
-  | "module-types"
-  | "react-typescript"
-  | "error-handling"
-  | "readonly-immutability"
-  | "common-mistakes";
+  (typeof APP_CATALOG)["cant-type"]["categories"][number]["slug"];
 
 /**
  * A single TypeScript challenge.

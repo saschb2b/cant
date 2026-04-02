@@ -1,18 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "game-loop"
-  | "input"
-  | "rendering"
-  | "physics"
-  | "netcode"
-  | "shaders"
-  | "ai"
-  | "state";
+  (typeof APP_CATALOG)["cant-game"]["categories"][number]["slug"];
 
 /**
  * A single game development challenge.

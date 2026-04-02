@@ -17,7 +17,28 @@ db.exec(`
     description TEXT,
     status TEXT NOT NULL DEFAULT 'draft',
     userId TEXT NOT NULL REFERENCES user(id),
+    timeLimitSeconds INTEGER,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
+  );
+`);
+
+// Add timeLimitSeconds column for existing databases
+try {
+  db.exec(`ALTER TABLE assessment ADD COLUMN timeLimitSeconds INTEGER`);
+} catch {
+  // Column already exists
+}
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS assessment_category (
+    id TEXT PRIMARY KEY,
+    assessmentId TEXT NOT NULL REFERENCES assessment(id) ON DELETE CASCADE,
+    appSlug TEXT NOT NULL,
+    categorySlug TEXT NOT NULL,
+    questionCount INTEGER,
+    difficulty TEXT,
+    createdAt TEXT NOT NULL,
+    UNIQUE(assessmentId, appSlug, categorySlug)
   );
 `);

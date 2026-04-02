@@ -1,26 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "dockerfile-basics"
-  | "image-optimization"
-  | "docker-compose"
-  | "volumes-storage"
-  | "networking"
-  | "health-checks"
-  | "security"
-  | "environment-config"
-  | "kubernetes-pods"
-  | "kubernetes-services"
-  | "kubernetes-config"
-  | "helm-charts"
-  | "docker-swarm"
-  | "ci-cd-pipelines"
-  | "build-scripts"
-  | "common-mistakes";
+  (typeof APP_CATALOG)["cant-orchestrate"]["categories"][number]["slug"];
 
 /**
  * A single orchestration challenge.

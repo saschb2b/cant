@@ -1,29 +1,13 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
 import { type GameState as SharedGameState } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier that determines when a challenge appears in the game. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "callback-naming"
-  | "boolean-naming"
-  | "jsdoc"
-  | "prop-specificity"
-  | "render-props"
-  | "children-pattern"
-  | "discriminated-unions"
-  | "extending-html"
-  | "ref-forwarding"
-  | "accessibility-props"
-  | "default-values"
-  | "prop-organization"
-  | "controlled-uncontrolled"
-  | "server-component-props"
-  | "generic-props"
-  | "enumerated-variants"
-  | "styling-api"
-  | "component-naming";
+  (typeof APP_CATALOG)["cant-maintain"]["categories"][number]["slug"];
 
 /**
  * A single challenge in the game.
