@@ -42,3 +42,32 @@ db.exec(`
     UNIQUE(assessmentId, appSlug, categorySlug)
   );
 `);
+
+// Candidate session: one per candidate per assessment attempt
+db.exec(`
+  CREATE TABLE IF NOT EXISTS candidate_session (
+    id TEXT PRIMARY KEY,
+    assessmentId TEXT NOT NULL REFERENCES assessment(id) ON DELETE CASCADE,
+    candidateName TEXT NOT NULL,
+    candidateEmail TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'in_progress',
+    score INTEGER,
+    totalQuestions INTEGER,
+    startedAt TEXT NOT NULL,
+    finishedAt TEXT,
+    seed TEXT NOT NULL
+  );
+`);
+
+// Individual answers: one per question per session
+db.exec(`
+  CREATE TABLE IF NOT EXISTS candidate_answer (
+    id TEXT PRIMARY KEY,
+    sessionId TEXT NOT NULL REFERENCES candidate_session(id) ON DELETE CASCADE,
+    challengeId TEXT NOT NULL,
+    chosenSide TEXT NOT NULL,
+    correct INTEGER NOT NULL,
+    answeredAt TEXT NOT NULL,
+    UNIQUE(sessionId, challengeId)
+  );
+`);

@@ -108,22 +108,22 @@ Candidates open an assessment link and complete the challenges. No account requi
 
 **Landing page**
 
-- [ ] Public `/s/:assessmentId` shows: assessment title, number of topics, estimated time, recruiter/company name
-- [ ] Candidate enters name and email to start (stored, not verified)
-- [ ] Clear expectations: "This will take approximately X minutes"
+- [x] Public `/s/:assessmentId` shows: assessment title, number of topics, estimated time, recruiter/company name
+- [x] Candidate enters name and email to start (stored, not verified)
+- [x] Clear expectations: "This will take approximately X minutes"
 
 **Challenge player**
 
-- [ ] Load questions from the selected apps/categories in randomized order
-- [ ] One question at a time, with progress indicator (e.g. "12 of 30")
-- [ ] Countdown timer if time limit is configured (visible but not obtrusive)
-- [ ] Auto-submit when timer expires
-- [ ] Each answer is stored immediately (no data loss on disconnect)
+- [x] Load questions from the selected apps/categories in randomized order
+- [x] One question at a time, with progress indicator (e.g. "12 of 30")
+- [x] Countdown timer if time limit is configured (visible but not obtrusive)
+- [x] Auto-submit when timer expires
+- [x] Each answer is stored immediately (no data loss on disconnect)
 
 **Completion**
 
-- [ ] Thank-you page with a summary (questions answered, time taken)
-- [ ] Results are auto-scored instantly (correct/wrong per question)
+- [x] Thank-you page with a summary (questions answered, time taken)
+- [x] Results are auto-scored instantly (correct/wrong per question)
 - [ ] Recruiter is notified (in-app, later via email)
 
 ---

@@ -8,6 +8,7 @@ import {
   getCategoriesByAssessment,
 } from "@/lib/assessments";
 import { APP_CATALOG, type AppSlug } from "@cant/shared/lib/app-catalog";
+import { CandidateForm } from "./candidate-form";
 
 export default async function SharePage({
   params,
@@ -53,6 +54,10 @@ export default async function SharePage({
       totalQuestions += meta?.questionCount ?? 0;
     }
   }
+
+  const timeEstimate = assessment.timeLimitSeconds
+    ? `${String(Math.round(assessment.timeLimitSeconds / 60))} minutes`
+    : `About ${String(Math.max(1, Math.round(totalQuestions * 0.5)))} minutes`;
 
   return (
     <Container maxWidth="sm" sx={{ py: { xs: 6, md: 12 } }}>
@@ -154,21 +159,8 @@ export default async function SharePage({
           </Stack>
         </Box>
 
-        {/* Placeholder for candidate form (Milestone 5) */}
-        <Box
-          sx={{
-            width: "100%",
-            py: 6,
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 3,
-            borderStyle: "dashed",
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            Candidate sign-in form will be added in a future milestone.
-          </Typography>
-        </Box>
+        {/* Candidate sign-in form */}
+        <CandidateForm assessmentId={id} timeEstimate={timeEstimate} />
       </Stack>
     </Container>
   );
