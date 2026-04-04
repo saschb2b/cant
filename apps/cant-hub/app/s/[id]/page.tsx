@@ -43,17 +43,21 @@ export default async function SharePage({
     byApp.get(cat.appSlug)?.push(cat.categorySlug);
   }
 
-  // Count total questions
-  let totalQuestions = 0;
+  // Count total questions (respect assessment-level limit)
+  let availableQuestions = 0;
   for (const cat of categories) {
     if (cat.questionCount != null) {
-      totalQuestions += cat.questionCount;
+      availableQuestions += cat.questionCount;
     } else {
       const entry = APP_CATALOG[cat.appSlug as AppSlug];
       const meta = entry.categories.find((c) => c.slug === cat.categorySlug);
-      totalQuestions += meta?.questionCount ?? 0;
+      availableQuestions += meta?.questionCount ?? 0;
     }
   }
+  const totalQuestions =
+    assessment.questionCount != null && assessment.questionCount > 0
+      ? Math.min(assessment.questionCount, availableQuestions)
+      : availableQuestions;
 
   const timeEstimate = assessment.timeLimitSeconds
     ? `${String(Math.round(assessment.timeLimitSeconds / 60))} minutes`
