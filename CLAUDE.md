@@ -87,6 +87,7 @@ When adding new files to `packages/shared/src/`, check that the export pattern i
 - `./components/game/*` maps to `./src/components/game/*.tsx`
 - `./lib/*` maps to `./src/lib/*.ts`
 - `./lib/game/*` maps to `./src/lib/game/*.ts`
+- `./lib/challenges/*` maps to `./src/lib/challenges/*/index.ts`
 
 Each app's `next.config.mjs` includes `transpilePackages: ["@cant/shared"]`.
 
@@ -161,7 +162,7 @@ Before creating any new file, check whether an existing file can be extended or 
 
 1. Copy an existing app: `cp -r apps/cant-resize apps/cant-newapp`
 2. Update `package.json` name, `next.config.mjs` (keep `output: "standalone"`), metadata in `layout.tsx`
-3. Customize `lib/theme.ts`, categories, challenges, and landing page
+3. Customize `lib/theme.ts`, categories, and landing page. Create challenge files in `packages/shared/src/lib/challenges/cant-newapp/`
 4. Add scripts to root `package.json`: `dev:newapp`, `build:newapp`
 5. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content
 6. **Keep all icon representations in sync.** Each app has four icon locations that must use the same visual design:
@@ -175,7 +176,7 @@ Before creating any new file, check whether an existing file can be extended or 
 
 ## Adding a new challenge
 
-1. Open the relevant category file in the app's `lib/learn/challenges/` (or `lib/game/challenges/`)
+1. Open the relevant category file in `packages/shared/src/lib/challenges/{app}/`
 2. **Pick the best content type before writing anything.** Do not default to `type: "code"`. For each challenge, decide:
    - Can this concept be **animated or simulated**? Use `type: "visual"` with a Canvas 2D or library-backed component (e.g. pathfinding grids, physics simulations, shading comparisons, steering behaviors)
    - Can this concept be **drawn as a structure or diagram**? Use `type: "visual"` with SVG or an npm renderer (e.g. molecular structures, file trees, flow diagrams, git graphs)
@@ -339,6 +340,10 @@ Visual challenges render live React components instead of code snippets. They re
 **Apps with visual challenges:** cant-game (animated Canvas 2D game simulations: pathfinding, collision detection, shading, rope physics, steering, state machines), cant-explode (3D molecules via `3dmol`, 2D structures via `smiles-drawer`, SVG orbital/energy diagrams, periodic table visualizations), cant-branch (git graphs, file trees, diffs, terminals, flow diagrams), cant-ux (visual component comparisons), cant-test (file trees)
 
 ### Shared infrastructure
+
+All challenge data lives in `packages/shared/src/lib/challenges/{app}/`, one directory per app. Each directory has category files and a barrel `index.ts` that exports a combined `challenges` array. Apps import directly: `import { challenges } from "@cant/shared/lib/challenges/cant-resize"`.
+
+Challenge types use the generic `BaseChallenge<Category>` from `@cant/shared/lib/game`. Each app defines a one-line type alias in its `lib/learn/types.ts` (or `lib/game/types.ts`): `export type Challenge = BaseChallenge<ChallengeCategory>`.
 
 Challenge rendering is centralized in `@cant/shared`:
 

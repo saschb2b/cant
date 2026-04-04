@@ -77,7 +77,9 @@ cant/
 │       ├── .storybook/      # Storybook config
 │       └── src/
 │           ├── components/  # UI components
-│           └── lib/         # Utilities, hooks, game logic
+│           └── lib/
+│               ├── challenges/  # Challenge data per app
+│               └── game/        # Game logic, types, utilities
 ├── docs/                    # Deployment and ops documentation
 ├── turbo.json               # Turborepo task config
 ├── pnpm-workspace.yaml      # Workspace definition
@@ -203,7 +205,7 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
 - `lib/theme.ts` — each app has its own color palette
 - `components/app-theme-wrapper.tsx` — per-app panel labels, styling, and animations
 - `lib/shiki.ts` — apps add language support as needed (CSS, HTML, Dockerfile, YAML, etc.)
-- Challenge data and category definitions
+- Category definitions (`lib/learn/categories.ts` or `lib/game/categories.ts`)
 - Landing pages and app-specific features (viewer, playground, inspector, explorer, changelog)
 - `icon.tsx`, `apple-icon.tsx`, `public/icon.svg` — each app's branded icon
 
@@ -223,7 +225,7 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
    - `lib/theme.ts` — your app's color palette
    - `components/app-theme-wrapper.tsx` — panel labels, styling, checkmark animation
    - `lib/learn/categories.ts` — your challenge categories
-   - `lib/learn/challenges/` — your challenge content
+   - `packages/shared/src/lib/challenges/cant-newapp/` — your challenge content
    - `app/page.tsx` — your landing page
    - `app/icon.tsx`, `app/apple-icon.tsx`, `public/icon.svg` — your app icon
    - Metadata in `app/layout.tsx`
