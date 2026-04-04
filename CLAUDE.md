@@ -162,6 +162,7 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 - Don't override MUI's default `borderRadius` unless there's a specific visual reason
 - Keep challenge explanations factually accurate and natural-sounding
 - Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`
+- Do not use MUI's `component={Link}` prop in server components. Next.js 16 server components cannot pass functions as props to client components. Wrap `<Link>` around the MUI component instead: `<Link href="..."><Button>text</Button></Link>`
 
 ### No thin wrappers
 
