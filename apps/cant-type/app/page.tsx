@@ -14,7 +14,7 @@ import { LiveRibbon } from "@cant/shared/components/game";
 import { fetchRecentResults } from "@/lib/game/actions";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-type";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { codeBlockStyles } from "@cant/shared/lib";

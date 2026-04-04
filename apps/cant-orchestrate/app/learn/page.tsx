@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-orchestrate";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

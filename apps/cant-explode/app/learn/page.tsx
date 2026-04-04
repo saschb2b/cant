@@ -3,7 +3,7 @@ import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
 import { appThemeConfig } from "@/lib/app-theme-config";
 import { visualRegistry } from "@/components/visual/registry";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-explode";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

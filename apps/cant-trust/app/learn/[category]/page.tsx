@@ -13,7 +13,7 @@ import {
   SourceLink,
 } from "@cant/shared/components";
 import { visualRegistry } from "@/components/visual/registry";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-trust";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

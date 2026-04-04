@@ -3,7 +3,7 @@ import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
 import { visualRegistry } from "@/components/visual/registry";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-game";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

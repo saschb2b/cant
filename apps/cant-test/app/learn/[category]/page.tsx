@@ -14,7 +14,7 @@ import {
   FormattedText,
   SourceLink,
 } from "@cant/shared/components";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-test";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

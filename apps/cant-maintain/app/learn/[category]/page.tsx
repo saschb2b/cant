@@ -9,7 +9,7 @@ import {
   buildContentMap,
 } from "@cant/shared/lib";
 import { LearnCategoryPage, FormattedText } from "@cant/shared/components";
-import { challenges } from "@/lib/game/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-maintain";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

@@ -12,7 +12,7 @@ import { fetchRecentResults } from "@/lib/game/actions";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-orchestrate";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
 
 export default function LandingPage() {

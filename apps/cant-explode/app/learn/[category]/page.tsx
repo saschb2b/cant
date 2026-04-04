@@ -14,7 +14,7 @@ import type { ContentMapEntry } from "@cant/shared/components/game";
 import { LearnContentPanel } from "@cant/shared/components";
 import { visualRegistry } from "@/components/visual/registry";
 import { appThemeConfig } from "@/lib/app-theme-config";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-explode";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

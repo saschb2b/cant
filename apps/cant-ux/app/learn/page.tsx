@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
 import { visualRegistry } from "@/components/visual/registry";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-ux";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

@@ -10,7 +10,10 @@ import {
   highlightDual,
   buildContentMap,
 } from "@cant/shared/lib";
-import { challenges } from "@/lib/game/challenges";
+import { challenges as _challenges } from "@cant/shared/lib/challenges/cant-maintain";
+import type { Challenge } from "@/lib/game/types";
+
+const challenges = _challenges as Challenge[];
 
 export const metadata: Metadata = {
   title: "Play",
