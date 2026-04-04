@@ -134,21 +134,21 @@ Recruiters review and compare candidate submissions.
 
 **Candidate ranking table**
 
-- [ ] Per-assessment table: candidate name, email, score (%), time taken, date, status
-- [ ] Default sort by score descending
-- [ ] Filter by status: all, pending review, proceed, rejected
-- [ ] Search by candidate name/email
-- [ ] Inline status toggle (proceed / reject / pending) without leaving the list
+- [x] Per-assessment table: candidate name, email, score (%), time taken, date, status
+- [x] Default sort by score descending
+- [x] Filter by status: all, pending review, proceed, rejected
+- [x] Search by candidate name/email
+- [x] Inline status toggle (proceed / reject / pending) without leaving the list
 
 **Candidate detail view**
 
-- [ ] Per-question breakdown: correct/wrong, time spent, category, difficulty
-- [ ] Score by category (e.g. "TypeScript: 8/10, React: 6/8")
+- [x] Per-question breakdown: correct/wrong, time spent, category, difficulty
+- [x] Score by category (e.g. "TypeScript: 8/10, React: 6/8")
 - [ ] Compare side-by-side with another candidate (stretch goal)
 
 **Export**
 
-- [ ] CSV export of candidate list with scores and status
+- [x] CSV export of candidate list with scores and status
 
 ---
 

@@ -55,7 +55,8 @@ db.exec(`
     totalQuestions INTEGER,
     startedAt TEXT NOT NULL,
     finishedAt TEXT,
-    seed TEXT NOT NULL
+    seed TEXT NOT NULL,
+    reviewStatus TEXT NOT NULL DEFAULT 'pending'
   );
 `);
 
@@ -71,3 +72,12 @@ db.exec(`
     UNIQUE(sessionId, challengeId)
   );
 `);
+
+// Add reviewStatus column for existing databases
+try {
+  db.exec(
+    `ALTER TABLE candidate_session ADD COLUMN reviewStatus TEXT NOT NULL DEFAULT 'pending'`,
+  );
+} catch {
+  // Column already exists
+}

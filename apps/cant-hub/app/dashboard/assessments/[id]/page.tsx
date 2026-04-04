@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Users } from "lucide-react";
 import { getSession } from "@/lib/auth-session";
 import {
   getAssessmentById,
@@ -81,10 +84,22 @@ export default async function AssessmentDetailPage({
             })}
           </Typography>
         </Box>
-        <AssessmentActions
-          assessmentId={assessment.id}
-          status={assessment.status}
-        />
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Button
+            component={Link}
+            href={`/dashboard/assessments/${assessment.id}/results`}
+            size="small"
+            variant="outlined"
+            startIcon={<Users size={16} />}
+            sx={{ flexShrink: 0 }}
+          >
+            View candidates
+          </Button>
+          <AssessmentActions
+            assessmentId={assessment.id}
+            status={assessment.status}
+          />
+        </Stack>
       </Stack>
 
       <AssessmentBuilder

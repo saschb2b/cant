@@ -115,7 +115,11 @@ export function ChallengePlayer({
             <Typography
               variant="body2"
               fontFamily="var(--font-geist-mono), monospace"
-              color={remainingSeconds < 60 ? "error" : "text.secondary"}
+              color={
+                remainingSeconds != null && remainingSeconds < 60
+                  ? "error"
+                  : "text.secondary"
+              }
               fontWeight={700}
             >
               {String(minutes).padStart(2, "0")}:

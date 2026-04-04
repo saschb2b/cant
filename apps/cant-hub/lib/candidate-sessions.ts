@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { db } from "./db";
 
 export type SessionStatus = "in_progress" | "completed";
+export type ReviewStatus = "pending" | "proceed" | "rejected";
 
 export interface CandidateSession {
   id: string;
@@ -15,6 +16,7 @@ export interface CandidateSession {
   startedAt: string;
   finishedAt: string | null;
   seed: string;
+  reviewStatus: ReviewStatus;
 }
 
 export interface CandidateAnswer {
@@ -115,4 +117,18 @@ export function getAnswerCount(sessionId: string): number {
     )
     .get(sessionId) as unknown as { count: number };
   return row.count;
+}
+
+// ---------------------------------------------------------------------------
+// Review status
+// ---------------------------------------------------------------------------
+
+export function updateReviewStatus(
+  sessionId: string,
+  reviewStatus: ReviewStatus,
+): void {
+  db.prepare("UPDATE candidate_session SET reviewStatus = ? WHERE id = ?").run(
+    reviewStatus,
+    sessionId,
+  );
 }
