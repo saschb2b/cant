@@ -48,40 +48,57 @@ Recruiters get a dashboard to manage their assessments.
 
 ---
 
-## Milestone 4: Assessment Builder
+## Milestone 4: Assessment Builder (done)
 
 Recruiters compose an assessment by picking topics from cant apps.
 
+**Architecture: Shared App Catalog**
+
+- [x] Created `packages/shared/src/lib/app-catalog.ts` as single source of truth for all category metadata (slugs, labels, descriptions, sections, learning paths, question counts) across all 12 apps
+- [x] Migrated all apps to derive `ChallengeCategory` types and category exports from the catalog
+- [x] Replaced hand-maintained `SERIES_META` and `TOTAL_CHALLENGES` in the hub with catalog-derived values
+- [x] Added `explanationWrong` to shared `BaseChallenge` type
+- [x] Added cant-trust (18 categories, 106 challenges) to the catalog and hub
+
 **Step 1: App and category selection**
 
-- [ ] Read available apps and their categories from the shared app registry (`cant-apps.ts`)
-- [ ] Show apps as selectable cards (icon, name, description, category count)
-- [ ] Expanding an app reveals its categories as a checklist
-- [ ] Selected categories are summarized in a sidebar/panel
-- [ ] Show total question count updating live as categories are toggled
+- [x] Read available apps and their categories from the shared app catalog (`app-catalog.ts`)
+- [x] Show apps as selectable cards (icon, name, description, category count)
+- [x] Expanding an app reveals its categories as a checklist grouped by section
+- [x] Selected categories are summarized in a sticky sidebar panel
+- [x] Show total question count updating live as categories are toggled
 
 **Step 2: Per-category configuration**
 
-- [ ] For each selected category, configure: number of questions (default: all available)
-- [ ] Optional difficulty filter (easy, medium, hard) if the app supports it
-- [ ] Global time limit for the entire assessment (optional)
+- [x] Global time limit for the entire assessment (optional, in minutes)
+- [ ] Per-category question count (default: all available) -- UI placeholder, not yet wired
+- [ ] Optional difficulty filter (easy, medium, hard) -- UI placeholder, not yet wired
 
 **Step 3: Persistence**
 
-- [ ] `assessment` table: id, title, description, status, userId, timeLimit, createdAt, updatedAt
-- [ ] `assessment_category` table: assessmentId, appId, categoryId, questionCount, difficulty
-- [ ] Save/update assessment with its selected categories
+- [x] `assessment` table extended with `timeLimitSeconds`
+- [x] `assessment_category` junction table: assessmentId, appSlug, categorySlug, questionCount, difficulty
+- [x] Save/update assessment with its selected categories via server action
+- [x] SQLite null-prototype objects spread into plain objects for Server-to-Client serialization
 
 **Step 4: Share**
 
-- [ ] Generate a unique shareable link per assessment (e.g. `/s/:assessmentId`)
-- [ ] Copy-to-clipboard button on the assessment detail page
-- [ ] Link only works when assessment status is "active"
+- [x] Public `/s/:assessmentId` page shows assessment title, question count, topics, time estimate
+- [x] Copy-to-clipboard button in the assessment Actions menu
+- [x] Link only works when assessment status is "active"
+- [ ] Candidate sign-in form (name + email) -- placeholder for Milestone 5
 
 **Step 5: Duplicate**
 
-- [ ] "Duplicate" action on any existing assessment
-- [ ] Creates a new draft with the same categories and config, new title ("Copy of ...")
+- [x] "Duplicate" action on any existing assessment
+- [x] Creates a new draft with the same categories and config, new title ("Copy of ...")
+
+**Prerequisite for Milestone 5: Challenge data migration**
+
+Challenge files need to move from each app's local directory to `packages/shared/src/lib/challenges/` so the hub can import them directly at build time. This avoids runtime API calls or database snapshots.
+
+- [x] Proof of concept: cant-game challenges moved to `packages/shared/src/lib/challenges/cant-game/`
+- [ ] Migrate remaining 11 apps (cant-maintain, cant-resize, cant-type, cant-orchestrate, cant-seo, cant-ux, cant-explode, cant-branch, cant-query, cant-test, cant-trust)
 
 ---
 
@@ -169,4 +186,4 @@ All milestones should be testable locally without external services.
 - **Database**: SQLite file at `data/auth.db`, gitignored. Delete to reset.
 - **Payments**: use Stripe test mode / Lemon Squeezy sandbox. No real charges in dev.
 - **Assessment link**: works on `localhost:3000/s/:assessmentId` with seeded data.
-- **Multi-app challenges**: `pnpm dev` starts all apps, but for screening dev you only need cant-hub running. Mock challenge data locally so you don't need every cant app running simultaneously.
+- **Challenge data**: All challenge content lives in `packages/shared/src/lib/challenges/`. The hub imports challenges directly at build time, no need to run other apps.
