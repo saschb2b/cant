@@ -33,7 +33,11 @@ export async function startSessionAction(
   if (assessment?.status !== "active") return;
 
   const categories = getCategoriesByAssessment(assessmentId);
-  const totalQuestions = countAssessmentQuestions(categories);
+  const availableQuestions = countAssessmentQuestions(categories);
+  const totalQuestions =
+    assessment.questionCount != null && assessment.questionCount > 0
+      ? Math.min(assessment.questionCount, availableQuestions)
+      : availableQuestions;
   const seed = randomUUID();
 
   const session = createCandidateSession(

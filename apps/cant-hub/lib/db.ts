@@ -18,14 +18,20 @@ db.exec(`
     status TEXT NOT NULL DEFAULT 'draft',
     userId TEXT NOT NULL REFERENCES user(id),
     timeLimitSeconds INTEGER,
+    questionCount INTEGER,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
   );
 `);
 
-// Add timeLimitSeconds column for existing databases
+// Add columns for existing databases
 try {
   db.exec(`ALTER TABLE assessment ADD COLUMN timeLimitSeconds INTEGER`);
+} catch {
+  // Column already exists
+}
+try {
+  db.exec(`ALTER TABLE assessment ADD COLUMN questionCount INTEGER`);
 } catch {
   // Column already exists
 }

@@ -60,6 +60,7 @@ function seededShuffle<T>(arr: T[], seed: string): T[] {
 export async function getAssessmentChallenges(
   categories: AssessmentCategory[],
   seed: string,
+  totalLimit?: number | null,
 ): Promise<BaseChallenge[]> {
   // Group categories by app to avoid loading the same app twice
   const byApp = new Map<string, AssessmentCategory[]>();
@@ -105,7 +106,11 @@ export async function getAssessmentChallenges(
     allChallenges.push(...filtered);
   }
 
-  return seededShuffle(allChallenges, seed);
+  const shuffled = seededShuffle(allChallenges, seed);
+  if (totalLimit != null && totalLimit > 0 && totalLimit < shuffled.length) {
+    return shuffled.slice(0, totalLimit);
+  }
+  return shuffled;
 }
 
 /**

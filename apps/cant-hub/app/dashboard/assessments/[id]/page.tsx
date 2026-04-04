@@ -106,6 +106,7 @@ export default async function AssessmentDetailPage({
         assessmentId={assessment.id}
         existingCategories={categories}
         timeLimitSeconds={assessment.timeLimitSeconds}
+        questionCount={assessment.questionCount}
       />
     </Stack>
   );

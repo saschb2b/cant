@@ -60,7 +60,11 @@ export default async function PlayPage({
   }
 
   const categories = getCategoriesByAssessment(id);
-  const challenges = await getAssessmentChallenges(categories, session.seed);
+  const challenges = await getAssessmentChallenges(
+    categories,
+    session.seed,
+    assessment.questionCount,
+  );
 
   // Pre-highlight code challenges with Shiki
   const highlighter = await getHighlighter();

@@ -11,6 +11,7 @@ export interface Assessment {
   status: AssessmentStatus;
   userId: string;
   timeLimitSeconds: number | null;
+  questionCount: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -66,6 +67,7 @@ export function updateAssessment(
     description?: string;
     status?: AssessmentStatus;
     timeLimitSeconds?: number | null;
+    questionCount?: number | null;
   },
 ): Assessment | undefined {
   const assessment = getAssessmentById(id);
@@ -78,11 +80,15 @@ export function updateAssessment(
     data.timeLimitSeconds !== undefined
       ? data.timeLimitSeconds
       : assessment.timeLimitSeconds;
+  const questionCount =
+    data.questionCount !== undefined
+      ? data.questionCount
+      : assessment.questionCount;
   const now = new Date().toISOString();
 
   db.prepare(
-    "UPDATE assessment SET title = ?, description = ?, status = ?, timeLimitSeconds = ?, updatedAt = ? WHERE id = ?",
-  ).run(title, description, status, timeLimitSeconds, now, id);
+    "UPDATE assessment SET title = ?, description = ?, status = ?, timeLimitSeconds = ?, questionCount = ?, updatedAt = ? WHERE id = ?",
+  ).run(title, description, status, timeLimitSeconds, questionCount, now, id);
   return getAssessmentById(id);
 }
 
@@ -101,13 +107,14 @@ export function duplicateAssessment(
   const newId = randomUUID();
   const now = new Date().toISOString();
   db.prepare(
-    "INSERT INTO assessment (id, title, description, status, userId, timeLimitSeconds, createdAt, updatedAt) VALUES (?, ?, ?, 'draft', ?, ?, ?, ?)",
+    "INSERT INTO assessment (id, title, description, status, userId, timeLimitSeconds, questionCount, createdAt, updatedAt) VALUES (?, ?, ?, 'draft', ?, ?, ?, ?, ?)",
   ).run(
     newId,
     `Copy of ${source.title}`,
     source.description,
     userId,
     source.timeLimitSeconds,
+    source.questionCount,
     now,
     now,
   );

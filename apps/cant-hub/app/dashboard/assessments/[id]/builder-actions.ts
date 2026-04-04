@@ -12,6 +12,7 @@ export async function saveAssessmentBuilderAction(
   assessmentId: string,
   data: {
     timeLimitMinutes: number | null;
+    questionCount: number | null;
     categories: CategoryInput[];
   },
 ) {
@@ -26,6 +27,7 @@ export async function saveAssessmentBuilderAction(
 
   updateAssessment(assessmentId, {
     timeLimitSeconds: data.timeLimitMinutes ? data.timeLimitMinutes * 60 : null,
+    questionCount: data.questionCount,
   });
   setAssessmentCategories(assessmentId, data.categories);
 }
