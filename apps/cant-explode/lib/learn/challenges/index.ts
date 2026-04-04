@@ -1,37 +1,30 @@
 import type { Challenge } from "../types";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-explode";
 
-import { molecularStabilityChallenges } from "./molecular-stability";
-import { acidStrengthChallenges } from "./acid-strength";
-import { bondEnergyChallenges } from "./bond-energy";
-import { electronegativityChallenges } from "./electronegativity";
-import { reactionFavorabilityChallenges } from "./reaction-favorability";
-import { solubilityChallenges } from "./solubility";
-import { oxidationReductionChallenges } from "./oxidation-reduction";
-import { functionalGroupsChallenges } from "./functional-groups";
-import { structuralFormulasChallenges } from "./structural-formulas";
-import { molecularGeometryChallenges } from "./molecular-geometry";
-import { periodicTrendsChallenges } from "./periodic-trends";
-import { electronConfigurationChallenges } from "./electron-configuration";
-import { energyDiagramsChallenges } from "./energy-diagrams";
-import { stereochemistryChallenges } from "./stereochemistry";
-import { electrostaticMapsChallenges } from "./electrostatic-maps";
-import { proteinStructureChallenges } from "./protein-structure";
+/**
+ * All challenges, imported from the shared catalog.
+ *
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-explode/.
+ */
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
 
-export const challenges: Challenge[] = [
-  ...molecularStabilityChallenges,
-  ...acidStrengthChallenges,
-  ...bondEnergyChallenges,
-  ...electronegativityChallenges,
-  ...reactionFavorabilityChallenges,
-  ...solubilityChallenges,
-  ...oxidationReductionChallenges,
-  ...functionalGroupsChallenges,
-  ...structuralFormulasChallenges,
-  ...molecularGeometryChallenges,
-  ...periodicTrendsChallenges,
-  ...electronConfigurationChallenges,
-  ...energyDiagramsChallenges,
-  ...stereochemistryChallenges,
-  ...electrostaticMapsChallenges,
-  ...proteinStructureChallenges,
-];
+// Re-export individual category arrays for direct access
+export {
+  molecularStabilityChallenges,
+  acidStrengthChallenges,
+  bondEnergyChallenges,
+  electronegativityChallenges,
+  reactionFavorabilityChallenges,
+  solubilityChallenges,
+  oxidationReductionChallenges,
+  functionalGroupsChallenges,
+  structuralFormulasChallenges,
+  molecularGeometryChallenges,
+  periodicTrendsChallenges,
+  electronConfigurationChallenges,
+  energyDiagramsChallenges,
+  stereochemistryChallenges,
+  electrostaticMapsChallenges,
+  proteinStructureChallenges,
+} from "@cant/shared/lib/challenges/cant-explode";

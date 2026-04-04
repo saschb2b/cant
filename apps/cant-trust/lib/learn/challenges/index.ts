@@ -1,46 +1,32 @@
 import type { Challenge } from "../types";
-import { bankingFailuresChallenges } from "./banking-failures";
-import { bankingMechanicsChallenges } from "./banking-mechanics";
-import { bitcoinChallenges } from "./bitcoin";
-import { cbdcsChallenges } from "./cbdcs";
-import { centralBanksChallenges } from "./central-banks";
-import { consensusChallenges } from "./consensus";
-import { cryptographyChallenges } from "./cryptography";
-import { defiChallenges } from "./defi";
-import { fixTheMoneyChallenges } from "./fix-the-money";
-import { governanceChallenges } from "./governance";
-import { inflationChallenges } from "./inflation";
-import { moneyOriginsChallenges } from "./money-origins";
-import { nixonShockChallenges } from "./nixon-shock";
-import { privacyChallenges } from "./privacy";
-import { scalingChallenges } from "./scaling";
-import { settlementChallenges } from "./settlement";
-import { smartContractsChallenges } from "./smart-contracts";
-import { walletsKeysChallenges } from "./wallets-keys";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-trust";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-trust/.
  */
-export const challenges: Challenge[] = [
-  ...moneyOriginsChallenges,
-  ...bankingMechanicsChallenges,
-  ...bankingFailuresChallenges,
-  ...centralBanksChallenges,
-  ...nixonShockChallenges,
-  ...inflationChallenges,
-  ...settlementChallenges,
-  ...cryptographyChallenges,
-  ...consensusChallenges,
-  ...bitcoinChallenges,
-  ...walletsKeysChallenges,
-  ...smartContractsChallenges,
-  ...defiChallenges,
-  ...privacyChallenges,
-  ...scalingChallenges,
-  ...cbdcsChallenges,
-  ...governanceChallenges,
-  ...fixTheMoneyChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  moneyOriginsChallenges,
+  bankingMechanicsChallenges,
+  bankingFailuresChallenges,
+  centralBanksChallenges,
+  nixonShockChallenges,
+  inflationChallenges,
+  settlementChallenges,
+  cryptographyChallenges,
+  consensusChallenges,
+  bitcoinChallenges,
+  walletsKeysChallenges,
+  smartContractsChallenges,
+  defiChallenges,
+  privacyChallenges,
+  scalingChallenges,
+  cbdcsChallenges,
+  governanceChallenges,
+  fixTheMoneyChallenges,
+} from "@cant/shared/lib/challenges/cant-trust";

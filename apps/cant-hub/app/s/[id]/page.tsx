@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
@@ -18,7 +17,7 @@ export default async function SharePage({
   const { id } = await params;
   const assessment = getAssessmentById(id);
 
-  if (!assessment || assessment.status !== "active") {
+  if (assessment?.status !== "active") {
     return (
       <Container
         maxWidth="sm"
@@ -40,7 +39,7 @@ export default async function SharePage({
   const byApp = new Map<string, string[]>();
   for (const cat of categories) {
     if (!byApp.has(cat.appSlug)) byApp.set(cat.appSlug, []);
-    byApp.get(cat.appSlug)!.push(cat.categorySlug);
+    byApp.get(cat.appSlug)?.push(cat.categorySlug);
   }
 
   // Count total questions
@@ -50,7 +49,7 @@ export default async function SharePage({
       totalQuestions += cat.questionCount;
     } else {
       const entry = APP_CATALOG[cat.appSlug as AppSlug];
-      const meta = entry?.categories.find((c) => c.slug === cat.categorySlug);
+      const meta = entry.categories.find((c) => c.slug === cat.categorySlug);
       totalQuestions += meta?.questionCount ?? 0;
     }
   }
@@ -140,7 +139,6 @@ export default async function SharePage({
           >
             {Array.from(byApp.entries()).map(([appSlug, catSlugs]) => {
               const entry = APP_CATALOG[appSlug as AppSlug];
-              if (!entry) return null;
               return catSlugs.map((catSlug) => {
                 const meta = entry.categories.find((c) => c.slug === catSlug);
                 return (

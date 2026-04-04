@@ -1,0 +1,213 @@
+import type { BaseChallenge } from "../../game/types";
+
+export const serverComponentPropsChallenges: BaseChallenge[] = [
+  {
+    id: "sc-001",
+    category: "server-component-props",
+    difficulty: "easy",
+    title: "Callback props across the boundary",
+    prompt: "Which passes functions across the server boundary?",
+    content: {
+      type: "code",
+
+      left: `// ServerPage.tsx (Server Component)
+import { saveToDatabase } from './db';
+
+<ClientForm
+  onSubmit={(data: FormData) => {
+    saveToDatabase(data);
+  }}
+/>`,
+
+      right: `// actions.ts
+'use server';
+
+export async function saveForm(data: FormData) {
+  await saveToDatabase(data);
+}
+
+// ServerPage.tsx (Server Component)
+import { saveForm } from './actions';
+
+<ClientForm action={saveForm} />`,
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "Props from Server Components to Client Components are serialized over the network. Regular functions can't survive this, and they crash at runtime.\n\n`'use server'` is the key: it turns the function into a serializable reference (essentially a URL). The actual code stays on the server; the client gets a reference it can call over the network.",
+    explanationWrong:
+      "Inline functions aren't serializable. When a Server Component renders a Client Component, all props must survive network serialization. Regular functions, class instances, and Symbols cannot.\n\nThe fix is `'use server'`: it replaces the function with a serializable network reference. The function body never leaves the server; the client just gets an ID it can invoke via an HTTP round-trip.",
+    sourceUrl: "https://react.dev/reference/rsc/server-actions",
+    sourceLabel: "React Docs: Server Actions",
+  },
+  {
+    id: "sc-002",
+    category: "server-component-props",
+    difficulty: "easy",
+    title: "Passing server content to client wrappers",
+    prompt: "Which keeps article data server-rendered?",
+    content: {
+      type: "code",
+
+      left: `// page.tsx (Server Component)
+
+<AnimatedContainer
+  title={article.title}
+  body={article.body}
+  author={article.author}
+  publishedAt={article.publishedAt}
+/>`,
+
+      right: `// page.tsx (Server Component)
+
+<AnimatedContainer>
+  <ArticleContent article={article} />
+</AnimatedContainer>`,
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      'This is called the "donut pattern": the Client Component is the outer ring (handles animation), and Server Component `children` pass through the hole in the middle. `AnimatedContainer` never touches the article data, it just renders `{children}`.\n\n`ArticleContent` stays a Server Component: all article data is rendered on the server and never serialized to the client. The client only ships the animation JavaScript.',
+    explanationWrong:
+      "Passing every article field as props means all that data must be serialized and sent to the client. Now `AnimatedContainer` is responsible for both animation AND rendering article content, and the entire article ends up in the client bundle.\n\nWith `children`, `ArticleContent` renders on the server and passes through the Client Component untouched. The client only handles animation, no article data crosses the network boundary.",
+    sourceUrl:
+      "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+    sourceLabel: "Next.js: Server and Client Components",
+  },
+  {
+    id: "sc-003",
+    category: "server-component-props",
+    difficulty: "medium",
+    title: "Form action vs onSubmit",
+    prompt: "Which form pattern auto-manages pending state?",
+    content: {
+      type: "code",
+
+      left: `'use client';
+
+interface ContactFormProps {
+  /** Called when the form is submitted. */
+  onSubmit: (data: FormData) => Promise<void>;
+  /** Shows a loading spinner. */
+  isPending: boolean;
+}`,
+
+      right: `'use client';
+
+interface ContactFormProps {
+  /**
+   * Server Action invoked on form submission.
+   * Passed to <form action={...}>.
+   */
+  action: (formData: FormData) => Promise<void>;
+}
+
+// isPending comes from useActionState:
+// const [state, formAction, isPending] =
+//   useActionState(action, initialState);`,
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "React 19's `<form action={...}>` pattern handles pending state automatically via `useActionState` or `useFormStatus`. Passing `isPending` as a prop duplicates what the framework already provides.\n\nNaming the prop `action` (not `onSubmit`) signals it's a Server Action, not a client-side event handler.",
+    explanationWrong:
+      "Manually managing `isPending` as a prop is the pre-React 19 pattern. With `useActionState`, pending state is derived automatically from the action's Promise lifecycle. The `action` naming convention distinguishes Server Actions from client callbacks. `onSubmit` implies client-side handling.",
+    sourceUrl: "https://react.dev/reference/react/useActionState",
+    sourceLabel: "React Docs: useActionState",
+  },
+  {
+    id: "sc-004",
+    category: "server-component-props",
+    difficulty: "medium",
+    title: "Non-serializable prop types",
+    prompt: "Which props survive server-client serialization?",
+    content: {
+      type: "code",
+
+      left: `// Server Component
+<ClientEditor
+  pattern={highlightPattern}
+  metadata={documentMeta}
+/>
+
+// Client Component
+interface ClientEditorProps {
+  pattern: RegExp;
+  metadata: DocumentMeta; // class instance
+}`,
+
+      right: `// Server Component
+<ClientEditor
+  pattern={highlightPattern.source}
+  metadata={{
+    title: documentMeta.title,
+    wordCount: documentMeta.wordCount,
+  }}
+/>
+
+// Client Component
+interface ClientEditorProps {
+  pattern: string;
+  metadata: { title: string; wordCount: number };
+}`,
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "`RegExp` and class instances are not serializable across the server/client boundary. Convert to serializable equivalents: `RegExp` → its `.source` string, class instances → plain objects with only the needed fields.\n\nSerializable types include: primitives, `Date`, `Map`, `Set`, `BigInt`, typed arrays, plain objects, and arrays. NOT serializable: `RegExp`, class instances, `WeakMap`, `Symbol`, and functions.",
+    explanationWrong:
+      "Props crossing the server/client boundary must be serializable by React's RSC protocol. `RegExp` and custom class instances can't survive serialization. TypeScript compiles fine but the runtime throws.\n\nConvert to plain serializable equivalents: extract `.source` from RegExp, destructure class instances into plain objects. Reconstruct on the client if needed.",
+    sourceUrl: "https://react.dev/reference/rsc/use-client#serializable-types",
+    sourceLabel: "React Docs: Serializable Types",
+  },
+  {
+    id: "sc-005",
+    category: "server-component-props",
+    difficulty: "hard",
+    title: "Avoiding unnecessary client boundaries",
+    prompt: "Which pushes the client boundary down further?",
+    content: {
+      type: "code",
+
+      left: `'use client';
+
+interface ProductPageProps {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    reviews: Review[];
+  };
+  onAddToCart: () => void;
+  onToggleWishlist: () => void;
+}`,
+
+      right: `// ProductPage (Server Component)
+interface ProductPageProps {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    reviews: Review[];
+  };
+}
+
+// AddToCartButton (Client Component)
+interface AddToCartButtonProps {
+  productId: string;
+  action: (id: string) => Promise<void>;
+}`,
+    },
+
+    correctSide: "right",
+    explanationCorrect:
+      "Making the entire page a Client Component just because two buttons need interactivity forces all product data to be serialized and sent to the client. Instead, keep the page as a Server Component and push `'use client'` to the smallest leaf components.\n\nOnly the button needs to be a Client Component, and it receives just a `productId` and a Server Action, not the full product object.",
+    explanationWrong:
+      "A single `onAddToCart` callback forces the entire page to `'use client'`, serializing the full product object, all reviews, and every nested field. This defeats Server Components.\n\nPush the client boundary down to the interactive leaf: the button only needs a `productId` and a Server Action. The product details, reviews, and description stay server-rendered with zero client JavaScript.",
+    sourceUrl:
+      "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+    sourceLabel: "Next.js: Server and Client Components",
+  },
+];

@@ -17,16 +17,16 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: process.env.GITHUB_CLIENT_ID ?? "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
     },
     gitlab: {
-      clientId: process.env.GITLAB_CLIENT_ID!,
-      clientSecret: process.env.GITLAB_CLIENT_SECRET!,
+      clientId: process.env.GITLAB_CLIENT_ID ?? "",
+      clientSecret: process.env.GITLAB_CLIENT_SECRET ?? "",
     },
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     },
   },
   user: {
@@ -40,7 +40,7 @@ export const auth = betterAuth({
 });
 
 // Auto-migrate: create tables if they don't exist
-import("better-auth/db/migration").then(async ({ getMigrations }) => {
+void import("better-auth/db/migration").then(async ({ getMigrations }) => {
   const { runMigrations } = await getMigrations(auth.options);
   await runMigrations();
 });

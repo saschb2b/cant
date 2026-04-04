@@ -1,42 +1,30 @@
 import type { Challenge } from "../types";
-import { dockerfileBasicsChallenges } from "./dockerfile-basics";
-import { imageOptimizationChallenges } from "./image-optimization";
-import { dockerComposeChallenges } from "./docker-compose";
-import { volumesStorageChallenges } from "./volumes-storage";
-import { networkingChallenges } from "./networking";
-import { healthChecksChallenges } from "./health-checks";
-import { securityChallenges } from "./security";
-import { environmentConfigChallenges } from "./environment-config";
-import { kubernetesPodsChallenges } from "./kubernetes-pods";
-import { kubernetesServicesChallenges } from "./kubernetes-services";
-import { kubernetesConfigChallenges } from "./kubernetes-config";
-import { helmChartsChallenges } from "./helm-charts";
-import { dockerSwarmChallenges } from "./docker-swarm";
-import { ciCdPipelinesChallenges } from "./ci-cd-pipelines";
-import { buildScriptsChallenges } from "./build-scripts";
-import { commonMistakesChallenges } from "./common-mistakes";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-orchestrate";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-orchestrate/.
  */
-export const challenges: Challenge[] = [
-  ...dockerfileBasicsChallenges,
-  ...imageOptimizationChallenges,
-  ...dockerComposeChallenges,
-  ...volumesStorageChallenges,
-  ...networkingChallenges,
-  ...healthChecksChallenges,
-  ...securityChallenges,
-  ...environmentConfigChallenges,
-  ...kubernetesPodsChallenges,
-  ...kubernetesServicesChallenges,
-  ...kubernetesConfigChallenges,
-  ...helmChartsChallenges,
-  ...dockerSwarmChallenges,
-  ...ciCdPipelinesChallenges,
-  ...buildScriptsChallenges,
-  ...commonMistakesChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  dockerfileBasicsChallenges,
+  imageOptimizationChallenges,
+  dockerComposeChallenges,
+  volumesStorageChallenges,
+  networkingChallenges,
+  healthChecksChallenges,
+  securityChallenges,
+  environmentConfigChallenges,
+  kubernetesPodsChallenges,
+  kubernetesServicesChallenges,
+  kubernetesConfigChallenges,
+  helmChartsChallenges,
+  dockerSwarmChallenges,
+  ciCdPipelinesChallenges,
+  buildScriptsChallenges,
+  commonMistakesChallenges,
+} from "@cant/shared/lib/challenges/cant-orchestrate";

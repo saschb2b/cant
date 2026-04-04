@@ -1,51 +1,34 @@
 import type { Challenge } from "../types";
-import { commitMessagesChallenges } from "./commit-messages";
-import { atomicCommitsChallenges } from "./atomic-commits";
-import { branchingNamingChallenges } from "./branching-naming";
-import { branchingStrategiesChallenges } from "./branching-strategies";
-import { mergeStrategiesChallenges } from "./merge-strategies";
-import { conflictResolutionChallenges } from "./conflict-resolution";
-import { cleanHistoryChallenges } from "./clean-history";
-import { undoingChangesChallenges } from "./undoing-changes";
-import { gitBisectChallenges } from "./git-bisect";
-import { pullRequestsChallenges } from "./pull-requests";
-import { codeReviewChallenges } from "./code-review";
-import { gitHooksChallenges } from "./git-hooks";
-import { gitignoreChallenges } from "./gitignore";
-import { largeFilesChallenges } from "./large-files";
-import { repoStructureChallenges } from "./repo-structure";
-import { taggingReleasesChallenges } from "./tagging-releases";
-import { changelogsChallenges } from "./changelogs";
-import { gitConfigChallenges } from "./git-config";
-import { worktreesStashingChallenges } from "./worktrees-stashing";
-import { ciIntegrationChallenges } from "./ci-integration";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-branch";
 
 /**
- * All challenges for the game, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
- * Difficulty sorting and side randomization happen automatically in the game hook.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-branch/.
  */
-export const challenges: Challenge[] = [
-  ...commitMessagesChallenges,
-  ...atomicCommitsChallenges,
-  ...branchingNamingChallenges,
-  ...branchingStrategiesChallenges,
-  ...mergeStrategiesChallenges,
-  ...conflictResolutionChallenges,
-  ...cleanHistoryChallenges,
-  ...undoingChangesChallenges,
-  ...gitBisectChallenges,
-  ...pullRequestsChallenges,
-  ...codeReviewChallenges,
-  ...gitHooksChallenges,
-  ...gitignoreChallenges,
-  ...largeFilesChallenges,
-  ...repoStructureChallenges,
-  ...taggingReleasesChallenges,
-  ...changelogsChallenges,
-  ...gitConfigChallenges,
-  ...worktreesStashingChallenges,
-  ...ciIntegrationChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  commitMessagesChallenges,
+  atomicCommitsChallenges,
+  branchingNamingChallenges,
+  branchingStrategiesChallenges,
+  mergeStrategiesChallenges,
+  conflictResolutionChallenges,
+  cleanHistoryChallenges,
+  undoingChangesChallenges,
+  gitBisectChallenges,
+  pullRequestsChallenges,
+  codeReviewChallenges,
+  gitHooksChallenges,
+  gitignoreChallenges,
+  largeFilesChallenges,
+  repoStructureChallenges,
+  taggingReleasesChallenges,
+  changelogsChallenges,
+  gitConfigChallenges,
+  worktreesStashingChallenges,
+  ciIntegrationChallenges,
+} from "@cant/shared/lib/challenges/cant-branch";

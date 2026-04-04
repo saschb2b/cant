@@ -1,47 +1,32 @@
 import type { Challenge } from "../types";
-import { booleanNamingChallenges } from "./boolean-naming";
-import { callbackNamingChallenges } from "./callback-naming";
-import { childrenPatternChallenges } from "./children-pattern";
-import { controlledUncontrolledChallenges } from "./controlled-uncontrolled";
-import { defaultValuesChallenges } from "./default-values";
-import { discriminatedUnionsChallenges } from "./discriminated-unions";
-import { accessibilityPropsChallenges } from "./accessibility-props";
-import { extendingHtmlChallenges } from "./extending-html";
-import { genericPropsChallenges } from "./generic-props";
-import { jsdocChallenges } from "./jsdoc";
-import { propSpecificityChallenges } from "./prop-specificity";
-import { propOrganizationChallenges } from "./prop-organization";
-import { refForwardingChallenges } from "./ref-forwarding";
-import { renderPropsChallenges } from "./render-props";
-import { enumeratedVariantsChallenges } from "./enumerated-variants";
-import { stylingApiChallenges } from "./styling-api";
-import { serverComponentPropsChallenges } from "./server-component-props";
-import { componentNamingChallenges } from "./component-naming";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-maintain";
 
 /**
- * All challenges for the game, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * (e.g. `callback-naming.ts`) and append your challenge to its array.
- * Difficulty sorting and side randomization happen automatically in the game hook.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-maintain/.
  */
-export const challenges: Challenge[] = [
-  ...componentNamingChallenges,
-  ...callbackNamingChallenges,
-  ...booleanNamingChallenges,
-  ...jsdocChallenges,
-  ...propSpecificityChallenges,
-  ...renderPropsChallenges,
-  ...childrenPatternChallenges,
-  ...discriminatedUnionsChallenges,
-  ...extendingHtmlChallenges,
-  ...refForwardingChallenges,
-  ...accessibilityPropsChallenges,
-  ...defaultValuesChallenges,
-  ...propOrganizationChallenges,
-  ...controlledUncontrolledChallenges,
-  ...serverComponentPropsChallenges,
-  ...genericPropsChallenges,
-  ...enumeratedVariantsChallenges,
-  ...stylingApiChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  componentNamingChallenges,
+  callbackNamingChallenges,
+  booleanNamingChallenges,
+  jsdocChallenges,
+  propSpecificityChallenges,
+  renderPropsChallenges,
+  childrenPatternChallenges,
+  discriminatedUnionsChallenges,
+  extendingHtmlChallenges,
+  refForwardingChallenges,
+  accessibilityPropsChallenges,
+  defaultValuesChallenges,
+  propOrganizationChallenges,
+  controlledUncontrolledChallenges,
+  serverComponentPropsChallenges,
+  genericPropsChallenges,
+  enumeratedVariantsChallenges,
+  stylingApiChallenges,
+} from "@cant/shared/lib/challenges/cant-maintain";

@@ -1,26 +1,22 @@
 import type { Challenge } from "../types";
-import { metaTagsChallenges } from "./meta-tags";
-import { openGraphChallenges } from "./open-graph";
-import { twitterCardsChallenges } from "./twitter-cards";
-import { structuredDataChallenges } from "./structured-data";
-import { canonicalUrlsChallenges } from "./canonical-urls";
-import { sitemapsRobotsChallenges } from "./sitemaps-robots";
-import { imageOptimizationChallenges } from "./image-optimization";
-import { internationalizationChallenges } from "./internationalization";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-seo";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-seo/.
  */
-export const challenges: Challenge[] = [
-  ...metaTagsChallenges,
-  ...openGraphChallenges,
-  ...twitterCardsChallenges,
-  ...structuredDataChallenges,
-  ...canonicalUrlsChallenges,
-  ...sitemapsRobotsChallenges,
-  ...imageOptimizationChallenges,
-  ...internationalizationChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  metaTagsChallenges,
+  openGraphChallenges,
+  twitterCardsChallenges,
+  structuredDataChallenges,
+  canonicalUrlsChallenges,
+  sitemapsRobotsChallenges,
+  imageOptimizationChallenges,
+  internationalizationChallenges,
+} from "@cant/shared/lib/challenges/cant-seo";

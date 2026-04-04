@@ -124,7 +124,8 @@ function EmptyState() {
 
 export default async function DashboardPage() {
   const session = await getSession();
-  const assessments = getAssessmentsByUser(session!.user.id);
+  if (!session) return null;
+  const assessments = getAssessmentsByUser(session.user.id);
 
   return (
     <Stack spacing={{ xs: 3, md: 4 }}>

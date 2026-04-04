@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
@@ -110,13 +109,13 @@ export default function OnboardingPage() {
             <RoleCard
               title="Developer"
               description="Take screening challenges shared by recruiters and track your results."
-              onClick={() => handleRoleSelect("developer")}
+              onClick={() => void handleRoleSelect("developer")}
               disabled={false}
             />
             <RoleCard
               title="Recruiter"
               description="Create screening assessments from existing challenges, share them with candidates, and review results."
-              onClick={() => handleRoleSelect("recruiter")}
+              onClick={() => void handleRoleSelect("recruiter")}
               disabled={false}
             />
           </Stack>

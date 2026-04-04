@@ -14,16 +14,17 @@ export default function NewAssessmentPage() {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setPending(true);
     const formData = new FormData(e.currentTarget);
-    const result = await createAssessmentAction(formData);
-    if (result?.id) {
-      router.push(`/dashboard/assessments/${result.id}`);
-    } else {
-      setPending(false);
-    }
+    void createAssessmentAction(formData).then((result) => {
+      if (result.id) {
+        router.push(`/dashboard/assessments/${result.id}`);
+      } else {
+        setPending(false);
+      }
+    });
   }
 
   return (

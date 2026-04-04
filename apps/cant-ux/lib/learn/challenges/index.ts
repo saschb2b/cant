@@ -1,40 +1,29 @@
 import type { Challenge } from "../types";
-import { typographyChallenges } from "./typography";
-import { spacingChallenges } from "./spacing";
-import { colorChallenges } from "./color";
-import { hierarchyChallenges } from "./hierarchy";
-import { layoutChallenges } from "./layout";
-import { formsChallenges } from "./forms";
-import { feedbackChallenges } from "./feedback";
-import { navigationChallenges } from "./navigation";
-import { accessibilityChallenges } from "./accessibility";
-import { microInteractionsChallenges } from "./micro-interactions";
-import { contentCopyChallenges } from "./content-copy";
-import { dataDisplayChallenges } from "./data-display";
-import { modalsOverlaysChallenges } from "./modals-overlays";
-import { listsCardsChallenges } from "./lists-cards";
-import { iconsImageryChallenges } from "./icons-imagery";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-ux";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-ux/.
  */
-export const challenges: Challenge[] = [
-  ...typographyChallenges,
-  ...spacingChallenges,
-  ...colorChallenges,
-  ...hierarchyChallenges,
-  ...layoutChallenges,
-  ...formsChallenges,
-  ...feedbackChallenges,
-  ...navigationChallenges,
-  ...accessibilityChallenges,
-  ...microInteractionsChallenges,
-  ...contentCopyChallenges,
-  ...dataDisplayChallenges,
-  ...modalsOverlaysChallenges,
-  ...listsCardsChallenges,
-  ...iconsImageryChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  accessibilityChallenges,
+  colorChallenges,
+  contentCopyChallenges,
+  dataDisplayChallenges,
+  feedbackChallenges,
+  formsChallenges,
+  hierarchyChallenges,
+  iconsImageryChallenges,
+  layoutChallenges,
+  listsCardsChallenges,
+  microInteractionsChallenges,
+  modalsOverlaysChallenges,
+  navigationChallenges,
+  spacingChallenges,
+  typographyChallenges,
+} from "@cant/shared/lib/challenges/cant-ux";

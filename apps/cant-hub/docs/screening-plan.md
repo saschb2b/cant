@@ -98,7 +98,7 @@ Recruiters compose an assessment by picking topics from cant apps.
 Challenge files need to move from each app's local directory to `packages/shared/src/lib/challenges/` so the hub can import them directly at build time. This avoids runtime API calls or database snapshots.
 
 - [x] Proof of concept: cant-game challenges moved to `packages/shared/src/lib/challenges/cant-game/`
-- [ ] Migrate remaining 11 apps (cant-maintain, cant-resize, cant-type, cant-orchestrate, cant-seo, cant-ux, cant-explode, cant-branch, cant-query, cant-test, cant-trust)
+- [x] Migrate remaining 11 apps (cant-maintain, cant-resize, cant-type, cant-orchestrate, cant-seo, cant-ux, cant-explode, cant-branch, cant-query, cant-test, cant-trust)
 
 ---
 

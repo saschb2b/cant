@@ -78,7 +78,7 @@ function stringToGradient(str: string) {
   }
   const h1 = Math.abs(hash) % 360;
   const h2 = (h1 + 45) % 360;
-  return `linear-gradient(135deg, hsl(${h1}, 65%, 55%), hsl(${h2}, 55%, 45%))`;
+  return `linear-gradient(135deg, hsl(${String(h1)}, 65%, 55%), hsl(${String(h2)}, 55%, 45%))`;
 }
 
 function UserPill({
@@ -285,11 +285,13 @@ export function UserMenu() {
                 )}
               </>
             }
-            primaryTypographyProps={{ fontWeight: 600, variant: "body2" }}
-            secondaryTypographyProps={{
-              variant: "caption",
-              component: "div",
-              sx: { display: "flex", alignItems: "center", mt: 0.25 },
+            slotProps={{
+              primary: { fontWeight: 600, variant: "body2" },
+              secondary: {
+                variant: "caption",
+                component: "div",
+                sx: { display: "flex", alignItems: "center", mt: 0.25 },
+              },
             }}
           />
         </MenuItem>
@@ -308,11 +310,12 @@ export function UserMenu() {
           </MenuItem>
         )}
         <MenuItem
-          onClick={async () => {
+          onClick={() => {
             setAnchorEl(null);
-            await authClient.signOut();
-            router.push("/");
-            router.refresh();
+            void authClient.signOut().then(() => {
+              router.push("/");
+              router.refresh();
+            });
           }}
         >
           <ListItemIcon>

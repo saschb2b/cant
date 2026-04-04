@@ -209,7 +209,7 @@ export default function SignInPage() {
                   fullWidth
                   startIcon={<GitHubIcon />}
                   onClick={() =>
-                    authClient.signIn.social({
+                    void authClient.signIn.social({
                       provider: "github",
                       callbackURL: "/onboarding",
                     })
@@ -224,7 +224,7 @@ export default function SignInPage() {
                   fullWidth
                   startIcon={<GoogleIcon />}
                   onClick={() =>
-                    authClient.signIn.social({
+                    void authClient.signIn.social({
                       provider: "google",
                       callbackURL: "/onboarding",
                     })
@@ -239,7 +239,7 @@ export default function SignInPage() {
                   fullWidth
                   startIcon={<GitLabIcon />}
                   onClick={() =>
-                    authClient.signIn.social({
+                    void authClient.signIn.social({
                       provider: "gitlab",
                       callbackURL: "/onboarding",
                     })

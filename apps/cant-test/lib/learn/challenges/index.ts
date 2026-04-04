@@ -1,24 +1,21 @@
 import type { Challenge } from "../types";
-import { unitTestingChallenges } from "./unit-testing";
-import { integrationTestingChallenges } from "./integration-testing";
-import { componentTestingChallenges } from "./component-testing";
-import { testStrategyChallenges } from "./test-strategy";
-import { mockingStubbingChallenges } from "./mocking-stubbing";
-import { asyncTestingChallenges } from "./async-testing";
-import { ciTestInfraChallenges } from "./ci-test-infra";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-test";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-test/.
  */
-export const challenges: Challenge[] = [
-  ...unitTestingChallenges,
-  ...integrationTestingChallenges,
-  ...componentTestingChallenges,
-  ...testStrategyChallenges,
-  ...mockingStubbingChallenges,
-  ...asyncTestingChallenges,
-  ...ciTestInfraChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  unitTestingChallenges,
+  integrationTestingChallenges,
+  componentTestingChallenges,
+  testStrategyChallenges,
+  mockingStubbingChallenges,
+  asyncTestingChallenges,
+  ciTestInfraChallenges,
+} from "@cant/shared/lib/challenges/cant-test";

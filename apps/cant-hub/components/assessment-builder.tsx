@@ -334,9 +334,9 @@ export function AssessmentBuilder({
             [catSlug]: { questionCount: null, difficulty: null },
           };
         } else {
-          const { [catSlug]: _, ...remaining } = next[appSlug] ?? {};
+          const { [catSlug]: _removed, ...remaining } = next[appSlug] ?? {};
           if (Object.keys(remaining).length === 0) {
-            const { [appSlug]: __, ...rest } = next;
+            const { [appSlug]: _dropped, ...rest } = next;
             return rest;
           }
           next[appSlug] = remaining;
@@ -376,9 +376,7 @@ export function AssessmentBuilder({
   const appsWithCatalog = ALL_APPS.map((app) => {
     const slug = appNameToSlug(app.name);
     if (!slug) return null;
-    const catalog = APP_CATALOG[slug];
-    if (!catalog) return null;
-    return { app, slug, catalog };
+    return { app, slug, catalog: APP_CATALOG[slug] };
   }).filter(Boolean) as {
     app: CantApp;
     slug: AppSlug;
@@ -487,7 +485,6 @@ export function AssessmentBuilder({
               <Stack spacing={0.5}>
                 {Object.entries(selections).map(([appSlug, cats]) => {
                   const entry = APP_CATALOG[appSlug as AppSlug];
-                  if (!entry) return null;
                   return (
                     <Box key={appSlug}>
                       <Typography

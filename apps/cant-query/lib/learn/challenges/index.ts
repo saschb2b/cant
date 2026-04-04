@@ -1,24 +1,21 @@
 import type { Challenge } from "../types";
-import { restApiDesignChallenges } from "./rest-api-design";
-import { graphqlPatternChallenges } from "./graphql-patterns";
-import { websocketsRealtimeChallenges } from "./websockets-realtime";
-import { authPatternChallenges } from "./auth-patterns";
-import { errorHandlingChallenges } from "./error-handling";
-import { apiConsumptionChallenges } from "./api-consumption";
-import { docsContractsChallenges } from "./docs-contracts";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-query";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-query/.
  */
-export const challenges: Challenge[] = [
-  ...restApiDesignChallenges,
-  ...graphqlPatternChallenges,
-  ...websocketsRealtimeChallenges,
-  ...authPatternChallenges,
-  ...errorHandlingChallenges,
-  ...apiConsumptionChallenges,
-  ...docsContractsChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  restApiDesignChallenges,
+  graphqlPatternChallenges,
+  websocketsRealtimeChallenges,
+  authPatternChallenges,
+  errorHandlingChallenges,
+  apiConsumptionChallenges,
+  docsContractsChallenges,
+} from "@cant/shared/lib/challenges/cant-query";

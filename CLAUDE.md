@@ -30,6 +30,8 @@ If formatting fails, run `npx prettier --write .` from the affected app director
 
 Do not commit code that fails any of these checks.
 
+If you encounter pre-existing lint or type errors in files you did not change, fix them immediately. Do not ignore them or defer them as "pre-existing." The codebase must be clean after every session.
+
 To check a single app: `pnpm turbo lint --filter=cant-maintain`
 
 ## Working with Turborepo
@@ -148,6 +150,12 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 - Don't override MUI's default `borderRadius` unless there's a specific visual reason
 - Keep challenge explanations factually accurate and natural-sounding
 - Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`
+
+### No thin wrappers
+
+Do not leave behind thin wrapper files that only re-export or trivially delegate to another module. When moving code (e.g. from an app to `@cant/shared`), update all consumers to import from the new location directly and delete the old file. A file that does nothing but `export { X } from "somewhere-else"` or cast a type is dead weight.
+
+Before creating any new file, check whether an existing file can be extended or whether consumers can import the source directly. If a wrapper exists only to re-type or re-export, remove it and update the imports.
 
 ## Adding a new app
 
