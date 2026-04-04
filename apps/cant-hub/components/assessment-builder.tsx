@@ -125,6 +125,7 @@ function AppCard({
   appSlug,
   selected,
   onToggleCategory,
+  onUpdateQuestionCount,
 }: {
   app: CantApp;
   catalog: AppCatalogEntry;
@@ -134,6 +135,11 @@ function AppCard({
     appSlug: AppSlug,
     catSlug: string,
     checked: boolean,
+  ) => void;
+  onUpdateQuestionCount: (
+    appSlug: AppSlug,
+    catSlug: string,
+    count: number | null,
   ) => void;
 }) {
   const [expanded, setExpanded] = useState(Object.keys(selected).length > 0);
@@ -221,50 +227,87 @@ function AppCard({
                 const meta = catalog.categories.find((c) => c.slug === catSlug);
                 if (!meta) return null;
                 const isChecked = catSlug in selected;
+                const config = selected[catSlug];
                 return (
-                  <FormControlLabel
+                  <Stack
                     key={catSlug}
+                    direction="row"
+                    alignItems="center"
                     sx={{
-                      display: "flex",
-                      mx: 0,
                       py: 0.25,
                       "&:hover": {
                         bgcolor: "action.hover",
                         borderRadius: 1,
                       },
                     }}
-                    control={
-                      <Checkbox
+                  >
+                    <FormControlLabel
+                      sx={{ flex: 1, mx: 0 }}
+                      control={
+                        <Checkbox
+                          size="small"
+                          checked={isChecked}
+                          onChange={(_, checked) =>
+                            onToggleCategory(appSlug, catSlug, checked)
+                          }
+                          sx={{
+                            color: `${app.colorFrom}60`,
+                            "&.Mui-checked": { color: app.colorFrom },
+                          }}
+                        />
+                      }
+                      label={
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          spacing={1}
+                          sx={{ flex: 1 }}
+                        >
+                          <Typography variant="body2">{meta.label}</Typography>
+                          <Typography
+                            variant="caption"
+                            color="text.disabled"
+                            fontFamily="var(--font-geist-mono), monospace"
+                            sx={{ fontSize: "0.65rem" }}
+                          >
+                            {meta.questionCount}q
+                          </Typography>
+                        </Stack>
+                      }
+                    />
+                    {isChecked && (
+                      <TextField
                         size="small"
-                        checked={isChecked}
-                        onChange={(_, checked) =>
-                          onToggleCategory(appSlug, catSlug, checked)
-                        }
+                        type="number"
+                        placeholder={String(meta.questionCount)}
+                        value={config?.questionCount ?? ""}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onUpdateQuestionCount(
+                            appSlug,
+                            catSlug,
+                            val
+                              ? Math.min(parseInt(val, 10), meta.questionCount)
+                              : null,
+                          );
+                        }}
+                        slotProps={{
+                          htmlInput: { min: 1, max: meta.questionCount },
+                        }}
                         sx={{
-                          color: `${app.colorFrom}60`,
-                          "&.Mui-checked": { color: app.colorFrom },
+                          width: 64,
+                          mr: 1,
+                          "& .MuiInputBase-input": {
+                            py: 0.5,
+                            px: 1,
+                            fontSize: "0.75rem",
+                            fontFamily: "var(--font-geist-mono), monospace",
+                            textAlign: "center",
+                          },
                         }}
                       />
-                    }
-                    label={
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        spacing={1}
-                        sx={{ flex: 1 }}
-                      >
-                        <Typography variant="body2">{meta.label}</Typography>
-                        <Typography
-                          variant="caption"
-                          color="text.disabled"
-                          fontFamily="var(--font-geist-mono), monospace"
-                          sx={{ fontSize: "0.65rem" }}
-                        >
-                          {meta.questionCount}q
-                        </Typography>
-                      </Stack>
-                    }
-                  />
+                    )}
+                  </Stack>
                 );
               })}
             </Box>
@@ -369,6 +412,25 @@ export function AssessmentBuilder({
     });
   };
 
+  const updateQuestionCount = useCallback(
+    (appSlug: AppSlug, catSlug: string, count: number | null) => {
+      setSelections((prev) => {
+        const appCats = prev[appSlug];
+        if (!appCats || !(catSlug in appCats)) return prev;
+        const existing = appCats[catSlug];
+        const updated: CategoryConfig = {
+          questionCount: count,
+          difficulty: existing?.difficulty ?? null,
+        };
+        return {
+          ...prev,
+          [appSlug]: { ...appCats, [catSlug]: updated },
+        };
+      });
+    },
+    [],
+  );
+
   const totalQuestions = countTotalQuestions(selections);
   const totalCategories = countSelectedCategories(selections);
 
@@ -416,6 +478,7 @@ export function AssessmentBuilder({
               appSlug={slug}
               selected={selections[slug] ?? {}}
               onToggleCategory={toggleCategory}
+              onUpdateQuestionCount={updateQuestionCount}
             />
           ))}
         </Box>
