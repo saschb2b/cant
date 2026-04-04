@@ -66,10 +66,10 @@ function useScreeningGame(
 // Auto-start lobby: immediately starts the game with a fixed seed
 // ---------------------------------------------------------------------------
 
-function AutoStartLobby({ onStart }: LobbySlotProps) {
+function AutoStartLobby({ onStart, defaultSeed }: LobbySlotProps) {
   useEffect(() => {
-    onStart("screening", new Set(), "custom");
-  }, [onStart]);
+    onStart(defaultSeed ?? "screening", new Set(), "custom");
+  }, [onStart, defaultSeed]);
 
   return null;
 }
@@ -204,6 +204,7 @@ interface ChallengePlayerProps {
   challenges: BaseChallenge[];
   contentMap: Record<string, ContentMapEntry>;
   categoryLabels: Record<string, string>;
+  seed: string;
   timeLimitSeconds: number | null;
   startedAt: string;
 }
@@ -214,6 +215,7 @@ export function ChallengePlayer({
   challenges,
   contentMap,
   categoryLabels,
+  seed,
   timeLimitSeconds,
   startedAt,
 }: ChallengePlayerProps) {
@@ -251,6 +253,7 @@ export function ChallengePlayer({
       <Game
         challenges={challenges}
         contentMap={contentMap}
+        defaultSeed={seed}
         categoryLabels={categoryLabels}
         useGame={useScreeningGame}
         generateSeed={generateSeed}

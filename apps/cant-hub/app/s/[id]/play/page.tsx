@@ -76,6 +76,7 @@ export default async function PlayPage({
       challenges={challenges}
       contentMap={contentMap}
       categoryLabels={categoryLabels}
+      seed={session.seed}
       timeLimitSeconds={assessment.timeLimitSeconds}
       startedAt={session.startedAt}
     />
