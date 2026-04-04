@@ -4,7 +4,29 @@
     "pr": ""
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "context-mode hook claude-code pretooluse",
+            "statusMessage": "context-mode: routing..."
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "context-mode hook claude-code posttooluse",
+            "statusMessage": "context-mode: indexing..."
+          }
+        ]
+      },
       {
         "matcher": "Write|Edit",
         "hooks": [
@@ -17,6 +39,18 @@
             "type": "command",
             "command": "jq -r '.tool_response.filePath // .tool_input.file_path' | { read -r f; echo \"$f\" | grep -qE '\\.(ts|tsx|js|jsx|mjs|cjs)$' && { cd \"$(dirname \"$f\")\"; while [ ! -f eslint.config.mjs ] && [ ! -f eslint.config.js ] && [ \"$PWD\" != \"/\" ] && [ ! -d .git ]; do cd ..; done; if [ -f eslint.config.mjs ] || [ -f eslint.config.js ]; then npx eslint \"$f\" 2>&1; fi; }; } || true",
             "statusMessage": "Linting..."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "context-mode hook claude-code sessionstart",
+            "statusMessage": "context-mode: initializing..."
           }
         ]
       }

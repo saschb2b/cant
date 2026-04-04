@@ -1523,6 +1523,179 @@ const cantGame = {
 } as const satisfies AppCatalogEntry;
 
 // ---------------------------------------------------------------------------
+// Can't Trust
+// ---------------------------------------------------------------------------
+
+const cantTrust = {
+  appName: "Can't Trust",
+  categories: [
+    {
+      slug: "money-origins",
+      label: "What Is Money?",
+      description:
+        "What is money, how is wealth created, and why did gold win? You need to understand what money is before you can see what is broken. Crucially, wealth is not zero-sum.",
+      questionCount: 10,
+    },
+    {
+      slug: "banking-mechanics",
+      label: "How Banks Work",
+      description:
+        "Fractional reserves, money creation through lending, rehypothecation, and correspondent banking. Most people don't know how banks actually operate.",
+      questionCount: 5,
+    },
+    {
+      slug: "banking-failures",
+      label: "When Banks Break Trust",
+      description:
+        "Bank runs, bail-ins, account freezing, and the unbanked. These are not hypothetical risks. Every one of these has happened.",
+      questionCount: 5,
+    },
+    {
+      slug: "central-banks",
+      label: "Central Banks",
+      description:
+        "Interest rates, quantitative easing, money supply metrics, and currency debasement. Central banks are the ultimate trust anchor in fiat.",
+      questionCount: 6,
+    },
+    {
+      slug: "nixon-shock",
+      label: "WTF Happened in 1971?",
+      description:
+        "August 15, 1971: Nixon closed the gold window. Every chart breaks at this date. Productivity vs wages, debt, savings, housing, wealth inequality.",
+      questionCount: 8,
+    },
+    {
+      slug: "inflation",
+      label: "The Hidden Tax",
+      description:
+        "CPI manipulation, shrinkflation, the Cantillon effect, and the compound erosion of purchasing power. Inflation is the most direct way trust gets violated.",
+      questionCount: 16,
+    },
+    {
+      slug: "settlement",
+      label: "Moving Money",
+      description:
+        "T+2 settlement, SWIFT, remittance corridors, and netting. Settlement is where trust manifests as delay. Every intermediary adds time and cost.",
+      questionCount: 4,
+    },
+    {
+      slug: "cryptography",
+      label: "Trust Through Math",
+      description:
+        "Hash functions, public/private keys, digital signatures, Merkle trees, and zero-knowledge proofs. Cryptography is the bridge that makes trustlessness possible.",
+      questionCount: 5,
+    },
+    {
+      slug: "consensus",
+      label: "Agreement Without Authority",
+      description:
+        "Byzantine fault tolerance, Proof of Work, Proof of Stake, Ouroboros, and finality models. Consensus replaces the central authority.",
+      questionCount: 5,
+    },
+    {
+      slug: "bitcoin",
+      label: "Digital Sound Money",
+      description:
+        "UTXOs, block structure, halving, stock-to-flow, difficulty adjustment, and energy as security. Bitcoin is the first successful trustless money.",
+      questionCount: 7,
+    },
+    {
+      slug: "wallets-keys",
+      label: "Be Your Own Bank",
+      description:
+        "Custodial vs non-custodial, HD wallets, seed phrases, and multisig. Self-custody is where trustlessness becomes personal.",
+      questionCount: 4,
+    },
+    {
+      slug: "smart-contracts",
+      label: "Programmable Trust",
+      description:
+        "Legal contracts vs smart contracts, account model vs eUTXO, vulnerabilities, and formal verification. Programmable trust beyond money.",
+      questionCount: 4,
+    },
+    {
+      slug: "defi",
+      label: "Finance Without Intermediaries",
+      description:
+        "AMMs, liquidity pools, lending protocols, and yield farming. DeFi rebuilds financial services without the trust layer.",
+      questionCount: 4,
+    },
+    {
+      slug: "privacy",
+      label: "Selective Disclosure",
+      description:
+        "Transparent vs shielded transactions, zero-knowledge applications, and Midnight. Trustlessness without privacy is surveillance.",
+      questionCount: 4,
+    },
+    {
+      slug: "scaling",
+      label: "Scaling",
+      description:
+        "The blockchain trilemma, Layer 1 vs Layer 2, state channels (Hydra), and rollups. Scaling without sacrificing decentralization.",
+      questionCount: 4,
+    },
+    {
+      slug: "cbdcs",
+      label: "The Dystopian Alternative",
+      description:
+        "CBDCs vs cryptocurrency, programmable restrictions, financial surveillance, and the cash elimination agenda. The dystopian alternative to bitcoin.",
+      questionCount: 5,
+    },
+    {
+      slug: "governance",
+      label: "Decisions Without a King",
+      description:
+        "On-chain vs off-chain governance, treasury systems, voting mechanisms, hard forks, and Cardano's constitutional governance.",
+      questionCount: 5,
+    },
+    {
+      slug: "fix-the-money",
+      label: "Fix the Money",
+      description:
+        "Every problem from Part 1 maps to a solution in Part 3. Trust in banks to self-custody, central bank printing to fixed supply, settlement delays to instant finality.",
+      questionCount: 5,
+    },
+  ],
+  sections: [
+    {
+      label: "The Trust Problem",
+      categories: [
+        "money-origins",
+        "banking-mechanics",
+        "banking-failures",
+        "central-banks",
+        "nixon-shock",
+        "inflation",
+        "settlement",
+      ],
+    },
+    { label: "The Bridge", categories: ["cryptography"] },
+    {
+      label: "The Trust Solution",
+      categories: [
+        "consensus",
+        "bitcoin",
+        "wallets-keys",
+        "smart-contracts",
+        "defi",
+        "privacy",
+        "scaling",
+        "cbdcs",
+        "governance",
+        "fix-the-money",
+      ],
+    },
+  ],
+  learningPath: [
+    "money-origins",
+    "nixon-shock",
+    "inflation",
+    "cryptography",
+    "bitcoin",
+  ],
+} as const satisfies AppCatalogEntry;
+
+// ---------------------------------------------------------------------------
 // Combined catalog
 // ---------------------------------------------------------------------------
 
@@ -1543,6 +1716,7 @@ export const APP_CATALOG = {
   "cant-query": cantQuery,
   "cant-test": cantTest,
   "cant-game": cantGame,
+  "cant-trust": cantTrust,
 } as const;
 
 /** Union of all app slugs in the catalog. */
@@ -1561,6 +1735,7 @@ export const APP_CATALOG_LIST: readonly AppCatalogEntry[] = [
   cantQuery,
   cantTest,
   cantGame,
+  cantTrust,
 ];
 
 // ---------------------------------------------------------------------------

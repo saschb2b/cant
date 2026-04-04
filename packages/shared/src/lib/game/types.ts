@@ -76,7 +76,10 @@ export interface BaseChallenge {
   difficulty: Difficulty;
   content: ChallengeContent;
   correctSide: "left" | "right";
+  /** Explanation shown when the user picks correctly (or in learn mode). */
   explanationCorrect: string;
+  /** Explanation shown when the user picks incorrectly. */
+  explanationWrong: string;
   sourceUrl: string;
   sourceLabel: string;
 }

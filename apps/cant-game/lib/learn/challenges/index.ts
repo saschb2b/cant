@@ -1,26 +1,22 @@
 import type { Challenge } from "../types";
-import { gameLoopChallenges } from "./game-loop";
-import { stateChallenges } from "./state";
-import { inputChallenges } from "./input";
-import { physicsChallenges } from "./physics";
-import { aiChallenges } from "./ai";
-import { renderingChallenges } from "./rendering";
-import { shadersChallenges } from "./shaders";
-import { netcodeChallenges } from "./netcode";
+import { challenges as sharedChallenges } from "@cant/shared/lib/challenges/cant-game";
 
 /**
- * All challenges, combined from per-category modules.
+ * All challenges, imported from the shared catalog.
  *
- * To add a new challenge, find the relevant category file in this directory
- * and append your challenge to its array.
+ * To add a new challenge, edit the relevant category file in
+ * packages/shared/src/lib/challenges/cant-game/.
  */
-export const challenges: Challenge[] = [
-  ...gameLoopChallenges,
-  ...stateChallenges,
-  ...inputChallenges,
-  ...physicsChallenges,
-  ...aiChallenges,
-  ...renderingChallenges,
-  ...shadersChallenges,
-  ...netcodeChallenges,
-];
+export const challenges: Challenge[] = sharedChallenges as Challenge[];
+
+// Re-export individual category arrays for direct access
+export {
+  gameLoopChallenges,
+  stateChallenges,
+  inputChallenges,
+  physicsChallenges,
+  aiChallenges,
+  renderingChallenges,
+  shadersChallenges,
+  netcodeChallenges,
+} from "@cant/shared/lib/challenges/cant-game";

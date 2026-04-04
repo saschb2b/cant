@@ -1,6 +1,6 @@
-import type { Challenge } from "../types";
+import type { BaseChallenge } from "../../game/types";
 
-export const shadersChallenges: Challenge[] = [
+export const shadersChallenges: BaseChallenge[] = [
   {
     id: "shd-001",
     category: "shaders",

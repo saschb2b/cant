@@ -1,28 +1,12 @@
 import type { ChallengeContent } from "@cant/shared/lib/game";
+import type { APP_CATALOG } from "@cant/shared/lib/app-catalog";
 
 /** Difficulty tier for sorting and game mode. */
 export type Difficulty = "easy" | "medium" | "hard";
 
 /** Category tag for grouping and filtering challenges. */
 export type ChallengeCategory =
-  | "money-origins"
-  | "banking-mechanics"
-  | "banking-failures"
-  | "central-banks"
-  | "nixon-shock"
-  | "inflation"
-  | "settlement"
-  | "cryptography"
-  | "consensus"
-  | "bitcoin"
-  | "wallets-keys"
-  | "smart-contracts"
-  | "defi"
-  | "privacy"
-  | "scaling"
-  | "cbdcs"
-  | "governance"
-  | "fix-the-money";
+  (typeof APP_CATALOG)["cant-trust"]["categories"][number]["slug"];
 
 /**
  * A single challenge comparing two approaches to money, finance, or crypto.

@@ -1,6 +1,6 @@
-import type { Challenge } from "../types";
+import type { BaseChallenge } from "../../game/types";
 
-export const stateChallenges: Challenge[] = [
+export const stateChallenges: BaseChallenge[] = [
   {
     id: "state-001",
     category: "state",

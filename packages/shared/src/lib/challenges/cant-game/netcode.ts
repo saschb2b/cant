@@ -1,6 +1,6 @@
-import type { Challenge } from "../types";
+import type { BaseChallenge } from "../../game/types";
 
-export const netcodeChallenges: Challenge[] = [
+export const netcodeChallenges: BaseChallenge[] = [
   {
     id: "net-001",
     category: "netcode",
