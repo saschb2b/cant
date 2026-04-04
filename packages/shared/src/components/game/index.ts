@@ -8,8 +8,11 @@ export { Game } from "./game";
 export type {
   ContentMapEntry,
   ExplanationSlotProps,
+  GameHeaderSlotProps,
+  LobbySlotProps,
   MoleculePanelSlotProps,
   MoleculeChallengeEntry,
+  ResultsSlotProps,
 } from "./game";
 export { GameHeader } from "./game-header";
 export { ImagePanel } from "./image-panel";

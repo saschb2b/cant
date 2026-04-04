@@ -1,56 +1,122 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
-import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import type { ChallengeContent } from "@cant/shared/lib/game";
+import {
+  Game,
+  CodePanel,
+  GameHeader,
+  ExplanationPanel,
+} from "@cant/shared/components/game";
+import type {
+  ContentMapEntry,
+  LobbySlotProps,
+  ResultsSlotProps,
+  GameHeaderSlotProps,
+} from "@cant/shared/components/game";
+import {
+  useGame as useGameShared,
+  type UseGameCallbacks,
+} from "@cant/shared/lib/game";
+import { generateSeed } from "@cant/shared/lib/game";
+import type { BaseChallenge } from "@cant/shared/lib/game";
 import { submitAnswerAction, finishSessionAction } from "../actions";
 
-interface ClientChallenge {
-  id: string;
-  title: string;
-  prompt: string;
-  category: string;
-  difficulty: string;
-  content: ChallengeContent;
+// ---------------------------------------------------------------------------
+// useGame wrapper with no-op callbacks for screening
+// ---------------------------------------------------------------------------
+
+function useScreeningGame(
+  challengePool: BaseChallenge[],
+  seed: string | null,
+  excludedCategories = new Set<string>(),
+  retryKey = 0,
+  gameType: "daily" | "weekly" | "custom" = "custom",
+) {
+  const callbacks = useMemo<UseGameCallbacks>(
+    () => ({
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      trackEvent: () => {},
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      recordGame: () => {},
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      recordActivity: () => {},
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      submitGameResult: () => {},
+      encodeSeed: (raw: string) => raw,
+    }),
+    [],
+  );
+
+  return useGameShared(
+    challengePool,
+    seed,
+    callbacks,
+    excludedCategories,
+    retryKey,
+    gameType,
+  );
 }
 
-interface ChallengePlayerProps {
-  sessionId: string;
-  assessmentId: string;
-  assessmentTitle: string;
-  challenges: ClientChallenge[];
-  timeLimitSeconds: number | null;
-  startedAt: string;
+// ---------------------------------------------------------------------------
+// Auto-start lobby: immediately starts the game with a fixed seed
+// ---------------------------------------------------------------------------
+
+function AutoStartLobby({ onStart }: LobbySlotProps) {
+  useEffect(() => {
+    onStart("screening", new Set(), "custom");
+  }, [onStart]);
+
+  return null;
 }
 
-export function ChallengePlayer({
+// ---------------------------------------------------------------------------
+// Screening results: finishes the session and shows a submitting message
+// ---------------------------------------------------------------------------
+
+function ScreeningResults({
   sessionId,
-  assessmentTitle,
-  challenges,
+}: ResultsSlotProps<BaseChallenge> & { sessionId: string }) {
+  useEffect(() => {
+    void finishSessionAction(sessionId);
+  }, [sessionId]);
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        py: 12,
+      }}
+    >
+      <Typography variant="body1" color="text.secondary">
+        Submitting results...
+      </Typography>
+    </Box>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Timer overlay
+// ---------------------------------------------------------------------------
+
+function TimerBar({
   timeLimitSeconds,
   startedAt,
-}: ChallengePlayerProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [submitting, setSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<{
-    correct: boolean;
-    side: "left" | "right";
-  } | null>(null);
+  sessionId,
+}: {
+  timeLimitSeconds: number;
+  startedAt: string;
+  sessionId: string;
+}) {
   const [remainingSeconds, setRemainingSeconds] = useState(timeLimitSeconds);
 
-  const total = challenges.length;
-  const challenge = challenges[currentIndex];
-
-  // Timer
   useEffect(() => {
-    if (timeLimitSeconds == null) return;
-
     const startTime = new Date(startedAt).getTime();
     const endTime = startTime + timeLimitSeconds * 1000;
 
@@ -68,192 +134,136 @@ export function ChallengePlayer({
     return () => clearInterval(interval);
   }, [timeLimitSeconds, startedAt, sessionId]);
 
-  const handleChoice = useCallback(
-    async (side: "left" | "right") => {
-      if (submitting || feedback) return;
-      setSubmitting(true);
-
-      if (!challenge) return;
-      const result = await submitAnswerAction(sessionId, challenge.id, side);
-      setFeedback({ correct: result.correct, side });
-      setSubmitting(false);
-
-      // Brief feedback flash, then advance
-      setTimeout(() => {
-        setFeedback(null);
-        if (currentIndex + 1 < total) {
-          setCurrentIndex((i) => i + 1);
-        } else {
-          void finishSessionAction(sessionId);
-        }
-      }, 800);
-    },
-    [submitting, feedback, sessionId, challenge, currentIndex, total],
-  );
-
-  if (!challenge) return null;
-
-  const progress = ((currentIndex + 1) / total) * 100;
-  const minutes =
-    remainingSeconds != null ? Math.floor(remainingSeconds / 60) : null;
-  const seconds = remainingSeconds != null ? remainingSeconds % 60 : null;
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
 
   return (
-    <Container maxWidth="md" sx={{ py: { xs: 3, md: 6 } }}>
-      {/* Header */}
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mb: 1 }}
-      >
-        <Typography variant="body2" color="text.secondary">
-          {assessmentTitle}
-        </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
-          {minutes != null && seconds != null && (
-            <Typography
-              variant="body2"
-              fontFamily="var(--font-geist-mono), monospace"
-              color={
-                remainingSeconds != null && remainingSeconds < 60
-                  ? "error"
-                  : "text.secondary"
-              }
-              fontWeight={700}
-            >
-              {String(minutes).padStart(2, "0")}:
-              {String(seconds).padStart(2, "0")}
-            </Typography>
-          )}
-          <Typography variant="body2" color="text.secondary">
-            {currentIndex + 1} of {total}
-          </Typography>
-        </Stack>
-      </Stack>
-
-      <LinearProgress
-        variant="determinate"
-        value={progress}
-        sx={{ mb: 4, borderRadius: 1 }}
-      />
-
-      {/* Question */}
-      <Typography
-        variant="h6"
-        fontWeight={700}
-        textAlign="center"
-        sx={{ mb: 1 }}
-      >
-        {challenge.title}
-      </Typography>
-      <Typography
-        variant="body1"
-        color="text.secondary"
-        textAlign="center"
-        sx={{ mb: 4 }}
-      >
-        {challenge.prompt}
-      </Typography>
-
-      {/* Side-by-side panels */}
-      <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ mb: 3 }}>
-        <ChallengePanel
-          side="left"
-          content={challenge.content}
-          onChoose={() => void handleChoice("left")}
-          disabled={submitting || feedback != null}
-          chosen={feedback?.side === "left"}
-          correct={feedback?.side === "left" ? feedback.correct : null}
-        />
-        <ChallengePanel
-          side="right"
-          content={challenge.content}
-          onChoose={() => void handleChoice("right")}
-          disabled={submitting || feedback != null}
-          chosen={feedback?.side === "right"}
-          correct={feedback?.side === "right" ? feedback.correct : null}
-        />
-      </Stack>
-    </Container>
+    <Typography
+      variant="body2"
+      fontFamily="var(--font-geist-mono), monospace"
+      color={remainingSeconds < 60 ? "error" : "text.secondary"}
+      fontWeight={700}
+    >
+      {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+    </Typography>
   );
 }
 
-function ChallengePanel({
-  side,
-  content,
-  onChoose,
-  disabled,
-  chosen,
-  correct,
-}: {
-  side: "left" | "right";
-  content: ChallengeContent;
-  onChoose: () => void;
-  disabled: boolean;
-  chosen: boolean;
-  correct: boolean | null;
-}) {
-  let borderColor = "divider";
-  if (chosen && correct === true) borderColor = "success.main";
-  if (chosen && correct === false) borderColor = "error.main";
+// ---------------------------------------------------------------------------
+// Screening game header: wraps shared GameHeader with optional timer
+// ---------------------------------------------------------------------------
 
-  const code =
-    content.type === "code"
-      ? side === "left"
-        ? content.left
-        : content.right
-      : null;
+function createScreeningHeader({
+  assessmentTitle,
+  timeLimitSeconds,
+  startedAt,
+  sessionId,
+}: {
+  assessmentTitle: string;
+  timeLimitSeconds: number | null;
+  startedAt: string;
+  sessionId: string;
+}) {
+  return function ScreeningHeader(props: GameHeaderSlotProps) {
+    return (
+      <Stack spacing={1}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="body2" color="text.secondary">
+            {assessmentTitle}
+          </Typography>
+          {timeLimitSeconds != null && (
+            <TimerBar
+              timeLimitSeconds={timeLimitSeconds}
+              startedAt={startedAt}
+              sessionId={sessionId}
+            />
+          )}
+        </Stack>
+        <LinearProgress
+          variant="determinate"
+          value={(props.currentQuestion / props.total) * 100}
+          sx={{ borderRadius: 1 }}
+        />
+        <GameHeader {...props} />
+      </Stack>
+    );
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
+
+interface ChallengePlayerProps {
+  sessionId: string;
+  assessmentTitle: string;
+  challenges: BaseChallenge[];
+  contentMap: Record<string, ContentMapEntry>;
+  categoryLabels: Record<string, string>;
+  timeLimitSeconds: number | null;
+  startedAt: string;
+}
+
+export function ChallengePlayer({
+  sessionId,
+  assessmentTitle,
+  challenges,
+  contentMap,
+  categoryLabels,
+  timeLimitSeconds,
+  startedAt,
+}: ChallengePlayerProps) {
+  // Memoize the screening results component with sessionId bound
+  const ScreeningResultsBound = useMemo(() => {
+    return function BoundResults(props: ResultsSlotProps<BaseChallenge>) {
+      return <ScreeningResults {...props} sessionId={sessionId} />;
+    };
+  }, [sessionId]);
+
+  // Memoize the header component with assessment info bound
+  const ScreeningHeader = useMemo(
+    () =>
+      createScreeningHeader({
+        assessmentTitle,
+        timeLimitSeconds,
+        startedAt,
+        sessionId,
+      }),
+    [assessmentTitle, timeLimitSeconds, startedAt, sessionId],
+  );
+
+  const handleAnswerSubmit = useMemo(() => {
+    return (challengeId: string, side: "left" | "right") => {
+      void submitAnswerAction(sessionId, challengeId, side);
+    };
+  }, [sessionId]);
 
   return (
-    <Paper
-      variant="outlined"
-      onClick={disabled ? undefined : onChoose}
-      sx={{
-        flex: 1,
-        p: 2,
-        cursor: disabled ? "default" : "pointer",
-        borderColor,
-        borderWidth: chosen ? 2 : 1,
-        transition: "border-color 0.2s",
-        "&:hover": disabled
-          ? {}
-          : { borderColor: "primary.main", bgcolor: "action.hover" },
-      }}
+    <Container
+      maxWidth="lg"
+      component="section"
+      sx={{ py: 4, flex: 1, position: "relative", zIndex: 1 }}
     >
-      <Typography
-        variant="caption"
-        color="text.disabled"
-        fontFamily="var(--font-geist-mono), monospace"
-        sx={{
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          mb: 1,
-          display: "block",
+      <Game
+        challenges={challenges}
+        contentMap={contentMap}
+        categoryLabels={categoryLabels}
+        useGame={useScreeningGame}
+        generateSeed={generateSeed}
+        showFeedback={false}
+        onAnswerSubmit={handleAnswerSubmit}
+        slots={{
+          codePanel: CodePanel,
+          lobby: AutoStartLobby,
+          results: ScreeningResultsBound,
+          explanation: ExplanationPanel,
+          gameHeader: ScreeningHeader,
         }}
-      >
-        Option {side === "left" ? "A" : "B"}
-      </Typography>
-      {code != null ? (
-        <Box
-          component="pre"
-          sx={{
-            fontSize: "0.8rem",
-            fontFamily: "var(--font-geist-mono), monospace",
-            whiteSpace: "pre-wrap",
-            wordBreak: "break-word",
-            m: 0,
-            overflow: "auto",
-            maxHeight: 300,
-          }}
-        >
-          {code}
-        </Box>
-      ) : (
-        <Typography variant="body2" color="text.secondary">
-          Visual challenge (rendering not yet supported in screening mode)
-        </Typography>
-      )}
-    </Paper>
+      />
+    </Container>
   );
 }

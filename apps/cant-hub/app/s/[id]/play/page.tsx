@@ -7,7 +7,27 @@ import {
 } from "@/lib/assessments";
 import { getCandidateSession } from "@/lib/candidate-sessions";
 import { getAssessmentChallenges } from "@/lib/assessment-challenges";
+import { type AppSlug, APP_CATALOG } from "@cant/shared/lib/app-catalog";
+import { getHighlighter, highlightDual } from "@cant/shared/lib/shiki";
+import { buildContentMap } from "@cant/shared/lib/content-map";
 import { ChallengePlayer } from "./challenge-player";
+
+/**
+ * Build a slug-to-label map for every category referenced by the assessment.
+ */
+function buildCategoryLabels(
+  categories: { appSlug: string; categorySlug: string }[],
+): Record<string, string> {
+  const labels: Record<string, string> = {};
+  for (const cat of categories) {
+    const entry = APP_CATALOG[cat.appSlug as AppSlug];
+    const meta = entry.categories.find((c) => c.slug === cat.categorySlug);
+    if (meta) {
+      labels[cat.categorySlug] = meta.label;
+    }
+  }
+  return labels;
+}
 
 export default async function PlayPage({
   params,
@@ -42,22 +62,20 @@ export default async function PlayPage({
   const categories = getCategoriesByAssessment(id);
   const challenges = await getAssessmentChallenges(categories, session.seed);
 
-  // Serialize challenges for client (only what the player needs, no correctSide)
-  const clientChallenges = challenges.map((c) => ({
-    id: c.id,
-    title: c.title,
-    prompt: c.prompt,
-    category: c.category,
-    difficulty: c.difficulty,
-    content: c.content,
-  }));
+  // Pre-highlight code challenges with Shiki
+  const highlighter = await getHighlighter();
+  const contentMap = buildContentMap(challenges, highlighter, highlightDual);
+
+  // Build category labels from the app catalog
+  const categoryLabels = buildCategoryLabels(categories);
 
   return (
     <ChallengePlayer
       sessionId={sessionId}
-      assessmentId={id}
       assessmentTitle={assessment.title}
-      challenges={clientChallenges}
+      challenges={challenges}
+      contentMap={contentMap}
+      categoryLabels={categoryLabels}
       timeLimitSeconds={assessment.timeLimitSeconds}
       startedAt={session.startedAt}
     />
