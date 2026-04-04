@@ -11,6 +11,11 @@ Educational platforms where you pick the better option in side-by-side compariso
 | [cant-seo](apps/cant-seo)                 | SEO for Next.js            | Link inspector      | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com)                 |
 | [cant-ux](apps/cant-ux)                   | UX design patterns         | Visual comparisons  | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com)                   |
 | [cant-explode](apps/cant-explode)         | Chemistry and biochemistry | 3D molecule viewer  | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com)         |
+| [cant-branch](apps/cant-branch)           | Git version control        | Git graph viewer    | [cant-branch.saschb2b.com](https://cant-branch.saschb2b.com)           |
+| [cant-query](apps/cant-query)             | API design patterns        | API explorer        | [cant-query.saschb2b.com](https://cant-query.saschb2b.com)             |
+| [cant-test](apps/cant-test)               | Testing patterns           | Bug Hunt game       | [cant-test.saschb2b.com](https://cant-test.saschb2b.com)               |
+| [cant-trust](apps/cant-trust)             | Money and Bitcoin          | Visual comparisons  | [cant-trust.saschb2b.com](https://cant-trust.saschb2b.com)             |
+| [cant-game](apps/cant-game)               | Game development           | Canvas simulations  | [cant-game.saschb2b.com](https://cant-game.saschb2b.com)               |
 | [cant-hub](apps/cant-hub)                 | Series hub / landing       | App directory       | [cant.saschb2b.com](https://cant.saschb2b.com)                         |
 
 ## Tech stack
@@ -52,6 +57,11 @@ pnpm dev:orchestrate   # cant-orchestrate on :3004
 pnpm dev:seo           # cant-seo on :3005
 pnpm dev:ux            # cant-ux on :3006
 pnpm dev:explode       # cant-explode on :3007
+pnpm dev:branch        # cant-branch on :3008
+pnpm dev:query         # cant-query on :3009
+pnpm dev:test          # cant-test on :3010
+pnpm dev:game          # cant-game on :3011
+pnpm dev:trust         # cant-trust on :3012
 
 # Start Storybook for shared components
 pnpm storybook         # opens on :6006
@@ -71,6 +81,11 @@ cant/
 │   ├── cant-seo/            # SEO patterns app
 │   ├── cant-ux/             # UX design patterns app
 │   ├── cant-explode/        # Chemistry and biochemistry app
+│   ├── cant-branch/         # Git version control app
+│   ├── cant-query/          # API design patterns app
+│   ├── cant-test/           # Testing patterns app (+ Bug Hunt)
+│   ├── cant-trust/          # Money and Bitcoin app
+│   ├── cant-game/           # Game development app
 │   └── cant-hub/            # Series hub / landing page
 ├── packages/
 │   └── shared/              # @cant/shared — shared components and utils
@@ -101,6 +116,11 @@ Run from the repo root:
 | `pnpm dev:seo`           | Start cant-seo only (:3005)           |
 | `pnpm dev:ux`            | Start cant-ux only (:3006)            |
 | `pnpm dev:explode`       | Start cant-explode only (:3007)       |
+| `pnpm dev:branch`        | Start cant-branch only (:3008)        |
+| `pnpm dev:query`         | Start cant-query only (:3009)         |
+| `pnpm dev:test`          | Start cant-test only (:3010)          |
+| `pnpm dev:game`          | Start cant-game only (:3011)          |
+| `pnpm dev:trust`         | Start cant-trust only (:3012)         |
 | `pnpm build`             | Production build all apps (parallel)  |
 | `pnpm build:maintain`    | Build cant-maintain only              |
 | `pnpm build:resize`      | Build cant-resize only                |
@@ -110,6 +130,11 @@ Run from the repo root:
 | `pnpm build:ux`          | Build cant-ux only                    |
 | `pnpm build:hub`         | Build cant-hub only                   |
 | `pnpm build:explode`     | Build cant-explode only               |
+| `pnpm build:branch`      | Build cant-branch only                |
+| `pnpm build:query`       | Build cant-query only                 |
+| `pnpm build:test`        | Build cant-test only                  |
+| `pnpm build:trust`       | Build cant-trust only                 |
+| `pnpm build:game`        | Build cant-game only                  |
 | `pnpm lint`              | Lint all apps                         |
 | `pnpm typecheck`         | Type-check all apps                   |
 | `pnpm format:check`      | Check formatting                      |
