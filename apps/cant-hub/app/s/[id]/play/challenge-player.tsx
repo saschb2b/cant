@@ -59,6 +59,7 @@ function useScreeningGame(
     excludedCategories,
     retryKey,
     gameType,
+    true, // useAllChallenges: screening uses all questions, no 10-per-session cap
   );
 }
 
