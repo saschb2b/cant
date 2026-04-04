@@ -85,16 +85,16 @@ export default async function AssessmentDetailPage({
           </Typography>
         </Box>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Button
-            component={Link}
-            href={`/dashboard/assessments/${assessment.id}/results`}
-            size="small"
-            variant="outlined"
-            startIcon={<Users size={16} />}
-            sx={{ flexShrink: 0 }}
-          >
-            View candidates
-          </Button>
+          <Link href={`/dashboard/assessments/${assessment.id}/results`}>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<Users size={16} />}
+              sx={{ flexShrink: 0 }}
+            >
+              View candidates
+            </Button>
+          </Link>
           <AssessmentActions
             assessmentId={assessment.id}
             status={assessment.status}

@@ -29,15 +29,15 @@ export default async function ResultsPage({
   return (
     <Stack spacing={{ xs: 3, md: 4 }}>
       <Box>
-        <Button
-          component={Link}
-          href={`/dashboard/assessments/${id}`}
-          size="small"
-          startIcon={<ArrowLeft size={16} />}
-          sx={{ mb: 2, color: "text.secondary" }}
-        >
-          Back to assessment
-        </Button>
+        <Link href={`/dashboard/assessments/${id}`}>
+          <Button
+            size="small"
+            startIcon={<ArrowLeft size={16} />}
+            sx={{ mb: 2, color: "text.secondary" }}
+          >
+            Back to assessment
+          </Button>
+        </Link>
         <Stack direction="row" spacing={1.5} alignItems="center">
           <Typography
             variant="h4"

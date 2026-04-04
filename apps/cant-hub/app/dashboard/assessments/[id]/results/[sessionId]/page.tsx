@@ -150,15 +150,15 @@ export default async function CandidateDetailPage({
     <Stack spacing={{ xs: 3, md: 4 }}>
       {/* ---- Header ---- */}
       <Box>
-        <Button
-          component={Link}
-          href={`/dashboard/assessments/${id}/results`}
-          size="small"
-          startIcon={<ArrowLeft size={16} />}
-          sx={{ mb: 2, color: "text.secondary" }}
-        >
-          Back to results
-        </Button>
+        <Link href={`/dashboard/assessments/${id}/results`}>
+          <Button
+            size="small"
+            startIcon={<ArrowLeft size={16} />}
+            sx={{ mb: 2, color: "text.secondary" }}
+          >
+            Back to results
+          </Button>
+        </Link>
 
         <Stack
           direction={{ xs: "column", sm: "row" }}
