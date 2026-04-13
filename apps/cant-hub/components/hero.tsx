@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import { ArrowDown } from "lucide-react";
 import { ALL_APPS } from "@cant/shared/lib/cant-apps";
 
-const TOTAL_CHALLENGES = 738;
+const TOTAL_CHALLENGES = 770;
 
 export function Hero() {
   return (

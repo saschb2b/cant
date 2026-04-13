@@ -11,7 +11,15 @@ export type ChallengeCategory =
   | "hierarchy"
   | "layout"
   | "forms"
-  | "feedback";
+  | "feedback"
+  | "navigation"
+  | "accessibility"
+  | "micro-interactions"
+  | "content-copy"
+  | "data-display"
+  | "modals-overlays"
+  | "lists-cards"
+  | "icons-imagery";
 
 /**
  * A single UX design challenge.

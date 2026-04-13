@@ -6,6 +6,14 @@ import { hierarchyChallenges } from "./hierarchy";
 import { layoutChallenges } from "./layout";
 import { formsChallenges } from "./forms";
 import { feedbackChallenges } from "./feedback";
+import { navigationChallenges } from "./navigation";
+import { accessibilityChallenges } from "./accessibility";
+import { microInteractionsChallenges } from "./micro-interactions";
+import { contentCopyChallenges } from "./content-copy";
+import { dataDisplayChallenges } from "./data-display";
+import { modalsOverlaysChallenges } from "./modals-overlays";
+import { listsCardsChallenges } from "./lists-cards";
+import { iconsImageryChallenges } from "./icons-imagery";
 
 /**
  * All challenges, combined from per-category modules.
@@ -21,4 +29,12 @@ export const challenges: Challenge[] = [
   ...layoutChallenges,
   ...formsChallenges,
   ...feedbackChallenges,
+  ...navigationChallenges,
+  ...accessibilityChallenges,
+  ...microInteractionsChallenges,
+  ...contentCopyChallenges,
+  ...dataDisplayChallenges,
+  ...modalsOverlaysChallenges,
+  ...listsCardsChallenges,
+  ...iconsImageryChallenges,
 ];

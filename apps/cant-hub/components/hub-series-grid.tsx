@@ -38,8 +38,8 @@ const SERIES_META: Record<string, SeriesMeta> = {
     tool: { label: "Inspector", href: "/inspector" },
   },
   "Can't UX": {
-    challenges: 28,
-    categories: 7,
+    challenges: 60,
+    categories: 15,
   },
   "Can't Explode": {
     challenges: 59,
