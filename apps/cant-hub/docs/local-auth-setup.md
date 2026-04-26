@@ -1,5 +1,17 @@
 # Local Auth Setup
 
+The screening feature (sign-in, dashboard, candidate flow) is hidden behind a feature flag. It is disabled in production by default and must be opted into for local development.
+
+## Enabling the feature
+
+Add this to `apps/cant-hub/.env.local`:
+
+```env
+NEXT_PUBLIC_SCREENING_ENABLED=true
+```
+
+Without this flag, the proxy returns 404 for `/sign-in`, `/dashboard/*`, `/onboarding/*`, and `/s/*`, and the user menu in the header is hidden. Production deployments leave it unset.
+
 ## Quick start (no OAuth needed)
 
 1. Start the dev server:

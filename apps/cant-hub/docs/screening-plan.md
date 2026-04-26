@@ -2,6 +2,16 @@
 
 Paid feature that lets recruiters/HR create technical screening assessments using challenges from the cant app ecosystem. Learning remains free.
 
+---
+
+## Current status (2026-04-26)
+
+**Hidden in production behind a feature flag.** Milestones 1 to 6 are mostly built and merged to `main`, but the entire flow is gated by `NEXT_PUBLIC_SCREENING_ENABLED`. When the flag is unset (default in production), `apps/cant-hub/proxy.ts` returns 404 for `/sign-in`, `/dashboard/*`, `/onboarding/*`, `/s/*`, `/api/auth/*`, and `/api/dev-login`, and `UserMenu` in the site header renders nothing. The code is dormant on main.
+
+**To enable locally:** add `NEXT_PUBLIC_SCREENING_ENABLED=true` to `apps/cant-hub/.env.local`, then follow `docs/local-auth-setup.md`.
+
+**To resume work:** flip the flag in `.env.local`, work through the open items in Milestones 5 to 8 below, and review the "Production rollout checklist" at the bottom before flipping the flag in production.
+
 **Design principles** (based on how Codility, HackerRank, TestGorilla, HackerEarth work):
 
 - Recruiters screen hundreds of candidates. Every click counts. Assessment creation must take minutes.
@@ -175,6 +185,39 @@ Gate assessment creation behind a paid plan.
 - [ ] Documentation/help page for recruiters
 - [ ] Landing page marketing section for the screening product
 - [ ] SEO and Open Graph tags for assessment landing pages
+
+---
+
+## Production rollout checklist
+
+Run through this list before flipping `NEXT_PUBLIC_SCREENING_ENABLED=true` in Coolify. Any item left unchecked is a known reason not to ship.
+
+**Infrastructure**
+
+- [ ] Persistent Docker volume mounted at `/app/apps/cant-hub/data` in Coolify. Without it, the SQLite file (recruiters, assessments, candidate sessions) is wiped on every redeploy. The DB self-bootstraps on first request, so no seed file is needed, just persistence.
+- [ ] Backup strategy for `auth.db` (snapshot the volume on a schedule).
+- [ ] Lazy-initialize `lib/db.ts`. Currently the SQLite file is opened at module load (line 10), so any build that compiles the screening pages still touches `data/auth.db`. Wrap the open + migrations in a `getDb()` accessor so the build is genuinely inert when the flag is off.
+
+**Auth**
+
+- [ ] Real OAuth apps registered (GitHub, Google, GitLab) with production callback URLs. Secrets set in Coolify env. See `docs/local-auth-setup.md` for the format.
+- [ ] `BETTER_AUTH_SECRET` set to a strong random value (not the dev placeholder).
+- [ ] `BETTER_AUTH_URL` set to `https://cant.saschb2b.com`.
+- [ ] `/api/dev-login` already self-guards with `NODE_ENV !== "development"`. Keep it that way; do not weaken.
+
+**Open work from milestones 5 to 8**
+
+- [ ] Milestone 4 step 2: per-category question count and difficulty filter are UI placeholders, not wired through to the candidate flow.
+- [ ] Milestone 5: recruiter notification when a candidate completes (in-app first, email later).
+- [ ] Milestone 6: side-by-side candidate comparison (stretch).
+- [ ] Milestone 7: payments. The whole feature is paid; do not ship to non-recruiter users without billing in place.
+- [ ] Milestone 8: rate limiting on public `/s/*` links, assessment expiry, branding, analytics, marketing, OG tags.
+
+**Pre-flip smoke test**
+
+- [ ] Stop dev server, `rm -rf apps/cant-hub/data`, run `pnpm build:hub`. Should succeed with the flag off (current build touches DB during compile, see "Lazy-initialize" item above).
+- [ ] Build with the flag on, deploy to a staging environment, run through: sign in, create assessment, copy share link, complete as candidate from a private window, view results.
+- [ ] Verify `proxy.ts` config matcher still covers every screening route. New routes added during finishing-up work must be added to the matcher or the public-routes pass-through.
 
 ---
 

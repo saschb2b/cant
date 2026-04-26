@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { authClient } from "@/lib/auth-client";
 
+const SCREENING_ENABLED = process.env.NEXT_PUBLIC_SCREENING_ENABLED === "true";
+
 function DashboardIcon() {
   return (
     <svg
@@ -225,6 +227,11 @@ function UserPill({
 }
 
 export function UserMenu() {
+  if (!SCREENING_ENABLED) return null;
+  return <UserMenuInner />;
+}
+
+function UserMenuInner() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
