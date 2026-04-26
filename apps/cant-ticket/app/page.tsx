@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Gamepad2, BookOpen } from "lucide-react";
+import { Gamepad2, BookOpen, Users } from "lucide-react";
 import {
   Hero,
   FeatureGrid,
@@ -37,12 +37,13 @@ export default function LandingPage() {
         titleLine2="not braindumps."
         subtitle={`Train your eye for clean tickets. Side-by-side comparisons of stories, acceptance criteria, estimates, and splits across ${String(CATEGORIES)} categories.`}
         caption="free &middot; no signup &middot; based on the blog"
+        gimmick={{ href: "/poker", label: "Planning Poker" }}
         visual={<HeroTicket />}
       />
 
       <FeatureGrid
-        title="Two ways to level up"
-        subtitle="A pattern quiz and a reference library for ticket craft."
+        title="Three ways to level up"
+        subtitle="A pattern quiz, a reference library, and a planning poker room."
         cards={[
           {
             icon: <Gamepad2 size={20} />,
@@ -55,6 +56,12 @@ export default function LandingPage() {
             title: "Learn",
             desc: `${String(TOTAL)} comparisons across ${String(CATEGORIES)} categories. Each shows a messy ticket, a cleaner one, and why it matters.`,
             href: "/learn",
+          },
+          {
+            icon: <Users size={20} />,
+            title: "Poker",
+            desc: "Spin up a planning poker session, share the link, estimate together. Ephemeral, no signup.",
+            href: "/poker",
           },
         ]}
       />

@@ -18,6 +18,22 @@ const pages: SearchItem[] = [
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",
   },
+  {
+    type: "page",
+    title: "Planning poker",
+    description: "Ephemeral planning poker sessions for your team",
+    icon: "page",
+    keywords: [
+      "poker",
+      "planning",
+      "estimate",
+      "estimation",
+      "story points",
+      "session",
+      "team",
+    ],
+    href: "/poker",
+  },
 ];
 
 export const searchItems: SearchItem[] = buildSearchItems({
