@@ -36,11 +36,21 @@ function prepareChallenges<T extends BaseChallenge>(
   allChallenges: T[],
   rng: () => number,
   excludedCategories: Set<string>,
+  useAllChallenges = false,
 ): T[] {
   const pool =
     excludedCategories.size === 0
       ? allChallenges
       : allChallenges.filter((c) => !excludedCategories.has(c.category));
+
+  // Screening mode: shuffle all challenges, randomize correctSide, no difficulty slicing
+  if (useAllChallenges) {
+    return shuffle(pool, rng).map((c) => ({
+      ...c,
+      correctSide: (rng() > 0.5 ? "left" : "right") satisfies "left" | "right",
+    }));
+  }
+
   const byDifficulty = pool.reduce<Record<Difficulty, T[]>>(
     (acc, c) => {
       acc[c.difficulty].push(c);
@@ -69,10 +79,16 @@ function createInitialState<T extends BaseChallenge>(
   excludedCategories: Set<string>,
   gameType: "daily" | "weekly" | "custom",
   encodeSeed: (raw: string, excluded: Set<string>) => string,
+  useAllChallenges = false,
 ): GameState<T> {
   const rng = createRng(hashSeed(rawSeed));
   return {
-    challenges: prepareChallenges(allChallenges, rng, excludedCategories),
+    challenges: prepareChallenges(
+      allChallenges,
+      rng,
+      excludedCategories,
+      useAllChallenges,
+    ),
     currentIndex: 0,
     score: 0,
     streak: 0,
@@ -117,6 +133,8 @@ export function useGame<T extends BaseChallenge>(
   excludedCategories = new Set<string>(),
   retryKey = 0,
   gameType: "daily" | "weekly" | "custom" = "custom",
+  /** When true, uses all challenges instead of the 10-per-session difficulty cap. */
+  useAllChallenges = false,
 ) {
   const {
     trackEvent,
@@ -139,10 +157,19 @@ export function useGame<T extends BaseChallenge>(
           excludedCategories,
           gameType,
           encodeSeed,
+          useAllChallenges,
         ),
       );
     else setState(null);
-  }, [challengePool, seed, excludedCategories, retryKey, gameType, encodeSeed]);
+  }, [
+    challengePool,
+    seed,
+    excludedCategories,
+    retryKey,
+    gameType,
+    encodeSeed,
+    useAllChallenges,
+  ]);
 
   useEffect(() => {
     challengeShownAt.current = Date.now();

@@ -186,7 +186,9 @@ interface UseGameReturn<C extends BaseChallenge> {
   currentDifficulty: Difficulty | null;
   totalChallenges: number;
   isReviewing: boolean;
+  /** The challenge currently visible (current or reviewed). */
   displayChallenge: C | null;
+  /** The user's answer for the displayed challenge, or null if unanswered. */
   displayAnswer: {
     result: "correct" | "wrong";
     side: "left" | "right";
@@ -257,6 +259,15 @@ interface GameProps<C extends BaseChallenge> {
   generateSeed: () => string;
   /** Injected sub-components for each game screen and UI element. */
   slots: GameSlots<C>;
+  /**
+   * When false, hides correct/wrong feedback on panels, suppresses the
+   * explanation, and auto-advances to the next challenge after selection.
+   * Used by screening assessments where candidates should not see answers.
+   * @default true
+   */
+  showFeedback?: boolean;
+  /** Called after each answer is submitted (e.g. to persist server-side). */
+  onAnswerSubmit?: (challengeId: string, side: "left" | "right") => void;
   children?: ReactNode;
 }
 
@@ -277,6 +288,8 @@ export function Game<C extends BaseChallenge>({
     explanation: ExplanationComponent,
     gameHeader: GameHeaderComponent,
   },
+  showFeedback = true,
+  onAnswerSubmit,
 }: GameProps<C>) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
@@ -396,6 +409,7 @@ export function Game<C extends BaseChallenge>({
   }, [displayChallenge, contentMap]);
 
   const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
+    if (!showFeedback) return null;
     if (!displayAnswer || !displayChallenge) return null;
     return side === displayChallenge.correctSide ? "correct" : "wrong";
   };
@@ -404,6 +418,22 @@ export function Game<C extends BaseChallenge>({
     if (!displayAnswer) return false;
     return displayAnswer.side === side;
   };
+
+  const handleSubmit = useCallback(
+    (side: "left" | "right") => {
+      if (!displayChallenge) return;
+      onAnswerSubmit?.(displayChallenge.id, side);
+      submitAnswer(side);
+    },
+    [displayChallenge, onAnswerSubmit, submitAnswer],
+  );
+
+  // Auto-advance when showFeedback is false (screening mode)
+  useEffect(() => {
+    if (showFeedback || !currentAnswer) return;
+    const t = setTimeout(() => goToNext(), 400);
+    return () => clearTimeout(t);
+  }, [showFeedback, currentAnswer, goToNext]);
 
   const questionResults = useMemo(() => {
     if (!state) return [];
@@ -439,20 +469,20 @@ export function Game<C extends BaseChallenge>({
         e.key === "1" ||
         e.key === "ArrowLeft"
       ) {
-        submitAnswer("left");
+        handleSubmit("left");
       } else if (
         e.key === "b" ||
         e.key === "B" ||
         e.key === "2" ||
         e.key === "ArrowRight"
       ) {
-        submitAnswer("right");
+        handleSubmit("right");
       }
     },
     [
       currentAnswer,
       currentChallenge,
-      submitAnswer,
+      handleSubmit,
       goToNext,
       isReviewing,
       exitReview,
@@ -465,7 +495,7 @@ export function Game<C extends BaseChallenge>({
   }, [handleKeyPress]);
 
   useEffect(() => {
-    if (!displayAnswer || isReviewing) return;
+    if (!showFeedback || !displayAnswer || isReviewing) return;
     const t = setTimeout(() => {
       explanationRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -473,7 +503,7 @@ export function Game<C extends BaseChallenge>({
       });
     }, 300);
     return () => clearTimeout(t);
-  }, [displayAnswer, isReviewing]);
+  }, [showFeedback, displayAnswer, isReviewing]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -526,7 +556,9 @@ export function Game<C extends BaseChallenge>({
         currentQuestion={state.currentIndex + 1}
         streak={state.streak}
         difficulty={currentDifficulty}
-        questionResults={questionResults}
+        questionResults={
+          showFeedback ? questionResults : questionResults.map(() => null)
+        }
         reviewIndex={state.reviewIndex}
         onQuestionClick={reviewQuestion}
       />
@@ -603,7 +635,7 @@ export function Game<C extends BaseChallenge>({
             highlightedHtml={leftContent ?? ""}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("left")}
+            onSelect={() => handleSubmit("left")}
             result={getResult("left")}
             isSelected={isSelectedSide("left")}
           />
@@ -614,7 +646,7 @@ export function Game<C extends BaseChallenge>({
             imageAlt={leftContent.alt}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("left")}
+            onSelect={() => handleSubmit("left")}
             result={getResult("left")}
             isSelected={isSelectedSide("left")}
           />
@@ -624,7 +656,7 @@ export function Game<C extends BaseChallenge>({
             componentId={leftContent}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("left")}
+            onSelect={() => handleSubmit("left")}
             result={getResult("left")}
             isSelected={isSelectedSide("left")}
           />
@@ -634,7 +666,7 @@ export function Game<C extends BaseChallenge>({
             molecule={leftContent}
             label="A"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("left")}
+            onSelect={() => handleSubmit("left")}
             result={getResult("left")}
             isSelected={isSelectedSide("left")}
           />
@@ -670,7 +702,7 @@ export function Game<C extends BaseChallenge>({
             highlightedHtml={rightContent ?? ""}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("right")}
+            onSelect={() => handleSubmit("right")}
             result={getResult("right")}
             isSelected={isSelectedSide("right")}
           />
@@ -681,7 +713,7 @@ export function Game<C extends BaseChallenge>({
             imageAlt={rightContent.alt}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("right")}
+            onSelect={() => handleSubmit("right")}
             result={getResult("right")}
             isSelected={isSelectedSide("right")}
           />
@@ -691,7 +723,7 @@ export function Game<C extends BaseChallenge>({
             componentId={rightContent}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("right")}
+            onSelect={() => handleSubmit("right")}
             result={getResult("right")}
             isSelected={isSelectedSide("right")}
           />
@@ -701,7 +733,7 @@ export function Game<C extends BaseChallenge>({
             molecule={rightContent}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
-            onSelect={() => submitAnswer("right")}
+            onSelect={() => handleSubmit("right")}
             result={getResult("right")}
             isSelected={isSelectedSide("right")}
           />
@@ -709,7 +741,7 @@ export function Game<C extends BaseChallenge>({
       </Box>
 
       <Stack spacing={2}>
-        {displayAnswer && (
+        {showFeedback && displayAnswer && (
           <Grow in timeout={400} style={{ transformOrigin: "top center" }}>
             <Box ref={explanationRef}>
               <ExplanationComponent
@@ -733,7 +765,7 @@ export function Game<C extends BaseChallenge>({
           </Grow>
         )}
 
-        {displayAnswer && (
+        {showFeedback && displayAnswer && (
           <Fade in timeout={400} style={{ transitionDelay: "200ms" }}>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               {isReviewing ? (

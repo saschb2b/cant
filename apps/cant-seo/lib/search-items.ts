@@ -4,7 +4,7 @@ import {
   CATEGORY_ORDER,
   CATEGORY_SECTIONS,
 } from "@/lib/learn/categories";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-seo";
 import { buildSearchItems, type SearchItem } from "@cant/shared/lib";
 
 export type { SearchItem };

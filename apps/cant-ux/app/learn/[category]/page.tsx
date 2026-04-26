@@ -12,7 +12,7 @@ import {
 } from "@cant/shared/components";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-ux";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

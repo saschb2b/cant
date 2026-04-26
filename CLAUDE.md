@@ -10,10 +10,15 @@ apps/cant-resize      # Responsive design patterns
 apps/cant-type        # TypeScript patterns
 apps/cant-orchestrate # Container orchestration patterns
 apps/cant-seo         # SEO best practices for Next.js
-apps/cant-test        # Testing patterns (+ Bug Hunt game)
+apps/cant-ux          # UX design patterns
 apps/cant-explode     # Chemistry patterns (molecules, reactions, structures)
+apps/cant-branch      # Git version control patterns
+apps/cant-query       # API design patterns
+apps/cant-test        # Testing patterns (+ Bug Hunt game)
+apps/cant-trust       # Money and Bitcoin
 apps/cant-game        # Game development patterns
-packages/shared       # @cant/shared - components, game logic, utilities
+apps/cant-hub         # Series hub / landing page / screening
+packages/shared       # @cant/shared - components, game logic, challenges, utilities
 ```
 
 ## Before committing
@@ -29,6 +34,14 @@ pnpm format:check
 If formatting fails, run `npx prettier --write .` from the affected app directory.
 
 Do not commit code that fails any of these checks.
+
+If you encounter pre-existing lint or type errors in files you did not change, fix them immediately. Do not ignore them or defer them as "pre-existing." The codebase must be clean after every session.
+
+When your changes affect project structure (adding/removing/moving apps, files, directories, exports, or dependencies), update all documentation that references the old structure before committing. Check at minimum:
+
+- `CLAUDE.md` (this file) — monorepo structure, shared exports, adding apps/challenges
+- `README.md` — app table, project structure tree, "what stays per-app," adding a new app
+- App-specific `CLAUDE.md` files — challenge paths, app-specific notes
 
 To check a single app: `pnpm turbo lint --filter=cant-maintain`
 
@@ -85,6 +98,7 @@ When adding new files to `packages/shared/src/`, check that the export pattern i
 - `./components/game/*` maps to `./src/components/game/*.tsx`
 - `./lib/*` maps to `./src/lib/*.ts`
 - `./lib/game/*` maps to `./src/lib/game/*.ts`
+- `./lib/challenges/*` maps to `./src/lib/challenges/*/index.ts`
 
 Each app's `next.config.mjs` includes `transpilePackages: ["@cant/shared"]`.
 
@@ -148,12 +162,19 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 - Don't override MUI's default `borderRadius` unless there's a specific visual reason
 - Keep challenge explanations factually accurate and natural-sounding
 - Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`
+- Do not use MUI's `component={Link}` prop in server components. Next.js 16 server components cannot pass functions as props to client components. Wrap `<Link>` around the MUI component instead: `<Link href="..."><Button>text</Button></Link>`
+
+### No thin wrappers
+
+Do not leave behind thin wrapper files that only re-export or trivially delegate to another module. When moving code (e.g. from an app to `@cant/shared`), update all consumers to import from the new location directly and delete the old file. A file that does nothing but `export { X } from "somewhere-else"` or cast a type is dead weight.
+
+Before creating any new file, check whether an existing file can be extended or whether consumers can import the source directly. If a wrapper exists only to re-type or re-export, remove it and update the imports.
 
 ## Adding a new app
 
 1. Copy an existing app: `cp -r apps/cant-resize apps/cant-newapp`
 2. Update `package.json` name, `next.config.mjs` (keep `output: "standalone"`), metadata in `layout.tsx`
-3. Customize `lib/theme.ts`, categories, challenges, and landing page
+3. Customize `lib/theme.ts`, categories, and landing page. Create challenge files in `packages/shared/src/lib/challenges/cant-newapp/`
 4. Add scripts to root `package.json`: `dev:newapp`, `build:newapp`
 5. Register the app in `packages/shared/src/lib/cant-apps.ts` with name, colors, and icon SVG content
 6. **Keep all icon representations in sync.** Each app has four icon locations that must use the same visual design:
@@ -167,7 +188,7 @@ Use the sun/moon toggle in the Storybook toolbar to switch between light and dar
 
 ## Adding a new challenge
 
-1. Open the relevant category file in the app's `lib/learn/challenges/` (or `lib/game/challenges/`)
+1. Open the relevant category file in `packages/shared/src/lib/challenges/{app}/`
 2. **Pick the best content type before writing anything.** Do not default to `type: "code"`. For each challenge, decide:
    - Can this concept be **animated or simulated**? Use `type: "visual"` with a Canvas 2D or library-backed component (e.g. pathfinding grids, physics simulations, shading comparisons, steering behaviors)
    - Can this concept be **drawn as a structure or diagram**? Use `type: "visual"` with SVG or an npm renderer (e.g. molecular structures, file trees, flow diagrams, git graphs)
@@ -331,6 +352,10 @@ Visual challenges render live React components instead of code snippets. They re
 **Apps with visual challenges:** cant-game (animated Canvas 2D game simulations: pathfinding, collision detection, shading, rope physics, steering, state machines), cant-explode (3D molecules via `3dmol`, 2D structures via `smiles-drawer`, SVG orbital/energy diagrams, periodic table visualizations), cant-branch (git graphs, file trees, diffs, terminals, flow diagrams), cant-ux (visual component comparisons), cant-test (file trees)
 
 ### Shared infrastructure
+
+All challenge data lives in `packages/shared/src/lib/challenges/{app}/`, one directory per app. Each directory has category files and a barrel `index.ts` that exports a combined `challenges` array. Apps import directly: `import { challenges } from "@cant/shared/lib/challenges/cant-resize"`.
+
+Challenge types use the generic `BaseChallenge<Category>` from `@cant/shared/lib/game`. Each app defines a one-line type alias in its `lib/learn/types.ts` (or `lib/game/types.ts`): `export type Challenge = BaseChallenge<ChallengeCategory>`.
 
 Challenge rendering is centralized in `@cant/shared`:
 

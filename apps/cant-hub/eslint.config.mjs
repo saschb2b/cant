@@ -15,7 +15,11 @@ const eslintConfig = [
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["eslint.config.mjs", "next.config.mjs"],
+          allowDefaultProject: [
+            "eslint.config.mjs",
+            "next.config.mjs",
+            "scripts/seed.mjs",
+          ],
         },
       },
     },
@@ -32,6 +36,7 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "scripts/**",
     ],
   },
 ];

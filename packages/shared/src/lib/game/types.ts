@@ -67,16 +67,19 @@ export type ChallengeContent =
  * `correctSide` indicates which side of `content` is the better option.
  * In game mode, sides are randomized at runtime.
  */
-export interface BaseChallenge {
+export interface BaseChallenge<Category extends string = string> {
   id: string;
   title: string;
   /** Question shown as the game prompt, e.g. "Which molecule is the stronger base?" */
   prompt: string;
-  category: string;
+  category: Category;
   difficulty: Difficulty;
   content: ChallengeContent;
   correctSide: "left" | "right";
+  /** Explanation shown when the user picks correctly (or in learn mode). */
   explanationCorrect: string;
+  /** Explanation shown when the user picks incorrectly. */
+  explanationWrong: string;
   sourceUrl: string;
   sourceLabel: string;
 }

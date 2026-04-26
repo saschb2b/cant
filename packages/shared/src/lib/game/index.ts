@@ -20,6 +20,7 @@ export type { SharedResults } from "./share";
 export type {
   GameState,
   BaseChallenge,
+  Difficulty,
   ChallengeContent,
   CodeContent,
   ImageContent,

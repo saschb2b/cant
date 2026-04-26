@@ -10,7 +10,7 @@ import {
   FormattedText,
   SourceLink,
 } from "@cant/shared/components";
-import { challenges } from "@/lib/learn/challenges";
+import { challenges } from "@cant/shared/lib/challenges/cant-seo";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,

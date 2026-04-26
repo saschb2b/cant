@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
 import { CompassIcon } from "./compass-icon";
+import { UserMenu } from "./user-menu";
 
 function ThemeIcon({ isDark, size = 18 }: { isDark: boolean; size?: number }) {
   return (
@@ -186,6 +187,7 @@ export function SiteHeader() {
                 </svg>
               </IconButton>
             </Tooltip>
+            <UserMenu />
           </Stack>
         </Stack>
       </Container>

@@ -6,7 +6,10 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@cant/shared/components";
 import { buildContentMap } from "@cant/shared/lib";
-import { challenges } from "@/lib/learn/challenges";
+import type { Challenge } from "@/lib/learn/types";
+import { challenges as _challenges } from "@cant/shared/lib/challenges/cant-ux";
+
+const challenges = _challenges as Challenge[];
 
 export const metadata: Metadata = {
   title: "Play",

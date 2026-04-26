@@ -11,6 +11,7 @@
     "./lib/*": "./src/lib/*.ts",
     "./lib/game": "./src/lib/game/index.ts",
     "./lib/game/*": "./src/lib/game/*.ts",
+    "./lib/challenges/*": "./src/lib/challenges/*/index.ts",
     "./lib/analytics-context": "./src/lib/analytics-context.tsx",
     "./lib/app-theme": "./src/lib/app-theme.ts",
     "./lib/app-theme-context": "./src/lib/app-theme-context.tsx"
