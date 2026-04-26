@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getAuth } from "@/lib/auth";
 
 /**
  * Dev-only endpoint to log in as a test user.
@@ -16,14 +16,14 @@ export async function GET(request: NextRequest) {
   const password = "dev-test-password-123";
 
   // Try sign-in first, sign-up if user doesn't exist
-  let response = await auth.api.signInEmail({
+  let response = await getAuth().api.signInEmail({
     body: { email, password },
     asResponse: true,
   });
 
   if (!response.ok) {
     // User doesn't exist yet, create them
-    response = await auth.api.signUpEmail({
+    response = await getAuth().api.signUpEmail({
       body: {
         name,
         email,

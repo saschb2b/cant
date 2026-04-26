@@ -195,7 +195,7 @@ Run through this list before flipping `NEXT_PUBLIC_SCREENING_ENABLED=true` in Co
 
 - [ ] Persistent Docker volume mounted at `/app/apps/cant-hub/data` in Coolify. Without it, the SQLite file (recruiters, assessments, candidate sessions) is wiped on every redeploy. The DB self-bootstraps on first request, so no seed file is needed, just persistence.
 - [ ] Backup strategy for `auth.db` (snapshot the volume on a schedule).
-- [ ] Lazy-initialize `lib/db.ts`. Currently the SQLite file is opened at module load (line 10), so any build that compiles the screening pages still touches `data/auth.db`. Wrap the open + migrations in a `getDb()` accessor so the build is genuinely inert when the flag is off.
+- [x] `lib/db.ts` and `lib/auth.ts` lazy-initialize via `getDb()` and `getAuth()`. The SQLite file no longer opens at module load, so parallel build workers do not race on the file lock during page-data collection.
 
 **Auth**
 
