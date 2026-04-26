@@ -1,6 +1,6 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { db } from "./db";
+import { getDb } from "./db";
 
 export type SessionStatus = "in_progress" | "completed";
 export type ReviewStatus = "pending" | "proceed" | "rejected";
@@ -41,25 +41,27 @@ export function createCandidateSession(
 ): CandidateSession {
   const id = randomUUID();
   const now = new Date().toISOString();
-  db.prepare(
-    `INSERT INTO candidate_session (id, assessmentId, candidateName, candidateEmail, status, totalQuestions, startedAt, seed)
+  getDb()
+    .prepare(
+      `INSERT INTO candidate_session (id, assessmentId, candidateName, candidateEmail, status, totalQuestions, startedAt, seed)
      VALUES (?, ?, ?, ?, 'in_progress', ?, ?, ?)`,
-  ).run(
-    id,
-    assessmentId,
-    candidateName,
-    candidateEmail,
-    totalQuestions,
-    now,
-    seed,
-  );
+    )
+    .run(
+      id,
+      assessmentId,
+      candidateName,
+      candidateEmail,
+      totalQuestions,
+      now,
+      seed,
+    );
   const session = getCandidateSession(id);
   if (!session) throw new Error(`Failed to create candidate session ${id}`);
   return session;
 }
 
 export function getCandidateSession(id: string): CandidateSession | undefined {
-  const row = db
+  const row = getDb()
     .prepare("SELECT * FROM candidate_session WHERE id = ?")
     .get(id) as unknown as CandidateSession | undefined;
   return row ? { ...row } : undefined;
@@ -68,7 +70,7 @@ export function getCandidateSession(id: string): CandidateSession | undefined {
 export function getSessionsByAssessment(
   assessmentId: string,
 ): CandidateSession[] {
-  const rows = db
+  const rows = getDb()
     .prepare(
       "SELECT * FROM candidate_session WHERE assessmentId = ? ORDER BY startedAt DESC",
     )
@@ -78,9 +80,11 @@ export function getSessionsByAssessment(
 
 export function finishSession(id: string, score: number): void {
   const now = new Date().toISOString();
-  db.prepare(
-    "UPDATE candidate_session SET status = 'completed', score = ?, finishedAt = ? WHERE id = ?",
-  ).run(score, now, id);
+  getDb()
+    .prepare(
+      "UPDATE candidate_session SET status = 'completed', score = ?, finishedAt = ? WHERE id = ?",
+    )
+    .run(score, now, id);
 }
 
 // ---------------------------------------------------------------------------
@@ -95,14 +99,16 @@ export function saveAnswer(
 ): void {
   const id = randomUUID();
   const now = new Date().toISOString();
-  db.prepare(
-    `INSERT OR REPLACE INTO candidate_answer (id, sessionId, challengeId, chosenSide, correct, answeredAt)
+  getDb()
+    .prepare(
+      `INSERT OR REPLACE INTO candidate_answer (id, sessionId, challengeId, chosenSide, correct, answeredAt)
      VALUES (?, ?, ?, ?, ?, ?)`,
-  ).run(id, sessionId, challengeId, chosenSide, correct ? 1 : 0, now);
+    )
+    .run(id, sessionId, challengeId, chosenSide, correct ? 1 : 0, now);
 }
 
 export function getAnswersBySession(sessionId: string): CandidateAnswer[] {
-  const rows = db
+  const rows = getDb()
     .prepare(
       "SELECT * FROM candidate_answer WHERE sessionId = ? ORDER BY answeredAt ASC",
     )
@@ -111,7 +117,7 @@ export function getAnswersBySession(sessionId: string): CandidateAnswer[] {
 }
 
 export function getAnswerCount(sessionId: string): number {
-  const row = db
+  const row = getDb()
     .prepare(
       "SELECT COUNT(*) as count FROM candidate_answer WHERE sessionId = ?",
     )
@@ -127,8 +133,7 @@ export function updateReviewStatus(
   sessionId: string,
   reviewStatus: ReviewStatus,
 ): void {
-  db.prepare("UPDATE candidate_session SET reviewStatus = ? WHERE id = ?").run(
-    reviewStatus,
-    sessionId,
-  );
+  getDb()
+    .prepare("UPDATE candidate_session SET reviewStatus = ? WHERE id = ?")
+    .run(reviewStatus, sessionId);
 }

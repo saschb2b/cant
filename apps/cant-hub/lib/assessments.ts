@@ -1,6 +1,6 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { db } from "./db";
+import { getDb } from "./db";
 
 export type AssessmentStatus = "draft" | "active" | "archived";
 
@@ -31,7 +31,7 @@ export interface AssessmentCategory {
 // ---------------------------------------------------------------------------
 
 export function getAssessmentsByUser(userId: string): Assessment[] {
-  const rows = db
+  const rows = getDb()
     .prepare(
       "SELECT * FROM assessment WHERE userId = ? ORDER BY updatedAt DESC",
     )
@@ -40,7 +40,7 @@ export function getAssessmentsByUser(userId: string): Assessment[] {
 }
 
 export function getAssessmentById(id: string): Assessment | undefined {
-  const row = db
+  const row = getDb()
     .prepare("SELECT * FROM assessment WHERE id = ?")
     .get(id) as unknown as Assessment | undefined;
   return row ? { ...row } : undefined;
@@ -53,9 +53,11 @@ export function createAssessment(
 ): Assessment {
   const id = randomUUID();
   const now = new Date().toISOString();
-  db.prepare(
-    "INSERT INTO assessment (id, title, description, status, userId, createdAt, updatedAt) VALUES (?, ?, ?, 'draft', ?, ?, ?)",
-  ).run(id, title, description ?? null, userId, now, now);
+  getDb()
+    .prepare(
+      "INSERT INTO assessment (id, title, description, status, userId, createdAt, updatedAt) VALUES (?, ?, ?, 'draft', ?, ?, ?)",
+    )
+    .run(id, title, description ?? null, userId, now, now);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- just inserted
   return getAssessmentById(id)!;
 }
@@ -86,14 +88,16 @@ export function updateAssessment(
       : assessment.questionCount;
   const now = new Date().toISOString();
 
-  db.prepare(
-    "UPDATE assessment SET title = ?, description = ?, status = ?, timeLimitSeconds = ?, questionCount = ?, updatedAt = ? WHERE id = ?",
-  ).run(title, description, status, timeLimitSeconds, questionCount, now, id);
+  getDb()
+    .prepare(
+      "UPDATE assessment SET title = ?, description = ?, status = ?, timeLimitSeconds = ?, questionCount = ?, updatedAt = ? WHERE id = ?",
+    )
+    .run(title, description, status, timeLimitSeconds, questionCount, now, id);
   return getAssessmentById(id);
 }
 
 export function deleteAssessment(id: string): boolean {
-  const result = db.prepare("DELETE FROM assessment WHERE id = ?").run(id);
+  const result = getDb().prepare("DELETE FROM assessment WHERE id = ?").run(id);
   return result.changes > 0;
 }
 
@@ -106,33 +110,37 @@ export function duplicateAssessment(
 
   const newId = randomUUID();
   const now = new Date().toISOString();
-  db.prepare(
-    "INSERT INTO assessment (id, title, description, status, userId, timeLimitSeconds, questionCount, createdAt, updatedAt) VALUES (?, ?, ?, 'draft', ?, ?, ?, ?, ?)",
-  ).run(
-    newId,
-    `Copy of ${source.title}`,
-    source.description,
-    userId,
-    source.timeLimitSeconds,
-    source.questionCount,
-    now,
-    now,
-  );
+  getDb()
+    .prepare(
+      "INSERT INTO assessment (id, title, description, status, userId, timeLimitSeconds, questionCount, createdAt, updatedAt) VALUES (?, ?, ?, 'draft', ?, ?, ?, ?, ?)",
+    )
+    .run(
+      newId,
+      `Copy of ${source.title}`,
+      source.description,
+      userId,
+      source.timeLimitSeconds,
+      source.questionCount,
+      now,
+      now,
+    );
 
   // Copy categories
   const categories = getCategoriesByAssessment(sourceId);
   for (const cat of categories) {
-    db.prepare(
-      "INSERT INTO assessment_category (id, assessmentId, appSlug, categorySlug, questionCount, difficulty, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    ).run(
-      randomUUID(),
-      newId,
-      cat.appSlug,
-      cat.categorySlug,
-      cat.questionCount,
-      cat.difficulty,
-      now,
-    );
+    getDb()
+      .prepare(
+        "INSERT INTO assessment_category (id, assessmentId, appSlug, categorySlug, questionCount, difficulty, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      )
+      .run(
+        randomUUID(),
+        newId,
+        cat.appSlug,
+        cat.categorySlug,
+        cat.questionCount,
+        cat.difficulty,
+        now,
+      );
   }
 
   return getAssessmentById(newId);
@@ -145,7 +153,7 @@ export function duplicateAssessment(
 export function getCategoriesByAssessment(
   assessmentId: string,
 ): AssessmentCategory[] {
-  const rows = db
+  const rows = getDb()
     .prepare(
       "SELECT * FROM assessment_category WHERE assessmentId = ? ORDER BY createdAt ASC",
     )
@@ -166,12 +174,12 @@ export function setAssessmentCategories(
   assessmentId: string,
   categories: CategoryInput[],
 ): void {
-  db.prepare("DELETE FROM assessment_category WHERE assessmentId = ?").run(
-    assessmentId,
-  );
+  getDb()
+    .prepare("DELETE FROM assessment_category WHERE assessmentId = ?")
+    .run(assessmentId);
 
   const now = new Date().toISOString();
-  const insert = db.prepare(
+  const insert = getDb().prepare(
     "INSERT INTO assessment_category (id, assessmentId, appSlug, categorySlug, questionCount, difficulty, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)",
   );
 
@@ -188,8 +196,7 @@ export function setAssessmentCategories(
   }
 
   // Touch the assessment's updatedAt
-  db.prepare("UPDATE assessment SET updatedAt = ? WHERE id = ?").run(
-    now,
-    assessmentId,
-  );
+  getDb()
+    .prepare("UPDATE assessment SET updatedAt = ? WHERE id = ?")
+    .run(now, assessmentId);
 }
