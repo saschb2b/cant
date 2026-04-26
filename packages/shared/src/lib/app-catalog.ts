@@ -1523,6 +1523,161 @@ const cantGame = {
 } as const satisfies AppCatalogEntry;
 
 // ---------------------------------------------------------------------------
+// Can't Ticket
+// ---------------------------------------------------------------------------
+
+const cantTicket = {
+  appName: "Can't Ticket",
+  categories: [
+    {
+      slug: "epic-story-task",
+      label: "Epic, Story, Task",
+      description:
+        "What each level of the Jira hierarchy is for. Why skipping the Story layer turns every Epic into a pile of plumbing nobody can roadmap from.",
+      questionCount: 6,
+    },
+    {
+      slug: "story-vs-braindump",
+      label: "Story vs Braindump",
+      description:
+        "The difference between a note to self and a contract between product, design, and engineering. Titles that read as implementation, ACs tangled with technical notes, and the kind of ticket a new joiner has no chance with.",
+      questionCount: 7,
+    },
+    {
+      slug: "connextra-template",
+      label: "User Story Template",
+      description:
+        "As a, I want, so that. Ron Jeffries' three Cs. Why the so that clause is the part that survives a refactor of the template, and how to write it in plain prose without losing the discipline.",
+      questionCount: 6,
+    },
+    {
+      slug: "bugs-spikes-tasks",
+      label: "Bugs, Spikes, Tasks",
+      description:
+        "When a piece of work is not a story. Bug tickets that make the impact reproducible, spike tickets timeboxed to questions, and the plumbing work that genuinely belongs as a Task.",
+      questionCount: 5,
+    },
+    {
+      slug: "invest",
+      label: "INVEST",
+      description:
+        "Independent, Negotiable, Valuable, Estimable, Small, Testable. The compact 2003 sanity check that still catches more bad stories than any longer checklist. Testable is the letter teams fail most.",
+      questionCount: 7,
+    },
+    {
+      slug: "acceptance-criteria",
+      label: "Acceptance Criteria",
+      description:
+        "Given, When, Then for outcomes a neutral reader can verify. The line between completeness and over-specification, and how to keep implementation notes out of the AC list.",
+      questionCount: 7,
+    },
+    {
+      slug: "definition-of-ready",
+      label: "Definition of Ready",
+      description:
+        "The shared bar a story has to clear before it enters a sprint. Actor and outcome present, dependencies linked not assumed, fits in a sprint, and nobody walks out of refinement still confused.",
+      questionCount: 5,
+    },
+    {
+      slug: "definition-of-done",
+      label: "Definition of Done",
+      description:
+        "The shared bar a story has to clear before it leaves a sprint. Verified by someone other than the implementer, tests at the right level, deployed and observable, ticket closed with what actually shipped.",
+      questionCount: 5,
+    },
+    {
+      slug: "story-points",
+      label: "Story Points",
+      description:
+        "Size, not time. Why Fibonacci's gaps are a feature, why a 4-and-5 disagreement is noise, and why a 13 is a signal to split or spike rather than an estimate to commit to.",
+      questionCount: 7,
+    },
+    {
+      slug: "estimation-rituals",
+      label: "Estimation Rituals",
+      description:
+        "Planning poker, t-shirt sizing, and reference stories. The room outlier is the whole point. The number is a side effect of the conversation, not the goal.",
+      questionCount: 5,
+    },
+    {
+      slug: "splitting-vertical",
+      label: "Vertical vs Horizontal",
+      description:
+        "Why splitting a story by technical layer fails INVEST on three letters at once. The vertical slice that ships end-to-end, teaches the team something, and lets product deprioritize the rest.",
+      questionCount: 6,
+    },
+    {
+      slug: "splitting-patterns",
+      label: "Splitting Patterns",
+      description:
+        "The Humanizing Work nine patterns and the SPIDR mnemonic that compresses the most useful five. Workflow steps, CRUD, business rules, data shapes, input methods, major effort, simple-then-complex, defer performance, and spike.",
+      questionCount: 9,
+    },
+    {
+      slug: "prioritization",
+      label: "Prioritization",
+      description:
+        "MoSCoW, RICE, value vs effort, and Cost of Delay. Who decides, and how to keep prioritization a product conversation rather than an engineering vote.",
+      questionCount: 6,
+    },
+    {
+      slug: "team-flow",
+      label: "Team Flow",
+      description:
+        "Velocity vs throughput, WIP limits, focus factor, and capacity. Lead time and cycle time. Why a board with eight in-progress tickets per person is not productive, it is stuck.",
+      questionCount: 6,
+    },
+    {
+      slug: "ceremonies",
+      label: "Ceremonies",
+      description:
+        "Standup, refinement, planning, review, retro. What each is for, what it turns into when misused (status reports, design committees, demo theater), and how to keep them short and useful.",
+      questionCount: 6,
+    },
+  ],
+  sections: [
+    {
+      label: "Foundations",
+      categories: [
+        "epic-story-task",
+        "story-vs-braindump",
+        "connextra-template",
+        "bugs-spikes-tasks",
+      ],
+    },
+    {
+      label: "Story Quality",
+      categories: [
+        "invest",
+        "acceptance-criteria",
+        "definition-of-ready",
+        "definition-of-done",
+      ],
+    },
+    {
+      label: "Estimation & Splitting",
+      categories: [
+        "story-points",
+        "estimation-rituals",
+        "splitting-vertical",
+        "splitting-patterns",
+      ],
+    },
+    {
+      label: "Team Practices",
+      categories: ["prioritization", "team-flow", "ceremonies"],
+    },
+  ],
+  learningPath: [
+    "story-vs-braindump",
+    "connextra-template",
+    "invest",
+    "acceptance-criteria",
+    "splitting-patterns",
+  ],
+} as const satisfies AppCatalogEntry;
+
+// ---------------------------------------------------------------------------
 // Combined catalog
 // ---------------------------------------------------------------------------
 
@@ -1543,6 +1698,7 @@ export const APP_CATALOG = {
   "cant-query": cantQuery,
   "cant-test": cantTest,
   "cant-game": cantGame,
+  "cant-ticket": cantTicket,
 } as const;
 
 /** Union of all app slugs in the catalog. */
@@ -1561,6 +1717,7 @@ export const APP_CATALOG_LIST: readonly AppCatalogEntry[] = [
   cantQuery,
   cantTest,
   cantGame,
+  cantTicket,
 ];
 
 // ---------------------------------------------------------------------------

@@ -24,6 +24,7 @@ async function loadAppChallenges(appSlug: string): Promise<BaseChallenge[]> {
     "cant-query": () => import("@cant/shared/lib/challenges/cant-query"),
     "cant-test": () => import("@cant/shared/lib/challenges/cant-test"),
     "cant-game": () => import("@cant/shared/lib/challenges/cant-game"),
+    "cant-ticket": () => import("@cant/shared/lib/challenges/cant-ticket"),
   };
 
   const loader = importMap[appSlug];

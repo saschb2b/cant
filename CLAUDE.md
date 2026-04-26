@@ -16,6 +16,7 @@ apps/cant-branch      # Git version control patterns
 apps/cant-query       # API design patterns
 apps/cant-test        # Testing patterns (+ Bug Hunt game)
 apps/cant-game        # Game development patterns
+apps/cant-ticket      # Agile ticket craft and estimation
 apps/cant-hub         # Series hub / landing page / screening
 packages/shared       # @cant/shared - components, game logic, challenges, utilities
 ```
