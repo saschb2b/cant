@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import type { ContentMapEntry } from "./game/game";
 import { codeBlockStyles } from "../lib/code-styles";
+import { TicketCard } from "./ticket-card";
 
 interface LearnContentPanelProps {
   /** The content entry for this challenge from the content map. */
@@ -66,6 +67,14 @@ export function LearnContentPanel({ entry, side }: LearnContentPanelProps) {
         >
           {/* Apps mount their component registry here via a wrapper */}
           Visual component: {componentId}
+        </Box>
+      );
+    }
+    case "ticket": {
+      const ticket = side === "good" ? entry.goodTicket : entry.badTicket;
+      return (
+        <Box sx={{ p: 1.5 }}>
+          <TicketCard data={ticket} />
         </Box>
       );
     }

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { buildContentMap } from "@cant/shared/lib";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import {
   LearnCategoryPage,
   FormattedText,
@@ -68,7 +69,12 @@ export default async function CategoryPage({ params }: PageProps) {
       ? CATEGORY_ORDER[currentIndex + 1]
       : undefined;
 
-  const contentMap = buildContentMap(categoryChallenges);
+  const highlighter = await getHighlighter();
+  const contentMap = buildContentMap(
+    categoryChallenges,
+    highlighter,
+    highlightDual,
+  );
 
   return (
     <LearnCategoryPage

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { buildContentMap } from "@cant/shared/lib";
 import { LearnIndexPage } from "@cant/shared/components";
 import { challenges } from "@cant/shared/lib/challenges/cant-ticket";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,
@@ -15,11 +16,16 @@ export const metadata: Metadata = {
     "Learn agile ticket craft across 15 categories. Side-by-side comparisons of stories, acceptance criteria, estimates, and splits.",
 };
 
-export default function LearnPage() {
+export default async function LearnPage() {
   const previewChallenges = CATEGORY_ORDER.flatMap(
     (cat) => challenges.find((c) => c.category === cat) ?? [],
   );
-  const previewContentMap = buildContentMap(previewChallenges);
+  const highlighter = await getHighlighter();
+  const previewContentMap = buildContentMap(
+    previewChallenges,
+    highlighter,
+    highlightDual,
+  );
 
   const sections = CATEGORY_ORDER.map((category) => {
     const count = challenges.filter((c) => c.category === category).length;

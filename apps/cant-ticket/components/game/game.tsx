@@ -4,6 +4,7 @@ import {
   Game as SharedGame,
   GameHeader,
   CodePanel,
+  TicketPanel,
 } from "@cant/shared/components/game";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { useGame } from "@/lib/game/use-game";
@@ -31,6 +32,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       generateSeed={generateSeed}
       slots={{
         codePanel: CodePanel,
+        ticketPanel: TicketPanel,
         lobby: LobbyScreen,
         results: ResultsScreen,
         explanation: ExplanationPanel,

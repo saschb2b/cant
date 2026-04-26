@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@cant/shared/components";
 import { buildContentMap } from "@cant/shared/lib";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import type { Challenge } from "@/lib/learn/types";
 import { challenges as _challenges } from "@cant/shared/lib/challenges/cant-ticket";
 
@@ -14,7 +15,7 @@ const challenges = _challenges as Challenge[];
 export const metadata: Metadata = {
   title: "Play",
   description:
-    "Pick the better UX pattern in 10 side-by-side visual challenges. Covers typography, spacing, color, hierarchy, and more.",
+    "Pick the cleaner ticket in 10 side-by-side challenges. Covers stories, acceptance criteria, story points, splitting, and team practices.",
 };
 
 export default async function PlayPage({
@@ -24,7 +25,8 @@ export default async function PlayPage({
 }) {
   const { seed: defaultSeed } = await searchParams;
 
-  const contentMap = buildContentMap(challenges);
+  const highlighter = await getHighlighter();
+  const contentMap = buildContentMap(challenges, highlighter, highlightDual);
 
   return (
     <Box

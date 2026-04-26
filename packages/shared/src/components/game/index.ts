@@ -13,6 +13,8 @@ export type {
   MoleculePanelSlotProps,
   MoleculeChallengeEntry,
   ResultsSlotProps,
+  TicketPanelSlotProps,
+  TicketChallengeEntry,
 } from "./game";
 export { GameHeader } from "./game-header";
 export { ImagePanel } from "./image-panel";
@@ -22,4 +24,5 @@ export { LobbyScreen } from "./lobby-screen";
 export type { GameType } from "./lobby-screen";
 export { ResultsScreen } from "./results-screen";
 export { SeedInput } from "./seed-input";
+export { TicketPanel } from "./ticket-panel";
 export { VisualPanel } from "./visual-panel";
