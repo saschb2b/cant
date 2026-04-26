@@ -49,7 +49,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Each criterion is observable. A reader who has not seen the code can open the page and confirm. The before/after is binary, which means QA, design, and the PM can all sign off independently.",
     explanationWrong:
       "'Implemented properly' and 'the UX is good' are not acceptance criteria, they are reassurance. Two engineers will reasonably disagree on whether the bar is met, and the disagreement will surface in review.",
-    sourceUrl: "https://dannorth.net/introducing-bdd/",
+    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
     sourceLabel: "Dan North: Introducing BDD",
   },
   {
@@ -100,7 +100,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Given/When/Then forces the writer to name the precondition, the action, and the outcome. There is no ambiguity for QA, no implementation language, and the negative case (valid session) is named explicitly.",
     explanationWrong:
       "The left list is implementation steps. They might be correct, but they describe how the engineer will write the code, not what behavior the user will observe. QA cannot test 'check the session in the middleware'.",
-    sourceUrl: "https://dannorth.net/introducing-bdd/",
+    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
     sourceLabel: "Dan North: Introducing BDD",
   },
   {
@@ -158,7 +158,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
     explanationWrong:
       "Happy-path-only acceptance criteria leave the failure modes to be discovered. They will be discovered by users, then filed as bugs, then patched, then re-broken on the next change.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -256,7 +256,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Naming what is out is as important as naming what is in. During refinement someone will ask 'what about PDFs?' and the story already answers. The team does not get pulled into scope creep mid-sprint.",
     explanationWrong:
       "Without an out-of-scope clause, every reviewer assumes a different boundary. PDF and email exports will be raised in standup, the work will balloon, and the story will not finish in the sprint.",
-    sourceUrl: "https://www.atlassian.com/team-playbook/plays/user-stories",
+    sourceUrl: "https://www.atlassian.com/agile/project-management/user-stories",
     sourceLabel: "Atlassian Team Playbook: User Stories",
   },
   {
@@ -317,7 +317,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Format matters less than the property. For a simple list of constraints, three bullets are cleaner than three identical Given/When/Then blocks. Use Given/When/Then when state and timing matter; use bullets when they don't.",
     explanationWrong:
       "Given/When/Then is a forcing function for unambiguous state, action, and outcome. For 'three visual variants on a static page' it adds line count without information. The bullets read faster.",
-    sourceUrl: "https://dannorth.net/introducing-bdd/",
+    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
     sourceLabel: "Dan North: Introducing BDD",
   },
   {
@@ -366,7 +366,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
     explanationWrong:
       "'Feels fast' is unverifiable and unprotectable. The next refactor will land, the response time will drift, and nobody will notice until users start complaining again.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
 ];

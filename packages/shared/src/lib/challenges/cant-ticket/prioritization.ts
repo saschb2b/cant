@@ -60,7 +60,7 @@ export const prioritizationChallenges: BaseChallenge[] = [
     explanationWrong:
       "Fourteen Musts is a way of saying 'everything is the priority', which means nothing is. The team will negotiate the Musts at standup all quarter and finish about as many as a smaller, honestly-labeled list.",
     sourceUrl:
-      "https://www.atlassian.com/agile/project-management/prioritization",
+      "https://www.atlassian.com/agile/product-management/prioritization-framework",
     sourceLabel: "Atlassian: Prioritization Frameworks",
   },
   {
@@ -154,7 +154,7 @@ export const prioritizationChallenges: BaseChallenge[] = [
     explanationWrong:
       "'Get it out of the way' is the kind of phrase that hides a real cost: a long story blocks the small ones behind it, and the small ones often turn out to be more valuable than the big one was estimated to be.",
     sourceUrl:
-      "https://www.atlassian.com/agile/project-management/prioritization",
+      "https://www.atlassian.com/agile/product-management/prioritization-framework",
     sourceLabel: "Atlassian: Prioritization Frameworks",
   },
   {

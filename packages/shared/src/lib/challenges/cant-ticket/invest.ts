@@ -38,7 +38,7 @@ export const investChallenges: BaseChallenge[] = [
     explanationWrong:
       "Two hard blocks make this story a coordination problem before it is a delivery problem. If either dependency slips, the value never lands. Independence means: redesign the slice so something useful can ship now.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -81,7 +81,7 @@ export const investChallenges: BaseChallenge[] = [
     explanationWrong:
       "When the description specifies the library, the steps to remove, and the staging shortcut, the team is just executing. They will hit a constraint the author missed and either ship a worse solution or escalate every variation.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -117,7 +117,7 @@ export const investChallenges: BaseChallenge[] = [
     explanationWrong:
       "EOL deadlines are real. They are also a Task: the work has no user-facing value. Wrapping plumbing in story language is fine if you can name the value. If the only beneficiary is the future maintenance budget, file it as a Task.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -166,7 +166,7 @@ export const investChallenges: BaseChallenge[] = [
     explanationWrong:
       "Open-ended scope ('handle conflicts', 'support partial failures', 'work for both push and pull') is what a 13-pointer or a spike looks like. Estimating it produces a wide spread and a wrong number.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -255,7 +255,7 @@ export const investChallenges: BaseChallenge[] = [
       "Testable is the letter teams fail most. The right side gives observable thresholds (p75 under 1s, p99 under 2s) on a defined dataset. QA can verify it without asking the engineer how it feels.",
     explanationWrong:
       "'Snappier', 'not frustrated', 'improved' are vibes. They cannot be verified without the engineer in the room, which means they will be argued about in retro and never re-tested when the next change ships.",
-    sourceUrl: "https://dannorth.net/introducing-bdd/",
+    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
     sourceLabel: "Dan North: Introducing BDD",
   },
   {
@@ -309,7 +309,7 @@ export const investChallenges: BaseChallenge[] = [
     explanationWrong:
       "Vague scope, vibe acceptance criteria, and a 13 in the points field — left fails three letters at once: not Estimable, not Small, not Testable. The story is a wish dressed up.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
 ];

@@ -139,7 +139,7 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
     explanationWrong:
       "Schema → job → API → UI is a textbook horizontal split. Three slices have no user-visible result. The fourth slice has all the integration cost, and product cannot demo anything until the entire epic is done.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {

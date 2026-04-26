@@ -206,7 +206,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "When the UI is doing most of the work, ship the feature with a minimal input first. The booking logic, validation, and confirmation are live on day one. The fancy interface lands in slice two without blocking the core value.",
     explanationWrong:
       "Bundling the calendar picker and timezone autocomplete into the first slice means weeks of UI work before anyone can book a meeting. The logic is the value; the polish is the polish.",
-    sourceUrl: "https://www.mountaingoatsoftware.com/blog/what-is-spidr",
+    sourceUrl: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
     sourceLabel: "Mike Cohn: SPIDR",
   },
   {
@@ -349,7 +349,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "Spike is the explicit last resort in the Humanizing Work guide. Most stories can be split by workflow, data, rules, or interface before research is needed. Defaulting to a spike costs the team a sprint of value while the eight other patterns sit unused.",
     explanationWrong:
       "Spiking by reflex is procrastination dressed as research. Most 'big' stories are not unknowable; they are unsplit. Try the patterns first; spike only when the patterns honestly do not apply.",
-    sourceUrl: "https://www.mountaingoatsoftware.com/blog/what-is-spidr",
+    sourceUrl: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
     sourceLabel: "Mike Cohn: SPIDR",
   },
 ];

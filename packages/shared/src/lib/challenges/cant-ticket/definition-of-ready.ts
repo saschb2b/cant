@@ -213,7 +213,7 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
     explanationWrong:
       "'More useful' is not an outcome. Without testable acceptance criteria, the team is guessing what 'better' means and will probably ship something that gets rejected in review.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
 ];

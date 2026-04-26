@@ -93,7 +93,7 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
     explanationWrong:
       "Refactoring a helper is not an acceptance criterion, it is engineering work. Mixed lists make QA's job impossible: half the items are not testable from the outside, half look like work that already happened.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -170,7 +170,7 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
     explanationWrong:
       "Mentioning a name and a service in prose is not a link. Nothing in the planning board updates when the dependency moves, and 'next sprint' has the half-life of one slipped commitment.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -264,7 +264,7 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "A new joiner reads three lines and is oriented: who suffers, what changes, why it matters, and roughly the size of the problem. The funnel datum makes the priority defensible without needing to find the meeting it came from.",
     explanationWrong:
       "Cross-referencing a retro doc, a name, and a meeting outcome makes the ticket only readable by people who were there. Six months later, none of those references will resolve.",
-    sourceUrl: "https://www.atlassian.com/team-playbook/plays/user-stories",
+    sourceUrl: "https://www.atlassian.com/agile/project-management/user-stories",
     sourceLabel: "Atlassian Team Playbook: User Stories",
   },
   {

@@ -61,7 +61,7 @@ export const ceremoniesChallenges: BaseChallenge[] = [
     explanationWrong:
       "Speed-pointing ten stories produces ten numbers and zero shared understanding. The first sprint into those stories will spend the first three days re-refining the work the team supposedly already estimated.",
     sourceUrl:
-      "https://www.scrum.org/resources/what-is-product-backlog-refinement",
+      "https://www.scrum.org/resources/product-backlog-refinement",
     sourceLabel: "Scrum.org: Backlog Refinement",
   },
   {

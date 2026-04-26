@@ -29,7 +29,7 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Throughput counts what users got. Lead time names how long they waited. Velocity is a useful capacity number for the next sprint, but it is not the goal; treating it as one creates pressure to inflate point estimates rather than ship.",
     explanationWrong:
       "Velocity going up can mean the team got faster, or it can mean the team learned to point bigger. Without throughput as a counter-check, the trend is unreadable.",
-    sourceUrl: "https://www.scrum.org/resources/blog/velocity-vanity-metric",
+    sourceUrl: "https://www.scrum.org/resources/blog/velocity-false-metric-productivity",
     sourceLabel: "Scrum.org: Velocity is a planning aid",
   },
   {
@@ -91,7 +91,7 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "70% leaves room for the work the team will discover mid-sprint. Incidents, support escalations, and 'oh, this story was bigger than we thought' all need somewhere to land. A pre-allocated buffer means they land cleanly.",
     explanationWrong:
       "Pulling to 100% of velocity means every interruption forces a story to be cut, and the team drifts into a culture of over-commitment. Reviews become rationalization sessions instead of learning.",
-    sourceUrl: "https://www.scrum.org/resources/blog/forecast-vs-commitment",
+    sourceUrl: "https://www.scrum.org/resources/blog/obsession-commitment-matching-velocity",
     sourceLabel: "Scrum.org: Forecast vs Commitment",
   },
   {
@@ -122,7 +122,7 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Lead time tells the customer how long they wait. Cycle time tells the team how long the work itself took. Reporting percentiles (not averages) catches the long tail that averages hide.",
     explanationWrong:
       "An average flattens the long-tailed distribution that matters most. The 5% of stories that take three sprints are exactly the stories the team needs to talk about, and the average buries them.",
-    sourceUrl: "https://www.atlassian.com/agile/kanban/cycle-time",
+    sourceUrl: "https://www.atlassian.com/agile/project-management/kanban-metrics",
     sourceLabel: "Atlassian: Cycle Time",
   },
   {
@@ -154,7 +154,7 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Engineers do not spend 100% of their day shipping. Meetings, reviews, on-call, and support are real. A ~0.6 focus factor is honest; pretending the number is 1.0 produces over-commitment every sprint.",
     explanationWrong:
       "Treating every working day as a delivery day means the sprint is over-pulled by 40% before it starts. The team finishes 60% of the plan and is told they are slow.",
-    sourceUrl: "https://www.scrum.org/resources/blog/forecast-vs-commitment",
+    sourceUrl: "https://www.scrum.org/resources/blog/obsession-commitment-matching-velocity",
     sourceLabel: "Scrum.org: Forecast vs Commitment",
   },
   {

@@ -95,7 +95,7 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "13 is a signal that the team is uncertain, not an estimate they can commit to. The right move is to split or spike. A spike that returns three sized stories is cheaper than a 13-pointer that misses the sprint and re-splits under pressure.",
     explanationWrong:
       "Pulling a 13 into a sprint is taking a bet. Half the time the team will discover the work was actually 21 and the sprint will end with 'in progress' tickets that nobody can land.",
-    sourceUrl: "https://www.mountaingoatsoftware.com/blog/what-is-spidr",
+    sourceUrl: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
     sourceLabel: "Mike Cohn: SPIDR",
   },
   {
@@ -192,7 +192,7 @@ export const storyPointsChallenges: BaseChallenge[] = [
     explanationWrong:
       "Pulling an 8 silently means the team has not decided what happens when it slips. The sprint review will rediscover the same conversation, except now there is in-flight work to split around.",
     sourceUrl:
-      "https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/",
+      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -223,7 +223,7 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "Velocity is a planning aid, not a target. The median across recent sprints is more honest than the last sprint. Leaving headroom for unplanned work means the team finishes; treating velocity as a target means it becomes a ratchet.",
     explanationWrong:
       "Pulling to last sprint's number assumes last sprint was typical. The team rotates, holidays land, fires happen. Pulling to that single number guarantees an over-commit half the time.",
-    sourceUrl: "https://www.scrum.org/resources/blog/velocity-vanity-metric",
+    sourceUrl: "https://www.scrum.org/resources/blog/velocity-false-metric-productivity",
     sourceLabel: "Scrum.org: Velocity is a planning aid",
   },
 ];
