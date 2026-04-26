@@ -23,39 +23,39 @@ const siteUrl = "https://cant-ticket.saschb2b.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Can't Ticket - UX Design Patterns",
+    default: "Can't Ticket - Agile Ticket Craft",
     template: "%s - Can't Ticket",
   },
   description:
-    "Learn UX design patterns by comparing good and bad approaches side by side. Typography, spacing, color, hierarchy, layout, forms, and feedback.",
+    "Learn agile ticket craft by comparing stories side by side. User stories, INVEST, acceptance criteria, story points, splitting, ceremonies.",
   keywords: [
-    "UX design",
-    "UI patterns",
-    "design patterns",
-    "typography",
-    "spacing",
-    "color theory",
-    "visual hierarchy",
-    "form design",
-    "user experience",
-    "Refactoring UI",
-    "web design",
+    "agile",
+    "scrum",
+    "user stories",
+    "INVEST",
+    "acceptance criteria",
+    "story points",
+    "story splitting",
+    "definition of ready",
+    "definition of done",
+    "sprint planning",
+    "Jira",
   ],
   authors: [{ name: "Sascha", url: "https://saschb2b.com/" }],
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "Can't Ticket",
-    title: "Can't Ticket - UX Design Patterns",
+    title: "Can't Ticket - Agile Ticket Craft",
     description:
-      "Spot the better UX pattern. Learn typography, spacing, color, hierarchy, and more through side-by-side comparisons.",
+      "Spot the cleaner ticket. Stories, acceptance criteria, story points, and splitting through side-by-side comparisons.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Can't Ticket - UX Design Patterns",
+    title: "Can't Ticket - Agile Ticket Craft",
     description:
-      "Spot the better UX pattern. Learn typography, spacing, color, hierarchy, and more through side-by-side comparisons.",
+      "Spot the cleaner ticket. Stories, acceptance criteria, story points, and splitting through side-by-side comparisons.",
   },
   alternates: {
     canonical: siteUrl,
@@ -90,7 +90,7 @@ export default function RootLayout({
               name: "Can't Ticket",
               url: siteUrl,
               description:
-                "Learn UX design patterns by comparing good and bad approaches side by side. 28 patterns across 7 categories.",
+                "Learn agile ticket craft by comparing stories side by side. 93 comparisons across 15 categories.",
               author: {
                 "@type": "Person",
                 name: "Sascha Becker",
@@ -102,7 +102,7 @@ export default function RootLayout({
         <Script
           async
           src="https://umami.saschb2b.com/script.js"
-          data-website-id="e107ebb2-515c-4fb6-8278-ac3df19fd302"
+          data-website-id="placeholder-cant-ticket"
         />
       </head>
       <body>

@@ -212,8 +212,7 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
       "Connextra clauses present, observable AC, named scope. Whoever pulls the story knows what to build, what to demo, and what success looks like. Ready.",
     explanationWrong:
       "'More useful' is not an outcome. Without testable acceptance criteria, the team is guessing what 'better' means and will probably ship something that gets rejected in review.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
 ];

@@ -22,7 +22,7 @@ export async function generateMetadata({
   const rank = getRank(percentage);
 
   const title = `${rank} — ${String(score)}/${String(total)} | Can't Ticket`;
-  const description = `I scored ${String(score)}/${String(total)} on spotting better UX patterns. Can you beat my score? Train your design eye in under 5 minutes.`;
+  const description = `I scored ${String(score)}/${String(total)} on spotting cleaner agile tickets. Can you beat my score? Train your ticket-writing eye in under 5 minutes.`;
   const ogImage = "https://cant-ticket.saschb2b.com/opengraph-image";
 
   return {
@@ -38,7 +38,7 @@ export async function generateMetadata({
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: "Can't Ticket: UX Design Patterns Game",
+          alt: "Can't Ticket: Agile Ticket Craft Game",
         },
       ],
     },

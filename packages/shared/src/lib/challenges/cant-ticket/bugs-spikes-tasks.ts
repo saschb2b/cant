@@ -96,7 +96,8 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "When the team cannot estimate because the implementation approach is genuinely unclear, a timeboxed spike is the right move. Its acceptance criteria are answers to questions, not shipped behavior. The integration story comes after, with real numbers.",
     explanationWrong:
       "A 13-point story with 'pick the best provider' inside it is a bet, not a plan. The team will burn the sprint discovering tradeoffs the spike could have surfaced in three days. 13 is a signal: split it or spike it.",
-    sourceUrl: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+    sourceUrl:
+      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
     sourceLabel: "Mike Cohn: SPIDR",
   },
   {
@@ -183,7 +184,8 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "A spike is research. Its acceptance criteria are answers to specific questions and a recommendation. The timebox and 'no production code' line keep the work honest.",
     explanationWrong:
       "'See what's possible' is a curiosity, not a spike. With no question to answer and no time bound, it expands to fill the sprint and produces a half-prototype that nobody owns.",
-    sourceUrl: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+    sourceUrl:
+      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
     sourceLabel: "Mike Cohn: SPIDR",
   },
   {

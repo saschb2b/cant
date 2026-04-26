@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Can't Ticket - UX Design Patterns";
+export const alt = "Can't Ticket - Agile Ticket Craft";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -87,7 +87,7 @@ export default function OgImage() {
             style={{
               width: "80%",
               height: 14,
-              background: "#D97706",
+              background: "#4F46E5",
               borderRadius: 4,
             }}
           />
@@ -130,7 +130,7 @@ export default function OgImage() {
           lineHeight: 1.4,
         }}
       >
-        Spot the better design. Train your UX eye.
+        Stories, not braindumps. Train your ticket-writing eye.
       </div>
     </div>,
     { ...size },

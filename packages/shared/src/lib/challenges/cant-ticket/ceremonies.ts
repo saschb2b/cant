@@ -60,8 +60,7 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "Refinement produces stories the team can pull next sprint without surprise. Splitting and AC clarification happen here so they are not happening mid-sprint. The Definition of Ready is the gate.",
     explanationWrong:
       "Speed-pointing ten stories produces ten numbers and zero shared understanding. The first sprint into those stories will spend the first three days re-refining the work the team supposedly already estimated.",
-    sourceUrl:
-      "https://www.scrum.org/resources/product-backlog-refinement",
+    sourceUrl: "https://www.scrum.org/resources/product-backlog-refinement",
     sourceLabel: "Scrum.org: Backlog Refinement",
   },
   {

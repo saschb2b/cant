@@ -138,8 +138,7 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "Each slice ships a usable view a manager can demo. Slice one is rough but real; slice two broadens the scope; slice three polishes it. Product can deprioritize slice three on its own merits.",
     explanationWrong:
       "Schema → job → API → UI is a textbook horizontal split. Three slices have no user-visible result. The fourth slice has all the integration cost, and product cannot demo anything until the entire epic is done.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {

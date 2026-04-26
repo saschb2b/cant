@@ -37,8 +37,7 @@ export const investChallenges: BaseChallenge[] = [
       "Independence is about being shippable on its own. The right story decouples the user-visible behavior from the realtime work, so it can land first. The realtime polish becomes its own story to prioritize separately.",
     explanationWrong:
       "Two hard blocks make this story a coordination problem before it is a delivery problem. If either dependency slips, the value never lands. Independence means: redesign the slice so something useful can ship now.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -80,8 +79,7 @@ export const investChallenges: BaseChallenge[] = [
       "The team owns the implementation. The story sets the outcome (under three minutes) and lets engineering pick which steps to drop, which library to use, and what the tradeoff with verification looks like.",
     explanationWrong:
       "When the description specifies the library, the steps to remove, and the staging shortcut, the team is just executing. They will hit a constraint the author missed and either ship a worse solution or escalate every variation.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -116,8 +114,7 @@ export const investChallenges: BaseChallenge[] = [
       "INVEST's V (Valuable) is the lever that distinguishes story from task. The right ticket names the on-call engineer and the cost they pay today (waiting four minutes at 2 a.m.). That defends the work to anyone who asks why now.",
     explanationWrong:
       "EOL deadlines are real. They are also a Task: the work has no user-facing value. Wrapping plumbing in story language is fine if you can name the value. If the only beneficiary is the future maintenance budget, file it as a Task.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -165,8 +162,7 @@ export const investChallenges: BaseChallenge[] = [
       "Three engineers can roughly agree on the right side. The scope is one field, two paths, and a defined failure mode. The left side is a research project hidden inside a story.",
     explanationWrong:
       "Open-ended scope ('handle conflicts', 'support partial failures', 'work for both push and pull') is what a 13-pointer or a spike looks like. Estimating it produces a wide spread and a wrong number.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -308,8 +304,7 @@ export const investChallenges: BaseChallenge[] = [
       "Independent (does not block other auth flows), Negotiable (the team picks the SAML library), Valuable (named admin, named cost), Estimable (one provider, scoped acceptance), Small (fits a sprint), Testable (Given/When/Then). Six for six.",
     explanationWrong:
       "Vague scope, vibe acceptance criteria, and a 13 in the points field — left fails three letters at once: not Estimable, not Small, not Testable. The story is a wish dressed up.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
 ];

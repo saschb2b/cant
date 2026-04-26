@@ -157,8 +157,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Real systems fail. Naming the expired-card and provider-down paths in advance gives engineering a real spec and gives QA a real test plan. The cart preservation rule comes out of the conversation, not the bug report.",
     explanationWrong:
       "Happy-path-only acceptance criteria leave the failure modes to be discovered. They will be discovered by users, then filed as bugs, then patched, then re-broken on the next change.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -256,7 +255,8 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Naming what is out is as important as naming what is in. During refinement someone will ask 'what about PDFs?' and the story already answers. The team does not get pulled into scope creep mid-sprint.",
     explanationWrong:
       "Without an out-of-scope clause, every reviewer assumes a different boundary. PDF and email exports will be raised in standup, the work will balloon, and the story will not finish in the sprint.",
-    sourceUrl: "https://www.atlassian.com/agile/project-management/user-stories",
+    sourceUrl:
+      "https://www.atlassian.com/agile/project-management/user-stories",
     sourceLabel: "Atlassian Team Playbook: User Stories",
   },
   {
@@ -365,8 +365,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Numbers anchor performance work. The defined connection profile, percentile thresholds, and regression test mean future changes either preserve the bar or fail visibly. Without those, performance work decays back to where it started within two sprints.",
     explanationWrong:
       "'Feels fast' is unverifiable and unprotectable. The next refactor will land, the response time will drift, and nobody will notice until users start complaining again.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
 ];

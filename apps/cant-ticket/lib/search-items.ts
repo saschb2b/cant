@@ -13,7 +13,7 @@ const pages: SearchItem[] = [
   {
     type: "page",
     title: "Learn",
-    description: "Browse all categories and study UX design patterns",
+    description: "Browse all categories and study agile ticket craft",
     icon: "learn",
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",

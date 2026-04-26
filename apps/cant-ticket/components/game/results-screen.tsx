@@ -12,7 +12,7 @@ import {
 import type { GameState } from "@/lib/game/types";
 
 const config = {
-  shareSubject: "UX patterns",
+  shareSubject: "agile tickets",
   getShareUrl,
   encodeResults,
   getMissedCategoryLabels,

@@ -92,8 +92,7 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "Acceptance criteria describe outcomes. Implementation steps live in subtasks where they belong. QA can verify each AC by clicking, without asking the engineer what the cookie helper does.",
     explanationWrong:
       "Refactoring a helper is not an acceptance criterion, it is engineering work. Mixed lists make QA's job impossible: half the items are not testable from the outside, half look like work that already happened.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -169,8 +168,7 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "The dependency is a linked ticket key, not a hallway conversation. When TAX-117 moves the planning board can see the unblock automatically and the next refinement can pull this story without hunting for context.",
     explanationWrong:
       "Mentioning a name and a service in prose is not a link. Nothing in the planning board updates when the dependency moves, and 'next sprint' has the half-life of one slipped commitment.",
-    sourceUrl:
-      "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },
   {
@@ -264,7 +262,8 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "A new joiner reads three lines and is oriented: who suffers, what changes, why it matters, and roughly the size of the problem. The funnel datum makes the priority defensible without needing to find the meeting it came from.",
     explanationWrong:
       "Cross-referencing a retro doc, a name, and a meeting outcome makes the ticket only readable by people who were there. Six months later, none of those references will resolve.",
-    sourceUrl: "https://www.atlassian.com/agile/project-management/user-stories",
+    sourceUrl:
+      "https://www.atlassian.com/agile/project-management/user-stories",
     sourceLabel: "Atlassian Team Playbook: User Stories",
   },
   {

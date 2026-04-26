@@ -7,7 +7,7 @@ export function SiteHeader() {
   return (
     <SharedSiteHeader
       title="Can't Ticket"
-      subtitle="Learn UX design"
+      subtitle="Agile ticket craft"
       currentAppName="Can't Ticket"
       renderSearchPalette={({ open, onClose }) => (
         <SearchPalette open={open} onClose={onClose} />

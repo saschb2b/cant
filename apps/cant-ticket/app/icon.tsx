@@ -10,34 +10,57 @@ export default function Icon() {
         width: 32,
         height: 32,
         borderRadius: 7,
-        background: "linear-gradient(135deg, #D97706, #B45309)",
+        background: "linear-gradient(135deg, #4F46E5, #3730A3)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        position: "relative",
       }}
     >
-      {/* Eye icon representing UX observation */}
-      <div
-        style={{
-          width: 18,
-          height: 12,
-          border: "2px solid #FFFFFF",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <div
-          style={{
-            width: 6,
-            height: 6,
-            borderRadius: "50%",
-            background: "#FFFFFF",
-          }}
+        <rect
+          x="3"
+          y="4"
+          width="16"
+          height="14"
+          rx="2"
+          stroke="#FFFFFF"
+          strokeWidth="1.5"
+          fill="none"
         />
-      </div>
+        <line
+          x1="6"
+          y1="8.5"
+          x2="14"
+          y2="8.5"
+          stroke="#FFFFFF"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+        <line
+          x1="6"
+          y1="11.5"
+          x2="11"
+          y2="11.5"
+          stroke="#FFFFFF"
+          strokeOpacity="0.7"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+        <polyline
+          points="6,16 8,18 12,14"
+          stroke="#A5B4FC"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
     </div>,
     { ...size },
   );
