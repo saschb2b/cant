@@ -23,7 +23,6 @@ async function loadAppChallenges(appSlug: string): Promise<BaseChallenge[]> {
     "cant-branch": () => import("@cant/shared/lib/challenges/cant-branch"),
     "cant-query": () => import("@cant/shared/lib/challenges/cant-query"),
     "cant-test": () => import("@cant/shared/lib/challenges/cant-test"),
-    "cant-trust": () => import("@cant/shared/lib/challenges/cant-trust"),
     "cant-game": () => import("@cant/shared/lib/challenges/cant-game"),
   };
 

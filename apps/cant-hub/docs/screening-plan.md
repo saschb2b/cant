@@ -68,7 +68,6 @@ Recruiters compose an assessment by picking topics from cant apps.
 - [x] Migrated all apps to derive `ChallengeCategory` types and category exports from the catalog
 - [x] Replaced hand-maintained `SERIES_META` and `TOTAL_CHALLENGES` in the hub with catalog-derived values
 - [x] Added `explanationWrong` to shared `BaseChallenge` type
-- [x] Added cant-trust (18 categories, 106 challenges) to the catalog and hub
 
 **Step 1: App and category selection**
 
@@ -108,7 +107,7 @@ Recruiters compose an assessment by picking topics from cant apps.
 Challenge files need to move from each app's local directory to `packages/shared/src/lib/challenges/` so the hub can import them directly at build time. This avoids runtime API calls or database snapshots.
 
 - [x] Proof of concept: cant-game challenges moved to `packages/shared/src/lib/challenges/cant-game/`
-- [x] Migrate remaining 11 apps (cant-maintain, cant-resize, cant-type, cant-orchestrate, cant-seo, cant-ux, cant-explode, cant-branch, cant-query, cant-test, cant-trust)
+- [x] Migrate remaining 10 apps (cant-maintain, cant-resize, cant-type, cant-orchestrate, cant-seo, cant-ux, cant-explode, cant-branch, cant-query, cant-test)
 
 ---
 

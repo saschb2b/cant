@@ -16,9 +16,9 @@ Accepted formats:
 
 - (empty / no arguments) -- auto-detect the app from the working directory, show a numbered list of categories, and ask the user to pick
 - `<number>` -- if a numbered list was already shown, select that category
-- `<category>` -- review all challenges in one category (e.g. `money-origins`)
-- `<category> <challenge-id>` -- review a single challenge (e.g. `money-origins mo-003`)
-- `<app-name> <category>` -- review a category in a specific app (e.g. `cant-trust money-origins`)
+- `<category>` -- review all challenges in one category (e.g. `unit-testing`)
+- `<category> <challenge-id>` -- review a single challenge (e.g. `unit-testing ut-003`)
+- `<app-name> <category>` -- review a category in a specific app (e.g. `cant-test unit-testing`)
 
 ### Auto-detection (no arguments or just a number)
 
