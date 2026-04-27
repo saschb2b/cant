@@ -211,7 +211,13 @@ function Stat({
   );
 }
 
-const CATEGORY_ORDER = ["Development", "Design", "Science", "Finance"];
+const CATEGORY_ORDER = [
+  "Development",
+  "Design",
+  "Process",
+  "Science",
+  "Finance",
+];
 
 function groupByCategory(apps: CantApp[]) {
   const groups: { category: string; apps: CantApp[] }[] = [];
