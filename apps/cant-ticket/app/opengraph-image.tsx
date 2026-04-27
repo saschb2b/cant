@@ -87,7 +87,7 @@ export default function OgImage() {
             style={{
               width: "80%",
               height: 14,
-              background: "#4F46E5",
+              background: "#A16207",
               borderRadius: 4,
             }}
           />

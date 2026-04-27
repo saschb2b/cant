@@ -140,7 +140,7 @@ function HeroTicket() {
         />
         <polyline
           points="58,162 76,180 116,138"
-          stroke="#4F46E5"
+          stroke="#A16207"
           strokeWidth="9"
           strokeLinecap="round"
           strokeLinejoin="round"

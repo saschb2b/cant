@@ -10,7 +10,7 @@ export default function Icon() {
         width: 32,
         height: 32,
         borderRadius: 7,
-        background: "linear-gradient(135deg, #4F46E5, #3730A3)",
+        background: "linear-gradient(135deg, #EAB308, #A16207)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -54,7 +54,7 @@ export default function Icon() {
         />
         <polyline
           points="6,16 8,18 12,14"
-          stroke="#A5B4FC"
+          stroke="#FEF3C7"
           strokeWidth="1.7"
           strokeLinecap="round"
           strokeLinejoin="round"

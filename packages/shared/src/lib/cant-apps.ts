@@ -171,8 +171,8 @@ export const ALL_APPS: CantApp[] = [
     playPitch:
       "Think you can write a clean story? Test your instincts on titles, acceptance criteria, splits, and estimates.",
     tags: "Stories, INVEST, points, splitting, refinement",
-    colorFrom: "#4F46E5",
-    colorTo: "#3730A3",
-    iconSvgContent: `<rect x="38" y="46" width="104" height="80" rx="10" stroke="#FFFFFF" stroke-width="6" fill="none"/><line x1="56" y1="68" x2="124" y2="68" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="86" x2="108" y2="86" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="104" x2="92" y2="104" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><polyline points="58,142 70,154 96,128" stroke="#A5B4FC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`,
+    colorFrom: "#EAB308",
+    colorTo: "#A16207",
+    iconSvgContent: `<rect x="38" y="46" width="104" height="80" rx="10" stroke="#FFFFFF" stroke-width="6" fill="none"/><line x1="56" y1="68" x2="124" y2="68" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="86" x2="108" y2="86" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="104" x2="92" y2="104" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><polyline points="58,142 70,154 96,128" stroke="#FEF3C7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`,
   },
 ];

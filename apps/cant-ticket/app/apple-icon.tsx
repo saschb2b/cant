@@ -10,7 +10,7 @@ export default function AppleIcon() {
         width: 180,
         height: 180,
         borderRadius: 37,
-        background: "linear-gradient(135deg, #4F46E5, #3730A3)",
+        background: "linear-gradient(135deg, #EAB308, #A16207)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -62,7 +62,7 @@ export default function AppleIcon() {
         />
         <polyline
           points="58,142 70,154 96,128"
-          stroke="#A5B4FC"
+          stroke="#FEF3C7"
           strokeWidth="6"
           strokeLinecap="round"
           strokeLinejoin="round"

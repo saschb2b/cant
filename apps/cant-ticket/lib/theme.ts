@@ -8,15 +8,15 @@ const theme = createTheme({
     light: {
       palette: {
         background: {
-          default: "#F8FAFC",
+          default: "#FAFAF9",
           paper: "#FFFFFF",
         },
         primary: {
-          main: "#4F46E5",
+          main: "#A16207",
           contrastText: "#FFFFFF",
         },
         secondary: {
-          main: "#3730A3",
+          main: "#713F12",
           contrastText: "#FFFFFF",
         },
         error: {
@@ -32,29 +32,29 @@ const theme = createTheme({
           contrastText: "#FFFFFF",
         },
         text: {
-          primary: "#0F172A",
-          secondary: "#475569",
+          primary: "#1C1917",
+          secondary: "#57534E",
         },
-        divider: "#E2E8F0",
+        divider: "#E7E5E4",
         action: {
-          hover: "rgba(79,70,229,0.06)",
-          selected: "rgba(79,70,229,0.10)",
+          hover: "rgba(161,98,7,0.06)",
+          selected: "rgba(161,98,7,0.10)",
         },
       },
     },
     dark: {
       palette: {
         background: {
-          default: "#0F172A",
-          paper: "#1E293B",
+          default: "#1C1917",
+          paper: "#292524",
         },
         primary: {
-          main: "#818CF8",
-          contrastText: "#0F172A",
+          main: "#FACC15",
+          contrastText: "#1C1917",
         },
         secondary: {
-          main: "#A5B4FC",
-          contrastText: "#0F172A",
+          main: "#FDE047",
+          contrastText: "#1C1917",
         },
         error: {
           main: "#EF4444",
@@ -62,20 +62,20 @@ const theme = createTheme({
         },
         warning: {
           main: "#F59E0B",
-          contrastText: "#0F172A",
+          contrastText: "#1C1917",
         },
         success: {
           main: "#22C55E",
-          contrastText: "#0F172A",
+          contrastText: "#1C1917",
         },
         text: {
-          primary: "#F1F5F9",
-          secondary: "#94A3B8",
+          primary: "#FAFAF9",
+          secondary: "#A8A29E",
         },
-        divider: "#334155",
+        divider: "#44403C",
         action: {
-          hover: "rgba(129,140,248,0.08)",
-          selected: "rgba(129,140,248,0.14)",
+          hover: "rgba(250,204,21,0.08)",
+          selected: "rgba(250,204,21,0.14)",
         },
       },
     },
