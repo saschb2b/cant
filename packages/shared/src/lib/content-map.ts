@@ -77,6 +77,17 @@ export function buildContentMap(
         };
         break;
       }
+      case "ticket": {
+        const { left, right } = challenge.content;
+        const goodSide = isRightGood ? right : left;
+        const badSide = isRightGood ? left : right;
+        map[challenge.id] = {
+          type: "ticket",
+          goodTicket: goodSide,
+          badTicket: badSide,
+        };
+        break;
+      }
     }
   }
 

@@ -2,7 +2,7 @@
 
 import type { ComponentType, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { Difficulty } from "../../lib/game/types";
+import type { Difficulty, TicketCardData } from "../../lib/game/types";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -75,11 +75,19 @@ export interface MoleculeChallengeEntry {
   };
 }
 
+/** Ticket data for agile-ticket challenges (cant-ticket). */
+export interface TicketChallengeEntry {
+  type: "ticket";
+  goodTicket: TicketCardData;
+  badTicket: TicketCardData;
+}
+
 export type ContentMapEntry =
   | CodeChallengeEntry
   | ImageChallengeEntry
   | VisualChallengeEntry
-  | MoleculeChallengeEntry;
+  | MoleculeChallengeEntry
+  | TicketChallengeEntry;
 
 // ---------------------------------------------------------------------------
 // Sub-component prop contracts
@@ -120,6 +128,15 @@ export interface MoleculePanelSlotProps {
     smiles?: string;
     properties?: Record<string, string>;
   };
+  label: string;
+  isSelectable: boolean;
+  onSelect: () => void;
+  result?: "correct" | "wrong" | null;
+  isSelected?: boolean;
+}
+
+export interface TicketPanelSlotProps {
+  ticket: TicketCardData;
   label: string;
   isSelectable: boolean;
   onSelect: () => void;
@@ -224,6 +241,8 @@ interface GameSlots<C extends BaseChallenge> {
   visualPanel?: ComponentType<VisualPanelSlotProps>;
   /** Molecule panel (used for contentType "molecule"). Optional; only needed if the app has chemistry challenges. */
   moleculePanel?: ComponentType<MoleculePanelSlotProps>;
+  /** Ticket panel (used for contentType "ticket"). Optional; only needed if the app has agile-ticket challenges. */
+  ticketPanel?: ComponentType<TicketPanelSlotProps>;
   /** Lobby/setup screen. */
   lobby: ComponentType<LobbySlotProps>;
   /** Results screen after game ends. */
@@ -283,6 +302,7 @@ export function Game<C extends BaseChallenge>({
     imagePanel: ImagePanelComponent,
     visualPanel: VisualPanelComponent,
     moleculePanel: MoleculePanelComponent,
+    ticketPanel: TicketPanelComponent,
     lobby: LobbyComponent,
     results: ResultsComponent,
     explanation: ExplanationComponent,
@@ -403,6 +423,13 @@ export function Game<C extends BaseChallenge>({
           leftContent: isLeftCorrect ? entry.goodMolecule : entry.badMolecule,
           rightContent: isLeftCorrect ? entry.badMolecule : entry.goodMolecule,
           resolvedContentType: "molecule" as const,
+        };
+      }
+      case "ticket": {
+        return {
+          leftContent: isLeftCorrect ? entry.goodTicket : entry.badTicket,
+          rightContent: isLeftCorrect ? entry.badTicket : entry.goodTicket,
+          resolvedContentType: "ticket" as const,
         };
       }
     }
@@ -671,6 +698,16 @@ export function Game<C extends BaseChallenge>({
             isSelected={isSelectedSide("left")}
           />
         )}
+        {resolvedContentType === "ticket" && TicketPanelComponent && (
+          <TicketPanelComponent
+            ticket={leftContent}
+            label="A"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => handleSubmit("left")}
+            result={getResult("left")}
+            isSelected={isSelectedSide("left")}
+          />
+        )}
 
         <Box
           sx={{
@@ -731,6 +768,16 @@ export function Game<C extends BaseChallenge>({
         {resolvedContentType === "molecule" && MoleculePanelComponent && (
           <MoleculePanelComponent
             molecule={rightContent}
+            label="B"
+            isSelectable={!isReviewing && !currentAnswer}
+            onSelect={() => handleSubmit("right")}
+            result={getResult("right")}
+            isSelected={isSelectedSide("right")}
+          />
+        )}
+        {resolvedContentType === "ticket" && TicketPanelComponent && (
+          <TicketPanelComponent
+            ticket={rightContent}
             label="B"
             isSelectable={!isReviewing && !currentAnswer}
             onSelect={() => handleSubmit("right")}

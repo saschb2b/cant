@@ -163,4 +163,16 @@ export const ALL_APPS: CantApp[] = [
     colorTo: "#991B1B",
     iconSvgContent: `<rect x="40" y="68" width="40" height="12" rx="4" fill="#FFFFFF"/><rect x="54" y="54" width="12" height="40" rx="4" fill="#FFFFFF"/><circle cx="125" cy="70" r="10" fill="#FCA5A5"/><circle cx="115" cy="90" r="10" fill="#FCA5A5"/><rect x="45" y="120" width="90" height="6" rx="3" fill="#FCA5A5" opacity="0.5"/>`,
   },
+  {
+    name: "Can't Ticket",
+    desc: "Agile ticket craft. User stories, acceptance criteria, story points, and splitting work the team can ship.",
+    href: appUrl("https://cant-ticket.saschb2b.com", 3013),
+    category: "Process",
+    playPitch:
+      "Think you can write a clean story? Test your instincts on titles, acceptance criteria, splits, and estimates.",
+    tags: "Stories, INVEST, points, splitting, refinement",
+    colorFrom: "#EAB308",
+    colorTo: "#A16207",
+    iconSvgContent: `<rect x="38" y="46" width="104" height="80" rx="10" stroke="#FFFFFF" stroke-width="6" fill="none"/><line x1="56" y1="68" x2="124" y2="68" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="86" x2="108" y2="86" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="104" x2="92" y2="104" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><polyline points="58,142 70,154 96,128" stroke="#FEF3C7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`,
+  },
 ];

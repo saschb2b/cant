@@ -2,20 +2,21 @@
 
 Educational platforms where you pick the better option in side-by-side comparisons, covering code patterns, design, chemistry, and more.
 
-| App                                       | Topic                      | Tool                | Live                                                                   |
-| ----------------------------------------- | -------------------------- | ------------------- | ---------------------------------------------------------------------- |
-| [cant-maintain](apps/cant-maintain)       | React component API design | Changelog           | [cant-maintain.saschb2b.com](https://cant-maintain.saschb2b.com)       |
-| [cant-resize](apps/cant-resize)           | Responsive design patterns | Multi-device viewer | [cant-resize.saschb2b.com](https://cant-resize.saschb2b.com)           |
-| [cant-type](apps/cant-type)               | TypeScript patterns        | TS Playground       | [cant-type.saschb2b.com](https://cant-type.saschb2b.com)               |
-| [cant-orchestrate](apps/cant-orchestrate) | Container orchestration    | Dockerfile explorer | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
-| [cant-seo](apps/cant-seo)                 | SEO for Next.js            | Link inspector      | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com)                 |
-| [cant-ux](apps/cant-ux)                   | UX design patterns         | Visual comparisons  | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com)                   |
-| [cant-explode](apps/cant-explode)         | Chemistry and biochemistry | 3D molecule viewer  | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com)         |
-| [cant-branch](apps/cant-branch)           | Git version control        | Git graph viewer    | [cant-branch.saschb2b.com](https://cant-branch.saschb2b.com)           |
-| [cant-query](apps/cant-query)             | API design patterns        | API explorer        | [cant-query.saschb2b.com](https://cant-query.saschb2b.com)             |
-| [cant-test](apps/cant-test)               | Testing patterns           | Bug Hunt game       | [cant-test.saschb2b.com](https://cant-test.saschb2b.com)               |
-| [cant-game](apps/cant-game)               | Game development           | Canvas simulations  | [cant-game.saschb2b.com](https://cant-game.saschb2b.com)               |
-| [cant-hub](apps/cant-hub)                 | Series hub / landing       | App directory       | [cant.saschb2b.com](https://cant.saschb2b.com)                         |
+| App                                       | Topic                      | Tool                 | Live                                                                   |
+| ----------------------------------------- | -------------------------- | -------------------- | ---------------------------------------------------------------------- |
+| [cant-maintain](apps/cant-maintain)       | React component API design | Changelog            | [cant-maintain.saschb2b.com](https://cant-maintain.saschb2b.com)       |
+| [cant-resize](apps/cant-resize)           | Responsive design patterns | Multi-device viewer  | [cant-resize.saschb2b.com](https://cant-resize.saschb2b.com)           |
+| [cant-type](apps/cant-type)               | TypeScript patterns        | TS Playground        | [cant-type.saschb2b.com](https://cant-type.saschb2b.com)               |
+| [cant-orchestrate](apps/cant-orchestrate) | Container orchestration    | Dockerfile explorer  | [cant-orchestrate.saschb2b.com](https://cant-orchestrate.saschb2b.com) |
+| [cant-seo](apps/cant-seo)                 | SEO for Next.js            | Link inspector       | [cant-seo.saschb2b.com](https://cant-seo.saschb2b.com)                 |
+| [cant-ux](apps/cant-ux)                   | UX design patterns         | Visual comparisons   | [cant-ux.saschb2b.com](https://cant-ux.saschb2b.com)                   |
+| [cant-explode](apps/cant-explode)         | Chemistry and biochemistry | 3D molecule viewer   | [cant-explode.saschb2b.com](https://cant-explode.saschb2b.com)         |
+| [cant-branch](apps/cant-branch)           | Git version control        | Git graph viewer     | [cant-branch.saschb2b.com](https://cant-branch.saschb2b.com)           |
+| [cant-query](apps/cant-query)             | API design patterns        | API explorer         | [cant-query.saschb2b.com](https://cant-query.saschb2b.com)             |
+| [cant-test](apps/cant-test)               | Testing patterns           | Bug Hunt game        | [cant-test.saschb2b.com](https://cant-test.saschb2b.com)               |
+| [cant-game](apps/cant-game)               | Game development           | Canvas simulations   | [cant-game.saschb2b.com](https://cant-game.saschb2b.com)               |
+| [cant-ticket](apps/cant-ticket)           | Agile ticket craft         | Side-by-side tickets | [cant-ticket.saschb2b.com](https://cant-ticket.saschb2b.com)           |
+| [cant-hub](apps/cant-hub)                 | Series hub / landing       | App directory        | [cant.saschb2b.com](https://cant.saschb2b.com)                         |
 
 ## Tech stack
 
@@ -60,6 +61,7 @@ pnpm dev:branch        # cant-branch on :3008
 pnpm dev:query         # cant-query on :3009
 pnpm dev:test          # cant-test on :3010
 pnpm dev:game          # cant-game on :3011
+pnpm dev:ticket        # cant-ticket on :3013
 
 # Start Storybook for shared components
 pnpm storybook         # opens on :6006
@@ -83,6 +85,7 @@ cant/
 │   ├── cant-query/          # API design patterns app
 │   ├── cant-test/           # Testing patterns app (+ Bug Hunt)
 │   ├── cant-game/           # Game development app
+│   ├── cant-ticket/         # Agile ticket craft app
 │   └── cant-hub/            # Series hub / landing page
 ├── packages/
 │   └── shared/              # @cant/shared — shared components and utils
@@ -117,6 +120,7 @@ Run from the repo root:
 | `pnpm dev:query`         | Start cant-query only (:3009)         |
 | `pnpm dev:test`          | Start cant-test only (:3010)          |
 | `pnpm dev:game`          | Start cant-game only (:3011)          |
+| `pnpm dev:ticket`        | Start cant-ticket only (:3013)        |
 | `pnpm build`             | Production build all apps (parallel)  |
 | `pnpm build:maintain`    | Build cant-maintain only              |
 | `pnpm build:resize`      | Build cant-resize only                |
@@ -130,6 +134,7 @@ Run from the repo root:
 | `pnpm build:query`       | Build cant-query only                 |
 | `pnpm build:test`        | Build cant-test only                  |
 | `pnpm build:game`        | Build cant-game only                  |
+| `pnpm build:ticket`      | Build cant-ticket only                |
 | `pnpm lint`              | Lint all apps                         |
 | `pnpm typecheck`         | Type-check all apps                   |
 | `pnpm format:check`      | Check formatting                      |

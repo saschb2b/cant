@@ -19,6 +19,7 @@ const APP_TOOLS: Record<string, { label: string; href: string }> = {
   "Can't SEO": { label: "Inspector", href: "/inspector" },
   "Can't Explode": { label: "Lab", href: "/lab" },
   "Can't Test": { label: "Bug Hunt", href: "/hunt" },
+  "Can't Ticket": { label: "Planning Poker", href: "/poker" },
 };
 
 function AppIcon({ app, size = 56 }: { app: CantApp; size?: number }) {
@@ -210,7 +211,13 @@ function Stat({
   );
 }
 
-const CATEGORY_ORDER = ["Development", "Design", "Science", "Finance"];
+const CATEGORY_ORDER = [
+  "Development",
+  "Design",
+  "Process",
+  "Science",
+  "Finance",
+];
 
 function groupByCategory(apps: CantApp[]) {
   const groups: { category: string; apps: CantApp[] }[] = [];
