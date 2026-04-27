@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 RUN corepack enable && corepack prepare pnpm@10.20.0 --activate
 
 # --- Dependencies ---
@@ -21,7 +21,7 @@ RUN pnpm --filter cant-hub build && \
     rm -rf /app/.turbo /app/node_modules/.cache
 
 # --- Production ---
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
