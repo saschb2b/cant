@@ -13,9 +13,10 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
         key: "NOTIF-12",
         type: "story",
         points: 3,
-        title: "Add weekly digest emails",
-        description:
-          "Send a digest every Monday morning. Use the existing email template.",
+        title: "Weekly digest emails",
+        asA: "user",
+        iWant: "weekly digest emails",
+        soThat: "I get weekly digest emails",
       },
       right: {
         key: "NOTIF-12",
@@ -32,7 +33,7 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
     explanationCorrect:
       "The three Connextra clauses force the answers to who, what, and why before the story enters a sprint. The tradeoff space is now visible: the audience is low-frequency users, the value is reducing the cost of staying informed.",
     explanationWrong:
-      "A description with no actor and no outcome is a feature request without a customer. The team can build it, but they will rediscover what success looks like in review and probably get it wrong.",
+      "Filling the Connextra fields with 'a user wants weekly emails so they get weekly emails' is process theater. The clauses are present but they answer none of the three questions. The team will rediscover what success looks like in review and probably get it wrong.",
     sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
     sourceLabel: "Agile Alliance: User Story Template",
   },
@@ -110,7 +111,7 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
   {
     id: "ctt-004",
     category: "connextra-template",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Plain prose still counts",
     prompt:
       "Both write the same idea. Which one would Ron Jeffries call a story?",
@@ -146,7 +147,7 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
     category: "connextra-template",
     difficulty: "medium",
     title: "Card, Conversation, Confirmation",
-    prompt: "Which Story respects all three Cs?",
+    prompt: "Which story respects all three Cs?",
     content: {
       type: "ticket",
       left: {
@@ -154,8 +155,14 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
         type: "story",
         points: 5,
         title: "Build new checkout flow",
-        description:
-          "The full spec is in the Notion doc. Acceptance criteria are listed there. Comments are also in the doc.",
+        asA: "customer",
+        iWant: "a new checkout flow",
+        soThat: "checkout works",
+        acceptanceCriteria: [
+          { kind: "bullet", text: "Matches the Notion spec" },
+          { kind: "bullet", text: "AC are listed in the doc" },
+          { kind: "bullet", text: "See the doc for edge cases" },
+        ],
       },
       right: {
         key: "CHK-44",
@@ -183,9 +190,9 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
     },
     correctSide: "right",
     explanationCorrect:
-      "Card: the title and Connextra clauses fit on a card. Conversation: the description sets up the team to talk through edge cases. Confirmation: the acceptance criteria are observable. All three Cs in the ticket itself.",
+      "Card: the title and Connextra clauses fit on a card. Conversation: the framing sets up the team to talk through edge cases. Confirmation: the acceptance criteria are observable on the ticket. All three Cs in the ticket itself.",
     explanationWrong:
-      "Pointing at a Notion doc collapses Card, Conversation, and Confirmation into 'go read the doc'. The doc may be excellent, but the ticket is still useless to anyone scanning the board, and the doc will rot at a different cadence than the work.",
+      "AC that point at a Notion doc collapse Confirmation into 'go read the doc'. The doc may be excellent, but the ticket is useless to anyone scanning the board, and the doc rots at a different cadence than the work.",
     sourceUrl:
       "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
     sourceLabel: "Ron Jeffries: Card, Conversation, Confirmation",
@@ -193,7 +200,7 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
   {
     id: "ctt-006",
     category: "connextra-template",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "When the template fights you",
     prompt: "Which framing fits when there isn't really a single user?",
     content: {

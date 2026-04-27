@@ -5,8 +5,8 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
     id: "er-001",
     category: "estimation-rituals",
     difficulty: "easy",
-    title: "Independent before convergent",
-    prompt: "Which planning poker ritual produces an honest estimate?",
+    title: "Order of estimates",
+    prompt: "Which planning poker procedure does the team adopt?",
     content: {
       type: "ticket",
       left: {
@@ -69,8 +69,8 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
     id: "er-003",
     category: "estimation-rituals",
     difficulty: "easy",
-    title: "Conversation, not number",
-    prompt: "What is the team's actual output from a pointing session?",
+    title: "Output of a pointing session",
+    prompt: "What does each story carry away from refinement?",
     content: {
       type: "ticket",
       left: {

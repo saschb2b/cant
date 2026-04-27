@@ -21,7 +21,7 @@ export const ceremoniesChallenges: BaseChallenge[] = [
         type: "task",
         title: "Daily standup",
         description:
-          "Walk the board right to left. Anything stuck for more than a day gets a focused conversation after standup. 10 minutes; deeper threads happen after.",
+          "Walk the board right to left. Anything stuck for more than a day gets a focused conversation after standup. Within the 15-minute timebox; deeper threads happen after.",
       },
     },
     correctSide: "right",
@@ -36,8 +36,8 @@ export const ceremoniesChallenges: BaseChallenge[] = [
     id: "cer-002",
     category: "ceremonies",
     difficulty: "easy",
-    title: "Refinement that produces ready work",
-    prompt: "Which refinement leaves the team with stories they can pull?",
+    title: "Backlog refinement format",
+    prompt: "How should the team run backlog refinement?",
     content: {
       type: "ticket",
       left: {
@@ -98,8 +98,8 @@ export const ceremoniesChallenges: BaseChallenge[] = [
     id: "cer-004",
     category: "ceremonies",
     difficulty: "medium",
-    title: "Review vs demo theater",
-    prompt: "Which sprint review actually informs the next sprint?",
+    title: "Sprint review format",
+    prompt: "How should the team run a sprint review with stakeholders?",
     content: {
       type: "ticket",
       left: {
@@ -129,8 +129,8 @@ export const ceremoniesChallenges: BaseChallenge[] = [
     id: "cer-005",
     category: "ceremonies",
     difficulty: "medium",
-    title: "Retro that changes behavior",
-    prompt: "Which retro produces a team that behaves differently next sprint?",
+    title: "Retrospective format",
+    prompt: "Which retrospective format makes outcomes follow?",
     content: {
       type: "ticket",
       left: {
@@ -159,10 +159,9 @@ export const ceremoniesChallenges: BaseChallenge[] = [
   {
     id: "cer-006",
     category: "ceremonies",
-    difficulty: "medium",
-    title: "When a ceremony has rotted",
-    prompt:
-      "Which response is the right one when a ceremony stops being useful?",
+    difficulty: "hard",
+    title: "Ceremony cadence policy",
+    prompt: "How should the team treat its standing ceremonies over time?",
     content: {
       type: "ticket",
       left: {

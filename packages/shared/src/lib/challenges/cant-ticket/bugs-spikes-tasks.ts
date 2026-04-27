@@ -13,7 +13,13 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
         key: "RPT-91",
         type: "bug",
         title: "CSV export is broken",
-        description: "Sometimes the file looks weird. Acme noticed it.",
+        context: "Acme noticed something off in their export.",
+        acceptanceCriteria: [
+          { kind: "bullet", text: "CSV export works" },
+          { kind: "bullet", text: "File looks normal" },
+          { kind: "bullet", text: "Acme is happy" },
+        ],
+        footer: "Reported in Slack",
       },
       right: {
         key: "RPT-91",
@@ -64,8 +70,22 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
         asA: "EU customer",
         iWant: "to set up SEPA as my payment method",
         soThat: "I can avoid card processing fees",
-        description:
-          "Pick the best provider, build the integration, ship the flow.",
+        context:
+          "We don't know yet which provider fits, but we want the flow shipped this sprint.",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Pick the best provider for our needs",
+          },
+          {
+            kind: "bullet",
+            text: "Customer can enter bank details and sign the mandate",
+          },
+          {
+            kind: "bullet",
+            text: "Direct debit appears on receipts",
+          },
+        ],
       },
       right: {
         key: "PAY-077",
@@ -113,9 +133,13 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
         type: "task",
         points: 5,
         title: "Sales reps see deals sorted by close date",
-        asA: "sales rep",
-        iWant: "deals on the dashboard sorted by upcoming close date",
-        soThat: "I work the most urgent deals first",
+        subtasks: [
+          "Add a sort dropdown to the dashboard header",
+          "Default the dashboard sort to upcoming close date",
+          "Update copy on the empty state",
+          "Add analytics for the new sort option",
+        ],
+        footer: "Visible on the sales dashboard for all reps.",
       },
       right: {
         key: "PLAT-44",
@@ -135,7 +159,7 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
     explanationCorrect:
       "Framework upgrade is plumbing. Nobody on the outside notices, the team tracks it because it has to happen, and Task is the right shape: real work, no user, no story framing.",
     explanationWrong:
-      "Sales reps sorting their deals by close date is exactly the kind of user-visible change that belongs as a Story. Tagging it as a Task signals plumbing and hides it from the demo.",
+      "The subtasks read like plumbing, but the footer gives it away: every sales rep on the dashboard sees this change. That makes it a Story with acceptance criteria, not a Task. Filing it as a Task hides user-visible work from the demo.",
     sourceUrl:
       "https://www.atlassian.com/agile/project-management/epics-stories-themes",
     sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
@@ -154,6 +178,11 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
         points: 5,
         title: "Look into LLMs for support replies",
         description: "See what's possible. Build a prototype if there is time.",
+        acceptanceCriteria: [
+          { kind: "bullet", text: "Explore LLM options" },
+          { kind: "bullet", text: "Get a feel for what's doable" },
+          { kind: "bullet", text: "Share findings with the team" },
+        ],
       },
       right: {
         key: "AI-22",
@@ -202,8 +231,22 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
         points: 5,
         title:
           "Users want infinite scroll on the activity feed instead of pagination",
-        description:
-          "Several users have asked for infinite scroll. The current pagination feels dated.",
+        context:
+          "Several users have asked for infinite scroll in support tickets and the #feedback channel. The current pagination feels dated.",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Activity feed loads more items as the user scrolls",
+          },
+          {
+            kind: "bullet",
+            text: "The Next/Prev pagination controls are removed",
+          },
+          {
+            kind: "bullet",
+            text: "Loading state is shown at the bottom of the feed",
+          },
+        ],
       },
       right: {
         key: "FEED-71",

@@ -56,7 +56,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
     id: "ac-002",
     category: "acceptance-criteria",
     difficulty: "easy",
-    title: "Given / When / Then",
+    title: "AC format for behavior",
     prompt: "Which AC list reads cleanly handed to QA cold?",
     content: {
       type: "ticket",
@@ -107,7 +107,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
     id: "ac-003",
     category: "acceptance-criteria",
     difficulty: "easy",
-    title: "Negative paths named",
+    title: "Failure-case coverage",
     prompt: "Which AC list covers the failure cases on purpose?",
     content: {
       type: "ticket",
@@ -237,7 +237,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
         key: "EX-66",
         type: "story",
         points: 5,
-        title: "Customer exports their order history as CSV",
+        title: "Customer exports their order history",
         acceptanceCriteria: [
           {
             kind: "gwt",
@@ -262,7 +262,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
   {
     id: "ac-006",
     category: "acceptance-criteria",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Bullets vs Given/When/Then",
     prompt:
       "Which AC format works when the rule is a simple list of constraints?",
@@ -332,12 +332,17 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
         key: "PERF-31",
         type: "story",
         points: 3,
-        title: "Search returns results faster",
+        title: "Search returns results quickly on cellular",
         acceptanceCriteria: [
-          { kind: "bullet", text: "Search feels fast" },
+          {
+            kind: "gwt",
+            given: "a user on a cellular connection",
+            when: "they search for a query",
+            then: "the first results feel fast and there is no long spinner",
+          },
           {
             kind: "bullet",
-            text: "Users on cellular do not see a long spinner",
+            text: "The perf suite covers the search path",
           },
         ],
       },
@@ -345,7 +350,7 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
         key: "PERF-31",
         type: "story",
         points: 3,
-        title: "Search returns first results within 400ms on a 4G connection",
+        title: "Search returns results quickly on cellular",
         acceptanceCriteria: [
           {
             kind: "gwt",

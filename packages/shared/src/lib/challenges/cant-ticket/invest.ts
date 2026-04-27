@@ -53,8 +53,24 @@ export const investChallenges: BaseChallenge[] = [
         type: "story",
         points: 5,
         title: "New users finish onboarding faster",
-        description:
-          "Use the new wizard library, drop steps 3 and 7 from the flow, replace the welcome video with a tooltip, and skip the email verification check on the staging environment.",
+        asA: "new user",
+        iWant: "a shorter onboarding flow",
+        soThat: "I can reach the dashboard quickly",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Replace the wizard with the new wizard library",
+          },
+          { kind: "bullet", text: "Remove steps 3 and 7 from the flow" },
+          {
+            kind: "bullet",
+            text: "Replace the welcome video with a tooltip",
+          },
+          {
+            kind: "bullet",
+            text: "Skip email verification on staging",
+          },
+        ],
       },
       right: {
         key: "ONB-21",
@@ -95,8 +111,9 @@ export const investChallenges: BaseChallenge[] = [
         type: "story",
         points: 5,
         title: "Refactor the metrics pipeline to use the new client library",
-        description:
-          "The old client is going EOL. We should move before the deadline.",
+        asA: "platform engineer",
+        iWant: "the metrics pipeline migrated to the new client",
+        soThat: "we are off the EOL client before the deadline",
       },
       right: {
         key: "INF-99",
@@ -130,8 +147,19 @@ export const investChallenges: BaseChallenge[] = [
         type: "story",
         points: "?",
         title: "Sync customer data with the partner CRM",
-        description:
-          "Pick a sync mechanism, handle conflicts, support partial failures, work for both push and pull. Should also gracefully degrade if the partner API is down.",
+        asA: "support agent",
+        iWant: "customer data to stay in sync with the partner CRM",
+        soThat: "I am working from accurate data",
+        acceptanceCriteria: [
+          { kind: "bullet", text: "Pick a sync mechanism" },
+          { kind: "bullet", text: "Handle conflicts" },
+          { kind: "bullet", text: "Support partial failures" },
+          { kind: "bullet", text: "Work for both push and pull" },
+          {
+            kind: "bullet",
+            text: "Gracefully degrade if the partner API is down",
+          },
+        ],
       },
       right: {
         key: "INT-32",
@@ -178,8 +206,19 @@ export const investChallenges: BaseChallenge[] = [
         type: "story",
         points: 13,
         title: "Schedulers manage recurring shifts across multiple locations",
-        description:
-          "Recurring shifts (daily, weekly, custom), multi-location templates, conflict detection, swap workflow, calendar export, and notifications. End-to-end.",
+        asA: "scheduler",
+        iWant: "to manage recurring shifts across all my locations",
+        soThat: "I do not copy the same shift for each week or location",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Recurring shifts (daily, weekly, custom cadences)",
+          },
+          { kind: "bullet", text: "Multi-location templates" },
+          { kind: "bullet", text: "Conflict detection across locations" },
+          { kind: "bullet", text: "Swap workflow with approvals" },
+          { kind: "bullet", text: "Calendar export and notifications" },
+        ],
       },
       right: {
         key: "SCH-50",
@@ -257,7 +296,7 @@ export const investChallenges: BaseChallenge[] = [
   {
     id: "inv-007",
     category: "invest",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Multiple letters at once",
     prompt: "Which version passes all six letters?",
     content: {
@@ -303,7 +342,7 @@ export const investChallenges: BaseChallenge[] = [
     explanationCorrect:
       "Independent (does not block other auth flows), Negotiable (the team picks the SAML library), Valuable (named admin, named cost), Estimable (one provider, scoped acceptance), Small (fits a sprint), Testable (Given/When/Then). Six for six.",
     explanationWrong:
-      "Vague scope, vibe acceptance criteria, and a 13 in the points field — left fails three letters at once: not Estimable, not Small, not Testable. The story is a wish dressed up.",
+      "Vague scope, vibe acceptance criteria, and a 13 in the points field: left fails three letters at once. Not Estimable, not Small, not Testable. The story is a wish dressed up.",
     sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
     sourceLabel: "Bill Wake: INVEST in Good Stories",
   },

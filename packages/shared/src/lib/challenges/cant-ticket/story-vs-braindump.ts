@@ -34,9 +34,9 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
     id: "svb-002",
     category: "story-vs-braindump",
     difficulty: "easy",
-    title: "AC tangled with implementation",
+    title: "Shape of acceptance criteria",
     prompt:
-      "Which acceptance criteria list does QA verify without reading the code?",
+      "Which acceptance criteria list can QA verify without reading the code?",
     content: {
       type: "ticket",
       left: {
@@ -146,8 +146,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
         type: "story",
         points: 3,
         title: "Customers see the new tax line on the invoice",
-        description:
+        asA: "customer in the EU",
+        iWant: "the invoice to show the tax line as a separate row",
+        soThat: "I can reconcile against my accounting software",
+        context:
           "Depends on the tax service being live. Mark says it should be ready next sprint.",
+        outOfScope: "Country-specific tax labels, Mark will scope those later.",
       },
       right: {
         key: "CHK-218",
@@ -187,6 +191,20 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
         title: "Editors see autosave confirmation while drafting",
         description:
           "Add a debounced effect on draftStore that calls /api/drafts/autosave every 5s. Wire the response into useToast. Watch out for the SSR hydration mismatch we hit in EDIT-201.",
+        acceptanceCriteria: [
+          {
+            kind: "implementation-note",
+            text: "draftStore has a 5s debounced autosave effect",
+          },
+          {
+            kind: "implementation-note",
+            text: "Autosave response is piped through useToast",
+          },
+          {
+            kind: "implementation-note",
+            text: "SSR hydration mismatch from EDIT-201 does not regress",
+          },
+        ],
       },
       right: {
         key: "EDIT-218",
@@ -270,8 +288,8 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
     id: "svb-007",
     category: "story-vs-braindump",
     difficulty: "medium",
-    title: "Implementation note disguised as a story",
-    prompt: "Which is actually a story?",
+    title: "Story or refactor",
+    prompt: "Which ticket reads as a user-facing story?",
     content: {
       type: "ticket",
       left: {
@@ -281,6 +299,20 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
         title: "Switch from useEffect to useSyncExternalStore in CartContext",
         description:
           "The current implementation re-renders on every browser tab focus. New API gives us tearing-free reads.",
+        acceptanceCriteria: [
+          {
+            kind: "implementation-note",
+            text: "CartContext reads go through useSyncExternalStore",
+          },
+          {
+            kind: "implementation-note",
+            text: "useEffect-based subscription is removed",
+          },
+          {
+            kind: "implementation-note",
+            text: "No tearing on tab focus events",
+          },
+        ],
       },
       right: {
         key: "CART-87",

@@ -14,11 +14,10 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
         type: "epic",
         title: "Editors publish articles through legal and marketing approval",
         children: [
-          {
-            type: "story",
-            title:
-              "Build the entire approval workflow with all routing, all states, all roles",
-          },
+          { type: "story", title: "Approval workflow data model and states" },
+          { type: "story", title: "Routing service for approver assignment" },
+          { type: "story", title: "Approval queue UI for reviewers" },
+          { type: "story", title: "Notifications and audit log" },
         ],
       },
       right: {
@@ -38,7 +37,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
     explanationCorrect:
       "Workflow-step splits ship the simplest end-to-end path first, then layer in the intermediate steps. Each slice is a real flow editors can use today.",
     explanationWrong:
-      "One Story that builds the entire workflow at once is the Epic in disguise. Nothing ships, the team learns nothing, and the legal-review edge cases are discovered after the marketing-review work is already done.",
+      "Splitting by component (data model, routing, queue UI, notifications) is horizontal slicing. None of those stories ship a working publish flow on their own; an editor cannot publish anything until the whole stack lands.",
     sourceUrl:
       "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
     sourceLabel: "Humanizing Work: Splitting User Stories",
@@ -94,10 +93,11 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
         type: "epic",
         title: "Search flights with flexible dates",
         children: [
+          { type: "story", title: "Date-range picker UI" },
+          { type: "story", title: "Search API accepts a date range" },
           {
             type: "story",
-            title:
-              "Implement the entire flexible-date search with all variants at once",
+            title: "Results list renders flexible-date matches",
           },
         ],
       },
@@ -122,7 +122,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
     explanationCorrect:
       "Three rules, three stories. The team can ship the most-used variant first and learn whether the other two are actually wanted before building them. The split exposes priorities; the lump hides them.",
     explanationWrong:
-      "All three rules at once is one big bet. Product cannot drop the least-used variant if the sprint runs hot, and the team cannot use real usage data on variant one to refine the design of variants two and three.",
+      "Splitting into picker UI, API, and results list is horizontal slicing dressed up as a feature breakdown. None of the three stories ships a working search alone, and the three actual rule variations are still hidden inside whichever story claims them.",
     sourceUrl:
       "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
     sourceLabel: "Humanizing Work: Splitting User Stories",
@@ -140,11 +140,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
         type: "epic",
         title: "Customers find services near a location",
         children: [
+          { type: "story", title: "Geocoding service for all location types" },
           {
             type: "story",
-            title:
-              "Support countries, cities, and neighborhoods at the same time",
+            title: "Location index covering country/city/neighborhood",
           },
+          { type: "story", title: "Search results UI" },
         ],
       },
       right: {
@@ -162,7 +163,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
     explanationCorrect:
       "Start with the simplest data shape (country), ship it end-to-end, then broaden. You often discover that later variations are wanted less than you assumed and can be deprioritized.",
     explanationWrong:
-      "All three data shapes at once means the team builds for the worst case (neighborhood) before they know whether anyone needs it. The country case ships at the same time as the rest, so country users wait for everything.",
+      "Splitting into geocoder, index, and UI is layer-by-layer work. All three data variations are still bundled into each layer, so country users wait for the neighborhood index to land before anything ships.",
     sourceUrl:
       "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
     sourceLabel: "Humanizing Work: Splitting User Stories",
@@ -180,11 +181,13 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
         type: "epic",
         title: "Customers book a meeting time",
         children: [
+          { type: "story", title: "Booking domain model and persistence" },
+          { type: "story", title: "Booking API for create, read, cancel" },
           {
             type: "story",
-            title:
-              "Build the booking flow with calendar picker and timezone autocomplete",
+            title: "Calendar picker and timezone autocomplete UI",
           },
+          { type: "story", title: "Confirmation email" },
         ],
       },
       right: {
@@ -205,7 +208,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
     explanationCorrect:
       "When the UI is doing most of the work, ship the feature with a minimal input first. The booking logic, validation, and confirmation are live on day one. The fancy interface lands in slice two without blocking the core value.",
     explanationWrong:
-      "Bundling the calendar picker and timezone autocomplete into the first slice means weeks of UI work before anyone can book a meeting. The logic is the value; the polish is the polish.",
+      "Splitting into model, API, UI, and email is layer-by-layer slicing. No customer can book anything until all four ship together; the team cannot trade the calendar picker for an earlier launch even though it is the most expensive piece.",
     sourceUrl:
       "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
     sourceLabel: "Mike Cohn: SPIDR",
@@ -224,10 +227,13 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
         type: "epic",
         title: "Customers pay with any card type",
         children: [
+          { type: "story", title: "Payment processor abstraction layer" },
           {
             type: "story",
-            title: "Implement Visa, Mastercard, Amex, and Discover at once",
+            title: "Card-network adapters (Visa, MC, Amex, Discover)",
           },
+          { type: "story", title: "Checkout UI with card selection" },
+          { type: "story", title: "Receipts and refund handling" },
         ],
       },
       right: {
@@ -249,7 +255,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
     explanationCorrect:
       "The first slice carries the entire infrastructure cost; the rest are nearly free once the pipeline is live. The team estimates Mastercard accurately by the time it lands, because they have learned what the pipeline actually requires.",
     explanationWrong:
-      "All four at once means the team estimates blind, builds the pipeline, and rediscovers per-provider quirks late in the sprint. Pulling Discover out is harder once the work is half-integrated.",
+      "Splitting into abstraction, adapters, UI, and receipts is layer-by-layer work. No customer pays anything until all four ship, and the team has built the abstraction without ever feeling the shape of one real payment going through.",
     sourceUrl:
       "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
     sourceLabel: "Humanizing Work: Splitting User Stories",
@@ -257,7 +263,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
   {
     id: "spt-007",
     category: "splitting-patterns",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Simple then complex",
     prompt: "What do you do during refinement when the scope keeps expanding?",
     content: {
@@ -291,7 +297,7 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
   {
     id: "spt-008",
     category: "splitting-patterns",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Defer performance",
     prompt: "Which split ships the correct version before the fast version?",
     content: {
@@ -326,8 +332,8 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
     id: "spt-009",
     category: "splitting-patterns",
     difficulty: "medium",
-    title: "Spike (last resort)",
-    prompt: "When is a spike the right pattern instead of a slice?",
+    title: "Reaching for a spike",
+    prompt: "When does the team file a spike instead of splitting the story?",
     content: {
       type: "ticket",
       left: {

@@ -36,8 +36,8 @@ export const prioritizationChallenges: BaseChallenge[] = [
     id: "pr-002",
     category: "prioritization",
     difficulty: "easy",
-    title: "MoSCoW",
-    prompt: "Which MoSCoW labeling is honest?",
+    title: "MoSCoW labeling",
+    prompt: "Which quarter plan uses MoSCoW labels meaningfully?",
     content: {
       type: "ticket",
       left: {
@@ -67,8 +67,8 @@ export const prioritizationChallenges: BaseChallenge[] = [
     id: "pr-003",
     category: "prioritization",
     difficulty: "easy",
-    title: "Cost of delay",
-    prompt: "Which decision frame surfaces the right tradeoff?",
+    title: "Pull-order tiebreaker",
+    prompt: "How should the team pick between two stories of equal size?",
     content: {
       type: "ticket",
       left: {
@@ -98,8 +98,8 @@ export const prioritizationChallenges: BaseChallenge[] = [
     id: "pr-004",
     category: "prioritization",
     difficulty: "medium",
-    title: "RICE in practice",
-    prompt: "Which RICE comparison helps product order the backlog?",
+    title: "Comparing two stories",
+    prompt: "Which framing helps product order two backlog stories?",
     content: {
       type: "ticket",
       left: {
@@ -129,7 +129,7 @@ export const prioritizationChallenges: BaseChallenge[] = [
   {
     id: "pr-005",
     category: "prioritization",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Value vs effort",
     prompt: "Which item should ship next when both have similar value?",
     content: {
@@ -160,7 +160,7 @@ export const prioritizationChallenges: BaseChallenge[] = [
   {
     id: "pr-006",
     category: "prioritization",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Tech debt vs feature work",
     prompt: "Which framing makes the tech-debt vs feature tradeoff visible?",
     content: {

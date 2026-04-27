@@ -5,7 +5,7 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
     id: "dod-001",
     category: "definition-of-done",
     difficulty: "easy",
-    title: "Verified by another set of eyes",
+    title: "Closing the loop on a story",
     prompt: "Which closing comment shows the story actually shipped?",
     content: {
       type: "ticket",
@@ -39,7 +39,7 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
     id: "dod-002",
     category: "definition-of-done",
     difficulty: "easy",
-    title: "Tests at the right level",
+    title: "Test coverage on close",
     prompt: "Which story leaves the next change cheaper?",
     content: {
       type: "ticket",
@@ -73,7 +73,7 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
     id: "dod-003",
     category: "definition-of-done",
     difficulty: "easy",
-    title: "Deployed and observable",
+    title: "From merge to live",
     prompt: "Which closing note tells the team the work is actually live?",
     content: {
       type: "ticket",
@@ -107,7 +107,7 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
     id: "dod-004",
     category: "definition-of-done",
     difficulty: "medium",
-    title: "Documentation updated where it matters",
+    title: "Docs as part of done",
     prompt: "Which DoD note kept the rest of the org in sync?",
     content: {
       type: "ticket",
@@ -142,7 +142,7 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
     id: "dod-005",
     category: "definition-of-done",
     difficulty: "medium",
-    title: "Scope changes recorded",
+    title: "Closing after mid-sprint scope change",
     prompt: "Which closing note tells the next reader what actually shipped?",
     content: {
       type: "ticket",

@@ -5,8 +5,8 @@ export const storyPointsChallenges: BaseChallenge[] = [
     id: "sp-001",
     category: "story-points",
     difficulty: "easy",
-    title: "Size, not time",
-    prompt: "Which story is correctly pointed?",
+    title: "Points and hours",
+    prompt: "Which story is pointed in a way the team can defend later?",
     content: {
       type: "ticket",
       left: {
@@ -69,8 +69,8 @@ export const storyPointsChallenges: BaseChallenge[] = [
     id: "sp-003",
     category: "story-points",
     difficulty: "easy",
-    title: "Thirteen is a signal",
-    prompt: "What does the team do when the room agrees on 13?",
+    title: "Room agrees on 13",
+    prompt: "How should the team respond when a story comes back as 13?",
     content: {
       type: "ticket",
       left: {
@@ -86,7 +86,7 @@ export const storyPointsChallenges: BaseChallenge[] = [
         type: "spike",
         points: 3,
         title: "Identify the smallest end-to-end onboarding slice",
-        context:
+        footer:
           "A 13 from the room means we do not understand this yet. Spike for one sprint, return with three smaller stories ready to estimate.",
       },
     },
@@ -102,9 +102,10 @@ export const storyPointsChallenges: BaseChallenge[] = [
   {
     id: "sp-004",
     category: "story-points",
-    difficulty: "easy",
-    title: "Outlier is the signal",
-    prompt: "Three engineers estimate independently. What do you do?",
+    difficulty: "hard",
+    title: "Spread of estimates",
+    prompt:
+      "Three engineers point a story 2, 2, 13. What does the team do next?",
     content: {
       type: "ticket",
       left: {
@@ -167,8 +168,8 @@ export const storyPointsChallenges: BaseChallenge[] = [
     id: "sp-006",
     category: "story-points",
     difficulty: "medium",
-    title: "Eight is a flag",
-    prompt: "What is the right response when the team agrees on 8?",
+    title: "Pulling an 8 into a sprint",
+    prompt: "How should the team handle an 8-point story at planning?",
     content: {
       type: "ticket",
       left: {
@@ -199,8 +200,8 @@ export const storyPointsChallenges: BaseChallenge[] = [
     id: "sp-007",
     category: "story-points",
     difficulty: "medium",
-    title: "Velocity is not a target",
-    prompt: "How should the team treat last sprint's velocity?",
+    title: "Using velocity at planning",
+    prompt: "How should the team treat last sprint's velocity number?",
     content: {
       type: "ticket",
       left: {

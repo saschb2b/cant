@@ -6,7 +6,8 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
     category: "epic-story-task",
     difficulty: "easy",
     title: "Children of an Epic",
-    prompt: "Which Epic breakdown lets product roadmap from the board?",
+    prompt:
+      "Which Epic breakdown lets product roadmap directly from the board?",
     content: {
       type: "ticket",
       left: {
@@ -51,15 +52,17 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
     id: "est-002",
     category: "epic-story-task",
     difficulty: "easy",
-    title: "Where the why lives",
-    prompt: "Which Epic description survives a refactor of the team?",
+    title: "Epic context over time",
+    prompt: "Which Epic still makes sense after the original team rotates off?",
     content: {
       type: "ticket",
       left: {
         key: "AUTH-100",
         type: "epic",
         title: "Auth refactor",
+        context: "Came out of last week's planning. Mark has the details.",
         description: "See Figma. Lead: Mark.",
+        outOfScope: "TBD, ask Mark.",
       },
       right: {
         key: "AUTH-100",
@@ -86,52 +89,44 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
     id: "est-003",
     category: "epic-story-task",
     difficulty: "easy",
-    title: "Story or Task",
-    prompt: "Which item belongs as a Story rather than a Task?",
+    title: "Framework upgrade ticket",
+    prompt:
+      "Both describe the same upgrade. Which one will a new joiner understand without asking?",
     content: {
       type: "ticket",
       left: {
         key: "PLAT-44",
         type: "task",
-        points: 5,
+        points: 3,
         title: "Upgrade Next.js from 15 to 16",
         subtasks: [
           "Update package.json to next@16",
           "Run codemod for the new caching defaults",
-          "Fix any breaking changes in route handlers",
+          "Fix breaking changes in route handlers",
           "Confirm CI is green",
         ],
       },
       right: {
-        key: "EDIT-218",
-        type: "story",
+        key: "PLAT-44",
+        type: "task",
         points: 3,
-        title: "Editors see autosave confirmation while drafting",
-        asA: "editor",
-        iWant: "a visible signal that my draft has saved",
-        soThat:
-          "I am not anxious about losing work during long writing sessions",
-        acceptanceCriteria: [
-          {
-            kind: "gwt",
-            given: "a draft with unsaved changes",
-            when: "5 seconds pass",
-            then: 'a "Saved" indicator appears',
-          },
-          {
-            kind: "gwt",
-            given: "a save failure",
-            when: "the editor types",
-            then: "a retry banner is shown above the editor",
-          },
+        title: "Upgrade Next.js from 15 to 16",
+        description:
+          "Streaming preview in EDIT-218 only works on Next 16. This Task moves with that Story.",
+        subtasks: [
+          "Update package.json to next@16",
+          "Run codemod for the new caching defaults",
+          "Fix breaking changes in route handlers",
+          "Confirm CI is green",
         ],
+        footer: "Unblocks EDIT-218: Editors get streaming-render preview",
       },
     },
     correctSide: "right",
     explanationCorrect:
-      "Editors are the user. Autosave confirmation is observable behavior they will notice and benefit from. The Connextra clauses are present and the acceptance criteria are testable by someone other than the engineer. This is exactly what the Story layer is for.",
+      "Plumbing is correctly shaped as a Task, and the link to EDIT-218 anchors it to the user value it unblocks. When that Story moves on the board, this Task moves with it. When the team sequences the sprint, they can see which user-facing work sits behind the upgrade.",
     explanationWrong:
-      "A framework upgrade has no user on the other end. It is real work worth tracking, and a Task is the right shape for it. Calling it a Story would force a fake 'as a developer' framing that adds noise without adding value.",
+      "The subtasks are honest and the work is real, but the Task is an island. Nobody reading the board can answer 'why now?' without asking the author. If the Story it was meant to unblock slips, this Task sits in a corner with no signal.",
     sourceUrl:
       "https://www.atlassian.com/agile/project-management/epics-stories-themes",
     sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
@@ -181,7 +176,7 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
     id: "est-005",
     category: "epic-story-task",
     difficulty: "medium",
-    title: "Skipping the Story layer",
+    title: "Epic children granularity",
     prompt: "Which Epic shape lets QA verify what was shipped?",
     content: {
       type: "ticket",
@@ -224,9 +219,9 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
     id: "est-006",
     category: "epic-story-task",
     difficulty: "medium",
-    title: "Self-check on the Epic page",
+    title: "Reading an Epic's children",
     prompt:
-      "Which Epic passes the 'open the children, can you tell what users will be able to do?' check?",
+      "Which Epic's children tell you what users will actually be able to do?",
     content: {
       type: "ticket",
       left: {

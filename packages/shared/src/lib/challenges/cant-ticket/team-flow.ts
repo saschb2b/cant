@@ -68,8 +68,8 @@ export const teamFlowChallenges: BaseChallenge[] = [
     id: "tf-003",
     category: "team-flow",
     difficulty: "easy",
-    title: "Capacity, not commitment",
-    prompt: "Which sprint plan accepts that real life happens?",
+    title: "Sprint pull volume",
+    prompt: "How much work should the team pull into the next sprint?",
     content: {
       type: "ticket",
       left: {
@@ -131,7 +131,7 @@ export const teamFlowChallenges: BaseChallenge[] = [
   {
     id: "tf-005",
     category: "team-flow",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Focus factor",
     prompt:
       "Which capacity calculation reflects what the team can actually do?",

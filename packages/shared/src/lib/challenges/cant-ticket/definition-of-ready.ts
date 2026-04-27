@@ -5,7 +5,7 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
     id: "dor-001",
     category: "definition-of-ready",
     difficulty: "easy",
-    title: "Actor, outcome, reason",
+    title: "Story readiness signals",
     prompt: "Which story is ready to enter a sprint?",
     content: {
       type: "ticket",
@@ -13,9 +13,20 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
         key: "ALERT-12",
         type: "story",
         points: 3,
-        title: "Improve alert handling",
-        description:
-          "Alerts should work better. We agreed on this in last week's product review.",
+        title: "Improve alert handling for on-call",
+        asA: "on-call engineer",
+        iWant: "alerts to work better",
+        soThat: "being on-call is less painful",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Alert acknowledgement should be improved",
+          },
+          {
+            kind: "bullet",
+            text: "Pages should stop once the alert is handled",
+          },
+        ],
       },
       right: {
         key: "ALERT-12",
@@ -97,7 +108,19 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
         type: "story",
         points: 5,
         title: "Better filtering on the contacts page",
-        description: "The team agreed on the direction in the last refinement.",
+        asA: "user of the contacts page",
+        iWant: "better filtering",
+        soThat: "I can find the right contacts",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Filtering matches what the team discussed in the last refinement",
+          },
+          {
+            kind: "bullet",
+            text: "Filter state behaves the way users expect",
+          },
+        ],
       },
       right: {
         key: "FILT-08",
@@ -136,7 +159,7 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
   {
     id: "dor-004",
     category: "definition-of-ready",
-    difficulty: "medium",
+    difficulty: "hard",
     title: "Fits in a sprint",
     prompt: "Which story has been split before being pulled?",
     content: {
@@ -175,7 +198,7 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
     id: "dor-005",
     category: "definition-of-ready",
     difficulty: "medium",
-    title: "Testable AC present",
+    title: "Commitment confidence",
     prompt: "Which story can the team commit to with confidence?",
     content: {
       type: "ticket",
@@ -187,6 +210,16 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
         asA: "manager",
         iWant: "the reports to be more useful",
         soThat: "I can manage my team better",
+        acceptanceCriteria: [
+          {
+            kind: "bullet",
+            text: "Reports surface the information managers actually need",
+          },
+          {
+            kind: "bullet",
+            text: "Numbers are easy to read at a glance",
+          },
+        ],
       },
       right: {
         key: "REP-19",
