@@ -5,7 +5,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Eye, RotateCcw } from "lucide-react";
 import type { ParticipantSnapshot } from "@/lib/poker/events";
-import type { Vote } from "@/lib/poker/deck";
+import { computeRevealStats } from "@/lib/poker/reveal-stats";
+import { RevealSummary } from "./reveal-summary";
 
 export interface RoundControlsProps {
   revealed: boolean;
@@ -23,27 +24,44 @@ export function RoundControls({
   const voted = participants.filter((p) => p.hasVoted).length;
   const total = participants.length;
   const allVoted = total > 0 && voted === total;
+  const stats = revealed ? computeRevealStats(participants) : null;
+  const resetLabel =
+    stats === null
+      ? "New round"
+      : stats.verdict === "discuss"
+        ? "Discuss & re-vote"
+        : stats.verdict === "consensus"
+          ? "Lock in & next"
+          : "New round";
 
   return (
     <Box
       sx={{
         display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
         flexWrap: "wrap",
-        alignItems: "center",
+        alignItems: { xs: "stretch", sm: "flex-start" },
         gap: 2,
         justifyContent: "space-between",
       }}
     >
-      <Box>
-        {revealed ? (
-          <RevealSummary participants={participants} />
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        {stats !== null ? (
+          <RevealSummary stats={stats} />
         ) : (
           <Typography variant="body2" color="text.secondary">
             {voted} / {total} voted
           </Typography>
         )}
       </Box>
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          flexShrink: 0,
+          alignSelf: { xs: "stretch", sm: "flex-start" },
+        }}
+      >
         {!revealed && (
           <Button
             variant="contained"
@@ -59,43 +77,9 @@ export function RoundControls({
           startIcon={<RotateCcw size={16} />}
           onClick={onReset}
         >
-          New round
+          {resetLabel}
         </Button>
       </Box>
     </Box>
   );
-}
-
-function RevealSummary({
-  participants,
-}: {
-  participants: ParticipantSnapshot[];
-}) {
-  const numericVotes = participants
-    .map((p) => parseNumericVote(p.vote))
-    .filter((v): v is number => v !== null);
-  if (numericVotes.length === 0) {
-    return (
-      <Typography variant="body2" color="text.secondary">
-        No numeric votes
-      </Typography>
-    );
-  }
-  const avg = numericVotes.reduce((sum, n) => sum + n, 0) / numericVotes.length;
-  const min = Math.min(...numericVotes);
-  const max = Math.max(...numericVotes);
-  const consensus = min === max;
-  return (
-    <Typography variant="body2" color="text.secondary">
-      {consensus
-        ? `Consensus at ${String(min)}`
-        : `Avg ${avg.toFixed(1)} - range ${String(min)}-${String(max)}`}
-    </Typography>
-  );
-}
-
-function parseNumericVote(vote: Vote | null): number | null {
-  if (vote === null || vote === "?" || vote === "coffee") return null;
-  const n = Number(vote);
-  return Number.isFinite(n) ? n : null;
 }

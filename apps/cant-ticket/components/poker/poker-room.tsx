@@ -9,7 +9,9 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import type { Vote } from "@/lib/poker/deck";
 import type { PokerEvent, SessionSnapshot } from "@/lib/poker/events";
+import { computeRevealStats } from "@/lib/poker/reveal-stats";
 import { CardDeck } from "./card-deck";
+import { DeckCheatSheet } from "./deck-cheat-sheet";
 import { JoinForm } from "./join-form";
 import { ParticipantList } from "./participant-list";
 import { RoundControls } from "./round-controls";
@@ -261,6 +263,9 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
 
   const { session, participantId } = state;
   const me = session.participants.find((p) => p.id === participantId);
+  const revealStats = session.revealed
+    ? computeRevealStats(session.participants)
+    : null;
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -293,6 +298,7 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
                 void post("/vote", { participantId, vote });
               }}
             />
+            <DeckCheatSheet />
           </Stack>
         </Paper>
 
@@ -312,6 +318,8 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
               participants={session.participants}
               revealed={session.revealed}
               selfId={participantId}
+              highVoterIds={revealStats?.highVoterIds}
+              lowVoterIds={revealStats?.lowVoterIds}
             />
           </Stack>
         </Paper>
