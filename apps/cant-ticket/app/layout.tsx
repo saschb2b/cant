@@ -102,7 +102,7 @@ export default function RootLayout({
         <Script
           async
           src="https://umami.saschb2b.com/script.js"
-          data-website-id="placeholder-cant-ticket"
+          data-website-id="f09beb99-5074-4c53-bb96-eb6fd54a248c"
         />
       </head>
       <body>
