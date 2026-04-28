@@ -17,7 +17,7 @@ export function CardDeck({ selected, disabled, onPick }: CardDeckProps) {
       sx={{
         display: "grid",
         gridTemplateColumns: { xs: "repeat(5, 1fr)", sm: "repeat(10, 1fr)" },
-        gap: 1,
+        gap: { xs: 1, sm: 1.25 },
       }}
     >
       {DECK.map((value) => {
@@ -34,12 +34,17 @@ export function CardDeck({ selected, disabled, onPick }: CardDeckProps) {
             sx={{
               minWidth: 0,
               aspectRatio: "2 / 3",
-              fontSize: { xs: "1rem", sm: "1.25rem" },
+              fontSize: { xs: "1rem", sm: "1.5rem" },
               fontWeight: 700,
               borderColor: "divider",
+              transition: "transform 120ms ease-out, box-shadow 120ms ease-out",
+              "&:hover:not(:disabled)": {
+                transform: "translateY(-2px)",
+                boxShadow: 2,
+              },
             }}
           >
-            {value === "coffee" ? <Coffee size={18} /> : value}
+            {value === "coffee" ? <Coffee size={20} /> : value}
           </Button>
         );
       })}

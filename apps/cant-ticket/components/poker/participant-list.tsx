@@ -2,12 +2,26 @@
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Coffee } from "lucide-react";
 import type { ParticipantSnapshot } from "@/lib/poker/events";
-import { ParticipantAvatar } from "./participant-avatar";
+import { ParticipantAvatar, type AvatarState } from "./participant-avatar";
+
+function avatarStateFor(
+  participant: ParticipantSnapshot,
+  revealed: boolean,
+  isOutlier: boolean,
+): AvatarState {
+  if (revealed) {
+    if (isOutlier) return "outlier";
+    if (participant.vote === "coffee") return "coffee";
+    if (participant.vote === "?") return "unsure";
+    return "settled";
+  }
+  return participant.hasVoted ? "voted" : "thinking";
+}
 
 export interface ParticipantListProps {
   participants: ParticipantSnapshot[];
@@ -28,26 +42,27 @@ export function ParticipantList({
   const lowSet = new Set(lowVoterIds);
 
   return (
-    <Stack spacing={1}>
+    <Stack divider={<Divider flexItem />}>
       {participants.map((p) => {
         const isSelf = p.id === selfId;
         const showValue = revealed && p.vote !== null;
         const isHigh = revealed && highSet.has(p.id);
         const isLow = revealed && lowSet.has(p.id);
+        const isFlagged = isHigh || isLow;
         return (
-          <Paper
+          <Box
             key={p.id}
-            variant="outlined"
             sx={{
-              px: 2,
-              py: 1.25,
+              px: { xs: 1.5, sm: 2 },
+              py: { xs: 1, sm: 1.25 },
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: 2,
-              bgcolor: isSelf ? "action.hover" : "background.paper",
-              borderColor: isHigh || isLow ? "warning.main" : "divider",
-              borderWidth: isHigh || isLow ? 1.5 : 1,
+              gap: 1.5,
+              bgcolor: isSelf ? "action.hover" : "transparent",
+              boxShadow: isFlagged
+                ? (theme) => `inset 3px 0 0 ${theme.palette.warning.main}`
+                : "none",
             }}
           >
             <Box
@@ -55,11 +70,17 @@ export function ParticipantList({
                 minWidth: 0,
                 display: "flex",
                 alignItems: "center",
-                gap: 1.25,
+                gap: { xs: 1.5, sm: 1.75 },
+                flex: 1,
               }}
             >
-              <ParticipantAvatar seed={p.id} size={32} title={p.name} />
-              <Typography variant="body2" fontWeight={600} noWrap>
+              <ParticipantAvatar
+                seed={p.id}
+                size={56}
+                title={p.name}
+                state={avatarStateFor(p, revealed, isFlagged)}
+              />
+              <Typography variant="body1" fontWeight={600} noWrap>
                 {p.name}
                 {isSelf ? " (you)" : ""}
               </Typography>
@@ -69,7 +90,7 @@ export function ParticipantList({
                   size="small"
                   color="warning"
                   variant="outlined"
-                  sx={{ height: 20, fontSize: "0.65rem", fontWeight: 700 }}
+                  sx={{ height: 18, fontSize: "0.65rem", fontWeight: 700 }}
                 />
               )}
               {isLow && (
@@ -78,7 +99,7 @@ export function ParticipantList({
                   size="small"
                   color="warning"
                   variant="outlined"
-                  sx={{ height: 20, fontSize: "0.65rem", fontWeight: 700 }}
+                  sx={{ height: 18, fontSize: "0.65rem", fontWeight: 700 }}
                 />
               )}
             </Box>
@@ -110,7 +131,7 @@ export function ParticipantList({
                 sx={{ color: "text.secondary" }}
               />
             )}
-          </Paper>
+          </Box>
         );
       })}
     </Stack>

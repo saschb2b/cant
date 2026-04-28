@@ -12,10 +12,10 @@ import type { PokerEvent, SessionSnapshot } from "@/lib/poker/events";
 import { computeRevealStats } from "@/lib/poker/reveal-stats";
 import { CardDeck } from "./card-deck";
 import { DeckCheatSheet } from "./deck-cheat-sheet";
+import { InviteButton } from "./invite-button";
 import { JoinForm } from "./join-form";
 import { ParticipantList } from "./participant-list";
-import { RoundControls } from "./round-controls";
-import { ShareBar } from "./share-bar";
+import { RoundStatus } from "./round-status";
 import { TopicBar } from "./topic-bar";
 
 type RoomState =
@@ -268,63 +268,111 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
     : null;
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       <Stack spacing={3}>
-        <Box>
-          <Typography variant="overline" color="text.secondary">
-            Session {sessionId}
-            {storedName ? ` - playing as ${storedName}` : ""}
-          </Typography>
-          <TopicBar
-            topic={session.topic}
-            onChange={(topic) => {
-              void post("/topic", { topic });
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={{ xs: 1.5, sm: 2 }}
+          alignItems={{ xs: "stretch", sm: "flex-start" }}
+          justifyContent="space-between"
+        >
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography variant="overline" color="text.secondary">
+              Session {sessionId}
+              {storedName ? ` - playing as ${storedName}` : ""}
+            </Typography>
+            <TopicBar
+              topic={session.topic}
+              onChange={(topic) => {
+                void post("/topic", { topic });
+              }}
+            />
+          </Box>
+          <Box sx={{ alignSelf: { xs: "flex-end", sm: "center" } }}>
+            <InviteButton sessionId={sessionId} />
+          </Box>
+        </Stack>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "minmax(0, 1.4fr) minmax(0, 1fr)",
+            },
+            gap: { xs: 3, md: 3 },
+            alignItems: "start",
+          }}
+        >
+          <Paper
+            variant="outlined"
+            sx={{
+              p: { xs: 2, sm: 3 },
+              borderColor: "primary.main",
+              borderWidth: { xs: 1, sm: 1.5 },
             }}
-          />
+          >
+            <Stack spacing={2}>
+              <Typography variant="subtitle1" fontWeight={700}>
+                Your card
+              </Typography>
+              <CardDeck
+                selected={session.revealed ? (me?.vote ?? null) : myVote}
+                disabled={session.revealed}
+                onPick={(vote: Vote) => {
+                  setMyVote(vote);
+                  void post("/vote", { participantId, vote });
+                }}
+              />
+              <DeckCheatSheet />
+            </Stack>
+          </Paper>
+
+          <Stack spacing={2}>
+            <Paper variant="outlined" sx={{ p: { xs: 2, sm: 2.5 } }}>
+              <RoundStatus
+                revealed={session.revealed}
+                participants={session.participants}
+                onReveal={() => {
+                  void post("/reveal");
+                }}
+                onReset={() => {
+                  void post("/reset");
+                }}
+              />
+            </Paper>
+            <Paper variant="outlined" sx={{ overflow: "hidden" }}>
+              <Box sx={{ px: { xs: 1.5, sm: 2 }, py: 1 }}>
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    fontSize: "0.6rem",
+                  }}
+                >
+                  Players ({session.participants.length})
+                </Typography>
+              </Box>
+              <ParticipantList
+                participants={session.participants}
+                revealed={session.revealed}
+                selfId={participantId}
+                highVoterIds={revealStats?.highVoterIds}
+                lowVoterIds={revealStats?.lowVoterIds}
+              />
+            </Paper>
+          </Stack>
         </Box>
 
-        <ShareBar sessionId={sessionId} />
-
-        <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
-          <Stack spacing={2}>
-            <Typography variant="subtitle2" color="text.secondary">
-              Your card
-            </Typography>
-            <CardDeck
-              selected={session.revealed ? (me?.vote ?? null) : myVote}
-              disabled={session.revealed}
-              onPick={(vote: Vote) => {
-                setMyVote(vote);
-                void post("/vote", { participantId, vote });
-              }}
-            />
-            <DeckCheatSheet />
-          </Stack>
-        </Paper>
-
-        <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
-          <Stack spacing={2}>
-            <RoundControls
-              revealed={session.revealed}
-              participants={session.participants}
-              onReveal={() => {
-                void post("/reveal");
-              }}
-              onReset={() => {
-                void post("/reset");
-              }}
-            />
-            <ParticipantList
-              participants={session.participants}
-              revealed={session.revealed}
-              selfId={participantId}
-              highVoterIds={revealStats?.highVoterIds}
-              lowVoterIds={revealStats?.lowVoterIds}
-            />
-          </Stack>
-        </Paper>
-
-        <Typography variant="caption" color="text.secondary" sx={{ mt: 2 }}>
+        <Typography
+          variant="caption"
+          color="text.disabled"
+          align="center"
+          sx={{ mt: 1, alignSelf: "center", maxWidth: 520 }}
+        >
           Sessions are ephemeral. They vanish when everyone leaves or the server
           restarts. No accounts, no data stored.
         </Typography>

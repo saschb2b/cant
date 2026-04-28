@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@cant/shared": "workspace:*",
-    "@dicebear/bottts": "^9.4.2",
+    "@dicebear/big-smile": "^9.4.2",
     "@dicebear/core": "^9.4.2",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
