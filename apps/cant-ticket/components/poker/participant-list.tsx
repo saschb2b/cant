@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Coffee } from "lucide-react";
 import type { ParticipantSnapshot } from "@/lib/poker/events";
+import { ParticipantAvatar } from "./participant-avatar";
 
 export interface ParticipantListProps {
   participants: ParticipantSnapshot[];
@@ -54,9 +55,10 @@ export function ParticipantList({
                 minWidth: 0,
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: 1.25,
               }}
             >
+              <ParticipantAvatar seed={p.id} size={32} title={p.name} />
               <Typography variant="body2" fontWeight={600} noWrap>
                 {p.name}
                 {isSelf ? " (you)" : ""}
