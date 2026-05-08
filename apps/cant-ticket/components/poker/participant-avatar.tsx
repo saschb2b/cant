@@ -55,7 +55,8 @@ export type AvatarState =
   | "settled"
   | "coffee"
   | "unsure"
-  | "outlier";
+  | "outlier"
+  | "spectator";
 
 const ANIMATION_BY_STATE: Record<AvatarState, string | null> = {
   thinking: `${thinkingAnim} 1.8s ease-in-out infinite`,
@@ -64,6 +65,7 @@ const ANIMATION_BY_STATE: Record<AvatarState, string | null> = {
   coffee: `${coffeeAnim} 3.2s ease-in-out infinite`,
   unsure: `${unsureAnim} 1.6s ease-in-out infinite`,
   outlier: `${outlierAnim} 0.9s ease-in-out infinite`,
+  spectator: null,
 };
 
 export interface ParticipantAvatarProps {
@@ -93,6 +95,8 @@ export function ParticipantAvatar({
         display: "block",
         transformOrigin: "center",
         animation: ANIMATION_BY_STATE[state],
+        opacity: state === "spectator" ? 0.55 : 1,
+        filter: state === "spectator" ? "grayscale(0.4)" : "none",
         "& svg": { width: "100%", height: "100%", display: "block" },
         "@media (prefers-reduced-motion: reduce)": { animation: "none" },
       }}

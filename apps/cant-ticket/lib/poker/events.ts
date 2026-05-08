@@ -5,6 +5,7 @@ export interface ParticipantSnapshot {
   name: string;
   hasVoted: boolean;
   vote: Vote | null;
+  isSpectator: boolean;
 }
 
 export interface SessionSnapshot {

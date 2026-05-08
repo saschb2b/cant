@@ -14,6 +14,7 @@ export interface Participant {
   lastSeen: number;
   connections: number;
   vote: Vote | null;
+  isSpectator: boolean;
 }
 
 export interface Session {
@@ -60,6 +61,7 @@ export function snapshotParticipant(p: Participant): ParticipantSnapshot {
     name: p.name,
     hasVoted: p.vote !== null,
     vote: null,
+    isSpectator: p.isSpectator,
   };
 }
 
@@ -73,6 +75,7 @@ export function snapshotSession(session: Session): SessionSnapshot {
       name: p.name,
       hasVoted: p.vote !== null,
       vote: session.revealed ? p.vote : null,
+      isSpectator: p.isSpectator,
     })),
   };
 }
@@ -82,7 +85,10 @@ export function getSession(sessionId: string): Session | null {
   return store.sessions.get(sessionId) ?? null;
 }
 
-export function createSession(name: string): {
+export function createSession(
+  name: string,
+  options: { isSpectator?: boolean } = {},
+): {
   session: Session;
   participant: Participant;
 } {
@@ -96,6 +102,7 @@ export function createSession(name: string): {
     lastSeen: now,
     connections: 0,
     vote: null,
+    isSpectator: options.isSpectator === true,
   };
   const session: Session = {
     id,
@@ -113,6 +120,7 @@ export function joinSession(
   sessionId: string,
   name: string,
   participantId?: string,
+  options: { isSpectator?: boolean } = {},
 ): { session: Session; participant: Participant } | null {
   const session = getSession(sessionId);
   if (!session) return null;
@@ -123,6 +131,15 @@ export function joinSession(
     if (existing) {
       existing.name = trimmed;
       existing.lastSeen = now;
+      if (typeof options.isSpectator === "boolean") {
+        const becomingVoter = existing.isSpectator && !options.isSpectator;
+        existing.isSpectator = options.isSpectator;
+        if (options.isSpectator) {
+          existing.vote = null;
+        } else if (becomingVoter && session.revealed) {
+          existing.vote = null;
+        }
+      }
       session.emptySince = null;
       return { session, participant: existing };
     }
@@ -134,6 +151,7 @@ export function joinSession(
     lastSeen: now,
     connections: 0,
     vote: null,
+    isSpectator: options.isSpectator === true,
   };
   session.participants.set(participant.id, participant);
   session.emptySince = null;
@@ -162,6 +180,7 @@ export function castVote(
   if (!session) return null;
   const participant = session.participants.get(participantId);
   if (!participant) return null;
+  if (participant.isSpectator) return null;
   if (session.revealed) return null;
   participant.vote = vote;
   participant.lastSeen = Date.now();

@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import { Eye } from "lucide-react";
 import type { Vote } from "@/lib/poker/deck";
 import type { PokerEvent, SessionSnapshot } from "@/lib/poker/events";
 import { computeRevealStats } from "@/lib/poker/reveal-stats";
@@ -66,8 +68,16 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
     const session = state.session;
     switch (event.type) {
       case "participant-joined": {
-        if (session.participants.some((p) => p.id === event.participant.id)) {
-          return state;
+        const existingIndex = session.participants.findIndex(
+          (p) => p.id === event.participant.id,
+        );
+        if (existingIndex >= 0) {
+          const next = [...session.participants];
+          next[existingIndex] = event.participant;
+          return {
+            ...state,
+            session: { ...session, participants: next },
+          };
         }
         return {
           ...state,
@@ -142,12 +152,18 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
   const eventSourceRef = useRef<EventSource | null>(null);
 
   const performJoin = useCallback(
-    async (name: string) => {
+    async (name: string, options?: { spectator?: boolean }) => {
       const cachedId = sessionStorage.getItem(participantKey(sessionId));
       const res = await fetch(`/api/poker/sessions/${sessionId}/join`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, participantId: cachedId ?? undefined }),
+        body: JSON.stringify({
+          name,
+          participantId: cachedId ?? undefined,
+          ...(options?.spectator !== undefined
+            ? { spectator: options.spectator }
+            : {}),
+        }),
       });
       if (res.status === 404) {
         sessionStorage.removeItem(participantKey(sessionId));
@@ -240,8 +256,8 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
       <Container maxWidth="sm" sx={{ py: 6 }}>
         <JoinForm
           sessionId={sessionId}
-          onJoined={(name) => {
-            void performJoin(name);
+          onJoined={(name, options) => {
+            void performJoin(name, { spectator: options.spectator });
           }}
         />
         {error && (
@@ -266,6 +282,10 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
   const revealStats = session.revealed
     ? computeRevealStats(session.participants)
     : null;
+  const isSpectator = me?.isSpectator === true;
+  const spectatorCount = session.participants.filter(
+    (p) => p.isSpectator,
+  ).length;
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -304,29 +324,82 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
             alignItems: "start",
           }}
         >
-          <Paper
-            variant="outlined"
-            sx={{
-              p: { xs: 2, sm: 3 },
-              borderColor: "primary.main",
-              borderWidth: { xs: 1, sm: 1.5 },
-            }}
-          >
-            <Stack spacing={2}>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Your card
-              </Typography>
-              <CardDeck
-                selected={session.revealed ? (me?.vote ?? null) : myVote}
-                disabled={session.revealed}
-                onPick={(vote: Vote) => {
-                  setMyVote(vote);
-                  void post("/vote", { participantId, vote });
-                }}
-              />
-              <DeckCheatSheet />
-            </Stack>
-          </Paper>
+          {isSpectator ? (
+            <Paper
+              variant="outlined"
+              sx={{
+                p: { xs: 2, sm: 3 },
+                borderColor: "divider",
+                borderStyle: "dashed",
+              }}
+            >
+              <Stack spacing={2}>
+                <Stack direction="row" spacing={1.5} alignItems="center">
+                  <Eye size={20} />
+                  <Typography variant="subtitle1" fontWeight={700}>
+                    Spectator mode
+                  </Typography>
+                </Stack>
+                <Typography variant="body2" color="text.secondary">
+                  You are watching this session without voting. The team can
+                  still see you in the participant list. You will see the round
+                  progress and results when cards are revealed.
+                </Typography>
+                <Box>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
+                      void performJoin(storedName ?? "", { spectator: false });
+                    }}
+                  >
+                    Switch to voter
+                  </Button>
+                </Box>
+              </Stack>
+            </Paper>
+          ) : (
+            <Paper
+              variant="outlined"
+              sx={{
+                p: { xs: 2, sm: 3 },
+                borderColor: "primary.main",
+                borderWidth: { xs: 1, sm: 1.5 },
+              }}
+            >
+              <Stack spacing={2}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography variant="subtitle1" fontWeight={700}>
+                    Your card
+                  </Typography>
+                  <Button
+                    variant="text"
+                    size="small"
+                    startIcon={<Eye size={14} />}
+                    onClick={() => {
+                      void performJoin(storedName ?? "", { spectator: true });
+                    }}
+                  >
+                    Switch to spectator
+                  </Button>
+                </Stack>
+                <CardDeck
+                  selected={session.revealed ? (me?.vote ?? null) : myVote}
+                  disabled={session.revealed}
+                  onPick={(vote: Vote) => {
+                    setMyVote(vote);
+                    void post("/vote", { participantId, vote });
+                  }}
+                />
+                <DeckCheatSheet />
+              </Stack>
+            </Paper>
+          )}
 
           <Stack spacing={2}>
             <Paper variant="outlined" sx={{ p: { xs: 2, sm: 2.5 } }}>
@@ -353,7 +426,10 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
                     fontSize: "0.6rem",
                   }}
                 >
-                  Players ({session.participants.length})
+                  Players ({session.participants.length - spectatorCount})
+                  {spectatorCount > 0
+                    ? ` · Spectators (${String(spectatorCount)})`
+                    : ""}
                 </Typography>
               </Box>
               <ParticipantList

@@ -57,8 +57,9 @@ export function RoundStatus({
   onReveal,
   onReset,
 }: RoundStatusProps) {
-  const total = participants.length;
-  const voted = participants.filter((p) => p.hasVoted).length;
+  const voters = participants.filter((p) => !p.isSpectator);
+  const total = voters.length;
+  const voted = voters.filter((p) => p.hasVoted).length;
   const allVoted = total > 0 && voted === total;
   const stats = revealed ? computeRevealStats(participants) : null;
   const verdict = stats ? stats.verdict : "waiting";

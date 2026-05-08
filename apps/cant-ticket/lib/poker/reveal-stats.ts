@@ -36,12 +36,13 @@ function parseNumeric(vote: Vote | null): number | null {
 export function computeRevealStats(
   participants: ParticipantSnapshot[],
 ): RevealStats {
+  const voters = participants.filter((p) => !p.isSpectator);
   const numericVoters: { id: string; value: number }[] = [];
   let unsureCount = 0;
   let coffeeCount = 0;
   let abstainCount = 0;
 
-  for (const p of participants) {
+  for (const p of voters) {
     if (p.vote === "?") {
       unsureCount += 1;
     } else if (p.vote === "coffee") {
@@ -55,7 +56,7 @@ export function computeRevealStats(
   }
 
   const counts = new Map<Vote, number>();
-  for (const p of participants) {
+  for (const p of voters) {
     if (p.vote === null) continue;
     counts.set(p.vote, (counts.get(p.vote) ?? 0) + 1);
   }

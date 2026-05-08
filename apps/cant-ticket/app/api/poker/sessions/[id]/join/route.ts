@@ -13,12 +13,15 @@ export async function POST(
   const body = (await request.json().catch(() => null)) as {
     name?: unknown;
     participantId?: unknown;
+    spectator?: unknown;
   } | null;
   const name = typeof body?.name === "string" ? body.name : "";
   const participantId =
     typeof body?.participantId === "string" ? body.participantId : undefined;
+  const isSpectator =
+    typeof body?.spectator === "boolean" ? body.spectator : undefined;
 
-  const result = joinSession(id, name, participantId);
+  const result = joinSession(id, name, participantId, { isSpectator });
   if (!result) {
     return NextResponse.json({ error: "session-not-found" }, { status: 404 });
   }
@@ -28,6 +31,14 @@ export async function POST(
       type: "participant-joined",
       participant: snapshotParticipant(result.participant),
     });
+  } else if (typeof isSpectator === "boolean") {
+    broadcast(id, {
+      type: "participant-joined",
+      participant: snapshotParticipant(result.participant),
+    });
   }
-  return NextResponse.json({ participantId: result.participant.id });
+  return NextResponse.json({
+    participantId: result.participant.id,
+    isSpectator: result.participant.isSpectator,
+  });
 }

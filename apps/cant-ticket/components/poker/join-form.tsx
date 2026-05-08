@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -10,11 +12,12 @@ import Typography from "@mui/material/Typography";
 
 export interface JoinFormProps {
   sessionId: string;
-  onJoined: (name: string) => void;
+  onJoined: (name: string, options: { spectator: boolean }) => void;
 }
 
 export function JoinForm({ sessionId, onJoined }: JoinFormProps) {
   const [name, setName] = useState("");
+  const [spectator, setSpectator] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +31,7 @@ export function JoinForm({ sessionId, onJoined }: JoinFormProps) {
     setSubmitting(true);
     setError(null);
     try {
-      onJoined(trimmed);
+      onJoined(trimmed, { spectator });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not join");
       setSubmitting(false);
@@ -58,13 +61,33 @@ export function JoinForm({ sessionId, onJoined }: JoinFormProps) {
           helperText={error ?? " "}
           fullWidth
         />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={spectator}
+              onChange={(e) => {
+                setSpectator(e.target.checked);
+              }}
+            />
+          }
+          label={
+            <Box>
+              <Typography variant="body2">Join as spectator</Typography>
+              <Typography variant="caption" color="text.secondary">
+                Watch the session without voting. Useful for observers and
+                facilitators.
+              </Typography>
+            </Box>
+          }
+          sx={{ alignItems: "flex-start", m: 0 }}
+        />
         <Button
           type="submit"
           variant="contained"
           size="large"
           disabled={submitting}
         >
-          {submitting ? "Joining..." : "Join"}
+          {submitting ? "Joining..." : spectator ? "Join as spectator" : "Join"}
         </Button>
       </Stack>
     </Paper>

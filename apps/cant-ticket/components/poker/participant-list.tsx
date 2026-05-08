@@ -5,7 +5,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Coffee } from "lucide-react";
+import { Coffee, Eye } from "lucide-react";
 import type { ParticipantSnapshot } from "@/lib/poker/events";
 import { ParticipantAvatar, type AvatarState } from "./participant-avatar";
 
@@ -14,6 +14,7 @@ function avatarStateFor(
   revealed: boolean,
   isOutlier: boolean,
 ): AvatarState {
+  if (participant.isSpectator) return "spectator";
   if (revealed) {
     if (isOutlier) return "outlier";
     if (participant.vote === "coffee") return "coffee";
@@ -40,12 +41,16 @@ export function ParticipantList({
 }: ParticipantListProps) {
   const highSet = new Set(highVoterIds);
   const lowSet = new Set(lowVoterIds);
+  const sorted = [...participants].sort((a, b) => {
+    if (a.isSpectator !== b.isSpectator) return a.isSpectator ? 1 : -1;
+    return 0;
+  });
 
   return (
     <Stack divider={<Divider flexItem />}>
-      {participants.map((p) => {
+      {sorted.map((p) => {
         const isSelf = p.id === selfId;
-        const showValue = revealed && p.vote !== null;
+        const showValue = revealed && p.vote !== null && !p.isSpectator;
         const isHigh = revealed && highSet.has(p.id);
         const isLow = revealed && lowSet.has(p.id);
         const isFlagged = isHigh || isLow;
@@ -103,7 +108,15 @@ export function ParticipantList({
                 />
               )}
             </Box>
-            {showValue ? (
+            {p.isSpectator ? (
+              <Chip
+                icon={<Eye size={12} />}
+                label="spectator"
+                size="small"
+                variant="outlined"
+                sx={{ color: "text.secondary" }}
+              />
+            ) : showValue ? (
               <Chip
                 label={
                   p.vote === "coffee" ? (
