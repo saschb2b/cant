@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -15,7 +13,6 @@ import Typography from "@mui/material/Typography";
 export function CreateForm() {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [spectator, setSpectator] = useState(false);
   const [code, setCode] = useState("");
   const [submitting, setSubmitting] = useState<"create" | "join" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +30,7 @@ export function CreateForm() {
       const res = await fetch("/api/poker/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmedName, spectator }),
+        body: JSON.stringify({ name: trimmedName }),
       });
       if (!res.ok) throw new Error("Could not create session");
       const data = (await res.json()) as {
@@ -94,25 +91,6 @@ export function CreateForm() {
               slotProps={{ htmlInput: { maxLength: 40 } }}
               fullWidth
               autoFocus
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={spectator}
-                  onChange={(e) => {
-                    setSpectator(e.target.checked);
-                  }}
-                />
-              }
-              label={
-                <Box>
-                  <Typography variant="body2">Join as spectator</Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    Watch without voting. Useful for facilitators or observers.
-                  </Typography>
-                </Box>
-              }
-              sx={{ alignItems: "flex-start", m: 0 }}
             />
             <Button
               type="submit"

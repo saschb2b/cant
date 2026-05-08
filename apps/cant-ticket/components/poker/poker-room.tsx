@@ -54,6 +54,12 @@ export function PokerRoom({ sessionId }: PokerRoomProps) {
     if (action.type === "missing") return { status: "missing" };
     if (action.type === "leave") return { status: "joining" };
     if (action.type === "joined") {
+      if (
+        (state.status === "ready" || state.status === "connecting") &&
+        state.participantId === action.participantId
+      ) {
+        return state;
+      }
       return { status: "connecting", participantId: action.participantId };
     }
     const event = action.event;
