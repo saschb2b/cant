@@ -34,7 +34,7 @@
     "fuse.js": "^7.1.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^1.6.0",
-    "next": "16.2.1",
+    "next": "16.2.6",
     "react": "19.2.4",
     "react-arborist": "^3.4.0",
     "react-diff-viewer-continued": "^4.0.5",
