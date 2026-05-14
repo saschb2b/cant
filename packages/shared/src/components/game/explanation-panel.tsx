@@ -5,8 +5,9 @@ import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import { ExternalLink, BookOpen } from "lucide-react";
+import { ExternalLink, BookOpen, Pencil } from "lucide-react";
 import { useTrackEvent } from "../../lib/analytics-context";
+import { buildChallengeIssueUrl } from "../../lib/github-issue";
 import { FormattedText } from "../formatted-text";
 
 interface ExplanationPanelProps {
@@ -17,6 +18,10 @@ interface ExplanationPanelProps {
   category: string;
   categoryLabel: string;
   challengeId: string;
+  /** Challenge title, used in the prefilled "Suggest a fix" issue. */
+  title?: string;
+  /** Repo URL. When provided alongside title, renders a "Suggest a fix" link. */
+  githubUrl?: string;
 }
 
 export function ExplanationPanel({
@@ -27,9 +32,20 @@ export function ExplanationPanel({
   category,
   categoryLabel,
   challengeId,
+  title,
+  githubUrl,
 }: ExplanationPanelProps) {
   const trackEvent = useTrackEvent();
   const color = isCorrect ? "success" : "error";
+  const issueUrl =
+    githubUrl && title
+      ? buildChallengeIssueUrl(githubUrl, {
+          id: challengeId,
+          title,
+          category,
+          categoryLabel,
+        })
+      : null;
 
   return (
     <Paper
@@ -110,6 +126,34 @@ export function ExplanationPanel({
             <BookOpen size={12} />
             All {categoryLabel} patterns
           </Link>
+          {issueUrl && (
+            <Link
+              href={issueUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              underline="hover"
+              onClick={() =>
+                trackEvent("contribute-clicked", {
+                  location: "explanation-panel",
+                  challengeId,
+                  category,
+                })
+              }
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.75,
+                typography: "caption",
+                fontWeight: 500,
+                color: "text.secondary",
+                ml: 2,
+                "&:hover": { color: "text.primary" },
+              }}
+            >
+              <Pencil size={12} />
+              Suggest a fix
+            </Link>
+          )}
         </Box>
       </Stack>
     </Paper>

@@ -168,6 +168,8 @@ export interface ExplanationSlotProps {
   category: string;
   categoryLabel: string;
   challengeId: string;
+  title?: string;
+  githubUrl?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -266,6 +268,8 @@ interface GameProps<C extends BaseChallenge> {
   defaultSeed?: string;
   /** Category label map for the category chip. */
   categoryLabels: Record<string, string>;
+  /** Repo URL, used by the explanation panel's "Suggest a fix" link. */
+  githubUrl?: string;
   /** Hook that provides game state. */
   useGame: (
     challenges: C[],
@@ -295,6 +299,7 @@ export function Game<C extends BaseChallenge>({
   contentMap = {},
   defaultSeed,
   categoryLabels,
+  githubUrl,
   useGame: useGameHook,
   generateSeed: generateSeedFn,
   slots: {
@@ -807,6 +812,8 @@ export function Game<C extends BaseChallenge>({
                   displayChallenge.category
                 }
                 challengeId={displayChallenge.id}
+                title={displayChallenge.title}
+                githubUrl={githubUrl}
               />
             </Box>
           </Grow>

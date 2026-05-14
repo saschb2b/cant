@@ -9,7 +9,7 @@ const meta: Meta<typeof SourceLink> = {
     docs: {
       description: {
         component:
-          "An external link to an authoritative source (React docs, MDN, TypeScript handbook, etc.) shown below a challenge explanation. Fires an analytics event on click. Used on learn/[category] pages across all apps.",
+          "An external link to an authoritative source (React docs, MDN, TypeScript handbook, etc.) shown below a challenge explanation. Optionally renders a sibling 'Suggest a fix' link that opens a prefilled GitHub issue when githubUrl and challengeTitle are provided. Fires analytics events on click. Used on learn/[category] pages across all apps.",
       },
     },
   },
@@ -29,6 +29,21 @@ const meta: Meta<typeof SourceLink> = {
     category: {
       description:
         "Category slug of the parent challenge, sent with the analytics event.",
+      control: "text",
+    },
+    githubUrl: {
+      description:
+        "When provided alongside challengeTitle, renders a 'Suggest a fix' link that opens a prefilled GitHub issue.",
+      control: "text",
+    },
+    challengeTitle: {
+      description:
+        "Challenge title used in the prefilled issue body. Required for the Suggest-a-fix link to appear.",
+      control: "text",
+    },
+    categoryLabel: {
+      description:
+        "Human-readable category label used in the prefilled issue body.",
       control: "text",
     },
   },
@@ -54,5 +69,18 @@ export const MDN: Story = {
     label: "MDN: Container queries",
     challengeId: "container-queries-intro",
     category: "container-queries",
+  },
+};
+
+/** With a sibling Suggest-a-fix link that opens a prefilled GitHub issue. */
+export const WithSuggestFix: Story = {
+  args: {
+    href: "https://react.dev/reference/react/useMemo",
+    label: "React docs: useMemo",
+    challengeId: "use-memo-deps",
+    category: "hooks",
+    challengeTitle: "Memoizing expensive computations",
+    categoryLabel: "Hooks",
+    githubUrl: "https://github.com/saschb2b/cant",
   },
 };

@@ -171,6 +171,11 @@ export default async function CategoryPage({ params }: PageProps) {
             label={challenge.sourceLabel}
             challengeId={challenge.id}
             category={challenge.category}
+            challengeTitle={challenge.title}
+            categoryLabel={
+              CATEGORY_LABELS[challenge.category as ChallengeCategory]
+            }
+            githubUrl="https://github.com/saschb2b/cant"
           />
         </>
       )}

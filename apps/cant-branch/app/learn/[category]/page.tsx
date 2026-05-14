@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import type { ComponentType, ReactNode } from "react";
 import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import { ExternalLink } from "lucide-react";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
 import {
   LearnCategoryPage,
   LearnContentPanel,
   FormattedText,
+  SourceLink,
 } from "@cant/shared/components";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
@@ -131,24 +130,17 @@ export default async function CategoryPage({ params }: PageProps) {
           >
             <FormattedText text={challenge.explanationCorrect} />
           </Box>
-          <Link
+          <SourceLink
             href={challenge.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 0.5,
-              mt: 1.5,
-              typography: "caption",
-              fontFamily: "var(--font-geist-mono), monospace",
-              fontWeight: 500,
-            }}
-          >
-            <ExternalLink size={12} />
-            {challenge.sourceLabel}
-          </Link>
+            label={challenge.sourceLabel}
+            challengeId={challenge.id}
+            category={challenge.category}
+            challengeTitle={challenge.title}
+            categoryLabel={
+              CATEGORY_LABELS[challenge.category as ChallengeCategory]
+            }
+            githubUrl="https://github.com/saschb2b/cant"
+          />
         </>
       )}
     />

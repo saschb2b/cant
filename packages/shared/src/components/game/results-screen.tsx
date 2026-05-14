@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Link from "@mui/material/Link";
 import { useTrackEvent } from "../../lib/analytics-context";
+import { buildChallengeIssueUrl } from "../../lib/github-issue";
 import { FormattedText } from "../formatted-text";
 import {
   RotateCcw,
@@ -21,6 +22,7 @@ import {
   BookOpen,
   Coffee,
   GitPullRequestArrow,
+  Pencil,
   Share2,
   ClipboardCheck,
   Hash,
@@ -542,7 +544,13 @@ export function ResultsScreen<S extends ResultsGameState>({
                         }
                       />
                     </Box>
-                    <Stack direction="row" spacing={2}>
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      flexWrap="wrap"
+                      useFlexGap
+                      sx={{ rowGap: 0.5 }}
+                    >
                       <Link
                         href={challenge.sourceUrl}
                         target="_blank"
@@ -589,6 +597,37 @@ export function ResultsScreen<S extends ResultsGameState>({
                       >
                         <BookOpen size={12} />
                         Review {config.categoryLabels[challenge.category]}
+                      </Link>
+                      <Link
+                        href={buildChallengeIssueUrl(config.githubUrl, {
+                          id: challenge.id,
+                          title: challenge.title,
+                          category: challenge.category,
+                          categoryLabel:
+                            config.categoryLabels[challenge.category],
+                        })}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                        onClick={() =>
+                          trackEvent("contribute-clicked", {
+                            location: "review-card",
+                            challengeId: challenge.id,
+                            category: challenge.category,
+                          })
+                        }
+                        sx={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 0.5,
+                          typography: "caption",
+                          fontWeight: 500,
+                          color: "text.secondary",
+                          "&:hover": { color: "text.primary" },
+                        }}
+                      >
+                        <Pencil size={12} />
+                        Suggest a fix
                       </Link>
                     </Stack>
                   </Box>

@@ -28,6 +28,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       contentMap={contentMap}
       defaultSeed={defaultSeed}
       categoryLabels={CATEGORY_LABELS}
+      githubUrl="https://github.com/saschb2b/cant"
       useGame={useGame}
       generateSeed={generateSeed}
       slots={{
