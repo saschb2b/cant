@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "ask-ux": {
+      "source": "saschb2b/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/ask-ux/SKILL.md",
+      "computedHash": "1bf1c3c826be70f20acf856ac10e59246703bc2916e0c15eec5253a99948e6e5"
+    }
+  }
+}
