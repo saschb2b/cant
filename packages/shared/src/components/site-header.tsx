@@ -23,8 +23,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
 import { Search } from "lucide-react";
 import { useTrackEvent } from "../lib/analytics-context";
-import { ALL_APPS, HUB_URL } from "../lib/cant-apps";
+import { ALL_APPS, HUB_URL, REPO_URL } from "../lib/cant-apps";
 import { AppIcon } from "./app-icon";
+import { GithubIcon } from "./github-icon";
 
 function ThemeIcon({ isDark, size = 18 }: { isDark: boolean; size?: number }) {
   return (
@@ -451,6 +452,22 @@ export function SiteHeader({
                   Ctrl K
                 </Box>
               </Button>
+              <Tooltip title="View on GitHub">
+                <IconButton
+                  component="a"
+                  href={REPO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("contribute-clicked", { location: "header" })
+                  }
+                  size="small"
+                  sx={{ color: "text.secondary" }}
+                  aria-label="View on GitHub"
+                >
+                  <GithubIcon size={18} />
+                </IconButton>
+              </Tooltip>
               <ColorSchemeToggle />
               {navItems.map((item) => {
                 if (item.type === "cta") {

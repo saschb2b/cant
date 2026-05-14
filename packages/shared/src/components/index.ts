@@ -6,6 +6,7 @@ export { EmotionRegistry } from "./emotion-registry";
 export { FeatureGrid } from "./feature-grid";
 export type { FeatureCard } from "./feature-grid";
 export { FormattedText } from "./formatted-text";
+export { GithubIcon } from "./github-icon";
 export { Hero } from "./hero";
 export { HeroCta } from "./hero-cta";
 export { LearnCategoryPage } from "./learn-category-page";

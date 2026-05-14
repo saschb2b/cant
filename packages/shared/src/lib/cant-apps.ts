@@ -4,6 +4,8 @@ export const HUB_URL = isDev
   ? "http://localhost:3000"
   : "https://cant.saschb2b.com";
 
+export const REPO_URL = "https://github.com/saschb2b/cant";
+
 /** Central registry of all apps in the Can't series. */
 export interface CantApp {
   name: string;
