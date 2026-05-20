@@ -12,6 +12,7 @@ import { fetchRecentResults } from "@/lib/game/actions";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroAnimation } from "@/components/hero-animation";
+import { DesignCanvas } from "@/components/design-canvas";
 
 export default function LandingPage() {
   return (
@@ -34,6 +35,7 @@ export default function LandingPage() {
         subtitle="Train your design eye with side-by-side UX comparisons. Learn typography, spacing, color, hierarchy, and more through 28 patterns across 7 categories."
         caption="free &middot; no signup &middot; visual comparisons"
         visual={<HeroAnimation />}
+        gradientOverlay={<DesignCanvas />}
       />
 
       {/* Features */}
