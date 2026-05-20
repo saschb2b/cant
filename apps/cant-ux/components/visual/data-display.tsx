@@ -158,7 +158,7 @@ const longTextRows = [
 
 export function DataTextCutOff() {
   return (
-    <Paper sx={{ p: 0, overflow: "hidden" }}>
+    <Paper sx={{ p: 0, overflow: "hidden", maxWidth: 280, mx: "auto" }}>
       <Box sx={{ px: 1.5, py: 1 }}>
         <Typography sx={{ fontSize: 13, fontWeight: 600 }}>Projects</Typography>
       </Box>
@@ -182,8 +182,9 @@ export function DataTextCutOff() {
               sx={{
                 fontSize: 11,
                 flex: 1,
+                minWidth: 0,
                 overflow: "hidden",
-                maxHeight: "1.3em",
+                whiteSpace: "nowrap",
               }}
             >
               {row.name}
@@ -207,7 +208,7 @@ export function DataTextCutOff() {
 
 export function DataEllipsisWithTooltip() {
   return (
-    <Paper sx={{ p: 0, overflow: "hidden" }}>
+    <Paper sx={{ p: 0, overflow: "hidden", maxWidth: 280, mx: "auto" }}>
       <Box sx={{ px: 1.5, py: 1 }}>
         <Typography sx={{ fontSize: 13, fontWeight: 600 }}>Projects</Typography>
       </Box>
@@ -232,6 +233,7 @@ export function DataEllipsisWithTooltip() {
                 sx={{
                   fontSize: 11,
                   flex: 1,
+                  minWidth: 0,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
