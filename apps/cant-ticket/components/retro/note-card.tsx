@@ -10,16 +10,25 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { ArrowUpRight, EyeOff, Pencil, Trash2 } from "lucide-react";
 import { ParticipantAvatar } from "@/components/rooms/participant-avatar";
-import type { NoteSnapshot } from "@/lib/retro/types";
+import type { NoteSnapshot, RetroPhase } from "@/lib/retro/types";
+import { VoteChip } from "./vote-chip";
 
 export interface NoteCardProps {
   note: NoteSnapshot;
   isAuthor: boolean;
   revealed: boolean;
+  phase: RetroPhase;
   /** Whether this card is currently being shown inside the DragOverlay. */
   asOverlay?: boolean;
   /** Whether the drop indicator should be shown (drag is hovering over this card). */
   isMergeTarget?: boolean;
+  /** Vote chip props — set to null to hide (e.g. note is inside a stack). */
+  voteState?: {
+    count: number;
+    voted: boolean;
+    budgetExhausted: boolean;
+    onToggle: () => void;
+  } | null;
   onEdit: (text: string) => void;
   onDelete: () => void;
   onPromote: (text: string) => void;
@@ -29,8 +38,10 @@ export function NoteCard({
   note,
   isAuthor,
   revealed,
+  phase,
   asOverlay = false,
   isMergeTarget = false,
+  voteState,
   onEdit,
   onDelete,
   onPromote,
@@ -38,7 +49,10 @@ export function NoteCard({
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(note.text ?? "");
   const hidden = note.text === null;
-  const canDrag = (revealed || isAuthor) && !hidden && !editing;
+  // Drag is permitted in collect (author-only) and discuss (anyone).
+  // Once voting starts the topology is frozen.
+  const dragPhaseOk = phase === "collect" || phase === "discuss";
+  const canDrag = dragPhaseOk && (revealed || isAuthor) && !hidden && !editing;
 
   const {
     attributes,
@@ -230,6 +244,15 @@ export function NoteCard({
           {note.authorName}
           {isAuthor ? " (you)" : ""}
         </Typography>
+        {voteState && (
+          <VoteChip
+            count={voteState.count}
+            voted={voteState.voted}
+            interactive={phase === "vote"}
+            budgetExhausted={voteState.budgetExhausted}
+            onToggle={voteState.onToggle}
+          />
+        )}
       </Stack>
 
       {!asOverlay && (

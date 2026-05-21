@@ -15,8 +15,9 @@ import {
   Layers,
   Unlink2,
 } from "lucide-react";
-import type { NoteSnapshot } from "@/lib/retro/types";
+import type { NoteSnapshot, RetroPhase } from "@/lib/retro/types";
 import { NoteCard } from "./note-card";
+import { VoteChip } from "./vote-chip";
 
 export interface StackProps {
   groupId: string;
@@ -24,8 +25,15 @@ export interface StackProps {
   notes: NoteSnapshot[];
   participantId: string;
   revealed: boolean;
+  phase: RetroPhase;
   asOverlay?: boolean;
   isMergeTarget?: boolean;
+  voteState?: {
+    count: number;
+    voted: boolean;
+    budgetExhausted: boolean;
+    onToggle: () => void;
+  } | null;
   onEditNote: (noteId: string, text: string) => void;
   onDeleteNote: (noteId: string) => void;
   onPromote: (text: string) => void;
@@ -39,8 +47,10 @@ export function NoteStack({
   notes,
   participantId,
   revealed,
+  phase,
   asOverlay = false,
   isMergeTarget = false,
+  voteState,
   onEditNote,
   onDeleteNote,
   onPromote,
@@ -55,7 +65,9 @@ export function NoteStack({
   const top = sorted[0];
   const count = sorted.length;
   const visibleCount = sorted.filter((n) => n.text !== null).length;
-  const canDragWhole = revealed && !asOverlay && !expanded;
+  const dragPhaseOk = phase === "collect" || phase === "discuss";
+  const canDragWhole = revealed && dragPhaseOk && !asOverlay && !expanded;
+  const reorderAllowed = dragPhaseOk;
 
   function moveNote(noteId: string, direction: "up" | "down") {
     const idx = sorted.findIndex((n) => n.id === noteId);
@@ -135,17 +147,28 @@ export function NoteStack({
             Stack of {count}
           </Typography>
           <Box sx={{ flex: 1 }} />
-          <IconButton
-            size="small"
-            onClick={() => {
-              onUnstack(groupId);
-            }}
-            aria-label="Unstack"
-            title="Unstack"
-            sx={{ p: 0.25 }}
-          >
-            <Unlink2 size={14} />
-          </IconButton>
+          {voteState && (
+            <VoteChip
+              count={voteState.count}
+              voted={voteState.voted}
+              interactive={phase === "vote"}
+              budgetExhausted={voteState.budgetExhausted}
+              onToggle={voteState.onToggle}
+            />
+          )}
+          {reorderAllowed && (
+            <IconButton
+              size="small"
+              onClick={() => {
+                onUnstack(groupId);
+              }}
+              aria-label="Unstack"
+              title="Unstack"
+              sx={{ p: 0.25 }}
+            >
+              <Unlink2 size={14} />
+            </IconButton>
+          )}
           <IconButton
             size="small"
             onClick={() => {
@@ -195,7 +218,7 @@ export function NoteStack({
                     >
                       TOP
                     </Box>
-                  ) : (
+                  ) : reorderAllowed ? (
                     <IconButton
                       size="small"
                       onClick={() => {
@@ -207,8 +230,8 @@ export function NoteStack({
                     >
                       <ArrowUp size={12} />
                     </IconButton>
-                  )}
-                  {!isBottom && (
+                  ) : null}
+                  {!isBottom && reorderAllowed && (
                     <IconButton
                       size="small"
                       onClick={() => {
@@ -227,6 +250,8 @@ export function NoteStack({
                     note={note}
                     isAuthor={note.authorId === participantId}
                     revealed={revealed}
+                    phase={phase}
+                    voteState={null}
                     onEdit={(text) => {
                       onEditNote(note.id, text);
                     }}
@@ -343,6 +368,16 @@ export function NoteStack({
             >
               {visibleCount}/{count} visible
             </Typography>
+          )}
+          <Box sx={{ flex: 1 }} />
+          {voteState && (
+            <VoteChip
+              count={voteState.count}
+              voted={voteState.voted}
+              interactive={phase === "vote"}
+              budgetExhausted={voteState.budgetExhausted}
+              onToggle={voteState.onToggle}
+            />
           )}
         </Stack>
 

@@ -64,8 +64,15 @@ export async function GET(
         markDisconnected(id, participantId);
         setTimeout(() => {
           if (isStillDisconnected(id, participantId, DISCONNECT_GRACE_MS)) {
-            if (leaveSession(id, participantId)) {
+            const result = leaveSession(id, participantId);
+            if (result.removed) {
               broadcast(id, { type: "participant-left", participantId });
+              if (result.newHostId !== null) {
+                broadcast(id, {
+                  type: "host-changed",
+                  hostId: result.newHostId,
+                });
+              }
             }
           }
         }, DISCONNECT_GRACE_MS);
@@ -86,8 +93,15 @@ export async function GET(
       markDisconnected(id, participantId);
       setTimeout(() => {
         if (isStillDisconnected(id, participantId, DISCONNECT_GRACE_MS)) {
-          if (leaveSession(id, participantId)) {
+          const result = leaveSession(id, participantId);
+          if (result.removed) {
             broadcast(id, { type: "participant-left", participantId });
+            if (result.newHostId !== null) {
+              broadcast(id, {
+                type: "host-changed",
+                hostId: result.newHostId,
+              });
+            }
           }
         }
       }, DISCONNECT_GRACE_MS);

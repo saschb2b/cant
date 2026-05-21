@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { broadcast } from "@/lib/retro/broadcaster";
-import { leaveSession } from "@/lib/retro/store";
+import { endVoting } from "@/lib/retro/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,15 +15,19 @@ export async function POST(
   } | null;
   const participantId =
     typeof body?.participantId === "string" ? body.participantId : "";
-  if (!participantId) {
-    return NextResponse.json({ error: "missing-participant" }, { status: 400 });
+
+  const session = endVoting(id, participantId);
+  if (!session) {
+    return NextResponse.json({ error: "cannot-end-voting" }, { status: 400 });
   }
-  const result = leaveSession(id, participantId);
-  if (result.removed) {
-    broadcast(id, { type: "participant-left", participantId });
-    if (result.newHostId !== null) {
-      broadcast(id, { type: "host-changed", hostId: result.newHostId });
-    }
-  }
+  broadcast(id, {
+    type: "phase-changed",
+    phase: session.phase,
+    voting: {
+      maxVotes: session.votingMaxVotes,
+      endsAt: session.votingEndsAt,
+    },
+    collectEndsAt: session.collectEndsAt,
+  });
   return NextResponse.json({ ok: true });
 }

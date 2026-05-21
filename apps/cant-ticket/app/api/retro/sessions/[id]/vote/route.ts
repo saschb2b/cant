@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { broadcast } from "@/lib/retro/broadcaster";
-import { listNotes, reveal, snapshotNote } from "@/lib/retro/store";
+import { castVote } from "@/lib/retro/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,26 +12,24 @@ export async function POST(
   const { id } = await params;
   const body = (await request.json().catch(() => null)) as {
     participantId?: unknown;
+    targetKey?: unknown;
+    action?: unknown;
   } | null;
   const participantId =
     typeof body?.participantId === "string" ? body.participantId : "";
-  const session = reveal(id, participantId);
-  if (!session) {
-    return NextResponse.json({ error: "session-not-found" }, { status: 404 });
+  const targetKey = typeof body?.targetKey === "string" ? body.targetKey : "";
+  const action = body?.action === "remove" ? "remove" : "add";
+
+  const result = castVote(id, participantId, targetKey, action);
+  if (!result) {
+    return NextResponse.json({ error: "vote-rejected" }, { status: 400 });
   }
-  const notes = listNotes(session);
+  const { targetKey: key, count, isVoter } = result;
   broadcast(id, (forParticipantId) => ({
-    type: "revealed",
-    notes: notes.map((n) => snapshotNote(session, n, forParticipantId)),
+    type: "vote-changed",
+    targetKey: key,
+    count,
+    voted: isVoter(forParticipantId),
   }));
-  broadcast(id, {
-    type: "phase-changed",
-    phase: session.phase,
-    voting: {
-      maxVotes: session.votingMaxVotes,
-      endsAt: session.votingEndsAt,
-    },
-    collectEndsAt: session.collectEndsAt,
-  });
   return NextResponse.json({ ok: true });
 }

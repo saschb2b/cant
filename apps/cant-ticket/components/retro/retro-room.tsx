@@ -17,13 +17,10 @@ import {
 } from "@dnd-kit/core";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Eye, EyeOff } from "lucide-react";
 import type { RetroEvent } from "@/lib/retro/events";
 import type { NoteSnapshot, RetroSessionSnapshot } from "@/lib/retro/types";
 import type { ActionComposerState } from "./action-panel";
@@ -34,6 +31,7 @@ import { InviteButton } from "./invite-button";
 import { JoinForm } from "./join-form";
 import { NoteCard } from "./note-card";
 import { ParticipantList } from "./participant-list";
+import { PhasePanel } from "./phase-panel";
 import { NoteStack } from "./stack";
 import { TopicBar } from "./topic-bar";
 
@@ -192,6 +190,47 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
             ...session,
             revealed: true,
             notes: event.notes,
+          },
+        };
+      }
+      case "phase-changed": {
+        return {
+          ...state,
+          session: {
+            ...session,
+            phase: event.phase,
+            revealed: event.phase !== "collect",
+            voting: event.voting,
+            collectEndsAt: event.collectEndsAt,
+          },
+        };
+      }
+      case "host-changed": {
+        return {
+          ...state,
+          session: { ...session, hostId: event.hostId },
+        };
+      }
+      case "vote-changed": {
+        const { [event.targetKey]: _dropped, ...rest } = session.voteCounts;
+        const nextCounts: Record<string, number> =
+          event.count === 0
+            ? rest
+            : { ...rest, [event.targetKey]: event.count };
+        void _dropped;
+        let nextMine = session.myVotedTargets;
+        const alreadyMine = nextMine.includes(event.targetKey);
+        if (event.voted && !alreadyMine) {
+          nextMine = [...nextMine, event.targetKey];
+        } else if (!event.voted && alreadyMine) {
+          nextMine = nextMine.filter((k) => k !== event.targetKey);
+        }
+        return {
+          ...state,
+          session: {
+            ...session,
+            voteCounts: nextCounts,
+            myVotedTargets: nextMine,
           },
         };
       }
@@ -382,11 +421,15 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
   }
 
   const { session, participantId } = state;
-  const myNoteCount = session.notes.filter(
-    (n) => n.authorId === participantId,
-  ).length;
   const totalNoteCount = session.notes.length;
   const columnCount = session.template.columns.length;
+  const myVoteCount = session.myVotedTargets.length;
+  const totalVoteCount = Object.values(session.voteCounts).reduce(
+    (a, b) => a + b,
+    0,
+  );
+  const budgetExhausted = myVoteCount >= session.voting.maxVotes;
+  const isHost = session.hostId === participantId;
 
   const moveSingleNote = (
     noteId: string,
@@ -544,6 +587,38 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
     void post(`/group/${groupId}/reorder`, { participantId, noteIds });
   }
 
+  function handleVote(targetKey: string, voted: boolean) {
+    void post("/vote", {
+      participantId,
+      targetKey,
+      action: voted ? "add" : "remove",
+    });
+  }
+
+  function handleReveal() {
+    void post("/reveal", { participantId });
+  }
+
+  function handleStartVoting(maxVotes: number, endsAt: number | null) {
+    void post("/voting/start", { participantId, maxVotes, endsAt });
+  }
+
+  function handleEndVoting() {
+    void post("/voting/end", { participantId });
+  }
+
+  function handleSetTimer(endsAt: number | null) {
+    void post("/timer", { participantId, endsAt });
+  }
+
+  function handleSetMaxVotes(maxVotes: number) {
+    void post("/voting/config", { participantId, maxVotes });
+  }
+
+  function handleTransferHost(toParticipantId: string) {
+    void post("/host", { participantId, toParticipantId });
+  }
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Stack spacing={3}>
@@ -615,6 +690,11 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                       notes={notes}
                       participantId={participantId}
                       revealed={session.revealed}
+                      phase={session.phase}
+                      voteCounts={session.voteCounts}
+                      myVotedTargets={session.myVotedTargets}
+                      budgetExhausted={budgetExhausted}
+                      onVote={handleVote}
                       mergeTargetId={overId}
                       onAddNote={(text) => {
                         void post("/note", {
@@ -653,7 +733,9 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                     note={dragSource.note}
                     isAuthor={dragSource.note.authorId === participantId}
                     revealed={session.revealed}
+                    phase={session.phase}
                     asOverlay
+                    voteState={null}
                     onEdit={() => undefined}
                     onDelete={() => undefined}
                     onPromote={() => undefined}
@@ -666,7 +748,9 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                     notes={dragSource.notes}
                     participantId={participantId}
                     revealed={session.revealed}
+                    phase={session.phase}
                     asOverlay
+                    voteState={null}
                     onEditNote={() => undefined}
                     onDeleteNote={() => undefined}
                     onPromote={() => undefined}
@@ -719,47 +803,20 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
           >
             <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2 } }}>
               <Stack spacing={1.5}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Chip
-                    icon={
-                      session.revealed ? (
-                        <Eye size={14} />
-                      ) : (
-                        <EyeOff size={14} />
-                      )
-                    }
-                    label={session.revealed ? "Revealed" : "Hidden"}
-                    size="small"
-                    color={session.revealed ? "success" : "default"}
-                    sx={{ fontWeight: 700 }}
-                  />
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    fontFamily="var(--font-geist-mono), monospace"
-                  >
-                    {totalNoteCount} notes · {myNoteCount} yours
-                  </Typography>
-                </Stack>
-                {!session.revealed && (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    fullWidth
-                    startIcon={<Eye size={14} />}
-                    onClick={() => {
-                      void post("/reveal");
-                    }}
-                    disabled={totalNoteCount === 0}
-                  >
-                    Reveal notes
-                  </Button>
-                )}
+                <PhasePanel
+                  phase={session.phase}
+                  voting={session.voting}
+                  collectEndsAt={session.collectEndsAt}
+                  totalNoteCount={totalNoteCount}
+                  myVoteCount={myVoteCount}
+                  totalVoteCount={totalVoteCount}
+                  isHost={isHost}
+                  onReveal={handleReveal}
+                  onStartVoting={handleStartVoting}
+                  onEndVoting={handleEndVoting}
+                  onSetTimer={handleSetTimer}
+                  onSetMaxVotes={handleSetMaxVotes}
+                />
                 <ExportButton session={session} />
               </Stack>
             </Paper>
@@ -783,6 +840,9 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                 participants={session.participants}
                 revealed={session.revealed}
                 selfId={participantId}
+                hostId={session.hostId}
+                canTransferHost={isHost}
+                onTransferHost={handleTransferHost}
               />
             </Paper>
           </Stack>

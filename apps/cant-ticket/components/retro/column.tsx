@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import type { NoteSnapshot, RetroColumn } from "@/lib/retro/types";
+import type { NoteSnapshot, RetroColumn, RetroPhase } from "@/lib/retro/types";
 import { NoteCard } from "./note-card";
 import { NoteComposer } from "./note-composer";
 import { NoteStack } from "./stack";
@@ -16,6 +16,11 @@ export interface ColumnProps {
   notes: NoteSnapshot[];
   participantId: string;
   revealed: boolean;
+  phase: RetroPhase;
+  voteCounts: Record<string, number>;
+  myVotedTargets: string[];
+  budgetExhausted: boolean;
+  onVote: (targetKey: string, voted: boolean) => void;
   /** id (note:X or stack:X) of the current drop target, for hover styling */
   mergeTargetId: string | null;
   onAddNote: (text: string) => void;
@@ -36,7 +41,11 @@ interface ColumnItem {
   notes: NoteSnapshot[];
 }
 
-function buildItems(notes: NoteSnapshot[]): ColumnItem[] {
+function buildItems(
+  notes: NoteSnapshot[],
+  voteCounts: Record<string, number>,
+  sortByVotes: boolean,
+): ColumnItem[] {
   const groups = new Map<string, NoteSnapshot[]>();
   const loose: NoteSnapshot[] = [];
   for (const note of notes) {
@@ -73,7 +82,24 @@ function buildItems(notes: NoteSnapshot[]): ColumnItem[] {
   for (const note of loose) {
     items.push({ kind: "note", createdAt: note.createdAt, notes: [note] });
   }
-  items.sort((a, b) => a.createdAt - b.createdAt);
+  if (sortByVotes) {
+    items.sort((a, b) => {
+      const aKey =
+        a.kind === "stack" && a.groupId
+          ? `group:${a.groupId}`
+          : `note:${a.notes[0]?.id ?? ""}`;
+      const bKey =
+        b.kind === "stack" && b.groupId
+          ? `group:${b.groupId}`
+          : `note:${b.notes[0]?.id ?? ""}`;
+      const aVotes = voteCounts[aKey] ?? 0;
+      const bVotes = voteCounts[bKey] ?? 0;
+      if (aVotes !== bVotes) return bVotes - aVotes;
+      return a.createdAt - b.createdAt;
+    });
+  } else {
+    items.sort((a, b) => a.createdAt - b.createdAt);
+  }
   return items;
 }
 
@@ -82,6 +108,11 @@ export function Column({
   notes,
   participantId,
   revealed,
+  phase,
+  voteCounts,
+  myVotedTargets,
+  budgetExhausted,
+  onVote,
   mergeTargetId,
   onAddNote,
   onEditNote,
@@ -95,7 +126,10 @@ export function Column({
     data: { type: "column" as const, columnId: column.id },
   });
 
-  const items = buildItems(notes);
+  const sortByVotes = phase === "results";
+  const items = buildItems(notes, voteCounts, sortByVotes);
+  const showVoteChips = phase === "vote" || phase === "results";
+  const myVotedSet = new Set(myVotedTargets);
 
   return (
     <Paper
@@ -140,16 +174,31 @@ export function Column({
       >
         {items.map((item) => {
           if (item.kind === "stack" && item.groupId) {
-            const isTarget = mergeTargetId === `stack:${item.groupId}`;
+            const groupId = item.groupId;
+            const targetKey = `group:${groupId}`;
+            const isTarget = mergeTargetId === `stack:${groupId}`;
+            const voted = myVotedSet.has(targetKey);
+            const stackVoteState = showVoteChips
+              ? {
+                  count: voteCounts[targetKey] ?? 0,
+                  voted,
+                  budgetExhausted,
+                  onToggle: () => {
+                    onVote(targetKey, !voted);
+                  },
+                }
+              : null;
             return (
               <NoteStack
-                key={`stack-${item.groupId}`}
-                groupId={item.groupId}
+                key={`stack-${groupId}`}
+                groupId={groupId}
                 columnId={column.id}
                 notes={item.notes}
                 participantId={participantId}
                 revealed={revealed}
+                phase={phase}
                 isMergeTarget={isTarget}
+                voteState={stackVoteState}
                 onEditNote={onEditNote}
                 onDeleteNote={onDeleteNote}
                 onPromote={onPromote}
@@ -160,14 +209,28 @@ export function Column({
           }
           const note = item.notes[0];
           if (!note) return null;
+          const targetKey = `note:${note.id}`;
           const isTarget = mergeTargetId === `note:${note.id}`;
+          const voted = myVotedSet.has(targetKey);
+          const noteVoteState = showVoteChips
+            ? {
+                count: voteCounts[targetKey] ?? 0,
+                voted,
+                budgetExhausted,
+                onToggle: () => {
+                  onVote(targetKey, !voted);
+                },
+              }
+            : null;
           return (
             <NoteCard
               key={note.id}
               note={note}
               isAuthor={note.authorId === participantId}
               revealed={revealed}
+              phase={phase}
               isMergeTarget={isTarget}
+              voteState={noteVoteState}
               onEdit={(text) => {
                 onEditNote(note.id, text);
               }}
@@ -180,7 +243,7 @@ export function Column({
         })}
       </Box>
 
-      {!revealed && <NoteComposer onAdd={onAddNote} />}
+      {phase === "collect" && <NoteComposer onAdd={onAddNote} />}
     </Paper>
   );
 }

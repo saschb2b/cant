@@ -8,6 +8,7 @@ import type {
   ActionItemSnapshot,
   NoteSnapshot,
   RetroParticipantSnapshot,
+  RetroPhase,
   RetroSessionSnapshot,
   RetroTemplate,
 } from "./types";
@@ -19,6 +20,11 @@ const ACTION_MAX_LENGTH = 500;
 const OWNER_MAX_LENGTH = 60;
 const TOPIC_MAX_LENGTH = 200;
 const NAME_MAX_LENGTH = 40;
+const DEFAULT_MAX_VOTES = 5;
+const MIN_MAX_VOTES = 1;
+const MAX_MAX_VOTES = 30;
+const TIMER_MIN_MS = 10_000;
+const TIMER_MAX_MS = 4 * 60 * 60 * 1000;
 
 interface Participant {
   id: string;
@@ -50,7 +56,13 @@ interface Session {
   id: string;
   topic: string;
   template: RetroTemplate;
-  revealed: boolean;
+  phase: RetroPhase;
+  hostId: string;
+  votingMaxVotes: number;
+  votingEndsAt: number | null;
+  collectEndsAt: number | null;
+  /** targetKey ("note:<id>" | "group:<groupId>") → voter participant ids */
+  votes: Map<string, Set<string>>;
   createdAt: number;
   emptySince: number | null;
   participants: Map<string, Participant>;
@@ -71,9 +83,11 @@ const store: GlobalStore = (g[STORE_KEY] ??= { sessions: new Map() });
 function prune(): void {
   const now = Date.now();
   for (const [sessionId, session] of store.sessions) {
+    let participantRemoved = false;
     for (const [participantId, p] of session.participants) {
       if (p.connections <= 0 && now - p.lastSeen > PARTICIPANT_GRACE_MS) {
         session.participants.delete(participantId);
+        participantRemoved = true;
       }
     }
     if (session.participants.size === 0) {
@@ -83,6 +97,9 @@ function prune(): void {
       }
     } else {
       session.emptySince = null;
+      if (participantRemoved) {
+        transferHostIfNeeded(session);
+      }
     }
   }
 }
@@ -123,12 +140,16 @@ export function snapshotParticipant(
   };
 }
 
+function isRevealed(session: Session): boolean {
+  return session.phase !== "collect";
+}
+
 export function snapshotNote(
   session: Session,
   note: Note,
   forParticipantId: string,
 ): NoteSnapshot {
-  const visible = session.revealed || note.authorId === forParticipantId;
+  const visible = isRevealed(session) || note.authorId === forParticipantId;
   return {
     id: note.id,
     columnId: note.columnId,
@@ -159,11 +180,26 @@ export function snapshotSession(
   session: Session,
   forParticipantId: string,
 ): RetroSessionSnapshot {
+  const voteCounts: Record<string, number> = {};
+  const myVotedTargets: string[] = [];
+  for (const [targetKey, voters] of session.votes) {
+    voteCounts[targetKey] = voters.size;
+    if (voters.has(forParticipantId)) myVotedTargets.push(targetKey);
+  }
   return {
     id: session.id,
     topic: session.topic,
     template: session.template,
-    revealed: session.revealed,
+    revealed: isRevealed(session),
+    phase: session.phase,
+    voting: {
+      maxVotes: session.votingMaxVotes,
+      endsAt: session.votingEndsAt,
+    },
+    collectEndsAt: session.collectEndsAt,
+    hostId: session.hostId,
+    voteCounts,
+    myVotedTargets,
     participants: [...session.participants.values()].map((p) =>
       snapshotParticipant(session, p),
     ),
@@ -199,7 +235,12 @@ export function createSession(
     id,
     topic: "",
     template,
-    revealed: false,
+    phase: "collect",
+    hostId: participant.id,
+    votingMaxVotes: DEFAULT_MAX_VOTES,
+    votingEndsAt: null,
+    collectEndsAt: null,
+    votes: new Map(),
     createdAt: now,
     emptySince: null,
     participants: new Map([[participant.id, participant]]),
@@ -208,6 +249,35 @@ export function createSession(
   };
   store.sessions.set(id, session);
   return { session, participant };
+}
+
+export function transferHost(
+  sessionId: string,
+  fromParticipantId: string,
+  toParticipantId: string,
+): Session | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (session.hostId !== fromParticipantId) return null;
+  if (fromParticipantId === toParticipantId) return null;
+  if (!session.participants.has(toParticipantId)) return null;
+  session.hostId = toParticipantId;
+  return session;
+}
+
+/**
+ * If the host is no longer a participant, reassign to the oldest remaining
+ * participant by joinedAt. Returns the new hostId iff it changed.
+ */
+export function transferHostIfNeeded(session: Session): string | null {
+  if (session.participants.has(session.hostId)) return null;
+  const remaining = [...session.participants.values()].sort(
+    (a, b) => a.joinedAt - b.joinedAt,
+  );
+  const next = remaining[0];
+  if (!next) return null;
+  session.hostId = next.id;
+  return next.id;
 }
 
 export function joinSession(
@@ -243,14 +313,15 @@ export function joinSession(
 export function leaveSession(
   sessionId: string,
   participantId: string,
-): boolean {
+): { removed: boolean; newHostId: string | null } {
   const session = getSession(sessionId);
-  if (!session) return false;
+  if (!session) return { removed: false, newHostId: null };
   const removed = session.participants.delete(participantId);
   if (session.participants.size === 0) {
     session.emptySince = Date.now();
   }
-  return removed;
+  const newHostId = transferHostIfNeeded(session);
+  return { removed, newHostId };
 }
 
 export function setTopic(sessionId: string, topic: string): Session | null {
@@ -269,7 +340,7 @@ export function addNote(
   const session = getSession(sessionId);
   if (!session) return null;
   // After reveal the brainstorm phase is closed — no new notes.
-  if (session.revealed) return null;
+  if (session.phase !== "collect") return null;
   const participant = session.participants.get(participantId);
   if (!participant) return null;
   const columnExists = session.template.columns.some((c) => c.id === columnId);
@@ -308,7 +379,12 @@ export function moveNote(
   if (!session.participants.has(participantId)) return null;
   const note = session.notes.get(noteId);
   if (!note) return null;
-  if (!session.revealed && note.authorId !== participantId) return null;
+  // Topology is editable in collect (author-only) and discuss (anyone).
+  // Once voting starts the layout is frozen so vote counts stay coherent.
+  if (session.phase !== "collect" && session.phase !== "discuss") return null;
+  if (session.phase === "collect" && note.authorId !== participantId) {
+    return null;
+  }
 
   const oldGroupId = note.groupId;
 
@@ -365,6 +441,7 @@ export function reorderGroup(
   const session = getSession(sessionId);
   if (!session) return null;
   if (!session.participants.has(participantId)) return null;
+  if (session.phase !== "collect" && session.phase !== "discuss") return null;
   if (!GROUP_ID_RE.test(groupId)) return null;
 
   const members = [...session.notes.values()].filter(
@@ -399,6 +476,7 @@ export function ungroupGroup(
   const session = getSession(sessionId);
   if (!session) return null;
   if (!session.participants.has(participantId)) return null;
+  if (session.phase !== "collect" && session.phase !== "discuss") return null;
   const affected: Note[] = [];
   for (const note of session.notes.values()) {
     if (note.groupId === groupId) {
@@ -419,7 +497,7 @@ export function editNote(
   const session = getSession(sessionId);
   if (!session) return null;
   // Notes lock after reveal — text is the artifact of the brainstorm phase.
-  if (session.revealed) return null;
+  if (session.phase !== "collect") return null;
   const note = session.notes.get(noteId);
   if (!note) return null;
   if (note.authorId !== participantId) return null;
@@ -437,7 +515,7 @@ export function deleteNote(
   const session = getSession(sessionId);
   if (!session) return null;
   // Notes lock after reveal — no deletion once they're visible to everyone.
-  if (session.revealed) return null;
+  if (session.phase !== "collect") return null;
   const note = session.notes.get(noteId);
   if (!note) return null;
   if (note.authorId !== participantId) return null;
@@ -461,11 +539,171 @@ export function deleteNote(
   return { session, note, orphanedNoteIds };
 }
 
-export function reveal(sessionId: string): Session | null {
+export function reveal(
+  sessionId: string,
+  participantId: string,
+): Session | null {
   const session = getSession(sessionId);
   if (!session) return null;
-  session.revealed = true;
+  if (session.hostId !== participantId) return null;
+  if (session.phase !== "collect") return null;
+  session.phase = "discuss";
+  session.collectEndsAt = null;
   return session;
+}
+
+function clampMaxVotes(input: unknown): number {
+  if (typeof input !== "number" || !Number.isFinite(input)) {
+    return DEFAULT_MAX_VOTES;
+  }
+  const rounded = Math.round(input);
+  if (rounded < MIN_MAX_VOTES) return MIN_MAX_VOTES;
+  if (rounded > MAX_MAX_VOTES) return MAX_MAX_VOTES;
+  return rounded;
+}
+
+function clampEndsAt(input: unknown): number | null {
+  if (input === null) return null;
+  if (typeof input !== "number" || !Number.isFinite(input)) return null;
+  const now = Date.now();
+  const min = now + TIMER_MIN_MS;
+  const max = now + TIMER_MAX_MS;
+  if (input < min) return min;
+  if (input > max) return max;
+  return Math.floor(input);
+}
+
+export function startVoting(
+  sessionId: string,
+  participantId: string,
+  maxVotes: unknown,
+  endsAtRaw: unknown,
+): Session | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (session.hostId !== participantId) return null;
+  if (session.phase !== "discuss") return null;
+  session.votingMaxVotes = clampMaxVotes(maxVotes);
+  session.votingEndsAt = clampEndsAt(endsAtRaw);
+  // Fresh round: clear any vote ghosts (none expected, but defensive).
+  session.votes.clear();
+  session.phase = "vote";
+  return session;
+}
+
+export function setVotingMaxVotes(
+  sessionId: string,
+  participantId: string,
+  maxVotes: unknown,
+): Session | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (session.hostId !== participantId) return null;
+  if (session.phase !== "discuss" && session.phase !== "vote") return null;
+  session.votingMaxVotes = clampMaxVotes(maxVotes);
+  return session;
+}
+
+export function endVoting(
+  sessionId: string,
+  participantId: string,
+): Session | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (session.hostId !== participantId) return null;
+  if (session.phase !== "vote") return null;
+  session.phase = "results";
+  session.votingEndsAt = null;
+  return session;
+}
+
+export function setPhaseTimer(
+  sessionId: string,
+  participantId: string,
+  endsAtRaw: unknown,
+): Session | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (session.hostId !== participantId) return null;
+  const cleaned = endsAtRaw === null ? null : clampEndsAt(endsAtRaw);
+  if (session.phase === "collect") {
+    session.collectEndsAt = cleaned;
+    return session;
+  }
+  if (session.phase === "vote") {
+    session.votingEndsAt = cleaned;
+    return session;
+  }
+  return null;
+}
+
+const VOTE_TARGET_RE = /^(?:note|group):[a-zA-Z0-9_-]{1,80}$/;
+
+export interface VoteResult {
+  session: Session;
+  targetKey: string;
+  /** Per-recipient: true if THIS participant has voted on the target after the op. */
+  isVoter: (participantId: string) => boolean;
+  count: number;
+}
+
+export function castVote(
+  sessionId: string,
+  participantId: string,
+  targetKey: string,
+  action: "add" | "remove",
+): VoteResult | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (!session.participants.has(participantId)) return null;
+  if (session.phase !== "vote") return null;
+  if (!VOTE_TARGET_RE.test(targetKey)) return null;
+
+  // Validate that the target item exists right now.
+  if (targetKey.startsWith("note:")) {
+    const noteId = targetKey.slice("note:".length);
+    const note = session.notes.get(noteId);
+    if (note?.groupId !== null) return null;
+  } else {
+    const gid = targetKey.slice("group:".length);
+    const hasMembers = [...session.notes.values()].some(
+      (n) => n.groupId === gid,
+    );
+    if (!hasMembers) return null;
+  }
+
+  const current = session.votes.get(targetKey) ?? new Set<string>();
+  if (action === "add") {
+    if (current.has(participantId)) {
+      // Already voted; idempotent.
+    } else {
+      const myTotal = countMyVotes(session, participantId);
+      if (myTotal >= session.votingMaxVotes) return null;
+      current.add(participantId);
+    }
+  } else {
+    if (!current.has(participantId)) return null;
+    current.delete(participantId);
+  }
+  if (current.size > 0) {
+    session.votes.set(targetKey, current);
+  } else {
+    session.votes.delete(targetKey);
+  }
+  return {
+    session,
+    targetKey,
+    isVoter: (pid) => current.has(pid),
+    count: current.size,
+  };
+}
+
+function countMyVotes(session: Session, participantId: string): number {
+  let count = 0;
+  for (const voters of session.votes.values()) {
+    if (voters.has(participantId)) count += 1;
+  }
+  return count;
 }
 
 export function addAction(

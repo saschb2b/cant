@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { broadcast } from "@/lib/retro/broadcaster";
-import { leaveSession } from "@/lib/retro/store";
+import { transferHost } from "@/lib/retro/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,18 +12,20 @@ export async function POST(
   const { id } = await params;
   const body = (await request.json().catch(() => null)) as {
     participantId?: unknown;
+    toParticipantId?: unknown;
   } | null;
-  const participantId =
+  const fromParticipantId =
     typeof body?.participantId === "string" ? body.participantId : "";
-  if (!participantId) {
-    return NextResponse.json({ error: "missing-participant" }, { status: 400 });
+  const toParticipantId =
+    typeof body?.toParticipantId === "string" ? body.toParticipantId : "";
+
+  const session = transferHost(id, fromParticipantId, toParticipantId);
+  if (!session) {
+    return NextResponse.json(
+      { error: "cannot-transfer-host" },
+      { status: 400 },
+    );
   }
-  const result = leaveSession(id, participantId);
-  if (result.removed) {
-    broadcast(id, { type: "participant-left", participantId });
-    if (result.newHostId !== null) {
-      broadcast(id, { type: "host-changed", hostId: result.newHostId });
-    }
-  }
+  broadcast(id, { type: "host-changed", hostId: session.hostId });
   return NextResponse.json({ ok: true });
 }

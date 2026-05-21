@@ -40,11 +40,28 @@ export interface RetroParticipantSnapshot {
   noteCount: number;
 }
 
+export type RetroPhase = "collect" | "discuss" | "vote" | "results";
+
+export interface VotingConfig {
+  maxVotes: number;
+  endsAt: number | null;
+}
+
 export interface RetroSessionSnapshot {
   id: string;
   topic: string;
   template: RetroTemplate;
+  /** Derived: phase !== "collect". Kept for backwards compatibility. */
   revealed: boolean;
+  phase: RetroPhase;
+  voting: VotingConfig;
+  collectEndsAt: number | null;
+  /** Participant id of the room host (the creator, or whoever inherited). */
+  hostId: string;
+  /** Vote counts per target key ("note:<id>" or "group:<groupId>"). */
+  voteCounts: Record<string, number>;
+  /** Target keys the current participant has voted on. */
+  myVotedTargets: string[];
   participants: RetroParticipantSnapshot[];
   notes: NoteSnapshot[];
   actionItems: ActionItemSnapshot[];
