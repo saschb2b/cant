@@ -268,6 +268,8 @@ export function addNote(
 ): { session: Session; note: Note } | null {
   const session = getSession(sessionId);
   if (!session) return null;
+  // After reveal the brainstorm phase is closed — no new notes.
+  if (session.revealed) return null;
   const participant = session.participants.get(participantId);
   if (!participant) return null;
   const columnExists = session.template.columns.some((c) => c.id === columnId);

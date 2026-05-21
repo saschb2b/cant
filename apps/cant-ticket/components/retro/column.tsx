@@ -180,7 +180,7 @@ export function Column({
         })}
       </Box>
 
-      <NoteComposer onAdd={onAddNote} />
+      {!revealed && <NoteComposer onAdd={onAddNote} />}
     </Paper>
   );
 }
