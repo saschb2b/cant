@@ -13,6 +13,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { challenges } from "@cant/shared/lib/challenges/cant-ticket";
 import { CATEGORY_ORDER } from "@/lib/learn/categories";
+import { TicketCanvas } from "@/components/ticket-canvas";
 
 const TOTAL = challenges.length;
 const CATEGORIES = CATEGORY_ORDER.length;
@@ -39,6 +40,7 @@ export default function LandingPage() {
         caption="free &middot; no signup &middot; based on the blog"
         gimmick={{ href: "/rooms", label: "Open a room" }}
         visual={<HeroTicket />}
+        gradientOverlay={<TicketCanvas />}
       />
 
       <FeatureGrid
