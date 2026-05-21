@@ -7,7 +7,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Coffee, Eye } from "lucide-react";
 import type { ParticipantSnapshot } from "@/lib/poker/events";
-import { ParticipantAvatar, type AvatarState } from "./participant-avatar";
+import {
+  ParticipantAvatar,
+  type AvatarState,
+} from "@/components/rooms/participant-avatar";
 
 function avatarStateFor(
   participant: ParticipantSnapshot,

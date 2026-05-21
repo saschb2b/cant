@@ -20,6 +20,22 @@ const pages: SearchItem[] = [
   },
   {
     type: "page",
+    title: "Rooms",
+    description: "Live team rooms for planning poker and sprint retros",
+    icon: "page",
+    keywords: [
+      "rooms",
+      "room",
+      "live",
+      "session",
+      "team",
+      "ceremony",
+      "meeting",
+    ],
+    href: "/rooms",
+  },
+  {
+    type: "page",
     title: "Planning poker",
     description: "Ephemeral planning poker sessions for your team",
     icon: "page",
@@ -32,7 +48,27 @@ const pages: SearchItem[] = [
       "session",
       "team",
     ],
-    href: "/poker",
+    href: "/rooms/poker",
+  },
+  {
+    type: "page",
+    title: "Sprint retro",
+    description:
+      "Run a retrospective with 4 L's, Sailboat, or your own columns",
+    icon: "page",
+    keywords: [
+      "retro",
+      "retrospective",
+      "sprint",
+      "team",
+      "review",
+      "action items",
+      "4ls",
+      "sailboat",
+      "mad sad glad",
+      "start stop continue",
+    ],
+    href: "/rooms/retro",
   },
 ];
 

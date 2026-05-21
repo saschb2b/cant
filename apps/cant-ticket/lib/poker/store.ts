@@ -2,7 +2,10 @@ import "server-only";
 
 import type { Vote } from "./deck";
 import type { ParticipantSnapshot, SessionSnapshot } from "./events";
-import { generateParticipantId, generateSessionId } from "./session-id";
+import {
+  generateParticipantId,
+  generateSessionId,
+} from "@/lib/rooms/session-id";
 
 const PARTICIPANT_GRACE_MS = 30_000;
 const EMPTY_SESSION_TTL_MS = 5 * 60_000;

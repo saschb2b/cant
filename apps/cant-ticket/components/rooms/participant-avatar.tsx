@@ -56,7 +56,8 @@ export type AvatarState =
   | "coffee"
   | "unsure"
   | "outlier"
-  | "spectator";
+  | "spectator"
+  | "static";
 
 const ANIMATION_BY_STATE: Record<AvatarState, string | null> = {
   thinking: `${thinkingAnim} 1.8s ease-in-out infinite`,
@@ -66,6 +67,7 @@ const ANIMATION_BY_STATE: Record<AvatarState, string | null> = {
   unsure: `${unsureAnim} 1.6s ease-in-out infinite`,
   outlier: `${outlierAnim} 0.9s ease-in-out infinite`,
   spectator: null,
+  static: null,
 };
 
 export interface ParticipantAvatarProps {

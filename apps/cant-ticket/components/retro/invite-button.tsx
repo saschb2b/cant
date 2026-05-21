@@ -22,7 +22,7 @@ export function InviteButton({ sessionId }: InviteButtonProps) {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    setUrl(`${window.location.origin}/rooms/poker/${sessionId}`);
+    setUrl(`${window.location.origin}/rooms/retro/${sessionId}`);
   }, [sessionId]);
 
   async function copy() {
@@ -72,7 +72,7 @@ export function InviteButton({ sessionId }: InviteButtonProps) {
       >
         <Stack spacing={1.5}>
           <Box>
-            <Typography variant="subtitle2">Invite to this round</Typography>
+            <Typography variant="subtitle2">Invite to this retro</Typography>
             <Typography variant="caption" color="text.secondary">
               Share this link. Anyone with it can join.
             </Typography>

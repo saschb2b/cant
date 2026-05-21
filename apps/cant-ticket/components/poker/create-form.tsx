@@ -45,7 +45,7 @@ export function CreateForm() {
         `cant-ticket:poker:${data.sessionId}:name`,
         trimmedName,
       );
-      router.push(`/poker/${data.sessionId}`);
+      router.push(`/rooms/poker/${data.sessionId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not create session");
       setSubmitting(null);
@@ -61,7 +61,7 @@ export function CreateForm() {
     }
     setError(null);
     setSubmitting("join");
-    router.push(`/poker/${trimmedCode}`);
+    router.push(`/rooms/poker/${trimmedCode}`);
   }
 
   return (
