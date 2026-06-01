@@ -129,7 +129,7 @@ export function CantSeriesGrid({
                 {isCompact && (
                   <Typography
                     variant="caption"
-                    color="text.disabled"
+                    color="text.secondary"
                     fontFamily="var(--font-geist-mono), monospace"
                     sx={{
                       fontSize: "0.55rem",
@@ -155,7 +155,7 @@ export function CantSeriesGrid({
               >
                 <Typography
                   variant="caption"
-                  color="text.disabled"
+                  color="text.secondary"
                   fontFamily="var(--font-geist-mono), monospace"
                   sx={{
                     fontSize: "0.6rem",
