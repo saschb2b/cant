@@ -6,6 +6,7 @@ import {
 } from "@/lib/rooms/session-id";
 import type {
   ActionItemSnapshot,
+  ContextSnapshot,
   NoteSnapshot,
   RetroParticipantSnapshot,
   RetroPhase,
@@ -16,6 +17,12 @@ import type {
 const PARTICIPANT_GRACE_MS = 30_000;
 const EMPTY_SESSION_TTL_MS = 5 * 60_000;
 const NOTE_MAX_LENGTH = 500;
+/**
+ * Contexts are clarifying one-liners added during discussion. We cap them
+ * short on purpose — if a clarification needs more than this, it should
+ * become an action item or a new note.
+ */
+const CONTEXT_MAX_LENGTH = 240;
 const ACTION_MAX_LENGTH = 500;
 const OWNER_MAX_LENGTH = 60;
 const TOPIC_MAX_LENGTH = 200;
@@ -52,6 +59,14 @@ interface ActionItem {
   createdAt: number;
 }
 
+interface ContextEntry {
+  id: string;
+  noteId: string;
+  authorId: string;
+  text: string;
+  createdAt: number;
+}
+
 interface Session {
   id: string;
   topic: string;
@@ -65,6 +80,8 @@ interface Session {
   votes: Map<string, Set<string>>;
   /** Participants who have clicked "I'm ready" during the current phase. */
   ready: Set<string>;
+  /** noteId → clarifying context entries added during discussion. */
+  contexts: Map<string, ContextEntry[]>;
   createdAt: number;
   emptySince: number | null;
   participants: Map<string, Participant>;
@@ -148,12 +165,26 @@ function isRevealed(session: Session): boolean {
   return session.phase !== "collect";
 }
 
+export function snapshotContextEntry(
+  session: Session,
+  entry: ContextEntry,
+): ContextSnapshot {
+  return {
+    id: entry.id,
+    authorId: entry.authorId,
+    authorName: participantName(session, entry.authorId),
+    text: entry.text,
+    createdAt: entry.createdAt,
+  };
+}
+
 export function snapshotNote(
   session: Session,
   note: Note,
   forParticipantId: string,
 ): NoteSnapshot {
   const visible = isRevealed(session) || note.authorId === forParticipantId;
+  const entries = session.contexts.get(note.id) ?? [];
   return {
     id: note.id,
     columnId: note.columnId,
@@ -163,6 +194,14 @@ export function snapshotNote(
     authorName: participantName(session, note.authorId),
     text: visible ? note.text : null,
     createdAt: note.createdAt,
+    // Contexts only exist post-reveal (server blocks adding earlier), so the
+    // pre-reveal recipient sees an empty list either way.
+    contexts: visible
+      ? entries
+          .slice()
+          .sort((a, b) => a.createdAt - b.createdAt)
+          .map((e) => snapshotContextEntry(session, e))
+      : [],
   };
 }
 
@@ -246,6 +285,7 @@ export function createSession(
     collectEndsAt: null,
     votes: new Map(),
     ready: new Set(),
+    contexts: new Map(),
     createdAt: now,
     emptySince: null,
     participants: new Map([[participant.id, participant]]),
@@ -543,6 +583,64 @@ export function deleteNote(
   }
 
   return { session, note, orphanedNoteIds };
+}
+
+export interface AddContextResult {
+  session: Session;
+  noteId: string;
+  entry: ContextEntry;
+}
+
+export function addContext(
+  sessionId: string,
+  participantId: string,
+  noteId: string,
+  text: string,
+): AddContextResult | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (!session.participants.has(participantId)) return null;
+  // Clarifying context only makes sense after the brainstorm reveal — it's
+  // the artefact of the discussion. Pre-reveal there's nothing to discuss.
+  if (session.phase === "collect") return null;
+  if (!session.notes.has(noteId)) return null;
+  const cleaned = sanitize(text, CONTEXT_MAX_LENGTH);
+  if (!cleaned) return null;
+  const entry: ContextEntry = {
+    id: crypto.randomUUID(),
+    noteId,
+    authorId: participantId,
+    text: cleaned,
+    createdAt: Date.now(),
+  };
+  const existing = session.contexts.get(noteId) ?? [];
+  session.contexts.set(noteId, [...existing, entry]);
+  return { session, noteId, entry };
+}
+
+export interface DeleteContextResult {
+  session: Session;
+  noteId: string;
+  contextId: string;
+}
+
+export function deleteContext(
+  sessionId: string,
+  participantId: string,
+  noteId: string,
+  contextId: string,
+): DeleteContextResult | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  const entries = session.contexts.get(noteId);
+  if (!entries) return null;
+  const target = entries.find((e) => e.id === contextId);
+  if (!target) return null;
+  if (target.authorId !== participantId) return null;
+  const next = entries.filter((e) => e.id !== contextId);
+  if (next.length === 0) session.contexts.delete(noteId);
+  else session.contexts.set(noteId, next);
+  return { session, noteId, contextId };
 }
 
 export function reveal(

@@ -11,6 +11,14 @@ export interface RetroTemplate {
   columns: RetroColumn[];
 }
 
+export interface ContextSnapshot {
+  id: string;
+  authorId: string;
+  authorName: string;
+  text: string;
+  createdAt: number;
+}
+
 export interface NoteSnapshot {
   id: string;
   columnId: string;
@@ -23,6 +31,11 @@ export interface NoteSnapshot {
   /** Null when hidden (pre-reveal, written by another participant). */
   text: string | null;
   createdAt: number;
+  /**
+   * Clarifying one-liners added during discussion. Empty for hidden notes
+   * (no contexts can exist pre-reveal anyway). Sorted oldest-first.
+   */
+  contexts: ContextSnapshot[];
 }
 
 export interface ActionItemSnapshot {

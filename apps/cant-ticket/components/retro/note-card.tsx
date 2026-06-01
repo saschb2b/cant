@@ -8,16 +8,27 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { ArrowUpRight, EyeOff, Pencil, Trash2 } from "lucide-react";
+import {
+  ArrowUpRight,
+  EyeOff,
+  MessageSquarePlus,
+  Pencil,
+  Trash2,
+  X,
+} from "lucide-react";
 import { ParticipantAvatar } from "@/components/rooms/participant-avatar";
 import type { NoteSnapshot, RetroPhase } from "@/lib/retro/types";
 import { VoteChip } from "./vote-chip";
+
+const CONTEXT_MAX_LENGTH = 240;
 
 export interface NoteCardProps {
   note: NoteSnapshot;
   isAuthor: boolean;
   revealed: boolean;
   phase: RetroPhase;
+  /** Participant viewing the card — used to decide which context × icons render. */
+  participantId: string;
   /** Whether this card is currently being shown inside the DragOverlay. */
   asOverlay?: boolean;
   /** Whether the drop indicator should be shown (drag is hovering over this card). */
@@ -32,6 +43,8 @@ export interface NoteCardProps {
   onEdit: (text: string) => void;
   onDelete: () => void;
   onPromote: (text: string) => void;
+  onAddContext: (text: string) => void;
+  onDeleteContext: (contextId: string) => void;
 }
 
 export function NoteCard({
@@ -39,20 +52,36 @@ export function NoteCard({
   isAuthor,
   revealed,
   phase,
+  participantId,
   asOverlay = false,
   isMergeTarget = false,
   voteState,
   onEdit,
   onDelete,
   onPromote,
+  onAddContext,
+  onDeleteContext,
 }: NoteCardProps) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(note.text ?? "");
+  const [addingContext, setAddingContext] = useState(false);
+  const [contextDraft, setContextDraft] = useState("");
   const hidden = note.text === null;
+  // Contexts are clarifying notes added during discussion; they only exist
+  // and can be added post-reveal.
+  const canAnnotate = revealed && !hidden && !asOverlay;
   // Drag is permitted in collect (author-only) and discuss (anyone).
   // Once voting starts the topology is frozen.
   const dragPhaseOk = phase === "collect" || phase === "discuss";
-  const canDrag = dragPhaseOk && (revealed || isAuthor) && !hidden && !editing;
+  // While the user is composing (editing the note or adding context) we have
+  // to suppress drag entirely — dnd-kit's KeyboardSensor activates on space,
+  // which would otherwise hijack typing inside the TextField.
+  const canDrag =
+    dragPhaseOk &&
+    (revealed || isAuthor) &&
+    !hidden &&
+    !editing &&
+    !addingContext;
 
   const {
     attributes,
@@ -216,6 +245,160 @@ export function NoteCard({
         </Typography>
       )}
 
+      {!hidden && note.contexts.length > 0 && (
+        <Stack
+          spacing={0.5}
+          sx={{
+            mt: 1,
+            pl: 1,
+            borderLeft: 2,
+            borderColor: "primary.main",
+            borderRadius: 0.5,
+          }}
+        >
+          {note.contexts.map((c) => (
+            <Stack
+              key={c.id}
+              direction="row"
+              spacing={0.5}
+              alignItems="flex-start"
+              sx={{
+                "&:hover .context-delete": { opacity: 1 },
+              }}
+            >
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontSize: "0.78rem",
+                    lineHeight: 1.45,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {c.text}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{ fontSize: "0.6rem" }}
+                >
+                  — {c.authorName}
+                  {c.authorId === participantId ? " (you)" : ""}
+                </Typography>
+              </Box>
+              {c.authorId === participantId && !asOverlay && (
+                <IconButton
+                  className="context-delete"
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteContext(c.id);
+                  }}
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                  }}
+                  aria-label="Delete context"
+                  title="Delete"
+                  sx={{
+                    p: 0.25,
+                    opacity: { xs: 1, sm: 0 },
+                    transition: "opacity 0.15s",
+                    color: "text.disabled",
+                  }}
+                >
+                  <X size={10} />
+                </IconButton>
+              )}
+            </Stack>
+          ))}
+        </Stack>
+      )}
+
+      {addingContext && !asOverlay && (
+        <Box
+          sx={{ mt: 1 }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <TextField
+            autoFocus
+            size="small"
+            fullWidth
+            multiline
+            minRows={1}
+            maxRows={3}
+            placeholder="Clarify what this card meant..."
+            value={contextDraft}
+            onChange={(e) => {
+              setContextDraft(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const trimmed = contextDraft.trim();
+                if (!trimmed) return;
+                onAddContext(trimmed);
+                setContextDraft("");
+                setAddingContext(false);
+              }
+              if (e.key === "Escape") {
+                setContextDraft("");
+                setAddingContext(false);
+              }
+            }}
+            slotProps={{
+              htmlInput: {
+                maxLength: CONTEXT_MAX_LENGTH,
+                style: { fontSize: "0.8rem" },
+              },
+            }}
+          />
+          <Stack
+            direction="row"
+            spacing={0.5}
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mt: 0.5 }}
+          >
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              sx={{ fontSize: "0.6rem" }}
+            >
+              {contextDraft.length}/{CONTEXT_MAX_LENGTH}
+            </Typography>
+            <Stack direction="row" spacing={0.5}>
+              <Button
+                size="small"
+                onClick={() => {
+                  setContextDraft("");
+                  setAddingContext(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="small"
+                variant="contained"
+                disabled={contextDraft.trim().length === 0}
+                onClick={() => {
+                  const trimmed = contextDraft.trim();
+                  if (!trimmed) return;
+                  onAddContext(trimmed);
+                  setContextDraft("");
+                  setAddingContext(false);
+                }}
+              >
+                Add
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      )}
+
       <Stack
         direction="row"
         spacing={1}
@@ -274,6 +457,19 @@ export function NoteCard({
             boxShadow: 1,
           }}
         >
+          {canAnnotate && !addingContext && (
+            <IconButton
+              size="small"
+              onClick={() => {
+                setAddingContext(true);
+              }}
+              aria-label="Add context"
+              title="Add context"
+              sx={{ p: 0.25 }}
+            >
+              <MessageSquarePlus size={14} />
+            </IconButton>
+          )}
           {revealed && !hidden && note.text !== null && (
             <IconButton
               size="small"

@@ -1,5 +1,6 @@
 import type {
   ActionItemSnapshot,
+  ContextSnapshot,
   NoteSnapshot,
   RetroParticipantSnapshot,
   RetroPhase,
@@ -25,6 +26,8 @@ export type RetroEvent =
     }
   | { type: "vote-changed"; targetKey: string; count: number; voted: boolean }
   | { type: "ready-changed"; participantId: string; isReady: boolean }
+  | { type: "context-added"; noteId: string; context: ContextSnapshot }
+  | { type: "context-deleted"; noteId: string; contextId: string }
   | { type: "host-changed"; hostId: string }
   | { type: "action-added"; action: ActionItemSnapshot }
   | { type: "action-edited"; action: ActionItemSnapshot }

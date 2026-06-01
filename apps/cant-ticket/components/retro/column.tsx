@@ -29,6 +29,8 @@ export interface ColumnProps {
   onPromote: (text: string) => void;
   onUnstack: (groupId: string) => void;
   onReorder: (groupId: string, noteIds: string[]) => void;
+  onAddContext: (noteId: string, text: string) => void;
+  onDeleteContext: (noteId: string, contextId: string) => void;
 }
 
 interface ColumnItem {
@@ -120,6 +122,8 @@ export function Column({
   onPromote,
   onUnstack,
   onReorder,
+  onAddContext,
+  onDeleteContext,
 }: ColumnProps) {
   const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: `col:${column.id}`,
@@ -204,6 +208,8 @@ export function Column({
                 onPromote={onPromote}
                 onUnstack={onUnstack}
                 onReorder={onReorder}
+                onAddContext={onAddContext}
+                onDeleteContext={onDeleteContext}
               />
             );
           }
@@ -229,6 +235,7 @@ export function Column({
               isAuthor={note.authorId === participantId}
               revealed={revealed}
               phase={phase}
+              participantId={participantId}
               isMergeTarget={isTarget}
               voteState={noteVoteState}
               onEdit={(text) => {
@@ -238,6 +245,12 @@ export function Column({
                 onDeleteNote(note.id);
               }}
               onPromote={onPromote}
+              onAddContext={(text) => {
+                onAddContext(note.id, text);
+              }}
+              onDeleteContext={(contextId) => {
+                onDeleteContext(note.id, contextId);
+              }}
             />
           );
         })}

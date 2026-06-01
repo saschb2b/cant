@@ -227,6 +227,37 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
           },
         };
       }
+      case "context-added": {
+        return {
+          ...state,
+          session: {
+            ...session,
+            notes: session.notes.map((n) =>
+              n.id === event.noteId
+                ? { ...n, contexts: [...n.contexts, event.context] }
+                : n,
+            ),
+          },
+        };
+      }
+      case "context-deleted": {
+        return {
+          ...state,
+          session: {
+            ...session,
+            notes: session.notes.map((n) =>
+              n.id === event.noteId
+                ? {
+                    ...n,
+                    contexts: n.contexts.filter(
+                      (c) => c.id !== event.contextId,
+                    ),
+                  }
+                : n,
+            ),
+          },
+        };
+      }
       case "host-changed": {
         return {
           ...state,
@@ -650,6 +681,18 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
     void post("/ready", { participantId, isReady });
   }
 
+  function handleAddContext(noteId: string, text: string) {
+    void post(`/note/${noteId}/context`, { participantId, text });
+  }
+
+  function handleDeleteContext(noteId: string, contextId: string) {
+    void del(
+      `/note/${noteId}/context/${contextId}?participantId=${encodeURIComponent(
+        participantId,
+      )}`,
+    );
+  }
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <RetroOnboarding
@@ -772,6 +815,8 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                       }}
                       onUnstack={handleUnstack}
                       onReorder={handleReorder}
+                      onAddContext={handleAddContext}
+                      onDeleteContext={handleDeleteContext}
                     />
                   );
                 })}
@@ -788,11 +833,14 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                     isAuthor={dragSource.note.authorId === participantId}
                     revealed={session.revealed}
                     phase={session.phase}
+                    participantId={participantId}
                     asOverlay
                     voteState={null}
                     onEdit={() => undefined}
                     onDelete={() => undefined}
                     onPromote={() => undefined}
+                    onAddContext={() => undefined}
+                    onDeleteContext={() => undefined}
                   />
                 )}
                 {dragSource?.kind === "stack" && (
@@ -810,6 +858,8 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                     onPromote={() => undefined}
                     onUnstack={() => undefined}
                     onReorder={() => undefined}
+                    onAddContext={() => undefined}
+                    onDeleteContext={() => undefined}
                   />
                 )}
               </DragOverlay>

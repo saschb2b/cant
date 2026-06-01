@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
   Layers,
+  MessageSquare,
   Unlink2,
 } from "lucide-react";
 import type { NoteSnapshot, RetroPhase } from "@/lib/retro/types";
@@ -39,6 +40,8 @@ export interface StackProps {
   onPromote: (text: string) => void;
   onUnstack: (groupId: string) => void;
   onReorder: (groupId: string, noteIds: string[]) => void;
+  onAddContext: (noteId: string, text: string) => void;
+  onDeleteContext: (noteId: string, contextId: string) => void;
 }
 
 export function NoteStack({
@@ -56,6 +59,8 @@ export function NoteStack({
   onPromote,
   onUnstack,
   onReorder,
+  onAddContext,
+  onDeleteContext,
 }: StackProps) {
   const [expanded, setExpanded] = useState(false);
   const sorted = [...notes].sort((a, b) => {
@@ -65,6 +70,7 @@ export function NoteStack({
   const top = sorted[0];
   const count = sorted.length;
   const visibleCount = sorted.filter((n) => n.text !== null).length;
+  const contextCount = sorted.reduce((acc, n) => acc + n.contexts.length, 0);
   const dragPhaseOk = phase === "collect" || phase === "discuss";
   const canDragWhole = revealed && dragPhaseOk && !asOverlay && !expanded;
   const reorderAllowed = dragPhaseOk;
@@ -251,6 +257,7 @@ export function NoteStack({
                     isAuthor={note.authorId === participantId}
                     revealed={revealed}
                     phase={phase}
+                    participantId={participantId}
                     voteState={null}
                     onEdit={(text) => {
                       onEditNote(note.id, text);
@@ -259,6 +266,12 @@ export function NoteStack({
                       onDeleteNote(note.id);
                     }}
                     onPromote={onPromote}
+                    onAddContext={(text) => {
+                      onAddContext(note.id, text);
+                    }}
+                    onDeleteContext={(contextId) => {
+                      onDeleteContext(note.id, contextId);
+                    }}
                   />
                 </Box>
               </Stack>
@@ -370,6 +383,23 @@ export function NoteStack({
             </Typography>
           )}
           <Box sx={{ flex: 1 }} />
+          {contextCount > 0 && (
+            <Chip
+              icon={<MessageSquare size={10} />}
+              label={contextCount}
+              size="small"
+              variant="outlined"
+              title="Clarifying contexts inside this stack"
+              sx={{
+                height: 20,
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                color: "text.secondary",
+                "& .MuiChip-icon": { ml: 0.5, mr: -0.25 },
+                "& .MuiChip-label": { px: 0.75 },
+              }}
+            />
+          )}
           {voteState && (
             <VoteChip
               count={voteState.count}

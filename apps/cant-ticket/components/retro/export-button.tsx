@@ -32,6 +32,10 @@ function buildMarkdown(session: RetroSessionSnapshot): string {
       const text = note.text ?? "(hidden)";
       const cleaned = text.replace(/\r?\n/g, " ");
       lines.push(`- ${cleaned} — ${note.authorName}`);
+      for (const ctx of note.contexts) {
+        const ctxText = ctx.text.replace(/\r?\n/g, " ");
+        lines.push(`  > Context (${ctx.authorName}): ${ctxText}`);
+      }
     }
   }
 
