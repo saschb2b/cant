@@ -507,14 +507,32 @@ export function LobbyScreen({
             {config.categorySections.map((section) => (
               <Box key={section.label}>
                 <Box
-                  onClick={() => toggleSection(section.categories)}
+                  role={hasSeed ? undefined : "button"}
+                  tabIndex={hasSeed ? undefined : 0}
+                  onClick={
+                    hasSeed
+                      ? undefined
+                      : () => toggleSection(section.categories)
+                  }
+                  onKeyDown={
+                    hasSeed
+                      ? undefined
+                      : (e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            toggleSection(section.categories);
+                          }
+                        }
+                  }
                   sx={{
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 0.75,
                     mb: 0.5,
                     cursor: "pointer",
-                    "&:hover .toggle-hint": { opacity: 1 },
+                    "&:hover .toggle-hint, &:focus-visible .toggle-hint": {
+                      opacity: 1,
+                    },
                   }}
                 >
                   <Typography
@@ -553,6 +571,7 @@ export function LobbyScreen({
                         key={cat}
                         label={config.categoryLabels[cat]}
                         size="small"
+                        aria-pressed={isEnabled}
                         onClick={() => toggleCategory(cat)}
                         sx={{
                           height: 26,

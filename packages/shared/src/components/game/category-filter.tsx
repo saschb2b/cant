@@ -41,6 +41,8 @@ export function CategoryFilter({
             <Typography
               variant="overline"
               fontWeight={700}
+              role={disabled ? undefined : "button"}
+              tabIndex={disabled ? undefined : 0}
               sx={{
                 display: "block",
                 mb: 0.75,
@@ -50,6 +52,16 @@ export function CategoryFilter({
               }}
               onClick={
                 disabled ? undefined : () => onToggleSection(section.categories)
+              }
+              onKeyDown={
+                disabled
+                  ? undefined
+                  : (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onToggleSection(section.categories);
+                      }
+                    }
               }
             >
               {section.label}
@@ -62,6 +74,7 @@ export function CategoryFilter({
                     key={cat}
                     label={categoryLabels[cat]}
                     size="small"
+                    aria-pressed={!isExcluded}
                     icon={
                       !isExcluded ? (
                         <Check size={12} strokeWidth={3} />
