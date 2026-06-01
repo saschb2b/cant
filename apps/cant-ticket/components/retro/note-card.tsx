@@ -193,8 +193,13 @@ export function NoteCard({
         setDragRef(el);
         setDropRef(el);
       }}
-      {...attributes}
-      {...listeners}
+      // Only expose the drag affordance (role="button", tabindex, and dnd-kit's
+      // aria-disabled) when the card is actually draggable. Spreading these
+      // while drag is off — e.g. during voting — turned every card into a
+      // disabled button wrapping its own vote/promote controls, which hid
+      // those buttons from keyboard and screen-reader users.
+      {...(canDrag ? attributes : {})}
+      {...(canDrag ? listeners : {})}
       style={dragStyle}
       sx={{
         position: "relative",
