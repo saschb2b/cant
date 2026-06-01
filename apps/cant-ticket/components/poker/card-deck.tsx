@@ -3,12 +3,25 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Coffee } from "lucide-react";
-import { DECK, type Vote } from "@/lib/poker/deck";
+import { DECK, DECK_GUIDE, type Vote } from "@/lib/poker/deck";
 
 export interface CardDeckProps {
   selected: Vote | null;
   disabled?: boolean;
   onPick: (vote: Vote) => void;
+}
+
+// The "coffee" card is icon-only and a bare "?" or number is opaque to a
+// screen reader, so give every card the meaning from the deck guide (e.g.
+// "5: Medium", "Coffee: Break").
+const CARD_LABEL: Record<Vote, string> = Object.fromEntries(
+  DECK_GUIDE.map((row) => [row.value, row.label]),
+) as Record<Vote, string>;
+
+function cardAriaLabel(value: Vote): string {
+  const meaning = CARD_LABEL[value];
+  const name = value === "coffee" ? "Coffee" : value;
+  return meaning ? `${name}: ${meaning}` : name;
 }
 
 export function CardDeck({ selected, disabled, onPick }: CardDeckProps) {
@@ -28,6 +41,8 @@ export function CardDeck({ selected, disabled, onPick }: CardDeckProps) {
             variant={isSelected ? "contained" : "outlined"}
             color={isSelected ? "primary" : "inherit"}
             disabled={disabled}
+            aria-label={cardAriaLabel(value)}
+            aria-pressed={isSelected}
             onClick={() => {
               onPick(value);
             }}
