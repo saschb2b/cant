@@ -10,6 +10,20 @@ import { useTrackEvent } from "../../lib/analytics-context";
 import { buildChallengeIssueUrl } from "../../lib/github-issue";
 import { FormattedText } from "../formatted-text";
 
+// Standard screen-reader-only style: present in the accessibility tree and
+// announced by live regions, but visually hidden.
+const visuallyHidden = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+} as const;
+
 interface ExplanationPanelProps {
   isCorrect: boolean;
   explanationText: string;
@@ -61,8 +75,12 @@ export function ExplanationPanel({
         p: 2,
       }}
     >
+      <Box role="status" sx={visuallyHidden}>
+        {isCorrect ? "Correct" : "Incorrect"}
+      </Box>
       <Stack direction="row" spacing={1.5} alignItems="flex-start">
         <Avatar
+          aria-hidden
           sx={{
             width: 24,
             height: 24,
