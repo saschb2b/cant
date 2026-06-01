@@ -28,12 +28,15 @@ Run checks from the repo root:
 ```bash
 pnpm lint
 pnpm typecheck
+pnpm test
 pnpm format:check
 ```
 
 If formatting fails, run `npx prettier --write .` from the affected app directory.
 
 Do not commit code that fails any of these checks.
+
+`pnpm test` runs each app's vitest suite via Turborepo (apps without a `test` script are skipped). Add tests as colocated `lib/**/*.test.ts` files; see `apps/cant-ticket` or `apps/cant-test` for the setup.
 
 If you encounter pre-existing lint or type errors in files you did not change, fix them immediately. Do not ignore them or defer them as "pre-existing." The codebase must be clean after every session.
 

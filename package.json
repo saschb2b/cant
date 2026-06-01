@@ -32,6 +32,7 @@
     "build:ticket": "turbo build --filter=cant-ticket",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
+    "test": "turbo test",
     "format:check": "turbo format:check",
     "storybook": "pnpm --filter @cant/shared storybook",
     "build-storybook": "pnpm --filter @cant/shared build-storybook"

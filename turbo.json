@@ -16,6 +16,7 @@
     "typecheck": {
       "dependsOn": ["^build"]
     },
+    "test": {},
     "format:check": {},
     "storybook": {
       "cache": false,
