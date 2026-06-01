@@ -2,6 +2,7 @@
 
 import Box from "@mui/material/Box";
 import { Heart } from "lucide-react";
+import { countLabel } from "@/lib/retro/format";
 
 export interface VoteChipProps {
   count: number;
@@ -48,7 +49,7 @@ export function VoteChip({
           ? voted
             ? "Remove your vote"
             : "Vote for this item"
-          : `${String(count)} votes`
+          : countLabel(count, "vote")
       }
       aria-pressed={interactive ? voted : undefined}
       disabled={disabled}

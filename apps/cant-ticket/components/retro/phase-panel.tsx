@@ -20,6 +20,7 @@ import {
   Trophy,
 } from "lucide-react";
 import type { RetroPhase, VotingConfig } from "@/lib/retro/types";
+import { countLabel } from "@/lib/retro/format";
 import { TimerDisplay } from "./timer-display";
 
 export interface PhasePanelProps {
@@ -220,9 +221,9 @@ export function PhasePanel({
           fontFamily="var(--font-geist-mono), monospace"
           sx={{ fontSize: "0.65rem" }}
         >
-          {totalNoteCount} notes
+          {countLabel(totalNoteCount, "note")}
           {phase === "vote" || phase === "results"
-            ? ` · ${String(totalVoteCount)} votes`
+            ? ` · ${countLabel(totalVoteCount, "vote")}`
             : ""}
         </Typography>
       </Stack>
@@ -364,7 +365,12 @@ export function PhasePanel({
                   sx={{ display: "block", mt: 0.5, fontSize: "0.65rem" }}
                 >
                   Each teammate can like up to{" "}
-                  {clampVotes(Number(maxVotesInput))} cards or stacks.
+                  {countLabel(
+                    clampVotes(Number(maxVotesInput)),
+                    "card or stack",
+                    "cards or stacks",
+                  )}
+                  .
                 </Typography>
               </Box>
               <Box>

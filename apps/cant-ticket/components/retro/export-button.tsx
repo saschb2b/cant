@@ -15,6 +15,7 @@ import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import { Clipboard } from "lucide-react";
 import type { NoteSnapshot, RetroSessionSnapshot } from "@/lib/retro/types";
+import { countLabel } from "@/lib/retro/format";
 
 interface ExportOptions {
   includeHeader: boolean;
@@ -54,10 +55,6 @@ function saveOptions(options: ExportOptions): void {
   } catch {
     // ignore
   }
-}
-
-function pluralVotes(n: number): string {
-  return n === 1 ? "vote" : "votes";
 }
 
 function authorOf(name: string, anonymous: boolean): string {
@@ -136,7 +133,7 @@ function renderNoteLine(
   let suffix = "";
   if (showVoteSuffix && options.includeVotes) {
     const count = voteCounts[`note:${note.id}`] ?? 0;
-    if (count > 0) suffix = ` (${String(count)} ${pluralVotes(count)})`;
+    if (count > 0) suffix = ` (${countLabel(count, "vote")})`;
   }
   out.push(`${prefix}- ${text} — ${author}${suffix}`);
   if (options.includeContexts) {
@@ -201,7 +198,7 @@ function buildMarkdown(
         let suffix = "";
         if (options.includeVotes && item.groupId) {
           const count = session.voteCounts[`group:${item.groupId}`] ?? 0;
-          if (count > 0) suffix = ` (${String(count)} ${pluralVotes(count)})`;
+          if (count > 0) suffix = ` (${countLabel(count, "vote")})`;
         }
         lines.push(`- ${topText} — ${topAuthor}${suffix}`);
         if (options.includeContexts) {

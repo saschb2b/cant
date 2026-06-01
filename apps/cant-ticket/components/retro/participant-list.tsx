@@ -19,6 +19,7 @@ import {
   type AvatarState,
 } from "@/components/rooms/participant-avatar";
 import type { RetroParticipantSnapshot } from "@/lib/retro/types";
+import { countLabel } from "@/lib/retro/format";
 
 function avatarStateFor(
   participant: RetroParticipantSnapshot,
@@ -142,7 +143,7 @@ export function ParticipantList({
               >
                 {p.noteCount === 0
                   ? "no notes yet"
-                  : `${String(p.noteCount)} ${p.noteCount === 1 ? "note" : "notes"}`}
+                  : countLabel(p.noteCount, "note")}
               </Typography>
             </Box>
             {p.isReady && (
