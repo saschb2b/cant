@@ -18,9 +18,12 @@ import {
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { HelpCircle } from "lucide-react";
 import type { RetroEvent } from "@/lib/retro/events";
 import type { NoteSnapshot, RetroSessionSnapshot } from "@/lib/retro/types";
 import type { ActionComposerState } from "./action-panel";
@@ -32,6 +35,7 @@ import { JoinForm } from "./join-form";
 import { NoteCard } from "./note-card";
 import { ParticipantList } from "./participant-list";
 import { PhasePanel } from "./phase-panel";
+import { RetroOnboarding } from "./retro-onboarding";
 import { NoteStack } from "./stack";
 import { TopicBar } from "./topic-bar";
 
@@ -294,6 +298,7 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
   const [error, setError] = useState<string | null>(null);
   const [actionComposer, setActionComposer] =
     useState<ActionComposerState | null>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [dragSource, setDragSource] = useState<DragSource | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
@@ -647,6 +652,12 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
+      <RetroOnboarding
+        forceOpen={helpOpen}
+        onClose={() => {
+          setHelpOpen(false);
+        }}
+      />
       <Stack spacing={3}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -666,9 +677,26 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
               }}
             />
           </Box>
-          <Box sx={{ alignSelf: { xs: "flex-end", sm: "center" } }}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            alignItems="center"
+            sx={{ alignSelf: { xs: "flex-end", sm: "center" } }}
+          >
+            <Tooltip title="How retros work">
+              <IconButton
+                size="small"
+                onClick={() => {
+                  setHelpOpen(true);
+                }}
+                aria-label="Show retro onboarding"
+                sx={{ color: "text.secondary" }}
+              >
+                <HelpCircle size={18} />
+              </IconButton>
+            </Tooltip>
             <InviteButton sessionId={sessionId} />
-          </Box>
+          </Stack>
         </Stack>
 
         <Box
