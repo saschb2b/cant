@@ -25,24 +25,41 @@ import {
 
 const STORAGE_KEY = "cant-ticket:retro:onboarded";
 const SLIDES = 3;
+/**
+ * Time-based re-show interval. Retro norms (Prime Directive, do's, don'ts)
+ * are behavioural and fade fast; mechanics are learned in one session and
+ * stick. 30 days ≈ two sprints for most teams, which is enough cadence to
+ * reinforce norms without being noisy. Roughly matches what tools like
+ * EasyRetro do with persistent norm banners — we just trade their always-on
+ * chrome for a periodic full re-show.
+ */
+const REMIND_INTERVAL_MS = 30 * 24 * 60 * 60 * 1000;
 
 /**
- * One-time onboarding shown the first time a participant joins any retro
- * session on this browser. Three slides:
+ * Onboarding shown the first time a participant joins any retro session on
+ * this browser, and re-shown if more than REMIND_INTERVAL_MS has passed
+ * since the last dismissal. Three slides:
  *   1. Norman Kerth's Prime Directive — the working agreement that makes
  *      retros work.
  *   2. Do's and don'ts — the most common behavioural anti-patterns.
  *   3. A tour of the things in this room a newcomer won't intuit (hidden
  *      notes, ready check, stacking, voting, markdown export).
  *
- * Dismissal — via Skip, Got it, backdrop, or ESC — writes a flag to
- * localStorage so we never bother the participant again.
+ * Dismissal — via Skip, Got it, backdrop, ESC, or the help "?" button —
+ * writes the current timestamp to localStorage so we don't bother the
+ * participant again until the interval elapses.
  */
 const emptySubscribe = () => () => undefined;
 
 function readSeen(): boolean {
   try {
-    return window.localStorage.getItem(STORAGE_KEY) !== null;
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw === null) return false;
+    const lastSeen = Number(raw);
+    // Older builds stored the flag as "1"; treat anything non-numeric as a
+    // fresh fire so we re-show with the new behaviour rather than blocking it.
+    if (!Number.isFinite(lastSeen) || lastSeen <= 0) return false;
+    return Date.now() - lastSeen < REMIND_INTERVAL_MS;
   } catch {
     return false;
   }
@@ -70,7 +87,7 @@ export function RetroOnboarding({
     setClosedLocally(true);
     setStep(0);
     try {
-      window.localStorage.setItem(STORAGE_KEY, "1");
+      window.localStorage.setItem(STORAGE_KEY, String(Date.now()));
     } catch {
       // ignore
     }
