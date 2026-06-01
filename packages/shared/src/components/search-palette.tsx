@@ -536,6 +536,7 @@ export function SearchPalette({
                 <InputAdornment position="end">
                   <IconButton
                     size="small"
+                    aria-label="Clear search"
                     onClick={() => {
                       setQuery("");
                       setHighlightedIndex(0);
