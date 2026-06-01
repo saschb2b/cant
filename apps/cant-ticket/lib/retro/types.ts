@@ -38,6 +38,8 @@ export interface RetroParticipantSnapshot {
   id: string;
   name: string;
   noteCount: number;
+  /** True if this participant clicked "I'm ready" in the current phase. */
+  isReady: boolean;
 }
 
 export type RetroPhase = "collect" | "discuss" | "vote" | "results";

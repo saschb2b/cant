@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import {
+  Check,
   Eye,
   EyeOff,
   Heart,
@@ -29,11 +30,16 @@ export interface PhasePanelProps {
   myVoteCount: number;
   totalVoteCount: number;
   isHost: boolean;
+  /** Whether the current participant has clicked "I'm ready". */
+  amReady: boolean;
+  readyCount: number;
+  participantCount: number;
   onReveal: () => void;
   onStartVoting: (maxVotes: number, endsAt: number | null) => void;
   onEndVoting: () => void;
   onSetTimer: (endsAt: number | null) => void;
   onSetMaxVotes: (maxVotes: number) => void;
+  onSetReady: (isReady: boolean) => void;
 }
 
 const MIN_MAX_VOTES = 1;
@@ -42,6 +48,89 @@ const MAX_MAX_VOTES = 30;
 function clampVotes(n: number): number {
   if (!Number.isFinite(n)) return 5;
   return Math.max(MIN_MAX_VOTES, Math.min(MAX_MAX_VOTES, Math.round(n)));
+}
+
+interface ReadyControlProps {
+  amReady: boolean;
+  readyCount: number;
+  participantCount: number;
+  /** Verb describing what auto-advance will do — for the helper line. */
+  advanceVerb: string;
+  onSetReady: (isReady: boolean) => void;
+}
+
+function ReadyControl({
+  amReady,
+  readyCount,
+  participantCount,
+  advanceVerb,
+  onSetReady,
+}: ReadyControlProps) {
+  const allReady = readyCount > 0 && readyCount === participantCount;
+  const remaining = Math.max(0, participantCount - readyCount);
+  return (
+    <Stack spacing={0.75}>
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          px: 1.25,
+          py: 0.5,
+          borderRadius: 1.5,
+          bgcolor: amReady
+            ? "rgba(var(--mui-palette-success-mainChannel) / 0.10)"
+            : "action.hover",
+        }}
+      >
+        <Stack direction="row" spacing={0.75} alignItems="center">
+          <Check size={14} />
+          <Typography variant="body2" fontWeight={700}>
+            Ready
+          </Typography>
+        </Stack>
+        <Typography
+          variant="body2"
+          fontWeight={700}
+          fontFamily="var(--font-geist-mono), monospace"
+          color={allReady ? "success.main" : "text.primary"}
+        >
+          {readyCount}/{participantCount}
+        </Typography>
+      </Stack>
+      <Button
+        size="small"
+        fullWidth
+        variant={amReady ? "outlined" : "contained"}
+        color={amReady ? "inherit" : "success"}
+        startIcon={<Check size={14} />}
+        onClick={() => {
+          onSetReady(!amReady);
+        }}
+      >
+        {amReady ? "Not ready" : "I'm ready"}
+      </Button>
+      {!amReady && remaining > 0 && (
+        <Typography
+          variant="caption"
+          color="text.disabled"
+          sx={{ fontSize: "0.65rem", lineHeight: 1.3 }}
+        >
+          {advanceVerb} automatically when everyone&apos;s ready.
+        </Typography>
+      )}
+      {amReady && remaining > 0 && (
+        <Typography
+          variant="caption"
+          color="text.disabled"
+          sx={{ fontSize: "0.65rem", lineHeight: 1.3 }}
+        >
+          Waiting on {remaining} {remaining === 1 ? "teammate" : "teammates"}…
+        </Typography>
+      )}
+    </Stack>
+  );
 }
 
 const PHASE_BADGE: Record<
@@ -70,11 +159,15 @@ export function PhasePanel({
   myVoteCount,
   totalVoteCount,
   isHost,
+  amReady,
+  readyCount,
+  participantCount,
   onReveal,
   onStartVoting,
   onEndVoting,
   onSetTimer,
   onSetMaxVotes,
+  onSetReady,
 }: PhasePanelProps) {
   const badge = PHASE_BADGE[phase];
   const [maxVotesInput, setMaxVotesInput] = useState(String(voting.maxVotes));
@@ -174,7 +267,7 @@ export function PhasePanel({
               </Button>
             </Stack>
           )}
-          {isHost ? (
+          {isHost && (
             <Button
               variant="contained"
               size="small"
@@ -185,8 +278,18 @@ export function PhasePanel({
             >
               Reveal notes
             </Button>
-          ) : (
-            <HostHint>Waiting for the host to reveal notes.</HostHint>
+          )}
+          {participantCount > 0 && totalNoteCount > 0 && (
+            <ReadyControl
+              amReady={amReady}
+              readyCount={readyCount}
+              participantCount={participantCount}
+              advanceVerb="Reveals"
+              onSetReady={onSetReady}
+            />
+          )}
+          {!isHost && totalNoteCount === 0 && (
+            <HostHint>Add notes, then mark yourself ready.</HostHint>
           )}
         </Stack>
       )}
@@ -407,7 +510,7 @@ export function PhasePanel({
               </Button>
             </Stack>
           )}
-          {isHost ? (
+          {isHost && (
             <Button
               variant="outlined"
               size="small"
@@ -417,8 +520,15 @@ export function PhasePanel({
             >
               End voting
             </Button>
-          ) : (
-            <HostHint>Host will close voting when ready.</HostHint>
+          )}
+          {participantCount > 0 && (
+            <ReadyControl
+              amReady={amReady}
+              readyCount={readyCount}
+              participantCount={participantCount}
+              advanceVerb="Closes voting"
+              onSetReady={onSetReady}
+            />
           )}
         </Stack>
       )}

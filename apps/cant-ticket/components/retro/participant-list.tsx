@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { Crown } from "lucide-react";
+import { Check, Crown } from "lucide-react";
 import {
   ParticipantAvatar,
   type AvatarState,
@@ -145,6 +145,24 @@ export function ParticipantList({
                   : `${String(p.noteCount)} ${p.noteCount === 1 ? "note" : "notes"}`}
               </Typography>
             </Box>
+            {p.isReady && (
+              <Box
+                title="Ready"
+                aria-label="Ready"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 20,
+                  height: 20,
+                  borderRadius: "50%",
+                  bgcolor: "success.main",
+                  color: "success.contrastText",
+                }}
+              >
+                <Check size={12} strokeWidth={3} />
+              </Box>
+            )}
             {p.noteCount > 0 && (
               <Chip
                 label={p.noteCount}

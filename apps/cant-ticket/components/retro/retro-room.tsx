@@ -194,6 +194,8 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
         };
       }
       case "phase-changed": {
+        // Ready set is reset on every phase boundary (mirrors the server),
+        // so clear isReady on each participant locally too.
         return {
           ...state,
           session: {
@@ -202,6 +204,22 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
             revealed: event.phase !== "collect",
             voting: event.voting,
             collectEndsAt: event.collectEndsAt,
+            participants: session.participants.map((p) =>
+              p.isReady ? { ...p, isReady: false } : p,
+            ),
+          },
+        };
+      }
+      case "ready-changed": {
+        return {
+          ...state,
+          session: {
+            ...session,
+            participants: session.participants.map((p) =>
+              p.id === event.participantId
+                ? { ...p, isReady: event.isReady }
+                : p,
+            ),
           },
         };
       }
@@ -430,6 +448,10 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
   );
   const budgetExhausted = myVoteCount >= session.voting.maxVotes;
   const isHost = session.hostId === participantId;
+  const me = session.participants.find((p) => p.id === participantId);
+  const amReady = me?.isReady === true;
+  const readyCount = session.participants.filter((p) => p.isReady).length;
+  const participantCount = session.participants.length;
 
   const moveSingleNote = (
     noteId: string,
@@ -617,6 +639,10 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
 
   function handleTransferHost(toParticipantId: string) {
     void post("/host", { participantId, toParticipantId });
+  }
+
+  function handleSetReady(isReady: boolean) {
+    void post("/ready", { participantId, isReady });
   }
 
   return (
@@ -811,11 +837,15 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                   myVoteCount={myVoteCount}
                   totalVoteCount={totalVoteCount}
                   isHost={isHost}
+                  amReady={amReady}
+                  readyCount={readyCount}
+                  participantCount={participantCount}
                   onReveal={handleReveal}
                   onStartVoting={handleStartVoting}
                   onEndVoting={handleEndVoting}
                   onSetTimer={handleSetTimer}
                   onSetMaxVotes={handleSetMaxVotes}
+                  onSetReady={handleSetReady}
                 />
                 <ExportButton session={session} />
               </Stack>

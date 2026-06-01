@@ -63,6 +63,8 @@ interface Session {
   collectEndsAt: number | null;
   /** targetKey ("note:<id>" | "group:<groupId>") → voter participant ids */
   votes: Map<string, Set<string>>;
+  /** Participants who have clicked "I'm ready" during the current phase. */
+  ready: Set<string>;
   createdAt: number;
   emptySince: number | null;
   participants: Map<string, Participant>;
@@ -87,6 +89,7 @@ function prune(): void {
     for (const [participantId, p] of session.participants) {
       if (p.connections <= 0 && now - p.lastSeen > PARTICIPANT_GRACE_MS) {
         session.participants.delete(participantId);
+        session.ready.delete(participantId);
         participantRemoved = true;
       }
     }
@@ -137,6 +140,7 @@ export function snapshotParticipant(
     id: participant.id,
     name: participant.name,
     noteCount: countNotesByAuthor(session, participant.id),
+    isReady: session.ready.has(participant.id),
   };
 }
 
@@ -241,6 +245,7 @@ export function createSession(
     votingEndsAt: null,
     collectEndsAt: null,
     votes: new Map(),
+    ready: new Set(),
     createdAt: now,
     emptySince: null,
     participants: new Map([[participant.id, participant]]),
@@ -317,6 +322,7 @@ export function leaveSession(
   const session = getSession(sessionId);
   if (!session) return { removed: false, newHostId: null };
   const removed = session.participants.delete(participantId);
+  session.ready.delete(participantId);
   if (session.participants.size === 0) {
     session.emptySince = Date.now();
   }
@@ -547,9 +553,32 @@ export function reveal(
   if (!session) return null;
   if (session.hostId !== participantId) return null;
   if (session.phase !== "collect") return null;
+  transitionToDiscuss(session);
+  return session;
+}
+
+function transitionToDiscuss(session: Session): void {
   session.phase = "discuss";
   session.collectEndsAt = null;
-  return session;
+  session.ready.clear();
+}
+
+function transitionToVote(
+  session: Session,
+  maxVotes: unknown,
+  endsAtRaw: unknown,
+): void {
+  session.votingMaxVotes = clampMaxVotes(maxVotes);
+  session.votingEndsAt = clampEndsAt(endsAtRaw);
+  session.votes.clear();
+  session.ready.clear();
+  session.phase = "vote";
+}
+
+function transitionToResults(session: Session): void {
+  session.phase = "results";
+  session.votingEndsAt = null;
+  session.ready.clear();
 }
 
 function clampMaxVotes(input: unknown): number {
@@ -583,11 +612,7 @@ export function startVoting(
   if (!session) return null;
   if (session.hostId !== participantId) return null;
   if (session.phase !== "discuss") return null;
-  session.votingMaxVotes = clampMaxVotes(maxVotes);
-  session.votingEndsAt = clampEndsAt(endsAtRaw);
-  // Fresh round: clear any vote ghosts (none expected, but defensive).
-  session.votes.clear();
-  session.phase = "vote";
+  transitionToVote(session, maxVotes, endsAtRaw);
   return session;
 }
 
@@ -612,9 +637,63 @@ export function endVoting(
   if (!session) return null;
   if (session.hostId !== participantId) return null;
   if (session.phase !== "vote") return null;
-  session.phase = "results";
-  session.votingEndsAt = null;
+  transitionToResults(session);
   return session;
+}
+
+export type ReadyAutoAdvance =
+  | "none"
+  | "collect-to-discuss"
+  | "vote-to-results";
+
+export interface ReadyResult {
+  session: Session;
+  participantId: string;
+  isReady: boolean;
+  autoAdvanced: ReadyAutoAdvance;
+}
+
+export function setReady(
+  sessionId: string,
+  participantId: string,
+  isReady: boolean,
+): ReadyResult | null {
+  const session = getSession(sessionId);
+  if (!session) return null;
+  if (!session.participants.has(participantId)) return null;
+  // Ready check only applies in phases that have a natural "I'm done" moment.
+  if (session.phase !== "collect" && session.phase !== "vote") return null;
+
+  if (isReady) {
+    session.ready.add(participantId);
+  } else {
+    session.ready.delete(participantId);
+  }
+
+  // Auto-advance when every active participant has marked themselves ready.
+  // We require the ready set to fully cover the participants Map and to be
+  // non-empty (so a 0-person session can never trigger).
+  let autoAdvanced: ReadyAutoAdvance = "none";
+  if (
+    session.ready.size > 0 &&
+    session.ready.size === session.participants.size &&
+    [...session.participants.keys()].every((id) => session.ready.has(id))
+  ) {
+    if (session.phase === "collect") {
+      transitionToDiscuss(session);
+      autoAdvanced = "collect-to-discuss";
+    } else {
+      transitionToResults(session);
+      autoAdvanced = "vote-to-results";
+    }
+  }
+
+  return {
+    session,
+    participantId,
+    isReady: session.ready.has(participantId),
+    autoAdvanced,
+  };
 }
 
 export function setPhaseTimer(

@@ -24,6 +24,7 @@ export type RetroEvent =
       collectEndsAt: number | null;
     }
   | { type: "vote-changed"; targetKey: string; count: number; voted: boolean }
+  | { type: "ready-changed"; participantId: string; isReady: boolean }
   | { type: "host-changed"; hostId: string }
   | { type: "action-added"; action: ActionItemSnapshot }
   | { type: "action-edited"; action: ActionItemSnapshot }
