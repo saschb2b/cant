@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "concurrency": "15",
+  "globalDependencies": ["tsconfig.base.json", ".prettierignore"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
