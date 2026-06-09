@@ -38,7 +38,7 @@ pnpm test
 pnpm format:check
 ```
 
-If formatting fails, run `npx prettier --write .` from the affected app directory.
+If formatting fails, run `pnpm format` from the repo root (or `npx prettier --write .` in a single app directory).
 
 Do not commit code that fails any of these checks.
 

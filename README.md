@@ -138,6 +138,7 @@ Run from the repo root:
 | `pnpm lint`              | Lint all apps                                  |
 | `pnpm typecheck`         | Type-check all apps                            |
 | `pnpm test`              | Run all vitest suites                          |
+| `pnpm format`            | Format the whole repo with Prettier            |
 | `pnpm format:check`      | Check formatting                               |
 | `pnpm check`             | Run lint, typecheck, test, and format together |
 | `pnpm storybook`         | Launch Storybook for shared package            |
@@ -284,7 +285,7 @@ pnpm check
 
 This runs lint, typecheck, test, and format:check together (via Turborepo, so results are cached and reported in a single pass). You can still run them individually with `pnpm lint`, `pnpm typecheck`, `pnpm test`, and `pnpm format:check`.
 
-If formatting fails, run `npx prettier --write .` from the app directory and include the changes.
+If formatting fails, run `pnpm format` from the repo root and include the changes.
 
 ### Code style
 
