@@ -140,7 +140,7 @@ describe("buildMarkdown", () => {
     expect(md).not.toContain("9 votes");
   });
 
-  it("replaces authors with Anonymous and drops action owners when anonymous", () => {
+  it("replaces note authors with Anonymous but keeps action owners when anonymous", () => {
     const md = buildMarkdown(
       session({
         notes: [note({ text: "Candid", authorName: "Alex" })],
@@ -150,8 +150,8 @@ describe("buildMarkdown", () => {
     );
     expect(md).toContain("- Candid — Anonymous");
     expect(md).not.toContain("Alex");
-    expect(md).toContain("- [ ] Do it");
-    expect(md).not.toContain("owner: Sam");
+    // Owners are accountability, not authorship, so they survive anonymization.
+    expect(md).toContain("- [ ] Do it (owner: Sam)");
   });
 
   it("renders contexts as quoted sub-lines and hides them when disabled", () => {

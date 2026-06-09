@@ -20,6 +20,8 @@ export interface ColumnProps {
   voteCounts: Record<string, number>;
   myVotedTargets: string[];
   budgetExhausted: boolean;
+  /** Highest vote count on the board (results only); flags the top cards. */
+  topVoteCount: number;
   onVote: (targetKey: string, voted: boolean) => void;
   /** id (note:X or stack:X) of the current drop target, for hover styling */
   mergeTargetId: string | null;
@@ -114,6 +116,7 @@ export function Column({
   voteCounts,
   myVotedTargets,
   budgetExhausted,
+  topVoteCount,
   onVote,
   mergeTargetId,
   onAddNote,
@@ -133,6 +136,14 @@ export function Column({
   const sortByVotes = phase === "results";
   const items = buildItems(notes, voteCounts, sortByVotes);
   const showVoteChips = phase === "vote" || phase === "results";
+  // While voting: hide the tally (no bandwagon), show each voter their own
+  // picks. In results: reveal the tally, but neutrally, so a shared screen
+  // never exposes who voted for what.
+  const voteDisplay = {
+    showCount: phase === "results",
+    showVoted: phase === "vote",
+  };
+  const isResults = phase === "results";
   const myVotedSet = new Set(myVotedTargets);
 
   return (
@@ -182,11 +193,15 @@ export function Column({
             const targetKey = `group:${groupId}`;
             const isTarget = mergeTargetId === `stack:${groupId}`;
             const voted = myVotedSet.has(targetKey);
+            const count = voteCounts[targetKey] ?? 0;
             const stackVoteState = showVoteChips
               ? {
-                  count: voteCounts[targetKey] ?? 0,
+                  count,
                   voted,
                   budgetExhausted,
+                  ...voteDisplay,
+                  highlight:
+                    isResults && topVoteCount > 0 && count === topVoteCount,
                   onToggle: () => {
                     onVote(targetKey, !voted);
                   },
@@ -218,11 +233,15 @@ export function Column({
           const targetKey = `note:${note.id}`;
           const isTarget = mergeTargetId === `note:${note.id}`;
           const voted = myVotedSet.has(targetKey);
+          const count = voteCounts[targetKey] ?? 0;
           const noteVoteState = showVoteChips
             ? {
-                count: voteCounts[targetKey] ?? 0,
+                count,
                 voted,
                 budgetExhausted,
+                ...voteDisplay,
+                highlight:
+                  isResults && topVoteCount > 0 && count === topVoteCount,
                 onToggle: () => {
                   onVote(targetKey, !voted);
                 },

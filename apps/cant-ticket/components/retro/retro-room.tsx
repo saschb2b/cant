@@ -199,7 +199,9 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
       }
       case "phase-changed": {
         // Ready set is reset on every phase boundary (mirrors the server),
-        // so clear isReady on each participant locally too.
+        // so clear isReady on each participant locally too. Vote counts are
+        // hidden while voting is open, so they arrive only on the transition
+        // into "results"; every other transition clears them.
         return {
           ...state,
           session: {
@@ -208,6 +210,7 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
             revealed: event.phase !== "collect",
             voting: event.voting,
             collectEndsAt: event.collectEndsAt,
+            voteCounts: event.voteCounts ?? {},
             participants: session.participants.map((p) =>
               p.isReady ? { ...p, isReady: false } : p,
             ),
@@ -265,12 +268,9 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
         };
       }
       case "vote-changed": {
-        const { [event.targetKey]: _dropped, ...rest } = session.voteCounts;
-        const nextCounts: Record<string, number> =
-          event.count === 0
-            ? rest
-            : { ...rest, [event.targetKey]: event.count };
-        void _dropped;
+        // Aggregate counts are hidden during voting, so we only track which
+        // targets this participant has selected (for their budget and the
+        // filled-heart state on their own screen).
         let nextMine = session.myVotedTargets;
         const alreadyMine = nextMine.includes(event.targetKey);
         if (event.voted && !alreadyMine) {
@@ -278,13 +278,10 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
         } else if (!event.voted && alreadyMine) {
           nextMine = nextMine.filter((k) => k !== event.targetKey);
         }
+        if (nextMine === session.myVotedTargets) return state;
         return {
           ...state,
-          session: {
-            ...session,
-            voteCounts: nextCounts,
-            myVotedTargets: nextMine,
-          },
+          session: { ...session, myVotedTargets: nextMine },
         };
       }
       case "action-added": {
@@ -483,6 +480,12 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
     0,
   );
   const budgetExhausted = myVoteCount >= session.voting.maxVotes;
+  // In results, the busiest card(s) across the whole board are flagged so the
+  // top-voted items stand out without leaving the board. 0 means no leaders.
+  const topVoteCount =
+    session.phase === "results"
+      ? Math.max(0, ...Object.values(session.voteCounts))
+      : 0;
   const isHost = session.hostId === participantId;
   const me = session.participants.find((p) => p.id === participantId);
   const amReady = me?.isReady === true;
@@ -791,6 +794,7 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
                       voteCounts={session.voteCounts}
                       myVotedTargets={session.myVotedTargets}
                       budgetExhausted={budgetExhausted}
+                      topVoteCount={topVoteCount}
                       onVote={handleVote}
                       mergeTargetId={overId}
                       onAddNote={(text) => {

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { broadcast } from "@/lib/retro/broadcaster";
-import { listNotes, setReady, snapshotNote } from "@/lib/retro/store";
+import {
+  listNotes,
+  setReady,
+  snapshotNote,
+  tallyVotes,
+} from "@/lib/retro/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -58,6 +63,8 @@ export async function POST(
         endsAt: session.votingEndsAt,
       },
       collectEndsAt: session.collectEndsAt,
+      // Voting just closed: now it is safe to reveal the tally.
+      voteCounts: tallyVotes(session),
     });
   }
 

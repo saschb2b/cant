@@ -24,11 +24,12 @@ export async function POST(
   if (!result) {
     return NextResponse.json({ error: "vote-rejected" }, { status: 400 });
   }
-  const { targetKey: key, count, isVoter } = result;
+  const { targetKey: key, isVoter } = result;
+  // Only each recipient's own vote state is broadcast; the aggregate count is
+  // deliberately withheld until voting closes (see the results transition).
   broadcast(id, (forParticipantId) => ({
     type: "vote-changed",
     targetKey: key,
-    count,
     voted: isVoter(forParticipantId),
   }));
   return NextResponse.json({ ok: true });

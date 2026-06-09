@@ -23,8 +23,15 @@ export type RetroEvent =
       phase: RetroPhase;
       voting: VotingConfig;
       collectEndsAt: number | null;
+      /**
+       * Final aggregate tally, sent only on the transition into "results".
+       * Omitted for every other transition so counts stay hidden while voting.
+       */
+      voteCounts?: Record<string, number>;
     }
-  | { type: "vote-changed"; targetKey: string; count: number; voted: boolean }
+  // No count: the aggregate tally is hidden while voting is open. Each
+  // recipient only learns whether they themselves now hold this vote.
+  | { type: "vote-changed"; targetKey: string; voted: boolean }
   | { type: "ready-changed"; participantId: string; isReady: boolean }
   | { type: "context-added"; noteId: string; context: ContextSnapshot }
   | { type: "context-deleted"; noteId: string; contextId: string }

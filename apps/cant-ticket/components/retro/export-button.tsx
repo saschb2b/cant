@@ -199,7 +199,7 @@ export function ExportButton({ session }: ExportButtonProps) {
                       lineHeight: 1.3,
                     }}
                   >
-                    Strip author names and action item owners.
+                    Strip author names from notes. Action item owners are kept.
                   </Typography>
                 </Box>
               }

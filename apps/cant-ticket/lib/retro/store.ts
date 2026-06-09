@@ -219,14 +219,32 @@ export function snapshotActionItem(
   };
 }
 
+/**
+ * Aggregate tally per target key. Used when revealing results; never sent to
+ * clients while voting is open (see snapshotSession).
+ */
+export function tallyVotes(session: Session): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const [targetKey, voters] of session.votes) {
+    counts[targetKey] = voters.size;
+  }
+  return counts;
+}
+
 export function snapshotSession(
   session: Session,
   forParticipantId: string,
 ): RetroSessionSnapshot {
+  // The aggregate tally is withheld until the results phase. Showing live
+  // counts during voting drives bandwagon voting, and once voting closes a
+  // shared screen must not expose any one person's picks. Each participant
+  // still learns which targets they personally selected (myVotedTargets) so
+  // they can manage their own budget while voting.
+  const revealCounts = session.phase === "results";
   const voteCounts: Record<string, number> = {};
   const myVotedTargets: string[] = [];
   for (const [targetKey, voters] of session.votes) {
-    voteCounts[targetKey] = voters.size;
+    if (revealCounts) voteCounts[targetKey] = voters.size;
     if (voters.has(forParticipantId)) myVotedTargets.push(targetKey);
   }
   return {

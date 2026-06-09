@@ -9,6 +9,22 @@ export interface VoteChipProps {
   voted: boolean;
   /** Whether clicking does anything (vote phase only). */
   interactive: boolean;
+  /**
+   * Whether to display the numeric tally. Hidden while voting is open so the
+   * running count cannot bias votes; shown once results are revealed.
+   */
+  showCount: boolean;
+  /**
+   * Whether the current participant's own vote tints the chip red. On during
+   * voting (so they can track their picks), off in results so a shared screen
+   * never exposes who voted for what.
+   */
+  showVoted: boolean;
+  /**
+   * Top vote-getter on the board (results only). Drawn in primary so the most
+   * voted cards stand out without leaving the board.
+   */
+  highlight?: boolean;
   /** When user has no votes left and isn't currently voted on this target. */
   budgetExhausted?: boolean;
   onToggle?: () => void;
@@ -18,11 +34,21 @@ export function VoteChip({
   count,
   voted,
   interactive,
+  showCount,
+  showVoted,
+  highlight = false,
   budgetExhausted = false,
   onToggle,
 }: VoteChipProps) {
-  const showZero = count === 0 && !interactive;
-  if (count === 0 && !interactive) return null;
+  // "personal" = the viewer's own pick (red, voting). "highlight" = a board
+  // leader (primary, results). They never co-occur, but personal wins if so.
+  const personal = showVoted && voted;
+  const accent = personal ? "error" : highlight ? "primary" : null;
+  const filled = accent !== null;
+  // A static chip with no tally and no accent has nothing to say.
+  if (!interactive && !showCount && !filled) return null;
+  // In results, items that drew no votes get no chip at all.
+  if (!interactive && showCount && count === 0 && !filled) return null;
   const disabled = interactive && !voted && budgetExhausted;
   const handleClick = interactive && !disabled ? onToggle : undefined;
 
@@ -63,15 +89,15 @@ export function VoteChip({
         minWidth: 36,
         borderRadius: 1,
         border: 1,
-        borderColor: voted
-          ? "error.main"
+        borderColor: accent
+          ? `${accent}.main`
           : interactive
             ? "divider"
             : "transparent",
-        bgcolor: voted
-          ? "rgba(var(--mui-palette-error-mainChannel) / 0.1)"
+        bgcolor: accent
+          ? `rgba(var(--mui-palette-${accent}-mainChannel) / 0.1)`
           : "background.paper",
-        color: voted ? "error.main" : "text.secondary",
+        color: accent ? `${accent}.main` : "text.secondary",
         cursor: interactive
           ? disabled
             ? "not-allowed"
@@ -86,9 +112,9 @@ export function VoteChip({
         "&:hover":
           interactive && !disabled
             ? {
-                borderColor: voted ? "error.main" : "text.primary",
-                bgcolor: voted
-                  ? "rgba(var(--mui-palette-error-mainChannel) / 0.16)"
+                borderColor: accent ? `${accent}.main` : "text.primary",
+                bgcolor: accent
+                  ? `rgba(var(--mui-palette-${accent}-mainChannel) / 0.16)`
                   : "action.hover",
               }
             : undefined,
@@ -96,10 +122,10 @@ export function VoteChip({
     >
       <Heart
         size={12}
-        fill={voted ? "currentColor" : "none"}
-        strokeWidth={voted ? 0 : 2}
+        fill={filled ? "currentColor" : "none"}
+        strokeWidth={filled ? 0 : 2}
       />
-      {!showZero && count}
+      {showCount && count}
     </Box>
   );
 }

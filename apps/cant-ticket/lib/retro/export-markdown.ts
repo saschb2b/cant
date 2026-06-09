@@ -195,8 +195,10 @@ export function buildMarkdown(
       );
       for (const action of sorted) {
         const cleaned = action.text.replace(/\r?\n/g, " ");
-        const owner =
-          action.owner && !options.anonymous ? ` (owner: ${action.owner})` : "";
+        // Owners are kept even in anonymous mode. Anonymity protects who voiced
+        // a piece of feedback, not who owns a follow-up commitment: an action
+        // item without an owner has no accountability.
+        const owner = action.owner ? ` (owner: ${action.owner})` : "";
         lines.push(`- [ ] ${cleaned}${owner}`);
       }
     }

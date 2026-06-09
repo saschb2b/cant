@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { ActionItemSnapshot } from "@/lib/retro/types";
+import { ConfirmDialog } from "./confirm-dialog";
 
 export interface ActionComposerState {
   text: string;
@@ -154,6 +155,7 @@ function ActionRow({ action, onEdit, onDelete }: ActionRowProps) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(action.text);
   const [owner, setOwner] = useState(action.owner);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   if (editing) {
     return (
@@ -220,85 +222,103 @@ function ActionRow({ action, onEdit, onDelete }: ActionRowProps) {
   }
 
   return (
-    <Box
-      sx={{
-        p: 1.25,
-        border: 1,
-        borderColor: "divider",
-        borderRadius: 1,
-        bgcolor: "background.paper",
-        "&:hover .action-tools": { opacity: 1 },
-      }}
-    >
-      <Stack
-        direction="row"
-        spacing={1}
-        alignItems="flex-start"
-        justifyContent="space-between"
+    <>
+      <Box
+        sx={{
+          p: 1.25,
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 1,
+          bgcolor: "background.paper",
+          "&:hover .action-tools": { opacity: 1 },
+        }}
       >
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography
-            variant="body2"
-            sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
-          >
-            {action.text}
-          </Typography>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            sx={{ mt: 0.5 }}
-          >
-            {action.owner && (
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="flex-start"
+          justifyContent="space-between"
+        >
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography
+              variant="body2"
+              sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+            >
+              {action.text}
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              sx={{ mt: 0.5 }}
+            >
+              {action.owner && (
+                <Typography
+                  variant="caption"
+                  fontWeight={600}
+                  color="primary.main"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{ fontSize: "0.65rem" }}
+                >
+                  @{action.owner}
+                </Typography>
+              )}
               <Typography
                 variant="caption"
-                fontWeight={600}
-                color="primary.main"
+                color="text.disabled"
                 fontFamily="var(--font-geist-mono), monospace"
                 sx={{ fontSize: "0.65rem" }}
               >
-                @{action.owner}
+                from {action.authorName}
               </Typography>
-            )}
-            <Typography
-              variant="caption"
-              color="text.disabled"
-              fontFamily="var(--font-geist-mono), monospace"
-              sx={{ fontSize: "0.65rem" }}
-            >
-              from {action.authorName}
-            </Typography>
-          </Stack>
-        </Box>
-        <Stack
-          direction="row"
-          spacing={0.25}
-          className="action-tools"
-          sx={{
-            opacity: { xs: 1, sm: 0 },
-            transition: "opacity 0.15s",
-          }}
-        >
-          <IconButton
-            size="small"
-            onClick={() => {
-              setEditing(true);
+            </Stack>
+          </Box>
+          <Stack
+            direction="row"
+            spacing={0.25}
+            className="action-tools"
+            sx={{
+              opacity: { xs: 1, sm: 0 },
+              transition: "opacity 0.15s",
             }}
-            aria-label="Edit action"
-            sx={{ p: 0.25 }}
           >
-            <Pencil size={14} />
-          </IconButton>
-          <IconButton
-            size="small"
-            onClick={onDelete}
-            aria-label="Delete action"
-            sx={{ p: 0.25 }}
-          >
-            <Trash2 size={14} />
-          </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => {
+                setEditing(true);
+              }}
+              aria-label="Edit action"
+              sx={{ p: 0.25 }}
+            >
+              <Pencil size={14} />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => {
+                setConfirmingDelete(true);
+              }}
+              aria-label="Delete action"
+              sx={{ p: 0.25 }}
+            >
+              <Trash2 size={14} />
+            </IconButton>
+          </Stack>
         </Stack>
-      </Stack>
-    </Box>
+      </Box>
+      <ConfirmDialog
+        open={confirmingDelete}
+        title="Delete this action item?"
+        description="This removes the commitment for everyone in the room. It cannot be undone."
+        preview={action.text}
+        confirmLabel="Delete"
+        onCancel={() => {
+          setConfirmingDelete(false);
+        }}
+        onConfirm={() => {
+          setConfirmingDelete(false);
+          onDelete();
+        }}
+      />
+    </>
   );
 }

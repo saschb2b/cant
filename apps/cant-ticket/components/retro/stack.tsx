@@ -33,6 +33,10 @@ export interface StackProps {
     count: number;
     voted: boolean;
     budgetExhausted: boolean;
+    showCount: boolean;
+    showVoted: boolean;
+    /** Top vote-getter on the board (results) — accents the stack. */
+    highlight: boolean;
     onToggle: () => void;
   } | null;
   onEditNote: (noteId: string, text: string) => void;
@@ -71,6 +75,8 @@ export function NoteStack({
   const count = sorted.length;
   const visibleCount = sorted.filter((n) => n.text !== null).length;
   const contextCount = sorted.reduce((acc, n) => acc + n.contexts.length, 0);
+  // Top vote-getter on the board (results) — accent the stack so it pops.
+  const isLeader = voteState?.highlight ?? false;
   const dragPhaseOk = phase === "collect" || phase === "discuss";
   const canDragWhole = revealed && dragPhaseOk && !asOverlay && !expanded;
   const reorderAllowed = dragPhaseOk;
@@ -127,7 +133,7 @@ export function NoteStack({
           p: 1.25,
           borderRadius: 2,
           border: 1.5,
-          borderColor: isMergeTarget ? "primary.main" : "divider",
+          borderColor: isMergeTarget || isLeader ? "primary.main" : "divider",
           bgcolor: "rgba(var(--mui-palette-primary-mainChannel) / 0.04)",
           transition: "border-color 150ms ease",
         }}
@@ -158,6 +164,9 @@ export function NoteStack({
               count={voteState.count}
               voted={voteState.voted}
               interactive={phase === "vote"}
+              showCount={voteState.showCount}
+              showVoted={voteState.showVoted}
+              highlight={voteState.highlight}
               budgetExhausted={voteState.budgetExhausted}
               onToggle={voteState.onToggle}
             />
@@ -347,8 +356,10 @@ export function NoteStack({
           zIndex: 1,
           borderRadius: 2,
           border: 1.5,
-          borderColor: isMergeTarget ? "primary.main" : "divider",
-          bgcolor: "background.paper",
+          borderColor: isMergeTarget || isLeader ? "primary.main" : "divider",
+          bgcolor: isLeader
+            ? "rgba(var(--mui-palette-primary-mainChannel) / 0.05)"
+            : "background.paper",
           p: 1.5,
           boxShadow: asOverlay ? 6 : 0,
           transition: "border-color 150ms ease, box-shadow 150ms ease",
@@ -405,6 +416,9 @@ export function NoteStack({
               count={voteState.count}
               voted={voteState.voted}
               interactive={phase === "vote"}
+              showCount={voteState.showCount}
+              showVoted={voteState.showVoted}
+              highlight={voteState.highlight}
               budgetExhausted={voteState.budgetExhausted}
               onToggle={voteState.onToggle}
             />

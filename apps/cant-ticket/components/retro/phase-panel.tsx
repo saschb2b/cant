@@ -222,7 +222,8 @@ export function PhasePanel({
           sx={{ fontSize: "0.65rem" }}
         >
           {countLabel(totalNoteCount, "note")}
-          {phase === "vote" || phase === "results"
+          {/* The tally stays hidden until results so it cannot sway voting. */}
+          {phase === "results"
             ? ` · ${countLabel(totalVoteCount, "vote")}`
             : ""}
         </Typography>
