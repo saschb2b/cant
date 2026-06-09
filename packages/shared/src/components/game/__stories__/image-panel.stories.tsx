@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { ImagePanel } from "../image-panel";
-import checkmarkAnimation from "./checkmark-animation.json";
 
 const meta: Meta<typeof ImagePanel> = {
   title: "Game/Image Panel",
@@ -13,7 +12,6 @@ const meta: Meta<typeof ImagePanel> = {
     label: "A",
     isSelectable: true,
     onSelect: fn(),
-    checkmarkAnimation,
   },
   decorators: [
     (Story) => (

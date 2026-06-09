@@ -27,7 +27,7 @@ function BouncingBallDemo({
     let lastTime = 0;
     let rafId = 0;
 
-    function tick(time: number) {
+    const tick = (time: number) => {
       const dt = lastTime ? (time - lastTime) / 1000 : 1 / 60;
       lastTime = time;
 
@@ -46,7 +46,7 @@ function BouncingBallDemo({
       ctx.fill();
 
       rafId = requestAnimationFrame(tick);
-    }
+    };
 
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);

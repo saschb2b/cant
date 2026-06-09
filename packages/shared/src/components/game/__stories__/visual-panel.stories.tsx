@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { VisualPanel } from "../visual-panel";
-import checkmarkAnimation from "./checkmark-animation.json";
 
 function GoodComponent() {
   return (
@@ -39,7 +38,6 @@ const meta: Meta<typeof VisualPanel> = {
     label: "A",
     isSelectable: true,
     onSelect: fn(),
-    checkmarkAnimation,
   },
   decorators: [
     (Story) => (
