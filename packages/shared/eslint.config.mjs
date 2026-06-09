@@ -14,6 +14,7 @@ const eslintConfig = [
           allowDefaultProject: [
             "eslint.config.mjs",
             "vitest.config.ts",
+            "vitest.config.unit.ts",
             "vitest.shims.d.ts",
           ],
         },
