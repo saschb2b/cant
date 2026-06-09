@@ -105,41 +105,43 @@ cant/
 
 Run from the repo root:
 
-| Script                   | Description                           |
-| ------------------------ | ------------------------------------- |
-| `pnpm dev`               | Start all apps with cross-app linking |
-| `pnpm dev:hub`           | Start cant-hub only (:3000)           |
-| `pnpm dev:maintain`      | Start cant-maintain only (:3001)      |
-| `pnpm dev:resize`        | Start cant-resize only (:3002)        |
-| `pnpm dev:type`          | Start cant-type only (:3003)          |
-| `pnpm dev:orchestrate`   | Start cant-orchestrate only (:3004)   |
-| `pnpm dev:seo`           | Start cant-seo only (:3005)           |
-| `pnpm dev:ux`            | Start cant-ux only (:3006)            |
-| `pnpm dev:explode`       | Start cant-explode only (:3007)       |
-| `pnpm dev:branch`        | Start cant-branch only (:3008)        |
-| `pnpm dev:query`         | Start cant-query only (:3009)         |
-| `pnpm dev:test`          | Start cant-test only (:3010)          |
-| `pnpm dev:game`          | Start cant-game only (:3011)          |
-| `pnpm dev:ticket`        | Start cant-ticket only (:3013)        |
-| `pnpm build`             | Production build all apps (parallel)  |
-| `pnpm build:maintain`    | Build cant-maintain only              |
-| `pnpm build:resize`      | Build cant-resize only                |
-| `pnpm build:type`        | Build cant-type only                  |
-| `pnpm build:orchestrate` | Build cant-orchestrate only           |
-| `pnpm build:seo`         | Build cant-seo only                   |
-| `pnpm build:ux`          | Build cant-ux only                    |
-| `pnpm build:hub`         | Build cant-hub only                   |
-| `pnpm build:explode`     | Build cant-explode only               |
-| `pnpm build:branch`      | Build cant-branch only                |
-| `pnpm build:query`       | Build cant-query only                 |
-| `pnpm build:test`        | Build cant-test only                  |
-| `pnpm build:game`        | Build cant-game only                  |
-| `pnpm build:ticket`      | Build cant-ticket only                |
-| `pnpm lint`              | Lint all apps                         |
-| `pnpm typecheck`         | Type-check all apps                   |
-| `pnpm format:check`      | Check formatting                      |
-| `pnpm storybook`         | Launch Storybook for shared package   |
-| `pnpm build-storybook`   | Build static Storybook                |
+| Script                   | Description                                    |
+| ------------------------ | ---------------------------------------------- |
+| `pnpm dev`               | Start all apps with cross-app linking          |
+| `pnpm dev:hub`           | Start cant-hub only (:3000)                    |
+| `pnpm dev:maintain`      | Start cant-maintain only (:3001)               |
+| `pnpm dev:resize`        | Start cant-resize only (:3002)                 |
+| `pnpm dev:type`          | Start cant-type only (:3003)                   |
+| `pnpm dev:orchestrate`   | Start cant-orchestrate only (:3004)            |
+| `pnpm dev:seo`           | Start cant-seo only (:3005)                    |
+| `pnpm dev:ux`            | Start cant-ux only (:3006)                     |
+| `pnpm dev:explode`       | Start cant-explode only (:3007)                |
+| `pnpm dev:branch`        | Start cant-branch only (:3008)                 |
+| `pnpm dev:query`         | Start cant-query only (:3009)                  |
+| `pnpm dev:test`          | Start cant-test only (:3010)                   |
+| `pnpm dev:game`          | Start cant-game only (:3011)                   |
+| `pnpm dev:ticket`        | Start cant-ticket only (:3013)                 |
+| `pnpm build`             | Production build all apps (parallel)           |
+| `pnpm build:maintain`    | Build cant-maintain only                       |
+| `pnpm build:resize`      | Build cant-resize only                         |
+| `pnpm build:type`        | Build cant-type only                           |
+| `pnpm build:orchestrate` | Build cant-orchestrate only                    |
+| `pnpm build:seo`         | Build cant-seo only                            |
+| `pnpm build:ux`          | Build cant-ux only                             |
+| `pnpm build:hub`         | Build cant-hub only                            |
+| `pnpm build:explode`     | Build cant-explode only                        |
+| `pnpm build:branch`      | Build cant-branch only                         |
+| `pnpm build:query`       | Build cant-query only                          |
+| `pnpm build:test`        | Build cant-test only                           |
+| `pnpm build:game`        | Build cant-game only                           |
+| `pnpm build:ticket`      | Build cant-ticket only                         |
+| `pnpm lint`              | Lint all apps                                  |
+| `pnpm typecheck`         | Type-check all apps                            |
+| `pnpm test`              | Run all vitest suites                          |
+| `pnpm format:check`      | Check formatting                               |
+| `pnpm check`             | Run lint, typecheck, test, and format together |
+| `pnpm storybook`         | Launch Storybook for shared package            |
+| `pnpm build-storybook`   | Build static Storybook                         |
 
 ## Shared package (`@cant/shared`)
 
@@ -277,10 +279,10 @@ All apps are registered in `packages/shared/src/lib/cant-apps.ts` with their nam
 Run all checks and fix any issues:
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm format:check
+pnpm check
 ```
+
+This runs lint, typecheck, test, and format:check together (via Turborepo, so results are cached and reported in a single pass). You can still run them individually with `pnpm lint`, `pnpm typecheck`, `pnpm test`, and `pnpm format:check`.
 
 If formatting fails, run `npx prettier --write .` from the app directory and include the changes.
 

@@ -26,6 +26,12 @@ packages/shared       # @cant/shared - components, game logic, challenges, utili
 Run checks from the repo root:
 
 ```bash
+pnpm check
+```
+
+This runs all four checks together (lint, typecheck, test, format:check) via Turborepo, with `--continue` so every failure is reported in one pass. To run them individually:
+
+```bash
 pnpm lint
 pnpm typecheck
 pnpm test
