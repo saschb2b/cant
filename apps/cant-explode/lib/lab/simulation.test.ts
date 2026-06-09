@@ -110,29 +110,37 @@ describe("ash + sand = soil", () => {
 });
 
 describe("wet soil spontaneously sprouts seeds", () => {
-  it("soil + water should eventually produce vegetation", () => {
-    const grid = createGrid(15, 7);
-    // Stone floor + wide soil layer for higher probability
-    for (let x = 0; x <= 14; x++) {
-      place(grid, x, 6, "stone");
-      place(grid, x, 5, "soil");
-    }
-    // Water pool
-    for (let x = 2; x <= 12; x++) {
-      place(grid, x, 4, "water");
-    }
+  // Runs thousands of simulation ticks, so it is CPU-heavy. Raise the timeout
+  // well above vitest's 5s default: under parallel test runs (turbo, CI) this
+  // can slow several-fold and would otherwise flake on a timeout, not a real
+  // assertion failure.
+  it(
+    "soil + water should eventually produce vegetation",
+    { timeout: 30_000 },
+    () => {
+      const grid = createGrid(15, 7);
+      // Stone floor + wide soil layer for higher probability
+      for (let x = 0; x <= 14; x++) {
+        place(grid, x, 6, "stone");
+        place(grid, x, 5, "soil");
+      }
+      // Water pool
+      for (let x = 2; x <= 12; x++) {
+        place(grid, x, 4, "water");
+      }
 
-    // Run enough ticks for spontaneous seed generation and sprouting
-    runTicks(grid, 3000);
+      // Run enough ticks for spontaneous seed generation and sprouting
+      runTicks(grid, 3000);
 
-    const vegetation =
-      countElement(grid, "plant") +
-      countElement(grid, "stem") +
-      countElement(grid, "leaf") +
-      countElement(grid, "grass") +
-      countElement(grid, "seed");
-    expect(vegetation).toBeGreaterThan(0);
-  });
+      const vegetation =
+        countElement(grid, "plant") +
+        countElement(grid, "stem") +
+        countElement(grid, "leaf") +
+        countElement(grid, "grass") +
+        countElement(grid, "seed");
+      expect(vegetation).toBeGreaterThan(0);
+    },
+  );
 
   it("dry soil should NOT sprout", () => {
     const grid = createGrid(7, 7);
@@ -165,45 +173,52 @@ describe("wet soil spontaneously sprouts seeds", () => {
 });
 
 describe("full user scenario: sand -> burn wood -> water -> life emerges", () => {
-  it("should eventually grow vegetation from soil + water alone", () => {
-    const grid = createGrid(20, 20);
+  // The heaviest test in this file: ~7000 ticks on a 20x20 grid. In isolation it
+  // runs in ~1.5s, but under parallel test runs it can exceed vitest's 5s default
+  // and flake on a timeout. Give it generous headroom.
+  it(
+    "should eventually grow vegetation from soil + water alone",
+    { timeout: 30_000 },
+    () => {
+      const grid = createGrid(20, 20);
 
-    // Sand base
-    for (let x = 2; x <= 17; x++) {
-      place(grid, x, 18, "sand");
-      place(grid, x, 19, "sand");
-    }
+      // Sand base
+      for (let x = 2; x <= 17; x++) {
+        place(grid, x, 18, "sand");
+        place(grid, x, 19, "sand");
+      }
 
-    // Ash layer on top (simulating burned wood result)
-    for (let x = 4; x <= 15; x++) {
-      place(grid, x, 17, "ash");
-    }
+      // Ash layer on top (simulating burned wood result)
+      for (let x = 4; x <= 15; x++) {
+        place(grid, x, 17, "ash");
+      }
 
-    // Let ash + sand react to form soil
-    runTicks(grid, 3000);
+      // Let ash + sand react to form soil
+      runTicks(grid, 3000);
 
-    const soilCount = countElement(grid, "soil");
-    expect(soilCount).toBeGreaterThan(0);
+      const soilCount = countElement(grid, "soil");
+      expect(soilCount).toBeGreaterThan(0);
 
-    // Add water - no seeds! Life should emerge from wet soil
-    for (let x = 5; x <= 14; x++) {
-      place(grid, x, 15, "water");
-      place(grid, x, 16, "water");
-    }
+      // Add water - no seeds! Life should emerge from wet soil
+      for (let x = 5; x <= 14; x++) {
+        place(grid, x, 15, "water");
+        place(grid, x, 16, "water");
+      }
 
-    // Let life emerge and grow
-    runTicks(grid, 4000);
+      // Let life emerge and grow
+      runTicks(grid, 4000);
 
-    // Should have vegetation
-    const vegetation =
-      countElement(grid, "plant") +
-      countElement(grid, "stem") +
-      countElement(grid, "leaf") +
-      countElement(grid, "grass") +
-      countElement(grid, "seed");
+      // Should have vegetation
+      const vegetation =
+        countElement(grid, "plant") +
+        countElement(grid, "stem") +
+        countElement(grid, "leaf") +
+        countElement(grid, "grass") +
+        countElement(grid, "seed");
 
-    expect(vegetation).toBeGreaterThan(0);
-  });
+      expect(vegetation).toBeGreaterThan(0);
+    },
+  );
 });
 
 describe("water conservation", () => {
