@@ -31,7 +31,7 @@ Educational platforms where you pick the better option in side-by-side compariso
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) >= 20
+- [Node.js](https://nodejs.org/) >= 20. An `.nvmrc` pins Node 22 (the version CI uses); run `nvm use` to match it.
 - [pnpm](https://pnpm.io/) 10.20+
 
 ```bash
