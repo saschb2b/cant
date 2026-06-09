@@ -141,6 +141,7 @@ Run from the repo root:
 | `pnpm format`            | Format the whole repo with Prettier            |
 | `pnpm format:check`      | Check formatting                               |
 | `pnpm check`             | Run lint, typecheck, test, and format together |
+| `pnpm clean`             | Remove build artifacts and the Turbo cache     |
 | `pnpm storybook`         | Launch Storybook for shared package            |
 | `pnpm build-storybook`   | Build static Storybook                         |
 
