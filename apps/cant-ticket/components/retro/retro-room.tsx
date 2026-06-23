@@ -950,6 +950,7 @@ export function RetroRoom({ sessionId }: RetroRoomProps) {
               </Box>
               <ParticipantList
                 participants={session.participants}
+                notes={session.notes}
                 revealed={session.revealed}
                 selfId={participantId}
                 hostId={session.hostId}

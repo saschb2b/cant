@@ -18,19 +18,18 @@ import {
   ParticipantAvatar,
   type AvatarState,
 } from "@/components/rooms/participant-avatar";
-import type { RetroParticipantSnapshot } from "@/lib/retro/types";
+import type { NoteSnapshot, RetroParticipantSnapshot } from "@/lib/retro/types";
 import { countLabel } from "@/lib/retro/format";
+import { countNotesByAuthor } from "@/lib/retro/note-counts";
 
-function avatarStateFor(
-  participant: RetroParticipantSnapshot,
-  revealed: boolean,
-): AvatarState {
+function avatarStateFor(noteCount: number, revealed: boolean): AvatarState {
   if (revealed) return "settled";
-  return participant.noteCount > 0 ? "voted" : "thinking";
+  return noteCount > 0 ? "voted" : "thinking";
 }
 
 export interface ParticipantListProps {
   participants: RetroParticipantSnapshot[];
+  notes: NoteSnapshot[];
   revealed: boolean;
   selfId: string;
   hostId: string;
@@ -40,12 +39,14 @@ export interface ParticipantListProps {
 
 export function ParticipantList({
   participants,
+  notes,
   revealed,
   selfId,
   hostId,
   canTransferHost,
   onTransferHost,
 }: ParticipantListProps) {
+  const noteCounts = countNotesByAuthor(notes);
   const [pendingTransfer, setPendingTransfer] =
     useState<RetroParticipantSnapshot | null>(null);
   const sorted = [...participants].sort((a, b) => {
@@ -62,6 +63,7 @@ export function ParticipantList({
         const isSelf = p.id === selfId;
         const isHost = p.id === hostId;
         const canPromote = canTransferHost && !isHost;
+        const noteCount = noteCounts.get(p.id) ?? 0;
         return (
           <Box
             key={p.id}
@@ -83,7 +85,7 @@ export function ParticipantList({
                 seed={p.id}
                 size={40}
                 title={p.name}
-                state={avatarStateFor(p, revealed)}
+                state={avatarStateFor(noteCount, revealed)}
               />
               {isHost && (
                 <Box
@@ -141,9 +143,9 @@ export function ParticipantList({
                 fontFamily="var(--font-geist-mono), monospace"
                 sx={{ fontSize: "0.65rem" }}
               >
-                {p.noteCount === 0
+                {noteCount === 0
                   ? "no notes yet"
-                  : countLabel(p.noteCount, "note")}
+                  : countLabel(noteCount, "note")}
               </Typography>
             </Box>
             {p.isReady && (
@@ -164,9 +166,9 @@ export function ParticipantList({
                 <Check size={12} strokeWidth={3} />
               </Box>
             )}
-            {p.noteCount > 0 && (
+            {noteCount > 0 && (
               <Chip
-                label={p.noteCount}
+                label={noteCount}
                 size="small"
                 color={revealed ? "default" : "success"}
                 variant={revealed ? "outlined" : "filled"}

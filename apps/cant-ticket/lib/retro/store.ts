@@ -141,14 +141,6 @@ function participantName(
   return session.participants.get(authorId)?.name ?? fallback;
 }
 
-function countNotesByAuthor(session: Session, authorId: string): number {
-  let count = 0;
-  for (const note of session.notes.values()) {
-    if (note.authorId === authorId) count += 1;
-  }
-  return count;
-}
-
 export function snapshotParticipant(
   session: Session,
   participant: Participant,
@@ -156,7 +148,6 @@ export function snapshotParticipant(
   return {
     id: participant.id,
     name: participant.name,
-    noteCount: countNotesByAuthor(session, participant.id),
     isReady: session.ready.has(participant.id),
   };
 }
