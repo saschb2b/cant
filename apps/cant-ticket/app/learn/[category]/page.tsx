@@ -1,26 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import { buildContentMap } from "@cant/shared/lib";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
-import {
-  LearnCategoryPage,
-  FormattedText,
-  SourceLink,
-} from "@cant/shared/components";
+import { LearnCategoryPage, LearnExplanation } from "@cant/shared/components";
 import { challenges } from "@cant/shared/lib/challenges/cant-ticket";
 import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,
   CATEGORY_DESCRIPTIONS,
 } from "@/lib/learn/categories";
-import type {
-  ChallengeCategory,
-  Difficulty,
-  Challenge,
-} from "@/lib/learn/types";
+import type { ChallengeCategory, Difficulty } from "@/lib/learn/types";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 
@@ -95,90 +84,13 @@ export default async function CategoryPage({ params }: PageProps) {
       }
       panelBg="background.paper"
       renderExplanation={(challenge) => (
-        <>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="flex-start"
-            sx={{ mb: 1.5 }}
-          >
-            <Box
-              sx={{
-                width: 3,
-                minHeight: 20,
-                bgcolor: "error.main",
-                borderRadius: 100,
-                mt: 0.5,
-                flexShrink: 0,
-              }}
-            />
-            <Box>
-              <Typography
-                variant="caption"
-                fontWeight={600}
-                color="error.main"
-                fontFamily="var(--font-geist-mono), monospace"
-              >
-                Why avoid
-              </Typography>
-              <Box
-                sx={{
-                  typography: "body2",
-                  lineHeight: 1.75,
-                  color: "text.primary",
-                  mt: 0.25,
-                }}
-              >
-                <FormattedText
-                  text={(challenge as Challenge).explanationWrong}
-                />
-              </Box>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1} alignItems="flex-start">
-            <Box
-              sx={{
-                width: 3,
-                minHeight: 20,
-                bgcolor: "success.main",
-                borderRadius: 100,
-                mt: 0.5,
-                flexShrink: 0,
-              }}
-            />
-            <Box>
-              <Typography
-                variant="caption"
-                fontWeight={600}
-                color="success.main"
-                fontFamily="var(--font-geist-mono), monospace"
-              >
-                Why prefer
-              </Typography>
-              <Box
-                sx={{
-                  typography: "body2",
-                  lineHeight: 1.75,
-                  color: "text.primary",
-                  mt: 0.25,
-                }}
-              >
-                <FormattedText text={challenge.explanationCorrect} />
-              </Box>
-            </Box>
-          </Stack>
-          <SourceLink
-            href={challenge.sourceUrl}
-            label={challenge.sourceLabel}
-            challengeId={challenge.id}
-            category={challenge.category}
-            challengeTitle={challenge.title}
-            categoryLabel={
-              CATEGORY_LABELS[challenge.category as ChallengeCategory]
-            }
-            githubUrl="https://github.com/saschb2b/cant"
-          />
-        </>
+        <LearnExplanation
+          challenge={challenge}
+          categoryLabel={
+            CATEGORY_LABELS[challenge.category as ChallengeCategory]
+          }
+          githubUrl="https://github.com/saschb2b/cant"
+        />
       )}
     />
   );

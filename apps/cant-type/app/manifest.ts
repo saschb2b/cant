@@ -2,14 +2,14 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Can't Resize - Multi-Device Preview",
-    short_name: "Can't Resize",
+    name: "Can't Type - TypeScript Pattern Game",
+    short_name: "Can't Type",
     description:
-      "Preview any URL across phones, tablets, and desktops simultaneously with synchronized scrolling, clicks, and navigation.",
+      "Pick the better TypeScript pattern in side-by-side code challenges. Covers generics, narrowing, utility types, and more.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0A0A0A",
-    theme_color: "#1A1A1A",
+    background_color: "#0F1219",
+    theme_color: "#181D27",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon.png", sizes: "180x180", type: "image/png" },

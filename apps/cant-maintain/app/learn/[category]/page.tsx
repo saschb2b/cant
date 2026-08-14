@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Box from "@mui/material/Box";
 import {
   getHighlighter,
   highlightDual,
   buildContentMap,
 } from "@cant/shared/lib";
-import {
-  LearnCategoryPage,
-  FormattedText,
-  SourceLink,
-} from "@cant/shared/components";
+import { LearnCategoryPage, LearnExplanation } from "@cant/shared/components";
 import { challenges } from "@cant/shared/lib/challenges/cant-maintain";
 import {
   CATEGORY_ORDER,
@@ -93,28 +88,13 @@ export default async function CategoryPage({ params }: PageProps) {
       }
       panelBg="rgba(var(--mui-palette-secondary-mainChannel) / 0.5)"
       renderExplanation={(challenge) => (
-        <>
-          <Box
-            sx={{
-              typography: "body2",
-              lineHeight: 1.75,
-              color: "text.primary",
-            }}
-          >
-            <FormattedText text={challenge.explanationCorrect} />
-          </Box>
-          <SourceLink
-            href={challenge.sourceUrl}
-            label={challenge.sourceLabel}
-            challengeId={challenge.id}
-            category={challenge.category}
-            challengeTitle={challenge.title}
-            categoryLabel={
-              CATEGORY_LABELS[challenge.category as ChallengeCategory]
-            }
-            githubUrl="https://github.com/saschb2b/cant"
-          />
-        </>
+        <LearnExplanation
+          challenge={challenge}
+          categoryLabel={
+            CATEGORY_LABELS[challenge.category as ChallengeCategory]
+          }
+          githubUrl="https://github.com/saschb2b/cant"
+        />
       )}
     />
   );
