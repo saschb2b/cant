@@ -12,17 +12,25 @@ export type { SearchItem };
 const pages: SearchItem[] = [
   {
     type: "page",
-    title: "Viewer",
+    title: "Sandbox",
     description:
-      "Preview any URL across phones, tablets, and desktops simultaneously",
-    icon: "viewer",
-    keywords: ["viewer", "canvas", "preview", "devices", "responsive"],
-    href: "/canvas",
+      "Write TypeScript type expressions and see them fully expanded",
+    icon: "sandbox",
+    keywords: [
+      "sandbox",
+      "playground",
+      "types",
+      "expand",
+      "utility",
+      "mapped",
+      "conditional",
+    ],
+    href: "/playground",
   },
   {
     type: "page",
     title: "Learn",
-    description: "Browse all categories and study responsive design patterns",
+    description: "Browse all categories and study TypeScript patterns",
     icon: "learn",
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",

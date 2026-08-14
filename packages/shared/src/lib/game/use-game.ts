@@ -32,7 +32,15 @@ const SESSION_PICKS: Record<Difficulty, number> = {
   hard: 3,
 };
 
-function prepareChallenges<T extends BaseChallenge>(
+/** Minimal challenge shape needed to simulate round selection. */
+interface RoundChallenge {
+  id: string;
+  category: string;
+  difficulty: Difficulty;
+  correctSide: "left" | "right";
+}
+
+function prepareChallenges<T extends RoundChallenge>(
   allChallenges: T[],
   rng: () => number,
   excludedCategories: Set<string>,
@@ -71,6 +79,55 @@ function prepareChallenges<T extends BaseChallenge>(
             | "right",
         })),
     );
+}
+
+/** Challenge ids of the round a raw seed deterministically produces. */
+export function getRoundIds(
+  allChallenges: RoundChallenge[],
+  rawSeed: string,
+  excludedCategories: Set<string>,
+): string[] {
+  const rng = createRng(hashSeed(rawSeed));
+  return prepareChallenges(allChallenges, rng, excludedCategories).map(
+    (c) => c.id,
+  );
+}
+
+/**
+ * Picks the raw seed for a new random game. A seed always produces the same
+ * round for every player, so instead of biasing selection by local progress,
+ * this rotates through candidate seeds and keeps the one whose round contains
+ * the most challenges the player has not solved yet. Stops early when a fully
+ * unsolved round is found.
+ */
+export function pickSeedForProgress(
+  allChallenges: RoundChallenge[],
+  excludedCategories: Set<string>,
+  completedIds: Set<string>,
+  generateSeed: () => string,
+  maxAttempts = 8,
+): string {
+  let bestSeed = generateSeed();
+  if (completedIds.size === 0) return bestSeed;
+
+  const countUnsolved = (rawSeed: string) => {
+    const round = getRoundIds(allChallenges, rawSeed, excludedCategories);
+    return {
+      unsolved: round.filter((id) => !completedIds.has(id)).length,
+      size: round.length,
+    };
+  };
+
+  let best = countUnsolved(bestSeed);
+  for (let i = 1; i < maxAttempts && best.unsolved < best.size; i++) {
+    const seed = generateSeed();
+    const candidate = countUnsolved(seed);
+    if (candidate.unsolved > best.unsolved) {
+      bestSeed = seed;
+      best = candidate;
+    }
+  }
+  return bestSeed;
 }
 
 function createInitialState<T extends BaseChallenge>(
@@ -123,6 +180,8 @@ export interface UseGameCallbacks {
     durationSec: number;
   }) => void | Promise<void>;
   encodeSeed: (rawSeed: string, excludedCategories: Set<string>) => string;
+  /** Records a challenge answer to local progress. Optional. */
+  recordChallengeResult?: (challengeId: string, isCorrect: boolean) => void;
 }
 
 /** Core game state hook. Handles scoring, progression, and answers. */
@@ -142,6 +201,7 @@ export function useGame<T extends BaseChallenge>(
     recordActivity,
     submitGameResult,
     encodeSeed,
+    recordChallengeResult,
   } = callbacks;
   const [state, setState] = useState<GameState<T> | null>(null);
   const challengeShownAt = useRef(0);
@@ -206,7 +266,7 @@ export function useGame<T extends BaseChallenge>(
 
   const submitAnswer = useCallback(
     (side: "left" | "right") => {
-      if (!currentChallenge) return;
+      if (!currentChallenge || currentAnswer) return;
 
       const challengeId = currentChallenge.id;
       const correctSide = currentChallenge.correctSide;
@@ -225,6 +285,8 @@ export function useGame<T extends BaseChallenge>(
         result: isCorrect ? "correct" : "wrong",
         timeSec,
       });
+
+      recordChallengeResult?.(challengeId, isCorrect);
 
       setState((prev) => {
         if (!prev || prev.answers[challengeId]) return prev;
@@ -246,7 +308,7 @@ export function useGame<T extends BaseChallenge>(
         };
       });
     },
-    [currentChallenge, trackEvent],
+    [currentChallenge, currentAnswer, trackEvent, recordChallengeResult],
   );
 
   const goToNext = useCallback(() => {

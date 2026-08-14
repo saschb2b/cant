@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LearnPage() {
+  "use cache";
   const highlighter = await getHighlighter();
 
   const previewChallenges = CATEGORY_ORDER.flatMap(

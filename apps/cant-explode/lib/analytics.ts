@@ -22,16 +22,6 @@ interface SourceLinkClickedData {
   label: string;
 }
 
-interface ViewerUrlLoadedData {
-  url: string;
-}
-
-interface DeviceAddedData {
-  device: string;
-  width: number;
-  height: number;
-}
-
 interface NotFoundVisitedData {
   path: string;
 }
@@ -93,8 +83,6 @@ interface EventMap {
   "search-opened": SearchOpenedData;
   "search-selected": SearchSelectedData;
   "source-link-clicked": SourceLinkClickedData;
-  "viewer-url-loaded": ViewerUrlLoadedData;
-  "device-added": DeviceAddedData;
   "404-visited": NotFoundVisitedData;
   "game-started": GameStartedData;
   "challenge-answered": ChallengeAnsweredData;

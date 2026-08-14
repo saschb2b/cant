@@ -10,7 +10,8 @@ import { recordGame } from "./history";
 import { recordActivity } from "./activity";
 import { submitGameResult } from "./actions";
 import { encodeSeed } from "./seeded-random";
-import type { Challenge, GameState } from "./types";
+import { recordAnswer } from "./progress";
+import type { Challenge } from "./types";
 
 /** Core game state hook. Handles scoring, progression, and answers. */
 export function useGame(
@@ -20,18 +21,19 @@ export function useGame(
   retryKey = 0,
   gameType: "daily" | "weekly" | "custom" = "custom",
 ) {
-  const callbacks: UseGameCallbacks = useMemo(
+  const callbacks = useMemo<UseGameCallbacks>(
     () => ({
-      trackEvent: trackEvent as UseGameCallbacks["trackEvent"],
+      trackEvent,
       recordGame,
       recordActivity,
       submitGameResult,
       encodeSeed,
+      recordChallengeResult: recordAnswer,
     }),
     [],
   );
 
-  const result = useGameShared(
+  return useGameShared(
     challengePool,
     seed,
     callbacks,
@@ -39,12 +41,4 @@ export function useGame(
     retryKey,
     gameType,
   );
-
-  // The shared hook types state/challenges as BaseChallenge, but we know they
-  // are the app-specific Challenge type that was passed in.
-  return result as typeof result & {
-    state: GameState | null;
-    currentChallenge: Challenge | null;
-    displayChallenge: Challenge | null;
-  };
 }

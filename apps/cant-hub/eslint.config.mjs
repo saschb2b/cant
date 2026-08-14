@@ -30,6 +30,14 @@ const eslintConfig = [
     },
   },
   {
+    // Next.js requires functions using the "use cache" directive to be async,
+    // even when their body has nothing to await.
+    files: ["app/**/*.tsx"],
+    rules: {
+      "@typescript-eslint/require-await": "off",
+    },
+  },
+  {
     ignores: [
       "node_modules/**",
       ".next/**",

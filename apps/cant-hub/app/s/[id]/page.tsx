@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
@@ -10,7 +11,7 @@ import {
 import { APP_CATALOG, type AppSlug } from "@cant/shared/lib/app-catalog";
 import { CandidateForm } from "./candidate-form";
 
-export default async function SharePage({
+async function SharePageContent({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -167,5 +168,13 @@ export default async function SharePage({
         <CandidateForm assessmentId={id} timeEstimate={timeEstimate} />
       </Stack>
     </Container>
+  );
+}
+
+export default function SharePage(props: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={null}>
+      <SharePageContent {...props} />
+    </Suspense>
   );
 }

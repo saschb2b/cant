@@ -10,13 +10,14 @@ import { recordGame } from "./history";
 import { recordActivity } from "./activity";
 import { submitGameResult } from "./actions";
 import { encodeSeed } from "./seeded-random";
+import { recordAnswer } from "./progress";
 import type { Challenge } from "./types";
 
 /** Core game state hook. Handles scoring, progression, and answers. */
 export function useGame(
   challengePool: Challenge[],
   seed: string | null,
-  excludedCategories: Set<string> = new Set<string>(),
+  excludedCategories = new Set<string>(),
   retryKey = 0,
   gameType: "daily" | "weekly" | "custom" = "custom",
 ) {
@@ -27,6 +28,7 @@ export function useGame(
       recordActivity,
       submitGameResult,
       encodeSeed,
+      recordChallengeResult: recordAnswer,
     }),
     [],
   );

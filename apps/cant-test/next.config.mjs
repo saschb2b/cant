@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  experimental: {
-    viewTransition: true,
-  },
+  cacheComponents: true,
+  partialPrefetching: true,
   images: {
     unoptimized: true,
   },

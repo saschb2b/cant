@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { redirect } from "next/navigation";
@@ -29,7 +30,7 @@ function buildCategoryLabels(
   return labels;
 }
 
-export default async function PlayPage({
+async function PlaySession({
   params,
   searchParams,
 }: {
@@ -84,5 +85,17 @@ export default async function PlayPage({
       timeLimitSeconds={assessment.timeLimitSeconds}
       startedAt={session.startedAt}
     />
+  );
+}
+
+// The whole route is session-gated, so there is no static shell to prerender.
+export default function PlayPage(props: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ session?: string }>;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <PlaySession {...props} />
+    </Suspense>
   );
 }

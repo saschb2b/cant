@@ -12,6 +12,7 @@ export { HeroCta } from "./hero-cta";
 export { LearnCategoryPage } from "./learn-category-page";
 export { MeshGradient } from "./mesh-gradient";
 export { LearnContentPanel } from "./learn-content-panel";
+export { LearnExplanation } from "./learn-explanation";
 export { LearnIndexPage } from "./learn-index-page";
 export { LearnMobileNav } from "./learn-mobile-nav";
 export { LearnSidebar } from "./learn-sidebar";

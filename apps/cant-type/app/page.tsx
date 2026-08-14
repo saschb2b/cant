@@ -162,6 +162,7 @@ function HeroCodeVisual({
 }
 
 export default async function LandingPage() {
+  "use cache";
   const highlighter = await getHighlighter();
   const spellHtml = highlightDual(highlighter, HERO_SPELL);
   const revealHtml = highlightDual(highlighter, HERO_REVEAL);

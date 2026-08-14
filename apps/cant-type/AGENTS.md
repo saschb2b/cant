@@ -1,7 +1,18 @@
-# Can't Resize
+# Can't Type
 
-Next.js 16 responsive design toolkit: a multi-device viewer (`/canvas`) and 82 learn-by-example patterns (`/learn`).
+Next.js 16 TypeScript pattern trainer: an in-browser playground (`/playground`) and 133 learn-by-example patterns (`/learn`) across 16 categories.
 
 ## Guides
 
-- [Adding content](docs/adding-content.md): challenges, categories, device presets
+- [Adding content](docs/adding-content.md): challenges and categories
+- [App rules](CLAUDE.md): playground, Shiki decorations, vendored compiler
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 import { broadcast } from "@/lib/poker/broadcaster";
 import { revealSession, snapshotSession } from "@/lib/poker/store";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },

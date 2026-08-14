@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
@@ -6,7 +7,7 @@ import { redirect } from "next/navigation";
 import { getAssessmentById } from "@/lib/assessments";
 import { getCandidateSession } from "@/lib/candidate-sessions";
 
-export default async function DonePage({
+async function DonePageContent({
   params,
   searchParams,
 }: {
@@ -46,5 +47,16 @@ export default async function DonePage({
         </Typography>
       </Stack>
     </Container>
+  );
+}
+
+export default function DonePage(props: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ session?: string }>;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <DonePageContent {...props} />
+    </Suspense>
   );
 }

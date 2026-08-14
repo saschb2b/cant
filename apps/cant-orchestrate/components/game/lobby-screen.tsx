@@ -15,13 +15,14 @@ import {
   getEntryBySeed,
   formatRelativeDate,
 } from "@/lib/game/history";
+import { getProgressSummary, resetProgress } from "@/lib/game/progress";
 import { ActivityGraph } from "./activity-graph";
 
 export type GameType = "daily" | "weekly" | "custom";
 
 const config = {
   categorySections: CATEGORY_SECTIONS,
-  categoryLabels: CATEGORY_LABELS as Record<string, string>,
+  categoryLabels: CATEGORY_LABELS,
   gameUtils: {
     decodeSeed,
     generateSeed,
@@ -31,6 +32,8 @@ const config = {
     getHistory,
     getEntryBySeed,
     formatRelativeDate,
+    getProgressSummary,
+    resetProgress,
   },
 };
 

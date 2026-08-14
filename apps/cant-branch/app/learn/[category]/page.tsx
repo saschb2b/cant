@@ -7,8 +7,7 @@ import { buildContentMap } from "@cant/shared/lib";
 import {
   LearnCategoryPage,
   LearnContentPanel,
-  FormattedText,
-  SourceLink,
+  LearnExplanation,
 } from "@cant/shared/components";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { visualRegistry } from "@/components/visual/registry";
@@ -69,6 +68,7 @@ function renderContentPanel(
 }
 
 export default async function CategoryPage({ params }: PageProps) {
+  "use cache";
   const { category } = await params;
   if (!categorySet.has(category)) notFound();
 
@@ -120,28 +120,13 @@ export default async function CategoryPage({ params }: PageProps) {
       panelBg="rgba(var(--mui-palette-secondary-mainChannel) / 0.5)"
       renderContentPanel={renderContentPanel}
       renderExplanation={(challenge) => (
-        <>
-          <Box
-            sx={{
-              typography: "body2",
-              lineHeight: 1.75,
-              color: "text.primary",
-            }}
-          >
-            <FormattedText text={challenge.explanationCorrect} />
-          </Box>
-          <SourceLink
-            href={challenge.sourceUrl}
-            label={challenge.sourceLabel}
-            challengeId={challenge.id}
-            category={challenge.category}
-            challengeTitle={challenge.title}
-            categoryLabel={
-              CATEGORY_LABELS[challenge.category as ChallengeCategory]
-            }
-            githubUrl="https://github.com/saschb2b/cant"
-          />
-        </>
+        <LearnExplanation
+          challenge={challenge}
+          categoryLabel={
+            CATEGORY_LABELS[challenge.category as ChallengeCategory]
+          }
+          githubUrl="https://github.com/saschb2b/cant"
+        />
       )}
     />
   );

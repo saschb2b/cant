@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { decodeResults, getRank } from "@/lib/game/share";
 import { ResultsRedirect } from "./results-redirect";
 
@@ -55,8 +56,16 @@ export async function generateMetadata({
  * Renders a minimal page so crawlers can read OG meta tags,
  * then redirects browsers to /play via client-side navigation.
  */
-export default async function ResultsPage({ searchParams }: Props) {
+async function RedirectSection({ searchParams }: Props) {
   const params = await searchParams;
   const seed = typeof params.seed === "string" ? params.seed : undefined;
   return <ResultsRedirect seed={seed} />;
+}
+
+export default function ResultsPage({ searchParams }: Props) {
+  return (
+    <Suspense fallback={null}>
+      <RedirectSection searchParams={searchParams} />
+    </Suspense>
+  );
 }

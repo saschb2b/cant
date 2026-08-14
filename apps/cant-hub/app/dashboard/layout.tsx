@@ -6,6 +6,10 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { DashboardNav } from "@/components/dashboard-nav";
 
+// Every dashboard route blocks on the session before it can render, so there
+// is no instant shell to prerender.
+export const instant = false;
+
 export default async function DashboardLayout({
   children,
 }: {

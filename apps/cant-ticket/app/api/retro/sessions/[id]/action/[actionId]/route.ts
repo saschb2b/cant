@@ -6,9 +6,6 @@ import {
   snapshotActionItem,
 } from "@/lib/retro/store";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string; actionId: string }> },

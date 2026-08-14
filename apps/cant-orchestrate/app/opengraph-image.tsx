@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "Can't Orchestrate - Container Orchestration Challenge Game";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -101,8 +100,7 @@ export default function OgImage() {
           lineHeight: 1.4,
         }}
       >
-        Pick the better orchestration pattern. {String(69)} challenges across 16
-        categories.
+        {`Pick the better orchestration pattern. ${String(69)} challenges across 16 categories.`}
       </div>
     </div>,
     { ...size },

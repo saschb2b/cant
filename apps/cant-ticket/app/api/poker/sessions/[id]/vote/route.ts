@@ -3,9 +3,6 @@ import { broadcast } from "@/lib/poker/broadcaster";
 import { isVote } from "@/lib/poker/deck";
 import { castVote } from "@/lib/poker/store";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
