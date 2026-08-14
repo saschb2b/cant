@@ -10,7 +10,7 @@ import { recordGame } from "./history";
 import { recordActivity } from "./activity";
 import { submitGameResult } from "./actions";
 import { encodeSeed } from "./seeded-random";
-import { recordAnswer, getCompletedIds } from "./progress";
+import { recordAnswer } from "./progress";
 import type { Challenge } from "./types";
 
 /** Core game state hook. Handles scoring, progression, and answers. */
@@ -29,7 +29,6 @@ export function useGame(
       submitGameResult,
       encodeSeed,
       recordChallengeResult: recordAnswer,
-      getCompletedChallengeIds: getCompletedIds,
     }),
     [],
   );

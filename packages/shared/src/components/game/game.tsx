@@ -3,6 +3,7 @@
 import type { ComponentType, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Difficulty, TicketCardData } from "../../lib/game/types";
+import { pickSeedForProgress } from "../../lib/game/use-game";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -291,6 +292,13 @@ interface GameProps<C extends BaseChallenge> {
   showFeedback?: boolean;
   /** Called after each answer is submitted (e.g. to persist server-side). */
   onAnswerSubmit?: (challengeId: string, side: "left" | "right") => void;
+  /**
+   * IDs of challenges the player already answered correctly. When provided,
+   * starting a random game rotates candidate seeds toward rounds with
+   * unsolved challenges. Entered or shared seeds are never altered, so a
+   * given seed produces the same round for every player.
+   */
+  getCompletedChallengeIds?: () => Set<string>;
   children?: ReactNode;
 }
 
@@ -315,6 +323,7 @@ export function Game<C extends BaseChallenge>({
   },
   showFeedback = true,
   onAnswerSubmit,
+  getCompletedChallengeIds,
 }: GameProps<C>) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
@@ -356,9 +365,19 @@ export function Game<C extends BaseChallenge>({
     ) => {
       setExcludedCategories(excluded);
       setGameType(type);
-      setActiveSeed(seed || generateSeedFn());
+      setActiveSeed(
+        seed ||
+          (getCompletedChallengeIds
+            ? pickSeedForProgress(
+                challenges,
+                excluded,
+                getCompletedChallengeIds(),
+                generateSeedFn,
+              )
+            : generateSeedFn()),
+      );
     },
-    [generateSeedFn],
+    [generateSeedFn, challenges, getCompletedChallengeIds],
   );
 
   const handleRetry = useCallback(() => {

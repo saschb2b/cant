@@ -8,6 +8,7 @@ import {
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
+import { getCompletedIds } from "@/lib/game/progress";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { MoleculePanel } from "./molecule-panel";
 import { VisualPanelWrapper } from "./visual-panel";
@@ -32,6 +33,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       githubUrl="https://github.com/saschb2b/cant"
       useGame={useGame}
       generateSeed={generateSeed}
+      getCompletedChallengeIds={getCompletedIds}
       slots={{
         codePanel: CodePanel,
         moleculePanel: MoleculePanel,

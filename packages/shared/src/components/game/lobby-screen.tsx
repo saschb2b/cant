@@ -762,8 +762,8 @@ export function LobbyScreen({
                   color="text.secondary"
                   sx={{ fontSize: "0.72rem", lineHeight: 1.5 }}
                 >
-                  Questions solved this month. Custom games serve the remaining
-                  ones first. Resets at the start of each month.
+                  Questions solved this month. Random games favor rounds with
+                  unsolved questions. Resets at the start of each month.
                 </Typography>
                 <Button
                   size="small"

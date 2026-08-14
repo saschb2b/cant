@@ -10,6 +10,7 @@ import type { Challenge } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
+import { getCompletedIds } from "@/lib/game/progress";
 import { ExplanationPanel } from "./explanation-panel";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
@@ -30,6 +31,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       githubUrl="https://github.com/saschb2b/cant"
       useGame={useGame}
       generateSeed={generateSeed}
+      getCompletedChallengeIds={getCompletedIds}
       slots={{
         codePanel: CodePanel,
         lobby: LobbyScreen,
