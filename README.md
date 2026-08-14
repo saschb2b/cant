@@ -163,7 +163,7 @@ import { createTracker } from "@cant/shared/lib/analytics";
 
 **Learn UI:** LearnIndexPage, LearnCategoryPage, LearnContentPanel, LearnSidebar, LearnMobileNav
 
-**Utilities:** Shiki highlighter, code block styles, analytics context, app theme context, game types, activity store, history store, seeded random, app registry
+**Utilities:** Shiki highlighter, code block styles, analytics context, app theme context, game types, activity store, history store, challenge progress store, seeded random, app registry
 
 ### AppThemeProvider
 
