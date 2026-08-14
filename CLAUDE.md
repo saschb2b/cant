@@ -61,6 +61,46 @@ To check a single app: `pnpm turbo lint --filter=cant-maintain`
 - Turbo caches builds. If you change shared code, dependent apps rebuild automatically
 - The `build` task depends on `^build` (shared package builds first)
 
+## Working with Next.js
+
+Every app runs Next.js 16.3 (App Router). Do not answer Next.js questions from memory: the bundled, version-matched docs are the source of truth.
+
+### Bundled agent docs
+
+Next ships its full documentation inside the package, mirroring the structure of nextjs.org/docs. Read the relevant guide there before writing routing, caching, or rendering code:
+
+```
+apps/<app>/node_modules/next/dist/docs/
+├── 01-app/           # App Router: getting-started, guides, api-reference
+├── 02-pages/
+├── 03-architecture/
+└── index.md
+```
+
+This is a pnpm workspace, so `next` is not resolvable from the repo root. Always read the docs through an app path, for example `apps/cant-resize/node_modules/next/dist/docs/01-app/02-guides/migrating-to-cache-components.md`.
+
+Each app also has an `AGENTS.md` holding a `nextjs-agent-rules` managed block. `next dev` rewrites that block, so leave it in place and commit it with your work. Keep app-specific notes outside the markers, and do not add a `CLAUDE.md` that only re-exports `AGENTS.md`.
+
+When the dev server is running, its MCP endpoint at `/_next/mcp` exposes compilation issues for the running app.
+
+### Instant navigation (Cache Components)
+
+Every app enables both flags in `next.config.mjs`, which together turn on instant navigation:
+
+```js
+cacheComponents: true,     // Partial Prerendering as the default
+partialPrefetching: true,  // <Link> prefetches the shared App Shell
+```
+
+This constrains how pages are written. When adding or changing a route:
+
+- **Static pages** (landing, learn) put `"use cache"` at the top of the page function. This is required for anything that reaches Shiki, since highlighting reads the current time.
+- **Anything reading `params`, `searchParams`, cookies, or headers** must resolve it inside a `<Suspense>` boundary. Pass the promise down to a child component and await it there, so the shell still prerenders. See the play, results, and room pages for the pattern.
+- **Functions using `"use cache"` must be async** even with nothing to await, so `@typescript-eslint/require-await` is disabled for `app/**/*.tsx`.
+- **Route segment configs are rejected**: no `export const dynamic`, no `export const runtime`. Route handlers are dynamic on their own when they touch request data.
+- **A route that genuinely must block** (auth gates, session-only pages) exports `instant = false` from its page or layout instead. `apps/cant-hub/app/dashboard/layout.tsx` is the example.
+- **Satori is stricter off the edge runtime**: in `opengraph-image.tsx`, a `div` with more than one child needs an explicit `display`. Interpolated sentences should be a single template-literal child.
+
 ## Working with @cant/shared
 
 ### When to add to shared
