@@ -43,13 +43,13 @@
     }
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.1.1",
+    "@chromatic-com/storybook": "^5.3.0",
     "@eslint/js": "^10.0.1",
-    "@storybook/addon-a11y": "^10.3.3",
-    "@storybook/addon-docs": "^10.3.3",
-    "@storybook/addon-onboarding": "^10.3.3",
-    "@storybook/addon-vitest": "^10.3.3",
-    "@storybook/react-vite": "^10.3.3",
+    "@storybook/addon-a11y": "^10.5.8",
+    "@storybook/addon-docs": "^10.5.8",
+    "@storybook/addon-onboarding": "^10.5.8",
+    "@storybook/addon-vitest": "^10.5.8",
+    "@storybook/react-vite": "^10.5.8",
     "@types/node": "^22",
     "@types/react": "19.2.14",
     "@vitest/browser-playwright": "^4.1.1",
@@ -58,10 +58,12 @@
     "eslint-config-prettier": "^10.1.8",
     "playwright": "^1.58.2",
     "prettier": "^3.8.1",
-    "storybook": "^10.3.3",
+    "storybook": "^10.5.8",
     "typescript": "6.0.2",
     "typescript-eslint": "^8.58.0",
-    "vitest": "^4.1.1"
+    "vitest": "^4.1.1",
+    "eslint-plugin-storybook": "10.5.8",
+    "@storybook/addon-mcp": "^0.7.0"
   },
   "scripts": {
     "format:check": "prettier --check --ignore-path ../../.prettierignore .",
