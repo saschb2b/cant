@@ -121,6 +121,10 @@ The `CantSeriesGrid` component (`packages/shared/src/components/cant-series-grid
 
 Run: `pnpm storybook` (opens on :6006)
 
+### Storybook MCP
+
+`@storybook/addon-mcp` exposes an MCP server at `http://localhost:6006/mcp` while the dev server runs. It is registered for Claude Code in the repo-root `.mcp.json`, providing tools to preview stories, look up component documentation, run story tests, and list stories changed on the branch. Start `pnpm storybook` first; without the dev server the MCP endpoint is unavailable. When working on shared components, prefer these tools over guessing props from source: call `get-storybook-story-instructions` before writing stories and `preview-stories` after visual changes.
+
 ### Adding a story
 
 Create a `.stories.tsx` file next to the component in a `__stories__` directory:
