@@ -17,7 +17,7 @@ const config = {
   encodeResults,
   getMissedCategoryLabels,
   githubUrl: "https://github.com/saschb2b/cant",
-  categoryLabels: CATEGORY_LABELS as Record<string, string>,
+  categoryLabels: CATEGORY_LABELS,
 };
 
 interface ResultsScreenProps {

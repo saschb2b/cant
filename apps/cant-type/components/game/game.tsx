@@ -4,6 +4,7 @@ import {
   Game as SharedGame,
   GameHeader,
   CodePanel,
+  ExplanationPanel,
 } from "@cant/shared/components/game";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import type { Challenge } from "@/lib/game/types";
@@ -11,7 +12,6 @@ import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
 import { getCompletedIds } from "@/lib/game/progress";
-import { ExplanationPanel } from "./explanation-panel";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
 
@@ -27,7 +27,7 @@ export function Game({ challenges, contentMap, defaultSeed }: GameProps) {
       challenges={challenges}
       contentMap={contentMap}
       defaultSeed={defaultSeed}
-      categoryLabels={CATEGORY_LABELS as Record<string, string>}
+      categoryLabels={CATEGORY_LABELS}
       githubUrl="https://github.com/saschb2b/cant"
       useGame={useGame}
       generateSeed={generateSeed}

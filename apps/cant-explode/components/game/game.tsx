@@ -4,6 +4,7 @@ import {
   Game as SharedGame,
   GameHeader,
   CodePanel,
+  ExplanationPanel,
 } from "@cant/shared/components/game";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { useGame } from "@/lib/game/use-game";
@@ -12,7 +13,6 @@ import { getCompletedIds } from "@/lib/game/progress";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { MoleculePanel } from "./molecule-panel";
 import { VisualPanelWrapper } from "./visual-panel";
-import { ExplanationPanel } from "./explanation-panel";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
 import type { Challenge } from "@/lib/game/types";

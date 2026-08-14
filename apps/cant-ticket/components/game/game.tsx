@@ -5,13 +5,13 @@ import {
   GameHeader,
   CodePanel,
   TicketPanel,
+  ExplanationPanel,
 } from "@cant/shared/components/game";
 import type { ContentMapEntry } from "@cant/shared/components/game";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
 import { getCompletedIds } from "@/lib/game/progress";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";
-import { ExplanationPanel } from "./explanation-panel";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
 import type { Challenge } from "@/lib/game/types";

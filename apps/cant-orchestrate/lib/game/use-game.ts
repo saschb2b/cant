@@ -17,7 +17,7 @@ import type { Challenge } from "./types";
 export function useGame(
   challengePool: Challenge[],
   seed: string | null,
-  excludedCategories: Set<string> = new Set<string>(),
+  excludedCategories = new Set<string>(),
   retryKey = 0,
   gameType: "daily" | "weekly" | "custom" = "custom",
 ) {
