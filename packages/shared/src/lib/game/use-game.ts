@@ -32,10 +32,27 @@ const SESSION_PICKS: Record<Difficulty, number> = {
   hard: 3,
 };
 
+/**
+ * Stable partition that moves already-completed challenges behind the rest.
+ * Keeps completed challenges in the pool so difficulty tiers never dry out,
+ * while unseen and not-yet-solved ones are picked first.
+ */
+export function prioritizeUncompleted<T extends BaseChallenge>(
+  challenges: T[],
+  completedIds: Set<string>,
+): T[] {
+  if (completedIds.size === 0) return challenges;
+  return [
+    ...challenges.filter((c) => !completedIds.has(c.id)),
+    ...challenges.filter((c) => completedIds.has(c.id)),
+  ];
+}
+
 function prepareChallenges<T extends BaseChallenge>(
   allChallenges: T[],
   rng: () => number,
   excludedCategories: Set<string>,
+  completedIds: Set<string>,
   useAllChallenges = false,
 ): T[] {
   const pool =
@@ -62,7 +79,7 @@ function prepareChallenges<T extends BaseChallenge>(
   return (Object.entries(byDifficulty) as [Difficulty, T[]][])
     .sort(([a], [b]) => DIFFICULTY_ORDER[a] - DIFFICULTY_ORDER[b])
     .flatMap(([, cs]) =>
-      shuffle(cs, rng)
+      prioritizeUncompleted(shuffle(cs, rng), completedIds)
         .slice(0, SESSION_PICKS[cs[0]?.difficulty ?? "medium"])
         .map((c) => ({
           ...c,
@@ -79,6 +96,7 @@ function createInitialState<T extends BaseChallenge>(
   excludedCategories: Set<string>,
   gameType: "daily" | "weekly" | "custom",
   encodeSeed: (raw: string, excluded: Set<string>) => string,
+  completedIds: Set<string>,
   useAllChallenges = false,
 ): GameState<T> {
   const rng = createRng(hashSeed(rawSeed));
@@ -87,6 +105,7 @@ function createInitialState<T extends BaseChallenge>(
       allChallenges,
       rng,
       excludedCategories,
+      completedIds,
       useAllChallenges,
     ),
     currentIndex: 0,
@@ -123,6 +142,14 @@ export interface UseGameCallbacks {
     durationSec: number;
   }) => void | Promise<void>;
   encodeSeed: (rawSeed: string, excludedCategories: Set<string>) => string;
+  /** Records a challenge answer to local progress. Optional. */
+  recordChallengeResult?: (challengeId: string, isCorrect: boolean) => void;
+  /**
+   * IDs of challenges already answered correctly, used to prioritize the
+   * remaining ones in custom games. Optional. Daily and weekly games ignore
+   * this so their rounds stay identical for every player.
+   */
+  getCompletedChallengeIds?: () => Set<string>;
 }
 
 /** Core game state hook. Handles scoring, progression, and answers. */
@@ -142,6 +169,8 @@ export function useGame<T extends BaseChallenge>(
     recordActivity,
     submitGameResult,
     encodeSeed,
+    recordChallengeResult,
+    getCompletedChallengeIds,
   } = callbacks;
   const [state, setState] = useState<GameState<T> | null>(null);
   const challengeShownAt = useRef(0);
@@ -149,7 +178,13 @@ export function useGame<T extends BaseChallenge>(
   const didFireFinish = useRef(false);
   useEffect(() => {
     didFireFinish.current = false;
-    if (seed)
+    if (seed) {
+      // Only custom games are biased by local progress. Daily and weekly
+      // seeds must produce the same round for everyone.
+      const completedIds =
+        gameType === "custom"
+          ? (getCompletedChallengeIds?.() ?? new Set<string>())
+          : new Set<string>();
       setState(
         createInitialState(
           challengePool,
@@ -157,10 +192,11 @@ export function useGame<T extends BaseChallenge>(
           excludedCategories,
           gameType,
           encodeSeed,
+          completedIds,
           useAllChallenges,
         ),
       );
-    else setState(null);
+    } else setState(null);
   }, [
     challengePool,
     seed,
@@ -168,6 +204,7 @@ export function useGame<T extends BaseChallenge>(
     retryKey,
     gameType,
     encodeSeed,
+    getCompletedChallengeIds,
     useAllChallenges,
   ]);
 
@@ -206,7 +243,7 @@ export function useGame<T extends BaseChallenge>(
 
   const submitAnswer = useCallback(
     (side: "left" | "right") => {
-      if (!currentChallenge) return;
+      if (!currentChallenge || currentAnswer) return;
 
       const challengeId = currentChallenge.id;
       const correctSide = currentChallenge.correctSide;
@@ -225,6 +262,8 @@ export function useGame<T extends BaseChallenge>(
         result: isCorrect ? "correct" : "wrong",
         timeSec,
       });
+
+      recordChallengeResult?.(challengeId, isCorrect);
 
       setState((prev) => {
         if (!prev || prev.answers[challengeId]) return prev;
@@ -246,7 +285,7 @@ export function useGame<T extends BaseChallenge>(
         };
       });
     },
-    [currentChallenge, trackEvent],
+    [currentChallenge, currentAnswer, trackEvent, recordChallengeResult],
   );
 
   const goToNext = useCallback(() => {
