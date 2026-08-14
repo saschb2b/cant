@@ -3,6 +3,8 @@ export { createActivityStore } from "./activity";
 export type { ActivityMap } from "./activity";
 export { createHistoryStore, formatRelativeDate } from "./history";
 export type { HistoryEntry } from "./history";
+export { createProgressStore } from "./progress";
+export type { ChallengeProgress, ProgressSummary } from "./progress";
 export type { RecentResult } from "./recent-results-store";
 export { generateAnonymousName } from "./anonymous-names";
 export {
