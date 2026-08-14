@@ -15,6 +15,7 @@ import {
   getEntryBySeed,
   formatRelativeDate,
 } from "@/lib/game/history";
+import { getProgressSummary, resetProgress } from "@/lib/game/progress";
 import { ActivityGraph } from "./activity-graph";
 
 export type GameType = "daily" | "weekly" | "custom";
@@ -31,6 +32,8 @@ const config = {
     getHistory,
     getEntryBySeed,
     formatRelativeDate,
+    getProgressSummary,
+    resetProgress,
   },
 };
 

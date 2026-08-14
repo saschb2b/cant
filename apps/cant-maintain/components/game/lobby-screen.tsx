@@ -16,6 +16,7 @@ import {
   getEntryBySeed,
   formatRelativeDate,
 } from "@/lib/game/history";
+import { getProgressSummary, resetProgress } from "@/lib/game/progress";
 import { ActivityGraph } from "./activity-graph";
 
 export type { GameType };
@@ -46,6 +47,8 @@ export function LobbyScreen(props: LobbyScreenProps) {
           getHistory,
           getEntryBySeed,
           formatRelativeDate,
+          getProgressSummary,
+          resetProgress,
         },
       }}
       slots={{ activityGraph: ActivityGraph }}
