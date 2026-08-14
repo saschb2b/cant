@@ -111,7 +111,7 @@ const meta: Meta<typeof LobbyScreen> = {
     docs: {
       description: {
         component:
-          "Pre-game lobby with category selection, seed input, daily/weekly challenge cards, question pool progress, activity graph, and game history. Apps wrap it with their own categories, game utils, and activity graph slot.",
+          "Pre-game lobby with category selection and seed input above a bento overview board: daily/weekly challenge tiles, best streak and games played KPI tiles, the activity graph, a question pool progress ring, and a horizontal strip of previous games. Apps wrap it with their own categories, game utils, and activity graph slot.",
       },
     },
   },
@@ -131,7 +131,7 @@ const meta: Meta<typeof LobbyScreen> = {
     },
     config: {
       description:
-        "Category sections, category labels, and game utility functions. The optional getProgressSummary and resetProgress utils enable the question pool progress card.",
+        "Category sections, category labels, and game utility functions. The optional getProgressSummary and resetProgress utils enable the question pool progress ring tile.",
       control: false,
     },
     slots: {
@@ -154,7 +154,7 @@ const meta: Meta<typeof LobbyScreen> = {
 export default meta;
 type Story = StoryObj<typeof LobbyScreen>;
 
-/** Default lobby without progress utils; the progress card is hidden. */
+/** Default lobby without progress utils; the progress ring tile is hidden. */
 export const Default: Story = {
   args: {},
 };
@@ -173,7 +173,7 @@ export const WithExcludedCategories: Story = {
   },
 };
 
-/** Question pool progress card with a partially completed pool and reset button. */
+/** Question pool progress ring with a partially completed pool and reset button. */
 export const WithProgress: Story = {
   args: {
     config: {
@@ -187,7 +187,7 @@ export const WithProgress: Story = {
   },
 };
 
-/** Fully completed question pool, shown with a success-colored counter. */
+/** Fully completed question pool, shown with a success-colored ring. */
 export const PoolCompleted: Story = {
   args: {
     config: {
