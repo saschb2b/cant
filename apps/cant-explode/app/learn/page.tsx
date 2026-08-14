@@ -17,7 +17,8 @@ export const metadata: Metadata = {
     "Learn chemistry concepts across 15 categories. Side-by-side molecule comparisons with explanations.",
 };
 
-export default function LearnPage() {
+export default async function LearnPage() {
+  "use cache";
   const previewChallenges = CATEGORY_ORDER.flatMap(
     (cat) => challenges.find((c) => c.category === cat) ?? [],
   );

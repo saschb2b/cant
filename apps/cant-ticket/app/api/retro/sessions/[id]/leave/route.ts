@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 import { broadcast } from "@/lib/retro/broadcaster";
 import { leaveSession } from "@/lib/retro/store";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

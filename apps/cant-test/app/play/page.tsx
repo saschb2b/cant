@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Game } from "@/components/game/game";
@@ -18,16 +19,33 @@ export const metadata: Metadata = {
     "Pick the better API pattern in 10 side-by-side code challenges. Covers REST, GraphQL, WebSockets, auth, and more.",
 };
 
-export default async function PlayPage({
+async function getContentMap() {
+  "use cache";
+  const highlighter = await getHighlighter();
+  return buildContentMap(challenges, highlighter, highlightDual);
+}
+
+async function GameSection({
   searchParams,
 }: {
   searchParams: Promise<{ seed?: string }>;
 }) {
   const { seed: defaultSeed } = await searchParams;
-  const highlighter = await getHighlighter();
+  const contentMap = await getContentMap();
+  return (
+    <Game
+      challenges={challenges}
+      contentMap={contentMap}
+      defaultSeed={defaultSeed}
+    />
+  );
+}
 
-  const contentMap = buildContentMap(challenges, highlighter, highlightDual);
-
+export default function PlayPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ seed?: string }>;
+}) {
   return (
     <Box
       sx={{
@@ -45,11 +63,9 @@ export default async function PlayPage({
         component="section"
         sx={{ py: 4, flex: 1, position: "relative", zIndex: 1 }}
       >
-        <Game
-          challenges={challenges}
-          contentMap={contentMap}
-          defaultSeed={defaultSeed}
-        />
+        <Suspense fallback={null}>
+          <GameSection searchParams={searchParams} />
+        </Suspense>
       </Container>
 
       <SiteFooter />

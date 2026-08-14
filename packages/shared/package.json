@@ -28,7 +28,7 @@
     "fuse.js": "^7.1.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "*",
-    "next": ">=16.1.6",
+    "next": ">=16.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",

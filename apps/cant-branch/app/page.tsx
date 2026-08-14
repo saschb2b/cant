@@ -169,6 +169,7 @@ function HeroCodeComparison({
 }
 
 export default async function LandingPage() {
+  "use cache";
   const highlighter = await getHighlighter();
   const badCodeHtml = highlightDual(highlighter, BAD_CODE, "bash");
   const goodCodeHtml = highlightDual(highlighter, GOOD_CODE, "bash");

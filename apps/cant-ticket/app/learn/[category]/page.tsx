@@ -45,6 +45,7 @@ export async function generateMetadata({
 }
 
 export default async function CategoryPage({ params }: PageProps) {
+  "use cache";
   const { category } = await params;
   if (!categorySet.has(category)) notFound();
 

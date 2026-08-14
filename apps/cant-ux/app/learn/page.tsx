@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     "Learn UX design patterns across 7 categories. Side-by-side visual comparisons with explanations.",
 };
 
-export default function LearnPage() {
+export default async function LearnPage() {
+  "use cache";
   const previewChallenges = CATEGORY_ORDER.flatMap(
     (cat) => challenges.find((c) => c.category === cat) ?? [],
   );

@@ -9,9 +9,6 @@ import {
   snapshotSession,
 } from "@/lib/poker/store";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 const KEEPALIVE_MS = 20_000;
 const DISCONNECT_GRACE_MS = 10_000;
 

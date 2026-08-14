@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Box from "@mui/material/Box";
 import { MeshGradient } from "@cant/shared/components";
 import { SiteHeader } from "@/components/site-header";
@@ -10,12 +11,20 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function PokerSessionPage({
+async function RoomSection({
   params,
 }: {
   params: Promise<{ sessionId: string }>;
 }) {
   const { sessionId } = await params;
+  return <PokerRoom sessionId={sessionId} />;
+}
+
+export default function PokerSessionPage({
+  params,
+}: {
+  params: Promise<{ sessionId: string }>;
+}) {
   return (
     <Box
       sx={{
@@ -32,7 +41,9 @@ export default async function PokerSessionPage({
         component="section"
         sx={{ flex: 1, position: "relative", zIndex: 1 }}
       >
-        <PokerRoom sessionId={sessionId} />
+        <Suspense fallback={null}>
+          <RoomSection params={params} />
+        </Suspense>
       </Box>
       <SiteFooter />
     </Box>

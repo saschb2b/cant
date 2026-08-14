@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Game } from "@/components/game/game";
@@ -17,15 +18,32 @@ export const metadata: Metadata = {
     "Pick the better molecule in 10 side-by-side chemistry challenges. Covers stability, acidity, bond energy, and more.",
 };
 
-export default async function PlayPage({
+async function getContentMap() {
+  "use cache";
+  return buildContentMap(challenges);
+}
+
+async function GameSection({
   searchParams,
 }: {
   searchParams: Promise<{ seed?: string }>;
 }) {
   const { seed: defaultSeed } = await searchParams;
+  const contentMap = await getContentMap();
+  return (
+    <Game
+      challenges={challenges}
+      contentMap={contentMap}
+      defaultSeed={defaultSeed}
+    />
+  );
+}
 
-  const contentMap = buildContentMap(challenges);
-
+export default function PlayPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ seed?: string }>;
+}) {
   return (
     <Box
       sx={{
@@ -43,11 +61,9 @@ export default async function PlayPage({
         component="section"
         sx={{ py: 4, flex: 1, position: "relative", zIndex: 1 }}
       >
-        <Game
-          challenges={challenges}
-          contentMap={contentMap}
-          defaultSeed={defaultSeed}
-        />
+        <Suspense fallback={null}>
+          <GameSection searchParams={searchParams} />
+        </Suspense>
       </Container>
 
       <SiteFooter />

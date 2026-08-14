@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LearnPage() {
+  "use cache";
   const previewChallenges = CATEGORY_ORDER.flatMap(
     (cat) => challenges.find((c) => c.category === cat) ?? [],
   );
