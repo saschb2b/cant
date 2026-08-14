@@ -106,7 +106,44 @@ const meta: Meta<typeof LobbyScreen> = {
   title: "Game/Lobby Screen",
   component: LobbyScreen,
   tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "Pre-game lobby with category selection, seed input, daily/weekly challenge cards, question pool progress, activity graph, and game history. Apps wrap it with their own categories, game utils, and activity graph slot.",
+      },
+    },
+  },
+  argTypes: {
+    onStart: {
+      description:
+        "Called with the raw seed, excluded categories, and game type when a game is started.",
+    },
+    defaultSeed: {
+      description: "Seed prefilled in the seed input, e.g. from a share URL.",
+      control: "text",
+      table: { defaultValue: { summary: '""' } },
+    },
+    defaultExcluded: {
+      description: "Categories excluded by default when no seed is set.",
+      control: false,
+    },
+    config: {
+      description:
+        "Category sections, category labels, and game utility functions. The optional getProgressSummary and resetProgress utils enable the question pool progress card.",
+      control: false,
+    },
+    slots: {
+      description: "Injected sub-components (activity graph).",
+      control: false,
+    },
+    crossPromoSlot: {
+      description:
+        "Optional 'more topics' section rendered below the activity section.",
+      control: false,
+    },
+  },
   args: {
     onStart: fn(),
     config: baseConfig,
@@ -117,18 +154,49 @@ const meta: Meta<typeof LobbyScreen> = {
 export default meta;
 type Story = StoryObj<typeof LobbyScreen>;
 
+/** Default lobby without progress utils; the progress card is hidden. */
 export const Default: Story = {
   args: {},
 };
 
+/** Seed prefilled from a share URL, locking the category selection. */
 export const WithDefaultSeed: Story = {
   args: {
     defaultSeed: "A3X9K2",
   },
 };
 
+/** Lobby with two categories disabled by default. */
 export const WithExcludedCategories: Story = {
   args: {
     defaultExcluded: new Set(["generics", "performance"]),
+  },
+};
+
+/** Question pool progress card with a partially completed pool and reset button. */
+export const WithProgress: Story = {
+  args: {
+    config: {
+      ...baseConfig,
+      gameUtils: {
+        ...gameUtils,
+        getProgressSummary: () => ({ completed: 34, total: 120 }),
+        resetProgress: fn(),
+      },
+    },
+  },
+};
+
+/** Fully completed question pool, shown with a success-colored counter. */
+export const PoolCompleted: Story = {
+  args: {
+    config: {
+      ...baseConfig,
+      gameUtils: {
+        ...gameUtils,
+        getProgressSummary: () => ({ completed: 120, total: 120 }),
+        resetProgress: fn(),
+      },
+    },
   },
 };

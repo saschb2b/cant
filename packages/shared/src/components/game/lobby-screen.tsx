@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
+import LinearProgress from "@mui/material/LinearProgress";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tooltip from "@mui/material/Tooltip";
@@ -21,6 +22,7 @@ import {
   Sun,
   Calendar,
   Check,
+  Target,
   X,
 } from "lucide-react";
 import { useTrackEvent } from "../../lib/analytics-context";
@@ -46,6 +48,11 @@ interface HistoryEntry {
 
 export type GameType = "daily" | "weekly" | "custom";
 
+interface ProgressSummary {
+  completed: number;
+  total: number;
+}
+
 interface LobbyGameUtils {
   decodeSeed: (seed: string) => {
     rawSeed: string;
@@ -58,6 +65,10 @@ interface LobbyGameUtils {
   getHistory: () => HistoryEntry[];
   getEntryBySeed: (seed: string) => HistoryEntry | null;
   formatRelativeDate: (timestamp: number) => string;
+  /** Completed/total over the app's challenge pool. Enables the progress card. */
+  getProgressSummary?: () => ProgressSummary;
+  /** Clears the locally stored challenge progress. */
+  resetProgress?: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -270,6 +281,8 @@ export function LobbyScreen({
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [dailyResult, setDailyResult] = useState<HistoryEntry | null>(null);
   const [weeklyResult, setWeeklyResult] = useState<HistoryEntry | null>(null);
+  const [progress, setProgress] = useState<ProgressSummary | null>(null);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const dailySeed = gameUtils.seedFromKey(gameUtils.getTodayKey());
   const weeklySeed = gameUtils.seedFromKey(gameUtils.getWeekKey());
@@ -278,7 +291,19 @@ export function LobbyScreen({
     setHistory(gameUtils.getHistory());
     setDailyResult(gameUtils.getEntryBySeed(dailySeed));
     setWeeklyResult(gameUtils.getEntryBySeed(weeklySeed));
+    setProgress(gameUtils.getProgressSummary?.() ?? null);
   }, []);
+
+  const handleResetProgress = () => {
+    if (!confirmReset) {
+      setConfirmReset(true);
+      return;
+    }
+    trackEvent("progress-reset", { completed: progress?.completed ?? 0 });
+    gameUtils.resetProgress?.();
+    setProgress(gameUtils.getProgressSummary?.() ?? null);
+    setConfirmReset(false);
+  };
 
   const hasSeed = seedInput.trim().length > 0;
   const seedDecoded = hasSeed
@@ -656,6 +681,108 @@ export function LobbyScreen({
           />
         </Stack>
       </Box>
+
+      {/* Question pool progress */}
+      {progress && progress.total > 0 && (
+        <Box sx={{ pb: { xs: 2, md: 3 } }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{
+              fontSize: "0.63rem",
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              mb: 1.5,
+              display: "block",
+            }}
+          >
+            Progress
+          </Typography>
+          <Paper
+            elevation={0}
+            sx={{
+              border: 1,
+              borderColor: "divider",
+              overflow: "hidden",
+              maxWidth: { sm: 520 },
+            }}
+          >
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={0.75}
+              sx={{
+                px: 2,
+                py: 1,
+                bgcolor: headerBackground,
+                borderBottom: 1,
+                borderColor: "divider",
+              }}
+            >
+              <Target size={13} color="var(--mui-palette-text-secondary)" />
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                fontWeight={600}
+                sx={{ fontSize: "0.72rem" }}
+              >
+                Question pool
+              </Typography>
+              <Typography
+                variant="caption"
+                fontFamily="var(--font-geist-mono), monospace"
+                fontWeight={600}
+                sx={{
+                  fontSize: "0.72rem",
+                  ml: "auto",
+                  color:
+                    progress.completed >= progress.total
+                      ? "success.main"
+                      : "text.secondary",
+                }}
+              >
+                {progress.completed}/{progress.total}
+              </Typography>
+            </Stack>
+            <Box sx={{ p: 2 }}>
+              <LinearProgress
+                variant="determinate"
+                value={(progress.completed / progress.total) * 100}
+                sx={{ mb: 1.5 }}
+              />
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1.5}
+                sx={{ justifyContent: "space-between" }}
+              >
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontSize: "0.72rem", lineHeight: 1.5 }}
+                >
+                  Questions solved this month. Custom games serve the remaining
+                  ones first. Resets at the start of each month.
+                </Typography>
+                <Button
+                  size="small"
+                  color={confirmReset ? "error" : "inherit"}
+                  onClick={handleResetProgress}
+                  onBlur={() => setConfirmReset(false)}
+                  sx={{
+                    flexShrink: 0,
+                    fontSize: "0.72rem",
+                    color: confirmReset ? undefined : "text.secondary",
+                  }}
+                >
+                  {confirmReset ? "Confirm reset" : "Reset"}
+                </Button>
+              </Stack>
+            </Box>
+          </Paper>
+        </Box>
+      )}
 
       {/* Activity graph + History */}
       <Box sx={{ pb: { xs: 3, md: 6 } }}>
