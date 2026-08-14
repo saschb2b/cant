@@ -3,6 +3,9 @@ const nextConfig = {
   output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
+  images: {
+    unoptimized: true,
+  },
   transpilePackages: ["@cant/shared"],
 };
 
