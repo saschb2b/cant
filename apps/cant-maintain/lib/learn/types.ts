@@ -6,7 +6,7 @@ import type {
 import type { CategorySlug } from "@cant/shared/lib/app-categories";
 
 /** Category slugs this app declares in the shared catalog. */
-export type ChallengeCategory = CategorySlug<"cant-query">;
+export type ChallengeCategory = CategorySlug<"cant-maintain">;
 
 /** A challenge belonging to this app. */
 export type Challenge = BaseChallenge<ChallengeCategory>;

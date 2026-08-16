@@ -11,8 +11,8 @@ import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,
   CATEGORY_DESCRIPTIONS,
-} from "@/lib/game/categories";
-import type { ChallengeCategory, Difficulty } from "@/lib/game/types";
+} from "@/lib/learn/categories";
+import type { ChallengeCategory, Difficulty } from "@/lib/learn/types";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 

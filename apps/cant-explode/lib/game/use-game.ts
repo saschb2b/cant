@@ -11,7 +11,7 @@ import { recordActivity } from "./activity";
 import { submitGameResult } from "./actions";
 import { encodeSeed } from "./seeded-random";
 import { recordAnswer } from "./progress";
-import type { Challenge } from "./types";
+import type { Challenge } from "@/lib/learn/types";
 
 /** Core game state hook. Handles scoring, progression, and answers. */
 export function useGame(

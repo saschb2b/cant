@@ -9,7 +9,7 @@ import {
   getMissedCategoryLabels,
   encodeResults,
 } from "@/lib/game/share";
-import type { GameState } from "@/lib/game/types";
+import type { GameState } from "@/lib/learn/types";
 
 const config = {
   shareSubject: "game dev patterns",

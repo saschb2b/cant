@@ -7,7 +7,7 @@ import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,
   CATEGORY_DESCRIPTIONS,
-} from "@/lib/game/categories";
+} from "@/lib/learn/categories";
 
 export const metadata: Metadata = {
   title: "Learn",

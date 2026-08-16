@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@cant/shared/components";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { buildContentMap } from "@cant/shared/lib";
-import type { Challenge } from "@/lib/game/types";
+import type { Challenge } from "@/lib/learn/types";
 import { challenges as _challenges } from "@cant/shared/lib/challenges/cant-branch";
 
 const challenges = _challenges as Challenge[];

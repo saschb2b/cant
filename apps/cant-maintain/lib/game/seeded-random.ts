@@ -1,4 +1,4 @@
-import { CATEGORY_ORDER } from "@/lib/game/categories";
+import { CATEGORY_ORDER } from "@/lib/learn/categories";
 
 export {
   hashSeed,

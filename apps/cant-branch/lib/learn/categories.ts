@@ -6,6 +6,6 @@ export const {
   CATEGORY_SECTIONS,
   LEARNING_PATH,
   CATEGORY_DESCRIPTIONS,
-} = createAppCategories("cant-type");
+} = createAppCategories("cant-branch");
 
 export type { CategorySection } from "@cant/shared/lib/app-catalog";

@@ -15,7 +15,7 @@ import { MoleculePanel } from "./molecule-panel";
 import { VisualPanelWrapper } from "./visual-panel";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
-import type { Challenge } from "@/lib/game/types";
+import type { Challenge } from "@/lib/learn/types";
 
 interface GameProps {
   challenges: Challenge[];

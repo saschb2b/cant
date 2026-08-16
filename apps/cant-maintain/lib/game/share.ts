@@ -1,5 +1,5 @@
-import type { GameState } from "./types";
-import { CATEGORY_LABELS } from "@/lib/game/categories";
+import type { GameState } from "@/lib/learn/types";
+import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   encodeResults,
   getMissedCategoryLabels as _getMissed,

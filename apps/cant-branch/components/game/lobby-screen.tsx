@@ -3,7 +3,7 @@
 import { LobbyScreen as SharedLobbyScreen } from "@cant/shared/components/game";
 import type { GameType } from "@cant/shared/components/game";
 import { CantSeriesGrid } from "@cant/shared/components";
-import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
+import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   decodeSeed,
   generateSeed,

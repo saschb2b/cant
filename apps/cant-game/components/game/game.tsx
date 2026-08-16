@@ -14,7 +14,7 @@ import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { ResultsScreen } from "./results-screen";
 import { LobbyScreen } from "./lobby-screen";
 import { VisualPanelWrapper } from "./visual-panel";
-import type { Challenge } from "@/lib/game/types";
+import type { Challenge } from "@/lib/learn/types";
 
 interface GameProps {
   challenges: Challenge[];

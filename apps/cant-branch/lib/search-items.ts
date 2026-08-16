@@ -3,7 +3,7 @@ import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
   CATEGORY_SECTIONS,
-} from "@/lib/game/categories";
+} from "@/lib/learn/categories";
 import { challenges } from "@cant/shared/lib/challenges/cant-branch";
 import { buildSearchItems, type SearchItem } from "@cant/shared/lib";
 

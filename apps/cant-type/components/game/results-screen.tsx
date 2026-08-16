@@ -9,7 +9,7 @@ import {
   getMissedCategoryLabels,
   encodeResults,
 } from "@/lib/game/share";
-import type { GameState } from "@/lib/game/types";
+import type { GameState } from "@/lib/learn/types";
 import { SparkleField } from "@/components/sparkle-field";
 
 const config = {
