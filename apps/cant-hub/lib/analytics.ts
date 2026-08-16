@@ -1,16 +1,10 @@
+/**
+ * Thin wrapper around Umami's `umami.track()` for type-safe custom events.
+ *
+ * @see https://umami.is/docs/tracker-functions
+ */
+
 import { createTracker } from "@cant/shared/lib";
+import type { CoreEventMap } from "@cant/shared/lib";
 
-interface NotFoundVisitedData {
-  path: string;
-}
-
-interface ContributeClickedData {
-  location: string;
-}
-
-interface EventMap {
-  "404-visited": NotFoundVisitedData;
-  "contribute-clicked": ContributeClickedData;
-}
-
-export const trackEvent = createTracker<EventMap>();
+export const trackEvent = createTracker<CoreEventMap>();

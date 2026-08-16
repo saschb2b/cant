@@ -208,7 +208,13 @@ const cantMaintain = {
     },
     { label: "React 19 & Server", categories: ["server-component-props"] },
   ],
-  learningPath: [],
+  learningPath: [
+    "component-naming",
+    "boolean-naming",
+    "prop-specificity",
+    "enumerated-variants",
+    "children-pattern",
+  ],
 } as const satisfies AppCatalogEntry;
 
 // ---------------------------------------------------------------------------
@@ -1285,7 +1291,13 @@ const cantBranch = {
       categories: ["git-config", "worktrees-stashing", "ci-integration"],
     },
   ],
-  learningPath: [],
+  learningPath: [
+    "commit-messages",
+    "atomic-commits",
+    "branching-naming",
+    "merge-strategies",
+    "undoing-changes",
+  ],
 } as const satisfies AppCatalogEntry;
 
 // ---------------------------------------------------------------------------

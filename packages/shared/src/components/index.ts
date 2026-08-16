@@ -13,6 +13,8 @@ export { LearnCategoryPage } from "./learn-category-page";
 export { MeshGradient } from "./mesh-gradient";
 export { LearnContentPanel } from "./learn-content-panel";
 export { LearnExplanation } from "./learn-explanation";
+export { ResultsRedirect } from "./results-redirect";
+export { ResultsRedirectSection } from "./results-redirect-section";
 export { LearnIndexPage } from "./learn-index-page";
 export { LearnMobileNav } from "./learn-mobile-nav";
 export { LearnSidebar } from "./learn-sidebar";

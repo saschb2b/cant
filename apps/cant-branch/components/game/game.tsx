@@ -7,8 +7,8 @@ import {
   ExplanationPanel,
 } from "@cant/shared/components/game";
 import type { ContentMapEntry } from "@cant/shared/components/game";
-import type { Challenge } from "@/lib/game/types";
-import { CATEGORY_LABELS } from "@/lib/game/categories";
+import type { Challenge } from "@/lib/learn/types";
+import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
 import { getCompletedIds } from "@/lib/game/progress";

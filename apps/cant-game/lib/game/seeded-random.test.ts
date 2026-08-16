@@ -6,7 +6,7 @@ import {
   encodeSeed,
   decodeSeed,
 } from "./seeded-random";
-import { CATEGORY_ORDER } from "../learn/categories";
+import { CATEGORY_ORDER } from "@/lib/learn/categories";
 
 describe("hashSeed", () => {
   it("is deterministic for the same input", () => {

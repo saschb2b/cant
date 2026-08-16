@@ -2,8 +2,8 @@
 
 import { ResultsScreen as SharedResultsScreen } from "@cant/shared/components/game";
 import Typography from "@mui/material/Typography";
-import type { GameState } from "@/lib/game/types";
-import { CATEGORY_LABELS } from "@/lib/game/categories";
+import type { GameState } from "@/lib/learn/types";
+import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   getRank,
   getShareUrl,

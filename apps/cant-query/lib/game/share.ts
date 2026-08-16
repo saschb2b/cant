@@ -1,4 +1,4 @@
-import type { GameState } from "./types";
+import type { GameState } from "@/lib/learn/types";
 import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
   encodeResults,

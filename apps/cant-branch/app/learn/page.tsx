@@ -7,7 +7,8 @@ import {
   CATEGORY_ORDER,
   CATEGORY_LABELS,
   CATEGORY_DESCRIPTIONS,
-} from "@/lib/game/categories";
+  LEARNING_PATH,
+} from "@/lib/learn/categories";
 
 export const metadata: Metadata = {
   title: "Learn",
@@ -51,6 +52,11 @@ export default async function LearnPage() {
       totalChallenges={challenges.length}
       totalCategories={CATEGORY_ORDER.length}
       sections={sections}
+      learningPath={LEARNING_PATH.map((cat) => ({
+        category: cat,
+        label: CATEGORY_LABELS[cat],
+      }))}
+      learningPathDescription="New to git? Follow these five categories in order."
     />
   );
 }

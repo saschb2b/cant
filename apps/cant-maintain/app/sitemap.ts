@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { CATEGORY_ORDER } from "@/lib/game/categories";
+import { CATEGORY_ORDER } from "@/lib/learn/categories";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://cant-maintain.saschb2b.com";

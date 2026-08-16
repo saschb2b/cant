@@ -1,71 +1,24 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { ResultsRedirectSection } from "@cant/shared/components";
+import { buildResultsMetadata } from "@cant/shared/lib/results-metadata";
 import { decodeResults, getRank } from "@/lib/game/share";
-import { ResultsRedirect } from "./results-redirect";
 
 interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export async function generateMetadata({
-  searchParams,
-}: Props): Promise<Metadata> {
-  const params = await searchParams;
-  const r = typeof params.r === "string" ? params.r : undefined;
-  const decoded = r ? decodeResults(r) : null;
-
-  if (!decoded) {
-    return { title: "Results | Can't Ticket" };
-  }
-
-  const { score, total } = decoded;
-  const percentage = Math.round((score / total) * 100);
-  const rank = getRank(percentage);
-
-  const title = `${rank} — ${String(score)}/${String(total)} | Can't Ticket`;
-  const description = `I scored ${String(score)}/${String(total)} on spotting cleaner agile tickets. Can you beat my score? Train your ticket-writing eye in under 5 minutes.`;
-  const ogImage = "https://cant-ticket.saschb2b.com/opengraph-image";
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      siteName: "Can't Ticket",
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: "Can't Ticket: Agile Ticket Craft Game",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
-}
-
-/**
- * Renders a minimal page so crawlers can read OG meta tags,
- * then redirects browsers to /play via client-side navigation.
- */
-async function RedirectSection({ searchParams }: Props) {
-  const params = await searchParams;
-  const seed = typeof params.seed === "string" ? params.seed : undefined;
-  return <ResultsRedirect seed={seed} />;
+export function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  return buildResultsMetadata(searchParams, {
+    appName: "Can't Ticket",
+    siteUrl: "https://cant-ticket.saschb2b.com",
+    ogAlt: "Can't Ticket: Agile Ticket Craft Game",
+    describeScore: (score, total) =>
+      `I scored ${String(score)}/${String(total)} on spotting cleaner agile tickets. Can you beat my score? Train your ticket-writing eye in under 5 minutes.`,
+    decodeResults,
+    getRank,
+  });
 }
 
 export default function ResultsPage({ searchParams }: Props) {
-  return (
-    <Suspense fallback={null}>
-      <RedirectSection searchParams={searchParams} />
-    </Suspense>
-  );
+  return <ResultsRedirectSection searchParams={searchParams} />;
 }
