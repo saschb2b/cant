@@ -95,4 +95,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm build
+      # Each Next build peaks around 1.8 GB. turbo.json allows 15 in
+      # parallel, which oversubscribes the runner's memory with 13 apps
+      # and gets the job OOM-killed, so cap it here rather than slowing
+      # local builds.
+      - run: pnpm build --concurrency=4
