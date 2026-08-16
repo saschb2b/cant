@@ -11,7 +11,6 @@ const actions = createGameActions(getRank, {
   getRecentResults,
 });
 
-// Server actions must be async per Next.js convention.
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function submitGameResult(data: {
   sessionId: string;

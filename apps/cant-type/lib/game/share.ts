@@ -1,34 +1,19 @@
 import type { GameState } from "./types";
-import { CATEGORY_LABELS } from "../learn/categories";
+import { CATEGORY_LABELS } from "@/lib/learn/categories";
 import {
-  encodeResults as _encodeResults,
-  decodeResults as _decodeResults,
+  encodeResults,
   getMissedCategoryLabels as _getMissedCategoryLabels,
 } from "@cant/shared/lib/game";
-
-export interface Rank {
-  title: string;
-  emoji: string;
-}
-
-/** Rank thresholds based on percentage score. */
-export function getRank(percentage: number): Rank {
-  if (percentage === 100) return { title: "Archmage", emoji: "\u{1FA84}" };
-  if (percentage >= 90) return { title: "Type Wizard", emoji: "\u{1F9D9}" };
-  if (percentage >= 70) return { title: "Spellcaster", emoji: "\u{2728}" };
-  if (percentage >= 50) return { title: "Apprentice", emoji: "\u{1F52E}" };
-  return { title: "Novice", emoji: "\u{1F4D6}" };
-}
-
-/** Decoded results from a shared URL param. */
+export { encodeResults, decodeResults } from "@cant/shared/lib/game";
 export type { SharedResults } from "@cant/shared/lib/game";
 
-export function encodeResults(state: GameState): string {
-  return _encodeResults(state);
-}
-
-export function decodeResults(param: string) {
-  return _decodeResults(param);
+/** Rank thresholds based on percentage score. Emoji is part of the title. */
+export function getRank(percentage: number): string {
+  if (percentage === 100) return "\u{1FA84} Archmage";
+  if (percentage >= 90) return "\u{1F9D9} Type Wizard";
+  if (percentage >= 70) return "\u{2728} Spellcaster";
+  if (percentage >= 50) return "\u{1F52E} Apprentice";
+  return "\u{1F4D6} Novice";
 }
 
 /** Build the full share URL for a game session. */

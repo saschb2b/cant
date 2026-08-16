@@ -2,21 +2,14 @@
 
 import { createGameActions } from "@cant/shared/lib/game";
 import { getRank } from "./share";
-import {
-  addResult,
-  getRecentResults,
-  hasResult,
-  type RecentResult,
-} from "./recent-results-store";
+import { hasResult, addResult, getRecentResults } from "./recent-results-store";
+import type { RecentResult } from "./recent-results-store";
 
 const actions = createGameActions(getRank, {
   hasResult,
   addResult,
   getRecentResults,
 });
-
-// Next.js server actions must be async functions exported directly from
-// a "use server" module, so we wrap the synchronous factory results.
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function submitGameResult(data: {

@@ -1,4 +1,9 @@
 export { createTracker } from "./analytics";
+export type {
+  CoreEventMap,
+  GameEventMap,
+  GameTypeEvent,
+} from "./analytics-events";
 export { AnalyticsProvider, useTrackEvent } from "./analytics-context";
 export { ALL_APPS } from "./cant-apps";
 export type { CantApp } from "./cant-apps";

@@ -34,7 +34,6 @@ export function ResultsScreen(props: ResultsScreenProps) {
   const percentage = Math.round(
     (correct / props.state.challenges.length) * 100,
   );
-  const { title: rankTitle, emoji: rankEmoji } = getRank(percentage);
 
   return (
     <SharedResultsScreen
@@ -46,7 +45,7 @@ export function ResultsScreen(props: ResultsScreenProps) {
           fontWeight={600}
           sx={{ color: "text.primary" }}
         >
-          {rankEmoji} {rankTitle}
+          {getRank(percentage)}
         </Typography>
       )}
       heroExtra={percentage >= 70 ? <SparkleField /> : undefined}
