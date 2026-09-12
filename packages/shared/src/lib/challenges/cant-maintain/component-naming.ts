@@ -444,7 +444,7 @@ Menu.Divider = function MenuDivider() {
   onDismiss: (id: string) => void;
 }) {
   return (
-    <ul className="notification-list">
+    <ul className="notifications">
       {notifications.map((n) => (
         <li key={n.id}>
           {n.message}
@@ -465,7 +465,7 @@ Menu.Divider = function MenuDivider() {
   onDismiss: (id: string) => void;
 }) {
   return (
-    <ul className="notification-list">
+    <ul className="notifications">
       {notifications.map((n) => (
         <li key={n.id}>
           {n.message}
