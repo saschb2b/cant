@@ -339,10 +339,15 @@ export function AssessmentBuilder({
             [catSlug]: { questionCount: null, difficulty: null },
           };
         } else {
-          const { [catSlug]: _removed, ...remaining } = next[appSlug] ?? {};
+          const remaining = Object.fromEntries(
+            Object.entries(next[appSlug] ?? {}).filter(
+              ([slug]) => slug !== catSlug,
+            ),
+          );
           if (Object.keys(remaining).length === 0) {
-            const { [appSlug]: _dropped, ...rest } = next;
-            return rest;
+            return Object.fromEntries(
+              Object.entries(next).filter(([slug]) => slug !== appSlug),
+            );
           }
           next[appSlug] = remaining;
         }

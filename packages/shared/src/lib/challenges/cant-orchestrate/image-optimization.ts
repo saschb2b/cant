@@ -32,9 +32,12 @@ CMD ["node", "server.js"]`,
       "Pinning a specific tag like `node:20.11-alpine` ensures reproducible builds. The `-alpine` variant is significantly smaller (around 50 MB vs 1 GB for the full image). Your builds produce the same result regardless of when they run.",
     explanationWrong:
       "`latest` is a moving target. Your build could break tomorrow when a new major version is released. The full image includes compilers, documentation, and tools you don't need at runtime, bloating the image to over 1 GB.",
-    sourceUrl:
-      "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#from",
-    sourceLabel: "Docker docs: FROM",
+    sources: [
+      {
+        url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#from",
+        label: "Docker docs: FROM",
+      },
+    ],
   },
   {
     id: "io-002",
@@ -79,8 +82,12 @@ CMD ["node", "dist/server.js"]`,
       "Multi-stage builds separate the build environment from the runtime environment. The final image only contains production dependencies and compiled output, resulting in a much smaller and more secure image. Build tools, source code, and dev dependencies are left behind.",
     explanationWrong:
       "A single-stage build includes everything: source code, build tools, dev dependencies, and compiled output. This inflates the image size and increases the attack surface. There's no reason to ship TypeScript, webpack, or test frameworks to production.",
-    sourceUrl: "https://docs.docker.com/build/building/multi-stage/",
-    sourceLabel: "Docker docs: Multi-stage builds",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/building/multi-stage/",
+        label: "Docker docs: Multi-stage builds",
+      },
+    ],
   },
   {
     id: "io-003",
@@ -122,8 +129,12 @@ CMD ["node", "dist/server.js"]`,
       "Copying `package.json` and `package-lock.json` before the rest of the source code means Docker can cache the `npm ci` layer. When you change application code but not dependencies, Docker reuses the cached layer and skips the slow install step.",
     explanationWrong:
       "Copying everything first means any source code change invalidates the layer cache for `npm ci`. Docker rebuilds dependencies from scratch on every code change, even if `package.json` hasn't changed. This makes builds unnecessarily slow.",
-    sourceUrl: "https://docs.docker.com/build/cache/",
-    sourceLabel: "Docker docs: Build cache",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/cache/",
+        label: "Docker docs: Build cache",
+      },
+    ],
   },
   {
     id: "io-004",
@@ -173,9 +184,12 @@ RUN npm ci`,
       "A `.dockerignore` file excludes files from the build context. This speeds up builds (smaller context to send to the daemon), prevents secrets from leaking into images, and avoids overwriting installed dependencies with stale local `node_modules`.",
     explanationWrong:
       "Without `.dockerignore`, `COPY . .` sends everything to the Docker daemon, including `node_modules` (overwriting the clean install), `.git` (adding hundreds of MB), and `.env` files (leaking secrets into the image layer history).",
-    sourceUrl:
-      "https://docs.docker.com/build/concepts/context/#dockerignore-files",
-    sourceLabel: "Docker docs: .dockerignore",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/concepts/context/#dockerignore-files",
+        label: "Docker docs: .dockerignore",
+      },
+    ],
   },
   {
     id: "io-005",
@@ -222,7 +236,11 @@ CMD ["dist/server.js"]`,
       "Distroless images contain only the runtime and your application. No shell, no package manager, no unnecessary utilities. This drastically reduces the attack surface and image size. If an attacker exploits your app, they can't spawn a shell.",
     explanationWrong:
       "Alpine is already slim, but it still includes `sh`, `apk`, and other utilities. An attacker who gains code execution can install tools, explore the filesystem, and pivot to other systems. For production workloads, the smaller attack surface of distroless is preferred.",
-    sourceUrl: "https://github.com/GoogleContainerTools/distroless",
-    sourceLabel: "GitHub: Distroless",
+    sources: [
+      {
+        url: "https://github.com/GoogleContainerTools/distroless",
+        label: "GitHub: Distroless",
+      },
+    ],
   },
 ];

@@ -48,8 +48,12 @@ help: ## Show available targets
       "Makefiles provide discoverable, self-documenting commands with dependency tracking. `make run` automatically builds first if needed. The `help` target documents all available commands. Make is pre-installed on most Unix systems and supports tab completion.",
     explanationWrong:
       "Scattered shell scripts are hard to discover and have no built-in dependency tracking. New team members don't know which script to run. There's no way to list available commands or ensure prerequisites are met before running a task.",
-    sourceUrl: "https://www.gnu.org/software/make/manual/make.html",
-    sourceLabel: "GNU Make manual",
+    sources: [
+      {
+        url: "https://www.gnu.org/software/make/manual/make.html",
+        label: "GNU Make manual",
+      },
+    ],
   },
   {
     id: "bs-002",
@@ -108,8 +112,12 @@ help: ## Show available targets
       'Integrating Docker commands into Ant\'s dependency chain ensures the JAR is always built before the image. `depends` enforces the order: compile, then JAR, then Docker build. `failonerror="true"` stops the pipeline if any step fails.',
     explanationWrong:
       "Separating the Ant build from the Docker build means developers must remember to run both in the right order. Forgetting to rebuild the JAR before `docker build` results in deploying stale code. There's no single command for the full pipeline.",
-    sourceUrl: "https://ant.apache.org/manual/Tasks/exec.html",
-    sourceLabel: "Ant docs: exec task",
+    sources: [
+      {
+        url: "https://ant.apache.org/manual/Tasks/exec.html",
+        label: "Ant docs: exec task",
+      },
+    ],
   },
   {
     id: "bs-003",
@@ -157,8 +165,12 @@ test: ## Run tests
       "Docker Compose encapsulates the entire development environment. New developers run `make setup && make dev` instead of following a multi-step guide. Everyone gets the same versions, same database, same configuration. The setup is reproducible and version-controlled.",
     explanationWrong:
       "Manual setup instructions are error-prone, platform-specific, and quickly become outdated. Different developers end up with different versions of Node, PostgreSQL, and other tools. 'Works on my machine' becomes the default state.",
-    sourceUrl: "https://docs.docker.com/compose/use-cases/",
-    sourceLabel: "Docker docs: Compose use cases",
+    sources: [
+      {
+        url: "https://docs.docker.com/compose/use-cases/",
+        label: "Docker docs: Compose use cases",
+      },
+    ],
   },
   {
     id: "bs-004",
@@ -210,7 +222,11 @@ jib {
       "Jib builds optimized container images directly from your build tool without a Dockerfile or Docker daemon. It separates dependencies, resources, and classes into distinct layers, so code changes only rebuild the thin classes layer. Builds are faster and reproducible.",
     explanationWrong:
       "A traditional Dockerfile packages everything into a fat JAR in a single layer. Any code change rebuilds the entire layer, including unchanged dependencies (which are often 100+ MB). It also requires a running Docker daemon in CI.",
-    sourceUrl: "https://github.com/GoogleContainerTools/jib",
-    sourceLabel: "GitHub: Jib",
+    sources: [
+      {
+        url: "https://github.com/GoogleContainerTools/jib",
+        label: "GitHub: Jib",
+      },
+    ],
   },
 ];

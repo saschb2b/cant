@@ -38,8 +38,12 @@ export const networkingChallenges: BaseChallenge[] = [
       "Docker Compose creates a DNS entry for each service name. Using `db` as the hostname lets Docker resolve it to the correct container IP automatically. This works even when containers are recreated and get new IPs.",
     explanationWrong:
       "Container IPs are assigned dynamically and change on every restart or recreation. Hardcoding an IP address means your app breaks as soon as the container gets a different IP, which happens frequently during development.",
-    sourceUrl: "https://docs.docker.com/engine/network/#dns-services",
-    sourceLabel: "Docker docs: DNS services",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/network/#dns-services",
+        label: "Docker docs: DNS services",
+      },
+    ],
   },
   {
     id: "nw-002",
@@ -72,8 +76,12 @@ export const networkingChallenges: BaseChallenge[] = [
       "Binding to `127.0.0.1` restricts the port to the host's loopback interface. The database is accessible from the host machine for development but not from the network. This prevents accidental exposure of development databases.",
     explanationWrong:
       "Omitting the bind address exposes the port on `0.0.0.0`, which means every network interface. Your development database becomes accessible to anyone on the same network, including Wi-Fi networks at coffee shops or coworking spaces.",
-    sourceUrl: "https://docs.docker.com/engine/network/#published-ports",
-    sourceLabel: "Docker docs: Published ports",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/network/#published-ports",
+        label: "Docker docs: Published ports",
+      },
+    ],
   },
   {
     id: "nw-003",
@@ -117,9 +125,12 @@ export const networkingChallenges: BaseChallenge[] = [
       "`expose` documents that a service listens on a port and makes it reachable from other containers on the same network, without publishing it to the host. Only the frontend needs a host-published port since it's the entry point for users.",
     explanationWrong:
       "Publishing the backend port to the host lets users bypass the frontend and hit the API directly. This increases the attack surface unnecessarily. Internal services should only be reachable from other containers, not from the host network.",
-    sourceUrl:
-      "https://docs.docker.com/reference/compose-file/services/#expose",
-    sourceLabel: "Docker docs: expose",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/compose-file/services/#expose",
+        label: "Docker docs: expose",
+      },
+    ],
   },
   {
     id: "nw-004",
@@ -155,7 +166,11 @@ docker run -d --name app2 --network mynet myapp
       "Custom bridge networks provide automatic DNS resolution between containers, better isolation from unrelated containers, and the ability to connect/disconnect containers at runtime. Containers on different custom networks cannot communicate by default.",
     explanationWrong:
       "The default bridge network doesn't provide automatic DNS resolution. Containers must use `--link` (deprecated) or IP addresses to communicate. All containers on the default bridge can reach each other, providing no isolation between unrelated workloads.",
-    sourceUrl: "https://docs.docker.com/engine/network/drivers/bridge/",
-    sourceLabel: "Docker docs: Bridge networks",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/network/drivers/bridge/",
+        label: "Docker docs: Bridge networks",
+      },
+    ],
   },
 ];

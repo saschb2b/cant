@@ -5,10 +5,11 @@ import Link from "@mui/material/Link";
 import { ExternalLink, Pencil } from "lucide-react";
 import { useTrackEvent } from "../lib/analytics-context";
 import { buildChallengeIssueUrl } from "../lib/github-issue";
+import type { ChallengeSource } from "../lib/game/types";
 
 interface SourceLinkProps {
-  href: string;
-  label: string;
+  /** Documentation links backing the explanation. Rendered in order. */
+  sources: ChallengeSource[];
   challengeId: string;
   category: string;
   /** When provided, renders an inline "Suggest a fix" link next to the source link. */
@@ -20,8 +21,7 @@ interface SourceLinkProps {
 }
 
 export function SourceLink({
-  href,
-  label,
+  sources,
   challengeId,
   category,
   githubUrl,
@@ -49,26 +49,29 @@ export function SourceLink({
       useFlexGap
       sx={{ mt: 1.5, rowGap: 0.5 }}
     >
-      <Link
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        underline="hover"
-        onClick={() =>
-          trackEvent("source-link-clicked", { challengeId, category, label })
-        }
-        sx={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 0.5,
-          typography: "caption",
-          fontFamily: "var(--font-geist-mono), monospace",
-          fontWeight: 500,
-        }}
-      >
-        <ExternalLink size={12} />
-        {label}
-      </Link>
+      {sources.map(({ url, label }) => (
+        <Link
+          key={url}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="hover"
+          onClick={() =>
+            trackEvent("source-link-clicked", { challengeId, category, label })
+          }
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.5,
+            typography: "caption",
+            fontFamily: "var(--font-geist-mono), monospace",
+            fontWeight: 500,
+          }}
+        >
+          <ExternalLink size={12} />
+          {label}
+        </Link>
+      ))}
       {issueUrl && (
         <Link
           href={issueUrl}

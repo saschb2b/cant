@@ -39,9 +39,12 @@ fetchData((data) => {
       "Typing the callback with a specific signature gives TypeScript full knowledge of the parameter types. The callback's `data` parameter is inferred as `User`, providing autocomplete and catching property access errors. Never use the `Function` type.",
     explanationWrong:
       "The `Function` type accepts any callable value with any arguments and any return type. It is essentially `any` for functions. Parameters inside the callback become `any`, so TypeScript cannot catch mistakes like accessing nonexistent properties.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-type-expressions",
-    sourceLabel: "TypeScript Handbook: Function type expressions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-type-expressions",
+        label: "TypeScript Handbook: Function type expressions",
+      },
+    ],
   },
   {
     id: "ft-002",
@@ -74,9 +77,12 @@ const c: Handler = () => "hello";`,
       "`void` means the return value will not be used, so TypeScript allows any return type. This is intentional: callbacks like `forEach` accept `() => void` so you can pass functions that happen to return values. Using `undefined` as the return type forces callers to explicitly return nothing.",
     explanationWrong:
       "A return type of `undefined` requires the function to literally return `undefined`. This breaks common patterns where callbacks ignore their return value. Arrow functions that call `.map()` or other array methods implicitly return the result, which conflicts with an `undefined` return type.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/functions.html#void",
-    sourceLabel: "TypeScript Handbook: void",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/functions.html#void",
+        label: "TypeScript Handbook: void",
+      },
+    ],
   },
   {
     id: "ft-003",
@@ -116,8 +122,12 @@ result.age;  // number`,
       "Generic type parameters `A` and `B` capture the exact shapes of both arguments. The return type `A & B` is the intersection, giving you access to all properties from both objects. TypeScript infers the generics from the arguments, so no explicit type annotation is needed at the call site.",
     explanationWrong:
       "Using `object` as both parameter and return type erases all structural information. The return value is just `object`, which has no known properties. You would need to cast the result to use any properties, defeating the purpose of TypeScript.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
-    sourceLabel: "TypeScript Handbook: Generics",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+        label: "TypeScript Handbook: Generics",
+      },
+    ],
   },
   {
     id: "ft-004",
@@ -152,9 +162,12 @@ function parse(input: string | number): Date {
       "Use union types when all input types follow the same logic and produce the same return type. Reserve overloads for cases where the return type changes based on the input type, or when you need distinct call signatures for documentation. Overloads add complexity, so prefer the simpler approach when possible.",
     explanationWrong:
       "Overloads for a function that treats all inputs the same way are unnecessary ceremony. They add three lines where one would suffice and make the code harder to read. Overloads shine when different inputs produce different output types.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads",
-    sourceLabel: "TypeScript Handbook: Function overloads",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads",
+        label: "TypeScript Handbook: Function overloads",
+      },
+    ],
   },
   {
     id: "ft-005",
@@ -202,9 +215,12 @@ type NewUser = ReturnType<typeof createUser>;`,
       "TypeScript automatically infers the return type from the return statement. Omitting the explicit annotation avoids duplication and keeps the return type in sync with the implementation. If you need the type in other places, use `ReturnType<typeof createUser>` to extract it.",
     explanationWrong:
       "Manually writing the return type creates a second source of truth. If you add a field to the return object but forget to update the annotation, you get a type error instead of the type just working. For internal functions, inferred return types reduce maintenance overhead.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#return-type-annotations",
-    sourceLabel: "TypeScript Handbook: Return type annotations",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#return-type-annotations",
+        label: "TypeScript Handbook: Return type annotations",
+      },
+    ],
   },
   {
     id: "ft-006",
@@ -236,8 +252,11 @@ call(Math.max, "not", "numbers");  // Error!`,
       "Using a generic tuple type `A extends unknown[]` for the rest parameter links the function's expected arguments to the actual arguments passed. TypeScript infers `A` from the function signature and checks that the remaining arguments match. The return type `R` is also inferred correctly.",
     explanationWrong:
       "Using `Function` and `any[]` throws away all type information. The compiler cannot check whether the arguments match the function's signature, so type errors like passing strings to `Math.max` go undetected. Generic tuples make this pattern fully type-safe.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/functions.html#rest-parameters-and-arguments",
-    sourceLabel: "TypeScript Handbook: Rest parameters",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/functions.html#rest-parameters-and-arguments",
+        label: "TypeScript Handbook: Rest parameters",
+      },
+    ],
   },
 ];

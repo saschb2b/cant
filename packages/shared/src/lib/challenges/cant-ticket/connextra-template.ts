@@ -34,8 +34,12 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
       "The three Connextra clauses force the answers to who, what, and why before the story enters a sprint. The tradeoff space is now visible: the audience is low-frequency users, the value is reducing the cost of staying informed.",
     explanationWrong:
       "Filling the Connextra fields with 'a user wants weekly emails so they get weekly emails' is process theater. The clauses are present but they answer none of the three questions. The team will rediscover what success looks like in review and probably get it wrong.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "ctt-002",
@@ -69,8 +73,12 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
       "The 'so that' is the part that survives a refactor of the template. It anchors the work to a real cost the customer is paying, which makes it possible to argue scope down or up against the actual goal.",
     explanationWrong:
       "Without 'so that', the team builds 'a PDF download'. Whether the timestamps match the audit, whether 'support escalation rate' goes down, whether this is even the right format, all evaporate. The work ships. The cost stays.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "ctt-003",
@@ -104,9 +112,12 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
       "Naming the actor as a volunteer coordinator running a weekend event makes the tradeoffs concrete. Should we sort by time or by gap? Should we send a notification? You cannot answer those for 'a user'.",
     explanationWrong:
       "'A user' is a wildcard that lets the team build for whoever shows up loudest in review. The Connextra template is a forcing function for specificity, and 'user' opts out of the function entirely.",
-    sourceUrl:
-      "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
-    sourceLabel: "Ron Jeffries: Card, Conversation, Confirmation",
+    sources: [
+      {
+        url: "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
+        label: "Ron Jeffries: Card, Conversation, Confirmation",
+      },
+    ],
   },
   {
     id: "ctt-004",
@@ -139,8 +150,12 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
       "Plain prose is fine. The three Connextra questions are all answered: inventory managers (who), filters that persist across visits (what), so they stop re-applying the same filter all day (why). The template is a forcing function, not a syntactic requirement.",
     explanationWrong:
       "A bulleted feature list is not a story even if it lists every requirement. It tells the team what to build. It does not tell them why, or for whom, or what to drop if the sprint runs hot.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "ctt-005",
@@ -193,9 +208,12 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
       "Card: the title and Connextra clauses fit on a card. Conversation: the framing sets up the team to talk through edge cases. Confirmation: the acceptance criteria are observable on the ticket. All three Cs in the ticket itself.",
     explanationWrong:
       "AC that point at a Notion doc collapse Confirmation into 'go read the doc'. The doc may be excellent, but the ticket is useless to anyone scanning the board, and the doc rots at a different cadence than the work.",
-    sourceUrl:
-      "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
-    sourceLabel: "Ron Jeffries: Card, Conversation, Confirmation",
+    sources: [
+      {
+        url: "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
+        label: "Ron Jeffries: Card, Conversation, Confirmation",
+      },
+    ],
   },
   {
     id: "ctt-006",
@@ -229,8 +247,11 @@ export const connextraTemplateChallenges: BaseChallenge[] = [
       "Secret rotation is real work with no user-facing change, so it gets a Task. Trying to force a Connextra clause around it produces tautology. The template is a sanity check for stories, not a costume that every work item has to wear.",
     explanationWrong:
       "Wrapping plumbing work in a fake 'as a user' clause is process theater. It violates Bill Wake's V (Valuable to a user) and adds noise. The honest move is to call it a Task.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
 ];

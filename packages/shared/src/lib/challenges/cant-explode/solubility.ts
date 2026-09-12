@@ -35,8 +35,12 @@ export const solubilityChallenges: BaseChallenge[] = [
       "Ethanol is completely miscible with water because its hydroxyl group forms strong hydrogen bonds with water molecules. The short two-carbon chain is not large enough to overcome this favorable polar interaction.",
     explanationWrong:
       "Hexane is a nonpolar hydrocarbon with no ability to form hydrogen bonds. Mixing hexane with water would require breaking the strong hydrogen bond network in water without any compensating favorable interactions.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Ethanol#Solvent_properties",
-    sourceLabel: "Wikipedia: Ethanol, Solvent properties",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Ethanol#Solvent_properties",
+        label: "Wikipedia: Ethanol, Solvent properties",
+      },
+    ],
   },
   {
     id: "sol-002",
@@ -70,8 +74,12 @@ export const solubilityChallenges: BaseChallenge[] = [
       "NaCl is highly soluble in water (360 g/L) because the strong ion-dipole interactions between water and Na⁺/Cl⁻ ions easily overcome the lattice energy. The small, highly charged Na⁺ ion is particularly well hydrated.",
     explanationWrong:
       "AgCl is nearly insoluble in water (Ksp = 1.77 x 10⁻¹⁰). The Ag⁺ ion has significant covalent character in its bonding with Cl⁻, creating a very strong lattice that water's ion-dipole forces cannot easily break apart.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Solubility_table",
-    sourceLabel: "Wikipedia: Solubility table",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Solubility_table",
+        label: "Wikipedia: Solubility table",
+      },
+    ],
   },
   {
     id: "sol-003",
@@ -107,8 +115,12 @@ export const solubilityChallenges: BaseChallenge[] = [
       "Glucose is extremely soluble in water (~910 g/L) because its five hydroxyl groups form extensive hydrogen bonds with water molecules. The molecule is small and highly polar relative to its size.",
     explanationWrong:
       "Cholesterol is nearly insoluble in water despite having one hydroxyl group. Its large hydrophobic steroid ring system and long hydrocarbon tail overwhelm the single polar group, making the overall molecule strongly hydrophobic.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Glucose#Physical_properties",
-    sourceLabel: "Wikipedia: Glucose, Physical properties",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Glucose#Physical_properties",
+        label: "Wikipedia: Glucose, Physical properties",
+      },
+    ],
   },
   {
     id: "sol-004",
@@ -144,7 +156,11 @@ export const solubilityChallenges: BaseChallenge[] = [
       "Methanol is fully miscible with water because its single carbon chain is too small to disrupt the hydrogen bonding network. The hydroxyl group dominates the molecule's properties.",
     explanationWrong:
       "1-Octanol is nearly insoluble in water because its eight-carbon hydrocarbon chain is too large and nonpolar. The single hydroxyl group at the end cannot overcome the hydrophobic effect of the long chain.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Methanol#Properties",
-    sourceLabel: "Wikipedia: Methanol, Properties",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Methanol#Properties",
+        label: "Wikipedia: Methanol, Properties",
+      },
+    ],
   },
 ];

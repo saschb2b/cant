@@ -30,9 +30,12 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "Story points are relative size: complexity, uncertainty, and effort bundled into one number compared to a reference story. The right ticket anchors the 5 to a known 1-pointer rather than to hours.",
     explanationWrong:
       "Translating points into hours guarantees a fight at the next sprint planning. Hours vary per engineer, per day, per interruption rate. Points are deliberately abstract because the abstraction is useful.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
   {
     id: "sp-002",
@@ -61,9 +64,12 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "Fibonacci's gaps are the point. Weber's Law: humans cannot reliably distinguish quantities that differ by only a small ratio. A 4 and a 5 are noise. A 3 and an 8 are a real conversation about scope.",
     explanationWrong:
       "A linear 1-10 scale invites the team to argue between 4 and 5 for ten minutes, both of which were the same noise on a Fibonacci scale. The illusion of precision costs more than it adds.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
   {
     id: "sp-003",
@@ -95,9 +101,12 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "13 is a signal that the team is uncertain, not an estimate they can commit to. The right move is to split or spike. A spike that returns three sized stories is cheaper than a 13-pointer that misses the sprint and re-splits under pressure.",
     explanationWrong:
       "Pulling a 13 into a sprint is taking a bet. Half the time the team will discover the work was actually 21 and the sprint will end with 'in progress' tickets that nobody can land.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
-    sourceLabel: "Mike Cohn: SPIDR",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+        label: "Mike Cohn: SPIDR",
+      },
+    ],
   },
   {
     id: "sp-004",
@@ -128,9 +137,12 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "The point of pointing is the conversation. A spread of 2-2-13 is the signal that two of the three are missing something the third sees. Average it and you ship the same misunderstanding into the sprint.",
     explanationWrong:
       "Averaging a wide spread is the worst move. The number you produce was never an estimate; it was a compromise that buries the disagreement. The work will hit the missed scope mid-sprint.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
   {
     id: "sp-005",
@@ -160,9 +172,12 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "Reference stories anchor the team to a shared baseline. New joiners and old hands point against the same yardstick, which makes the spread compress over time without anyone having to memorize hours.",
     explanationWrong:
       "Time-based estimates drift per engineer and per week. Without reference stories, a new joiner's 3 is a senior engineer's 1, and the team's velocity becomes unreadable.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
   {
     id: "sp-006",
@@ -193,8 +208,12 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "An 8 probably wants to be two stories, but a single sprint can absorb one if the team flags it as a risk and agrees on the re-split rule up front. That is the difference between an honest commitment and an optimistic one.",
     explanationWrong:
       "Pulling an 8 silently means the team has not decided what happens when it slips. The sprint review will rediscover the same conversation, except now there is in-flight work to split around.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "sp-007",
@@ -224,8 +243,11 @@ export const storyPointsChallenges: BaseChallenge[] = [
       "Velocity is a planning aid, not a target. The median across recent sprints is more honest than the last sprint. Leaving headroom for unplanned work means the team finishes; treating velocity as a target means it becomes a ratchet.",
     explanationWrong:
       "Pulling to last sprint's number assumes last sprint was typical. The team rotates, holidays land, fires happen. Pulling to that single number guarantees an over-commit half the time.",
-    sourceUrl:
-      "https://www.scrum.org/resources/blog/velocity-false-metric-productivity",
-    sourceLabel: "Scrum.org: Velocity is a planning aid",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/blog/velocity-false-metric-productivity",
+        label: "Scrum.org: Velocity is a planning aid",
+      },
+    ],
   },
 ];

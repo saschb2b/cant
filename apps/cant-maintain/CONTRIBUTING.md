@@ -151,8 +151,12 @@ Rules:
     "Nice! `onClick` follows the `on` + event pattern...",
   explanationWrong:
     "`click` is ambiguous...",
-  sourceUrl: "https://react.dev/learn/responding-to-events",
-  sourceLabel: "React Docs: Responding to Events",
+  sources: [
+    {
+      url: "https://react.dev/learn/responding-to-events",
+      label: "React Docs: Responding to Events",
+    },
+  ],
 }
 ```
 

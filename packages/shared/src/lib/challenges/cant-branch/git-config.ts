@@ -35,9 +35,12 @@ git config --list | grep init
       "Setting `init.defaultBranch` to `main` aligns with the convention adopted by GitHub, GitLab, and the broader community. It avoids confusion when collaborating on projects that already use `main` as their default branch.\n\nGit 2.28+ supports this config option natively.",
     explanationWrong:
       "Relying on Git's compiled-in default means your local repositories may use a different branch name than the remote. This causes friction when pushing a new repo to GitHub, which defaults to `main`. Setting the config once globally prevents this mismatch for every future repository.",
-    sourceUrl:
-      "https://git-scm.com/docs/git-config#Documentation/git-config.txt-initdefaultBranch",
-    sourceLabel: "Git Docs: init.defaultBranch",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-config#Documentation/git-config.txt-initdefaultBranch",
+        label: "Git Docs: init.defaultBranch",
+      },
+    ],
   },
   {
     id: "gc-002",
@@ -80,9 +83,12 @@ git pull origin main
       "Setting `pull.rebase true` replays your local commits on top of the fetched remote commits instead of creating a merge commit. This keeps the history linear and avoids the noise of \"Merge branch 'main'\" commits that add no information.\n\nFor teams that prefer merge commits for feature branches, rebasing on pull still makes sense because it only affects the sync between your local and remote copy of the same branch.",
     explanationWrong:
       "Merge-on-pull creates a merge commit every time you sync with the remote, even when there is no meaningful divergence. Over time, these merge commits clutter the log and make it harder to follow the actual development history. Rebase-on-pull avoids this by keeping the branch linear.",
-    sourceUrl:
-      "https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase",
-    sourceLabel: "Git Docs: pull.rebase",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase",
+        label: "Git Docs: pull.rebase",
+      },
+    ],
   },
   {
     id: "gc-003",
@@ -128,8 +134,12 @@ git wip`,
       "Aliases that wrap complex multi-flag commands save real time and reduce errors. `git lg` replaces a long log command with flags you would otherwise need to memorize. `git undo` provides a safe soft reset without remembering the `--soft HEAD~1` syntax.\n\nShorthand aliases like `co` for `checkout` save only a few keystrokes and can confuse team members reading your shell history.",
     explanationWrong:
       "Aliases like `co`, `br`, and `ci` save minimal effort since most terminals offer tab completion for git subcommands already. Aliases shine when they encapsulate commands with multiple flags or options, turning `git log --oneline --graph --decorate --all` into a memorable `git lg`.",
-    sourceUrl: "https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases",
-    sourceLabel: "Git Book: Git Aliases",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases",
+        label: "Git Book: Git Aliases",
+      },
+    ],
   },
   {
     id: "gc-004",
@@ -172,8 +182,12 @@ git config user.email "alice@company.com"
       "Conditional includes (`includeIf`) automatically apply configuration based on the repository location. All repos under `~/work/` use the work email without any manual per-repo setup. This eliminates the risk of committing to a work project with your personal email.\n\nThis feature was introduced in Git 2.13 and works with `gitdir` path matching.",
     explanationWrong:
       "Manually setting `user.email` in each work repository is error-prone. Every time you clone a new work repo, you must remember to override the email. One forgotten `git config` command means commits with your personal email end up in the company repository. Conditional includes automate this entirely.",
-    sourceUrl: "https://git-scm.com/docs/git-config#_conditional_includes",
-    sourceLabel: "Git Docs: Conditional Includes",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-config#_conditional_includes",
+        label: "Git Docs: Conditional Includes",
+      },
+    ],
   },
   {
     id: "gc-005",
@@ -215,9 +229,12 @@ git config --global commit.gpgsign true
       "SSH signing (Git 2.34+) reuses the SSH key you already have for authentication. There is no need to generate and manage a separate GPG key, configure a GPG agent, or deal with key expiry and renewal.\n\nGitHub, GitLab, and Codeberg all support SSH signature verification. For most developers, SSH signing is simpler to set up and maintain.",
     explanationWrong:
       "GPG signing works and is still valid, but it introduces a separate key management workflow. You need to generate a GPG key, configure the agent, export the public key, and keep the key renewed. SSH signing achieves the same goal with the key you already use for pushing, reducing setup complexity significantly.",
-    sourceUrl:
-      "https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification",
-    sourceLabel: "GitHub Docs: Commit Signature Verification",
+    sources: [
+      {
+        url: "https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification",
+        label: "GitHub Docs: Commit Signature Verification",
+      },
+    ],
   },
   {
     id: "gc-006",
@@ -260,8 +277,12 @@ git mergetool
       "A visual merge tool shows the base, local, and remote versions side by side, making it clear what each branch changed relative to the common ancestor. The `diff3` conflict style adds the base version to inline markers too, which helps when both sides modified the same code differently.\n\nInline conflict markers work for simple conflicts but become hard to parse when conflicts span many lines or are nested.",
     explanationWrong:
       "Default inline conflict markers show only the two conflicting versions without the common ancestor. You cannot tell whether one side added code, the other deleted it, or both modified it differently. A 3-way merge tool with `diff3` style provides the context needed to resolve conflicts correctly.",
-    sourceUrl: "https://git-scm.com/docs/git-mergetool",
-    sourceLabel: "Git Docs: git-mergetool",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-mergetool",
+        label: "Git Docs: git-mergetool",
+      },
+    ],
   },
   {
     id: "gc-007",
@@ -279,8 +300,11 @@ git mergetool
       "A properly configured git setup includes user identity, default branch name, pull strategy, commit signing, and useful aliases. These settings prevent common issues like misattributed commits, unnecessary merge commits on pull, and inconsistent branch names across the team.",
     explanationWrong:
       "Using git without configuring it leads to a stream of small problems: commits attributed to the wrong email, merge commits cluttering the history on every pull, and warnings about unset defaults. Spending a few minutes on initial configuration prevents these recurring issues for every future repository.",
-    sourceUrl:
-      "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup",
-    sourceLabel: "Git Book: First-Time Git Setup",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup",
+        label: "Git Book: First-Time Git Setup",
+      },
+    ],
   },
 ];

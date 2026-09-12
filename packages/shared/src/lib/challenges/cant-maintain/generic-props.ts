@@ -28,8 +28,12 @@ export const genericPropsChallenges: BaseChallenge[] = [
       "Generics let TypeScript infer the item type from the `items` array and enforce it across all related props. When you pass `items={users}`, TypeScript knows `onSelect` receives a `User` and `renderItem` receives a `User`, with zero manual type annotations needed.\n\n`unknown` throws that away: every consumer must cast.",
     explanationWrong:
       "`unknown` is type-safe in that it prevents unsafe access, but it forces every consumer to narrow the type manually. With generics, `<List items={users} onSelect={handleUser} renderItem={...} />` automatically types everything from the `items` prop. The type flows through the entire API.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
-    sourceLabel: "TypeScript: Generics",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+        label: "TypeScript: Generics",
+      },
+    ],
   },
   {
     id: "gp-002",
@@ -67,9 +71,12 @@ export const genericPropsChallenges: BaseChallenge[] = [
       'A generic `V` parameter constrains `value`, `onChange`, and `options` to the same type. With `<Select<Role>>`, TypeScript ensures only valid roles are passed as `value`. Without generics, any string is accepted, so `value="banana"` compiles fine even when your options are roles.\n\nThe `extends string` constraint ensures values are still string-based.',
     explanationWrong:
       'When everything is `string`, there\'s no connection between `options` and `value`. You can pass `value="banana"` with options that only contain `"admin"` and `"user"`. A generic `V` lets consumers specify the exact string literal union, so `<Select<Role>>` makes TypeScript reject anything that isn\'t a valid `Role`.',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
-    sourceLabel: "TypeScript: Generic Constraints",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
+        label: "TypeScript: Generic Constraints",
+      },
+    ],
   },
   {
     id: "gp-003",
@@ -106,9 +113,12 @@ export const genericPropsChallenges: BaseChallenge[] = [
       "Two improvements: `T extends { id: string | number }` ensures every row has a stable identity for React keys. Without this, the table can't reliably render rows. `keyof T & string` constrains `key` to actual properties of `T`, so `key: \"naem\"` (typo) is a compile-time error.\n\nThe unconstrained version accepts items with no `id` and column keys that don't exist on the data.",
     explanationWrong:
       "An unconstrained `T` accepts data without an `id` field, so the table has no way to generate stable React `key` props, leading to rendering bugs on sort/filter. Column `key: string` allows typos and non-existent fields.\n\n`T extends { id: ... }` guarantees row identity. `keyof T & string` ties column keys to actual data fields, catching errors at compile time.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
-    sourceLabel: "TypeScript: Generic Constraints",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
+        label: "TypeScript: Generic Constraints",
+      },
+    ],
   },
   {
     id: "gp-004",
@@ -148,9 +158,12 @@ export const genericPropsChallenges: BaseChallenge[] = [
       "The generic version lets consumers work with their own data types. `items={users}` makes TypeScript infer `T = User`, so `onChange` receives a `User` (not a bare string ID) and `renderItem` gets full `User` access.\n\nThe non-generic version forces all data into `{id, label}`, so consumers must transform their data to fit the component.",
     explanationWrong:
       "Fixing the item shape to `{ id: string; label: string }` means every consumer must map their data before passing it. A `User` with `name` and `email` needs to be transformed into `{ id, label }`, losing type information.\n\nWith generics, the component adapts to the consumer's data type. `renderItem` receives the full `User` object, enabling `(u) => u.name` without any mapping.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#using-type-parameters-in-generic-constraints",
-    sourceLabel: "TypeScript: Type Parameters in Constraints",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#using-type-parameters-in-generic-constraints",
+        label: "TypeScript: Type Parameters in Constraints",
+      },
+    ],
   },
   {
     id: "gp-005",
@@ -194,8 +207,11 @@ export const genericPropsChallenges: BaseChallenge[] = [
       "Two type parameters create a type-safe link between the form shape and the field. `K extends keyof TForm` means `name` must be an actual key of the form type. `TForm[K]` ensures `value` and `onChange` match that field's type, so a `number` field can't accidentally receive a `string`.\n\nThis is the pattern used by Formik, React Hook Form, and TanStack Form.",
     explanationWrong:
       'A bare `string` for `name` means any string compiles, so typos like `"emial"` are invisible until runtime. A lone generic `V` for value has no connection to the form type, so a number field could receive a string with no error.\n\nTwo generics (`TForm` + `K`) tie every field to its form, catching name typos and type mismatches at compile time.',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html",
-    sourceLabel: "TypeScript: Indexed Access Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html",
+        label: "TypeScript: Indexed Access Types",
+      },
+    ],
   },
 ];

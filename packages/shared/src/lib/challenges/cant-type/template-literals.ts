@@ -38,9 +38,12 @@ emitter.on("onClick", handleClick);
       "Template literal types let you define string patterns the compiler enforces. By combining literal unions inside template positions, TypeScript generates all valid combinations and catches typos at compile time instead of silently failing at runtime.",
     explanationWrong:
       "Using a plain string type for event names provides no protection against typos. A misspelled event name compiles without errors but silently fails at runtime because the handler is never triggered. Template literal types make the valid set of strings explicit.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
-    sourceLabel: "TypeScript: Template Literal Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
+        label: "TypeScript: Template Literal Types",
+      },
+    ],
   },
   {
     id: "tl-002",
@@ -80,9 +83,12 @@ navigate("/users/123"); // OK
       "Template literal types can encode the structure of URL paths. The compiler checks that the path starts with a slash, uses valid segments, and has parameters of the right type. Typos and missing slashes become compile-time errors.",
     explanationWrong:
       "Accepting any string for navigation paths means typos, missing slashes, and invalid routes all compile without errors. These bugs are only discovered when users see 404 pages at runtime. Template literal types catch the entire class of invalid route strings.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
-    sourceLabel: "TypeScript: Template Literal Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
+        label: "TypeScript: Template Literal Types",
+      },
+    ],
   },
   {
     id: "tl-003",
@@ -119,9 +125,12 @@ type PersonGetters = Getters<Person>;
       "TypeScript provides intrinsic string manipulation types: Uppercase, Lowercase, Capitalize, and Uncapitalize. Using Capitalize in a mapped type with template literals transforms property names to follow conventional getter naming (getName, getAge) while preserving the type relationship.",
     explanationWrong:
       "Using a raw template literal like `get${string}` accepts any string after 'get' and loses the connection to the original key. The resulting type cannot enforce camelCase naming or map each getter back to its specific property type.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html#intrinsic-string-manipulation-types",
-    sourceLabel: "TypeScript: String Manipulation Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html#intrinsic-string-manipulation-types",
+        label: "TypeScript: String Manipulation Types",
+      },
+    ],
   },
   {
     id: "tl-004",
@@ -159,9 +168,12 @@ type Theme = \`\${Shade}-\${Color}\`;
       "When a template literal type contains union types, TypeScript distributes across them and generates every combination. Adding a new member to either union automatically expands the result. This removes the manual maintenance burden and eliminates the risk of missing a combination.",
     explanationWrong:
       "Manually enumerating all combinations of two union types is tedious and error-prone. If you add a new color, you must remember to add entries for every shade. Template literal types generate the full cross-product automatically, and they stay in sync as unions change.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
-    sourceLabel: "TypeScript: Template Literal Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
+        label: "TypeScript: Template Literal Types",
+      },
+    ],
   },
   {
     id: "tl-005",
@@ -203,8 +215,12 @@ if (email) sendEmail(email); // OK
       "Branded types use an intersection with a phantom property to create a nominal subtype of string. The only way to obtain an Email value is through the validateEmail function, so sendEmail can trust that its input has already been validated. The brand property exists only at the type level.",
     explanationWrong:
       "Plain string types make no distinction between validated and unvalidated data. Any string, including empty strings and garbage input, can be passed to sendEmail. Branded types force all string data through a validation boundary before it can be used in type-safe contexts.",
-    sourceUrl: "https://www.totaltypescript.com/concepts/branded-types",
-    sourceLabel: "Total TypeScript: Branded Types",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/concepts/branded-types",
+        label: "Total TypeScript: Branded Types",
+      },
+    ],
   },
   {
     id: "tl-006",
@@ -258,8 +274,11 @@ type ClientData = CamelKeys<APIResponse>;
       "By combining template literal types with infer, you can write a recursive type that splits a string at underscores and capitalizes each subsequent segment. The CamelKeys mapped type transforms all keys automatically, so adding a new field to APIResponse updates ClientData with zero manual effort.",
     explanationWrong:
       "Maintaining two separate interfaces that must stay in sync is a source of silent bugs. When a new field is added to the API response, forgetting to add it to the client type means the data is available at runtime but invisible to TypeScript. A computed type transformation eliminates this drift.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
-    sourceLabel: "TypeScript: Template Literal Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
+        label: "TypeScript: Template Literal Types",
+      },
+    ],
   },
 ];

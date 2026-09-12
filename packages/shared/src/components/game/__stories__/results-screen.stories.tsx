@@ -13,8 +13,7 @@ function makeChallenges(count: number) {
       "This approach is better because it follows established conventions and improves readability.",
     explanationWrong:
       "This approach is problematic because it makes the code harder to maintain.",
-    sourceUrl: "https://react.dev",
-    sourceLabel: "React Docs",
+    sources: [{ url: "https://react.dev", label: "React Docs" }],
   }));
 }
 

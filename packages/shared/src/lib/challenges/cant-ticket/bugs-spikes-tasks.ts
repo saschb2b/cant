@@ -49,9 +49,12 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "The right ticket gives reproduction steps, the surface the bug touches, and a test the engineer can write to prove the fix. Anyone on the team can pick it up cold.",
     explanationWrong:
       "'Sometimes the file looks weird' is a starting point for a conversation, not a bug ticket. Without reproduction, scope, or expected behavior, the engineer is doing the bug investigation from scratch every time.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Issue Types",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Issue Types",
+      },
+    ],
   },
   {
     id: "bst-002",
@@ -116,9 +119,12 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "When the team cannot estimate because the implementation approach is genuinely unclear, a timeboxed spike is the right move. Its acceptance criteria are answers to questions, not shipped behavior. The integration story comes after, with real numbers.",
     explanationWrong:
       "A 13-point story with 'pick the best provider' inside it is a bet, not a plan. The team will burn the sprint discovering tradeoffs the spike could have surfaced in three days. 13 is a signal: split it or spike it.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
-    sourceLabel: "Mike Cohn: SPIDR",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+        label: "Mike Cohn: SPIDR",
+      },
+    ],
   },
   {
     id: "bst-003",
@@ -160,9 +166,12 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "Framework upgrade is plumbing. Nobody on the outside notices, the team tracks it because it has to happen, and Task is the right shape: real work, no user, no story framing.",
     explanationWrong:
       "The subtasks read like plumbing, but the footer gives it away: every sales rep on the dashboard sees this change. That makes it a Story with acceptance criteria, not a Task. Filing it as a Task hides user-visible work from the demo.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "bst-004",
@@ -213,9 +222,12 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "A spike is research. Its acceptance criteria are answers to specific questions and a recommendation. The timebox and 'no production code' line keep the work honest.",
     explanationWrong:
       "'See what's possible' is a curiosity, not a spike. With no question to answer and no time bound, it expands to fill the sprint and produces a half-prototype that nobody owns.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
-    sourceLabel: "Mike Cohn: SPIDR",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+        label: "Mike Cohn: SPIDR",
+      },
+    ],
   },
   {
     id: "bst-005",
@@ -277,8 +289,11 @@ export const bugsSpikesTasksChallenges: BaseChallenge[] = [
       "A bug is something working incorrectly against an existing expectation. Scroll-position drift on a feed update is a regression with a clear before/after. The acceptance criteria are reproducible.",
     explanationWrong:
       "'Users want X instead of Y' is a feature request, not a bug. Filing it as a bug ducks the prioritization conversation and lets it skip the line in front of actual regressions.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Issue Types",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Issue Types",
+      },
+    ],
   },
 ];

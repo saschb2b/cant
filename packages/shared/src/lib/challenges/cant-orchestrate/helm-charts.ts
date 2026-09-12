@@ -49,8 +49,12 @@ spec:
       "Templating with `{{ .Values.* }}` lets you customize deployments per environment by overriding `values.yaml`. The same chart works for dev, staging, and production. `{{ .Release.Name }}` prevents name collisions when installing multiple releases.",
     explanationWrong:
       "Hardcoded values in templates defeat the purpose of Helm. You can't install the same chart with different configurations without editing the template files. Every environment needs its own copy of the manifests, creating maintenance burden and drift.",
-    sourceUrl: "https://helm.sh/docs/chart_template_guide/values_files/",
-    sourceLabel: "Helm docs: Values files",
+    sources: [
+      {
+        url: "https://helm.sh/docs/chart_template_guide/values_files/",
+        label: "Helm docs: Values files",
+      },
+    ],
   },
   {
     id: "hm-002",
@@ -103,8 +107,12 @@ metadata:
       "Named templates in `_helpers.tpl` define reusable snippets like standard labels and selectors. Changing the label scheme requires editing one place. The `include` function inserts the template and `nindent` handles YAML indentation correctly.",
     explanationWrong:
       "Duplicating labels across every template file means updating them in multiple places when the label scheme changes. It's easy to miss a file, leading to inconsistent labels that break label selectors and monitoring queries.",
-    sourceUrl: "https://helm.sh/docs/chart_template_guide/named_templates/",
-    sourceLabel: "Helm docs: Named templates",
+    sources: [
+      {
+        url: "https://helm.sh/docs/chart_template_guide/named_templates/",
+        label: "Helm docs: Named templates",
+      },
+    ],
   },
   {
     id: "hm-003",
@@ -156,8 +164,12 @@ spec:
       "Helm hooks run Jobs at specific lifecycle points. `pre-upgrade` runs the migration once before new Pods start. `hook-delete-policy: hook-succeeded` cleans up the Job after success. The migration runs exactly once per upgrade, not per Pod restart.",
     explanationWrong:
       "Init containers run every time a Pod starts or restarts. With 3 replicas, the migration runs 3 times concurrently, which can cause race conditions or lock contention. Pod restarts (OOMKill, node drain) trigger unnecessary migration attempts.",
-    sourceUrl: "https://helm.sh/docs/topics/charts_hooks/",
-    sourceLabel: "Helm docs: Chart hooks",
+    sources: [
+      {
+        url: "https://helm.sh/docs/topics/charts_hooks/",
+        label: "Helm docs: Chart hooks",
+      },
+    ],
   },
   {
     id: "hm-004",
@@ -217,7 +229,11 @@ metadata:
       "Wrapping resources in `{{- if .Values.*.enabled }}` makes them optional. Dev environments can disable Ingress and autoscaling while production enables them. The chart adapts to each environment without maintaining separate templates.",
     explanationWrong:
       "Always creating every resource means dev environments get unnecessary Ingress controllers and HPAs. It also means you can't install the chart in a cluster that lacks an Ingress controller or metrics server without errors.",
-    sourceUrl: "https://helm.sh/docs/chart_template_guide/control_structures/",
-    sourceLabel: "Helm docs: Control structures",
+    sources: [
+      {
+        url: "https://helm.sh/docs/chart_template_guide/control_structures/",
+        label: "Helm docs: Control structures",
+      },
+    ],
   },
 ];

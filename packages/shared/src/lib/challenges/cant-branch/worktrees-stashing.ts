@@ -37,8 +37,12 @@ git stash list
       "Adding a message with `git stash push -m` makes each stash entry self-documenting. When you come back hours or days later, `WIP: payment form validation` tells you exactly what is in that stash without needing to inspect it.\n\nWithout messages, every entry shows the generic `WIP on branch: commit-hash` format, which is nearly useless when you have multiple stashes.",
     explanationWrong:
       "Plain `git stash` labels every entry with the branch name and last commit hash. If you stashed three times on the same branch, the entries look almost identical. You end up running `git stash show stash@{0}`, `git stash show stash@{1}`, and so on just to find the right one. A descriptive message eliminates this guesswork.",
-    sourceUrl: "https://git-scm.com/docs/git-stash",
-    sourceLabel: "Git Docs: git-stash",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-stash",
+        label: "Git Docs: git-stash",
+      },
+    ],
   },
   {
     id: "ws-002",
@@ -79,9 +83,12 @@ git stash drop stash@{0}
       "Using `git stash apply` followed by an explicit `git stash drop` is a two-step process that gives you a chance to verify the changes were applied correctly before discarding the stash. If something goes wrong, the stash is still available.\n\nThis is especially useful when applying a stash to a branch that has diverged since the stash was created.",
     explanationWrong:
       "While `git stash pop` is convenient for simple cases, it immediately removes the stash on successful apply. If you realize the changes conflicted with something else or were applied to the wrong branch, the stash is already gone. The safer pattern is apply, verify, then drop.",
-    sourceUrl:
-      "https://git-scm.com/docs/git-stash#Documentation/git-stash.txt-emapplyem--televentgtltindexgt",
-    sourceLabel: "Git Docs: git-stash apply",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-stash#Documentation/git-stash.txt-emapplyem--televentgtltindexgt",
+        label: "Git Docs: git-stash apply",
+      },
+    ],
   },
   {
     id: "ws-003",
@@ -126,8 +133,12 @@ git worktree remove ../hotfix-critical`,
       "Git worktrees let you check out multiple branches simultaneously in separate directories. Your in-progress feature work stays exactly as you left it. There is no risk of stash conflicts, no need to remember to pop, and no loss of IDE state like open tabs or breakpoints.\n\nWorktrees share the same `.git` directory, so they use minimal extra disk space.",
     explanationWrong:
       "Stashing interrupts your flow. You must save your work, switch contexts, fix the issue, switch back, and restore. If the stash conflicts with changes made while you were away, you have an extra problem to solve. Worktrees eliminate this entire workflow by keeping both branches checked out simultaneously.",
-    sourceUrl: "https://git-scm.com/docs/git-worktree",
-    sourceLabel: "Git Docs: git-worktree",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-worktree",
+        label: "Git Docs: git-worktree",
+      },
+    ],
   },
   {
     id: "ws-004",
@@ -169,8 +180,12 @@ git reset --soft HEAD~1
       "A WIP commit on a feature branch is safer than a stash for overnight or multi-day pauses. It can be pushed to the remote as a backup, it is visible in the branch history, and it will not be accidentally lost.\n\nBefore merging, you can squash or amend the WIP commit to keep the final history clean. Stashes are local-only and provide no protection against hardware failure.",
     explanationWrong:
       "Stashes are convenient for quick context switches lasting minutes, but they are a poor choice for overnight storage. They exist only on your local machine, are not pushed to any remote, and can be lost if you run `git stash clear` or if your disk fails. A WIP commit provides the same convenience with the safety of remote backup.",
-    sourceUrl: "https://git-scm.com/docs/git-stash",
-    sourceLabel: "Git Docs: git-stash",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-stash",
+        label: "Git Docs: git-stash",
+      },
+    ],
   },
   {
     id: "ws-005",
@@ -212,9 +227,12 @@ git stash show stash@{0}
       "The `git stash push` command accepts file paths, letting you stash only specific files. The rest of your working directory stays untouched. This is cleaner than stashing everything and then selectively restoring files.\n\nThis is particularly useful when you have changes across multiple features and want to stash just one set of changes while keeping the others.",
     explanationWrong:
       "Stashing everything and then restoring selected files creates a confusing state. Some changes exist in both your working directory and the stash, while others exist only in the stash. It is easy to lose track of what is where. Targeted stashing with file paths keeps the boundary clean.",
-    sourceUrl:
-      "https://git-scm.com/docs/git-stash#Documentation/git-stash.txt-push-televentgt-p--patch--S--staged-k--no-keep-index-u--include-untracked-a--all-q--quiet-m--televentgtmessage--pathspec-from-fileltfilegt--pathspec-file-nul--ltpathspecgt82televentgt",
-    sourceLabel: "Git Docs: git-stash push",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-stash#Documentation/git-stash.txt-push-televentgt-p--patch--S--staged-k--no-keep-index-u--include-untracked-a--all-q--quiet-m--televentgtmessage--pathspec-from-fileltfilegt--pathspec-file-nul--ltpathspecgt82televentgt",
+        label: "Git Docs: git-stash push",
+      },
+    ],
   },
   {
     id: "ws-006",
@@ -262,8 +280,12 @@ git worktree remove ../review-new-api`,
       "Opening the PR branch in a separate worktree lets you review code and run tests in a completely isolated environment. Your original workspace stays untouched with all IDE state preserved: open files, terminal history, breakpoints, and running dev servers.\n\nYou can even have both the original and review workspaces open side by side in separate IDE windows.",
     explanationWrong:
       "Checking out a PR branch for review disrupts your entire development environment. Your IDE loses open files and terminal sessions, running processes are interrupted, and you have to restore everything when you switch back. Worktrees provide true isolation, letting you review without any disruption to your ongoing work.",
-    sourceUrl: "https://git-scm.com/docs/git-worktree",
-    sourceLabel: "Git Docs: git-worktree",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-worktree",
+        label: "Git Docs: git-worktree",
+      },
+    ],
   },
   {
     id: "ws-007",
@@ -281,7 +303,11 @@ git worktree remove ../review-new-api`,
       "Git worktrees let you check out multiple branches in separate directories simultaneously. Your in-progress work stays exactly as you left it with no risk of stash conflicts or lost changes. Each worktree has its own working directory while sharing the same repository data.",
     explanationWrong:
       "Relying heavily on git stash for context switching leads to a growing pile of unnamed or forgotten stash entries. Applying the wrong stash, dealing with stash conflicts, and accidentally dropping entries are all common problems. Worktrees provide clean isolation without any of these risks.",
-    sourceUrl: "https://git-scm.com/docs/git-worktree",
-    sourceLabel: "Git Docs: git-worktree",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-worktree",
+        label: "Git Docs: git-worktree",
+      },
+    ],
   },
 ];

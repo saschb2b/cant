@@ -38,8 +38,12 @@ export const extendingHtmlChallenges: BaseChallenge[] = [
       "When you extend `ComponentProps<'button'>`, `onClick`, `disabled`, and `type` are already included with correct types. Only add props that the native element doesn't have. `label`, `variant`, and `size` are genuine additions. Re-declaring inherited props clutters the API.",
     explanationWrong:
       "Re-declaring `onClick`, `disabled`, and `type` after extending `ComponentProps<'button'>` is redundant. Worse, it can narrow the types. `onClick?: () => void` drops the `React.MouseEvent` parameter, and `type` limits to 3 values when the native type is more permissive.\n\nExtend once and only declare what's truly new.",
-    sourceUrl: "https://react.dev/reference/react-dom/components/common",
-    sourceLabel: "React Docs: Common Components",
+    sources: [
+      {
+        url: "https://react.dev/reference/react-dom/components/common",
+        label: "React Docs: Common Components",
+      },
+    ],
   },
   {
     id: "eh-002",
@@ -81,9 +85,12 @@ export const extendingHtmlChallenges: BaseChallenge[] = [
       "`Omit` should only remove props you actually need to redefine. The native `value` on `<input>` already works fine, so omitting and re-declaring it as `string` is unnecessary.\n\nSimplifying `onChange` to pass just the string value lets consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`. Tradeoff: if consumers need the full event (e.g., `event.target.name` in multi-field forms), keep the native signature.",
     explanationWrong:
       "Omitting `value` just to re-declare it as `string` is redundant; the native input already accepts `string`. The `onChange` still passes the raw event, forcing every consumer to extract `e.target.value`.\n\nSimplifying the callback is often worth it for single-purpose wrappers. For generic form inputs where consumers may need `event.target.name` or other event properties, keeping the native signature can be the better choice.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
-    sourceLabel: "TypeScript: Omit Utility Type",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
+        label: "TypeScript: Omit Utility Type",
+      },
+    ],
   },
   {
     id: "eh-003",
@@ -122,8 +129,12 @@ export const extendingHtmlChallenges: BaseChallenge[] = [
       '`React.ElementType` constrains `as` to valid elements/components, and `ComponentPropsWithoutRef<E>` adapts the available props based on the element. `as="a"` enables `href`; `as="button"` enables `type`.\n\nCompare `string` + `HTMLAttributes<HTMLElement>` which accepts any string and always gives generic div-like props regardless of the element.',
     explanationWrong:
       'Using `string` for `as` accepts `"banana"` as a valid element. `HTMLAttributes<HTMLElement>` always gives the same generic props, so `as="a"` won\'t enable `href`, and `as="button"` won\'t enable `type`.\n\n`React.ElementType` + `ComponentPropsWithoutRef<E>` make TypeScript infer the correct props for whatever element type is passed.',
-    sourceUrl: "https://react.dev/reference/react/createElement",
-    sourceLabel: "React Docs: createElement",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/createElement",
+        label: "React Docs: createElement",
+      },
+    ],
   },
   {
     id: "eh-004",
@@ -154,8 +165,12 @@ export const extendingHtmlChallenges: BaseChallenge[] = [
       "Extending `React.ComponentProps<'div'>` inherits every valid div attribute: `className`, `style`, `role`, all ARIA props, event handlers, and more. Only declare custom props that don't exist on the native element.",
     explanationWrong:
       "Manually listing HTML attributes is incomplete by definition. You've covered 5 of hundreds of valid div props. What about `tabIndex`, `aria-describedby`, `onKeyDown`, `data-testid`? Extend from the native type and get them all for free.",
-    sourceUrl: "https://react.dev/reference/react-dom/components/common",
-    sourceLabel: "React Docs: Common Components",
+    sources: [
+      {
+        url: "https://react.dev/reference/react-dom/components/common",
+        label: "React Docs: Common Components",
+      },
+    ],
   },
   {
     id: "eh-005",
@@ -190,8 +205,12 @@ export const extendingHtmlChallenges: BaseChallenge[] = [
       'Extending `<a>` gives you `href`, `target`, `rel`, `download`, ARIA props, and all event handlers for free. The custom `isExternal` prop adds real value: it encapsulates the `target="_blank" rel="noopener noreferrer"` pattern into a single boolean.',
     explanationWrong:
       "Re-declaring `href`, `target`, `rel`, `className`, and `onClick` is five props you didn't need to write. You've also missed `download`, `hrefLang`, `aria-current`, and dozens more. Extend `<a>` and only add props that provide new functionality.",
-    sourceUrl: "https://react.dev/reference/react-dom/components/common",
-    sourceLabel: "React Docs: Common Components",
+    sources: [
+      {
+        url: "https://react.dev/reference/react-dom/components/common",
+        label: "React Docs: Common Components",
+      },
+    ],
   },
   {
     id: "eh-006",
@@ -230,8 +249,12 @@ export const extendingHtmlChallenges: BaseChallenge[] = [
       "React 19 added native `<form action={...}>` support. Passing an async function as `action` integrates with `useFormStatus` (for pending state) and `useActionState` (for return values), so no manual `isSubmitting` prop needed.\n\nThe form resets automatically on success for uncontrolled inputs. This is the modern replacement for `onSubmit` + `preventDefault()`.",
     explanationWrong:
       "`onSubmit` + `isSubmitting` is the pre-React 19 pattern. The parent must manually manage pending state, call `preventDefault()`, and reset the form. React 19's `action` prop handles all of this:\n\n- Pending state via `useFormStatus()`\n- Progressive enhancement (works without JS)\n- Automatic form reset on success\n- Server Action compatibility",
-    sourceUrl: "https://react.dev/reference/react-dom/components/form",
-    sourceLabel: "React Docs: form",
+    sources: [
+      {
+        url: "https://react.dev/reference/react-dom/components/form",
+        label: "React Docs: form",
+      },
+    ],
   },
   {
     id: "eh-007",
@@ -285,8 +308,11 @@ function Chip({ label, variant, ...rest }: ChipProps) {
       "Two fixes: `Omit` removes `className` and `children` from the spread so consumers can't accidentally override critical styling or content. The spread goes **before** explicit props so `className` always wins.\n\nIn the bad version, `{...rest}` comes after `className`, meaning `<Chip className=\"oops\" />` silently replaces the component's styling.",
     explanationWrong:
       "Spreading `{...rest}` **after** `className` lets consumers accidentally overwrite the component's styling with `<Chip className=\"custom\" />`. The component's own `className` is silently replaced.\n\nSpread first, then set explicit props. Use `Omit` to block props that consumers shouldn't override at the type level, since `className` and `children` are managed internally.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
-    sourceLabel: "TypeScript: Omit Utility Type",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
+        label: "TypeScript: Omit Utility Type",
+      },
+    ],
   },
 ];

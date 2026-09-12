@@ -249,7 +249,7 @@ Before creating any new file, check whether an existing file can be extended or 
    - Is this purely a **syntax or API pattern** where the code itself is the point? Only then use `type: "code"`
    - Look at existing visual components in the app's `components/visual/` directory. Reuse or extend them when possible.
 3. Append a `Challenge` object with a `content` block and both `explanationCorrect` and `explanationWrong`
-4. Link to an authoritative source (React docs, MDN, TypeScript docs)
+4. Link to at least one authoritative source in `sources` (React docs, MDN, TypeScript docs). Add a second entry when a different doc set covers a distinct angle, e.g. the Next.js docs for a React Server Components nuance
 5. Follow visual parity rules: both sides should have similar length and structure
 6. The `correctSide` value is randomized at runtime in game mode
 7. **Keep the hub in sync.** Update the challenge count in `apps/cant-hub/components/hub-series-grid.tsx` `SERIES_META` and `TOTAL_CHALLENGES` in `apps/cant-hub/components/hero.tsx` whenever challenges are added or removed
@@ -299,8 +299,9 @@ Every challenge has a `content` field that describes what is being compared. The
   correctSide: "right",
   explanationCorrect: "Mobile-first starts with the simplest layout...",
   explanationWrong: "Desktop-first forces you to undo styles...",
-  sourceUrl: "https://developer.mozilla.org/...",
-  sourceLabel: "MDN: Mobile-first responsive design",
+  sources: [
+    { url: "https://developer.mozilla.org/...", label: "MDN: Mobile-first responsive design" },
+  ],
 }
 ```
 

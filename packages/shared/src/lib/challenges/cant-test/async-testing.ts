@@ -39,8 +39,12 @@ test("loads user data", (done) => {
       "Using async/await lets the test runner detect unhandled rejections automatically. If the promise rejects, the test fails immediately with a clear stack trace pointing to the failing line.",
     explanationWrong:
       "The done callback pattern silently passes when the promise rejects, because the .then handler never runs and done() is never called. The test eventually times out with a generic timeout error instead of showing the actual failure reason.",
-    sourceUrl: "https://vitest.dev/guide/testing-types.html",
-    sourceLabel: "Vitest: Testing async code",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/testing-types.html",
+        label: "Vitest: Testing async code",
+      },
+    ],
   },
   {
     id: "async-002",
@@ -78,8 +82,12 @@ test("rejects invalid credentials", async () => {
       "The .rejects.toThrow() matcher guarantees the test fails if the promise resolves instead of rejecting. The assertion is declarative and the test runner enforces that a rejection actually occurs.",
     explanationWrong:
       "The try/catch pattern silently passes when the promise resolves successfully, because the catch block is simply skipped. The test reports success even though the expected rejection never happened. You would need to add an explicit fail() call or expect.assertions() to guard against this.",
-    sourceUrl: "https://vitest.dev/api/expect.html#rejects",
-    sourceLabel: "Vitest: expect.rejects",
+    sources: [
+      {
+        url: "https://vitest.dev/api/expect.html#rejects",
+        label: "Vitest: expect.rejects",
+      },
+    ],
   },
   {
     id: "async-003",
@@ -126,8 +134,12 @@ test("shows alert after delay", async () => {
       "Fake timers let you advance time instantly without actually waiting. The test runs in milliseconds instead of 5 seconds, and you have precise control over when each timer fires. advanceTimersByTimeAsync also flushes promise-based microtasks.",
     explanationWrong:
       "Waiting for real timers makes the test slow and introduces flakiness from scheduling jitter. A 5-second wait in every timer test compounds into minutes of wasted CI time. Fake timers eliminate both the slowness and the timing uncertainty.",
-    sourceUrl: "https://vitest.dev/api/vi.html#vi-usefaketimers",
-    sourceLabel: "Vitest: Fake Timers",
+    sources: [
+      {
+        url: "https://vitest.dev/api/vi.html#vi-usefaketimers",
+        label: "Vitest: Fake Timers",
+      },
+    ],
   },
   {
     id: "async-004",
@@ -168,8 +180,12 @@ test("detects deployment completion", async () => {
       "vi.waitFor() retries the assertion on a short interval until it passes or times out. This adapts to the actual speed of the system under test, finishing as soon as the condition is met rather than waiting a fixed duration.",
     explanationWrong:
       "A fixed delay is a guess. If the system is faster, the test wastes time. If the system is slower (common under CI load), the test fails intermittently. There is no retry mechanism, so a single slow response causes a false failure.",
-    sourceUrl: "https://vitest.dev/api/vi.html#vi-waitfor",
-    sourceLabel: "Vitest: vi.waitFor",
+    sources: [
+      {
+        url: "https://vitest.dev/api/vi.html#vi-waitfor",
+        label: "Vitest: vi.waitFor",
+      },
+    ],
   },
   {
     id: "async-005",
@@ -224,8 +240,12 @@ test("debounces search input", async () => {
       "Fake timers give you precise control over when the debounce window expires. You can verify the intermediate state (nothing called yet) and then advance time to the exact debounce threshold. The test runs instantly and deterministically.",
     explanationWrong:
       "Using a real setTimeout with an extra 200ms buffer works but is fragile. You cannot assert the intermediate state reliably, the test takes 500ms of real time, and under heavy CI load the timing margin may not be enough.",
-    sourceUrl: "https://vitest.dev/api/vi.html#vi-advancetimersbytimeasync",
-    sourceLabel: "Vitest: advanceTimersByTimeAsync",
+    sources: [
+      {
+        url: "https://vitest.dev/api/vi.html#vi-advancetimersbytimeasync",
+        label: "Vitest: advanceTimersByTimeAsync",
+      },
+    ],
   },
   {
     id: "async-006",
@@ -281,9 +301,12 @@ test("handles concurrent additions", async () => {
       "Promise.all fires both operations concurrently, which is how real users interact with a cart. This exposes race conditions such as lost updates or duplicate entries that only surface under concurrent access. Sequential tests hide these bugs entirely.",
     explanationWrong:
       "Running operations one after another never overlaps their execution. The code under test always sees a settled state before the next operation begins. Bugs that only appear when two writes overlap (lost updates, stale reads) will pass this test and break in production.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all",
-    sourceLabel: "MDN: Promise.all()",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all",
+        label: "MDN: Promise.all()",
+      },
+    ],
   },
   {
     id: "async-007",
@@ -342,8 +365,12 @@ test("emits progress events", async () => {
       "Waiting for the 'done' event ties the test to the actual completion signal of the system. The test finishes as soon as processing completes, whether that takes 10ms or 900ms. It never waits longer than necessary and never times out prematurely.",
     explanationWrong:
       "A fixed 2-second sleep is an arbitrary guess. If the processor finishes in 50ms, the test wastes time. If CI is under load and processing takes 2.1 seconds, the test fails randomly. Tying assertions to the completion event removes both problems.",
-    sourceUrl: "https://nodejs.org/api/events.html#class-eventemitter",
-    sourceLabel: "Node.js: EventEmitter",
+    sources: [
+      {
+        url: "https://nodejs.org/api/events.html#class-eventemitter",
+        label: "Node.js: EventEmitter",
+      },
+    ],
   },
   {
     id: "async-008",
@@ -402,7 +429,11 @@ test("creates an order", async () => {
       "Creating and tearing down the mock server in beforeEach/afterEach gives every test a clean instance. Registered routes, recorded requests, and any internal state are fully isolated. Tests can run in any order without affecting each other.",
     explanationWrong:
       "Sharing a single server across tests means route handlers and recorded requests leak between them. The second test sees leftover requests from the first, so the toHaveLength check depends on execution order. Adding or reordering tests will cause unexpected failures.",
-    sourceUrl: "https://vitest.dev/api/#beforeeach",
-    sourceLabel: "Vitest: beforeEach / afterEach",
+    sources: [
+      {
+        url: "https://vitest.dev/api/#beforeeach",
+        label: "Vitest: beforeEach / afterEach",
+      },
+    ],
   },
 ];

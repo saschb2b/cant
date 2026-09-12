@@ -54,9 +54,12 @@ export async function generateMetadata({
       "Blog posts with cover images should use `summary_large_image` to display the image prominently. The large image card takes up more space in the timeline, which increases visibility and click-through rates. The `summary` card shows only a small square thumbnail.",
     explanationWrong:
       "The `summary` card type shrinks the cover image to a small 144x144 thumbnail next to the text. For content with a strong visual, this wastes the effort put into creating the cover image. Use `summary` only for pages where the text is more important than the image.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image",
-    sourceLabel: "X: Summary card with large image",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image",
+        label: "X: Summary card with large image",
+      },
+    ],
   },
   {
     id: "tc-002",
@@ -102,9 +105,12 @@ export const metadata: Metadata = {
       "Twitter's large image card expects a 2:1 aspect ratio (minimum 300x157, recommended 1200x628). Providing the correct dimensions ensures the image is displayed without cropping. The `alt` text is required for accessibility and is read by screen readers.",
     explanationWrong:
       "A square 800x800 image will be heavily cropped by Twitter to fit the 2:1 card format. The top and bottom of the image will be cut off, potentially removing important content like text overlays or logos placed near the edges.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image",
-    sourceLabel: "X: Large image card specs",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image",
+        label: "X: Large image card specs",
+      },
+    ],
   },
   {
     id: "tc-003",
@@ -154,9 +160,12 @@ export async function generateMetadata({
       "`twitter:site` identifies the website's Twitter account (your company), while `twitter:creator` identifies the content author's personal account. Setting both correctly attributes the content to the right people and enables Twitter analytics for both accounts.",
     explanationWrong:
       "Using the author's handle as `twitter:site` means the company's Twitter account gets no attribution. The `site` field should always be the organization that owns the website. Without `creator`, the individual author misses out on analytics and attribution for their content.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/markup",
-    sourceLabel: "X: Card markup reference",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/markup",
+        label: "X: Card markup reference",
+      },
+    ],
   },
   {
     id: "tc-004",
@@ -206,9 +215,12 @@ export const metadata: Metadata = {
       "Twitter automatically falls back to Open Graph tags when dedicated `twitter:` tags are absent. You only need to set `twitter:card` to choose the card type. Duplicating every field is unnecessary and creates a maintenance burden where changes must be made in two places.",
     explanationWrong:
       "Duplicating all Open Graph values in the twitter object is redundant. Twitter will use `og:title`, `og:description`, and `og:image` as fallbacks. Maintaining two identical copies means you might update one and forget the other, causing inconsistencies.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/guides/getting-started",
-    sourceLabel: "X: Getting started with cards",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/guides/getting-started",
+        label: "X: Getting started with cards",
+      },
+    ],
   },
   {
     id: "tc-005",
@@ -257,9 +269,12 @@ export async function generateMetadata({
       "Twitter truncates titles longer than about 70 characters and descriptions longer than 200 characters. Keeping the title concise ensures the full text is visible in the card. If the title needs context, put it in the description field instead.",
     explanationWrong:
       "A title that exceeds 70 characters gets cut off mid-sentence in the Twitter card, often ending with an ellipsis in an awkward place. Stuffing extra context into the title field makes it harder to read and reduces the card's visual appeal.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/summary",
-    sourceLabel: "X: Summary card",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/summary",
+        label: "X: Summary card",
+      },
+    ],
   },
   {
     id: "tc-006",
@@ -310,9 +325,12 @@ export const metadata: Metadata = {
       "When your OG tags are optimized for Facebook and LinkedIn but do not fit Twitter's constraints, set dedicated twitter fields. Twitter cards have shorter character limits and a different image aspect ratio (2:1 vs 1.91:1). Providing platform-specific values ensures the best appearance everywhere.",
     explanationWrong:
       "Letting Twitter fall back to Open Graph values works only when the same content fits both platforms. A long OG title optimized for Facebook gets truncated on Twitter. Different image aspect ratios also mean a single image cannot look perfect on both platforms.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#twitter",
-    sourceLabel: "Next.js: Twitter metadata",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#twitter",
+        label: "Next.js: Twitter metadata",
+      },
+    ],
   },
   {
     id: "tc-007",
@@ -360,9 +378,12 @@ export const metadata: Metadata = {
       "The `alt` attribute on Twitter card images is rendered as `twitter:image:alt` in the HTML. Screen readers use this text to describe the image to visually impaired users. It also serves as fallback text if the image fails to load.",
     explanationWrong:
       "Omitting the `alt` attribute means visually impaired users who encounter the card in their timeline have no idea what the image shows. Twitter will also display a blank space if the image fails to load, with no text to explain what should be there.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/markup",
-    sourceLabel: "X: Card markup tags",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/markup",
+        label: "X: Card markup tags",
+      },
+    ],
   },
   {
     id: "tc-008",
@@ -408,8 +429,11 @@ export const metadata: Metadata = {
       "Setting `metadataBase` ensures all image URLs resolve to absolute paths, which is required for Twitter's crawler. Before sharing publicly, validate the card using Twitter's Card Validator tool. This catches issues like incorrect image dimensions, missing required fields, or inaccessible image URLs.",
     explanationWrong:
       "Testing Twitter cards by sharing on the live platform is risky. Twitter caches card data aggressively, so a broken card may persist for days even after you fix it. Always validate with the Card Validator first, and ensure `metadataBase` is set so relative URLs resolve correctly.",
-    sourceUrl:
-      "https://developer.x.com/en/docs/twitter-for-websites/cards/guides/troubleshooting-cards",
-    sourceLabel: "X: Troubleshooting cards",
+    sources: [
+      {
+        url: "https://developer.x.com/en/docs/twitter-for-websites/cards/guides/troubleshooting-cards",
+        label: "X: Troubleshooting cards",
+      },
+    ],
   },
 ];

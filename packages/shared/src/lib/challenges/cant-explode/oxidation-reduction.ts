@@ -35,9 +35,12 @@ export const oxidationReductionChallenges: BaseChallenge[] = [
       "Lithium is a far stronger reducing agent than copper. Its very negative standard reduction potential (-3.04 V) means it has an extremely strong tendency to lose electrons. Lithium is in fact the strongest metallic reducing agent in aqueous solution.",
     explanationWrong:
       "Copper is a poor reducing agent with a positive standard reduction potential (+0.34 V). It prefers to gain electrons rather than lose them, which is why copper does not dissolve in most acids and is found in its native metallic form.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Standard_electrode_potential_(data_page)",
-    sourceLabel: "Wikipedia: Standard electrode potential data",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Standard_electrode_potential_(data_page)",
+        label: "Wikipedia: Standard electrode potential data",
+      },
+    ],
   },
   {
     id: "or-002",
@@ -73,8 +76,12 @@ export const oxidationReductionChallenges: BaseChallenge[] = [
       "F₂ is the strongest known elemental oxidizing agent with a standard reduction potential of +2.87 V. Its small size, high electronegativity, and weak F-F bond (which is easy to break) all contribute to its extreme oxidizing power.",
     explanationWrong:
       "I₂ is a relatively weak oxidizing agent (+0.54 V). Its large atomic radius and lower electronegativity make it much less eager to accept electrons than fluorine. Iodine is actually a mild enough oxidizing agent to be used as a wound disinfectant.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Fluorine#Reactivity",
-    sourceLabel: "Wikipedia: Fluorine, Reactivity",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Fluorine#Reactivity",
+        label: "Wikipedia: Fluorine, Reactivity",
+      },
+    ],
   },
   {
     id: "or-003",
@@ -110,7 +117,11 @@ export const oxidationReductionChallenges: BaseChallenge[] = [
       "Zinc is much more easily oxidized than gold. Its negative standard reduction potential (-0.76 V) indicates a strong tendency to lose electrons and form Zn²⁺ ions. Zinc dissolves readily in dilute acids, releasing hydrogen gas.",
     explanationWrong:
       "Gold is extremely resistant to oxidation, with a very positive standard reduction potential (+1.50 V). It does not react with most acids and requires aqua regia (a mixture of concentrated nitric and hydrochloric acids) to dissolve. This resistance to oxidation is why gold remains untarnished for millennia.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Reactivity_series",
-    sourceLabel: "Wikipedia: Reactivity series",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Reactivity_series",
+        label: "Wikipedia: Reactivity series",
+      },
+    ],
   },
 ];

@@ -13,8 +13,7 @@ function challenge(id: string, difficulty: Difficulty): BaseChallenge {
     correctSide: "left",
     explanationCorrect: "",
     explanationWrong: "",
-    sourceUrl: "",
-    sourceLabel: "",
+    sources: [{ url: "", label: "" }],
   };
 }
 

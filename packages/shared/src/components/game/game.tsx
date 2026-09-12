@@ -2,7 +2,11 @@
 
 import type { ComponentType, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { Difficulty, TicketCardData } from "../../lib/game/types";
+import type {
+  ChallengeSource,
+  Difficulty,
+  TicketCardData,
+} from "../../lib/game/types";
 import { pickSeedForProgress } from "../../lib/game/use-game";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -28,8 +32,7 @@ interface BaseChallenge {
   correctSide: "left" | "right";
   explanationCorrect: string;
   explanationWrong?: string;
-  sourceUrl: string;
-  sourceLabel: string;
+  sources: ChallengeSource[];
 }
 
 // ---------------------------------------------------------------------------
@@ -164,8 +167,7 @@ export interface ResultsSlotProps<C extends BaseChallenge> {
 export interface ExplanationSlotProps {
   isCorrect: boolean;
   explanationText: string;
-  sourceUrl: string;
-  sourceLabel: string;
+  sources: ChallengeSource[];
   category: string;
   categoryLabel: string;
   challengeId: string;
@@ -823,8 +825,7 @@ export function Game<C extends BaseChallenge>({
                     : (displayChallenge.explanationWrong ??
                       displayChallenge.explanationCorrect)
                 }
-                sourceUrl={displayChallenge.sourceUrl}
-                sourceLabel={displayChallenge.sourceLabel}
+                sources={displayChallenge.sources}
                 category={displayChallenge.category}
                 categoryLabel={
                   categoryLabels[displayChallenge.category] ??

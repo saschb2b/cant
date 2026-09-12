@@ -26,8 +26,12 @@ export const viewportUnitChallenges: BaseChallenge[] = [
       "`100vh` on mobile includes the area behind the browser's URL bar, so content gets hidden. `100dvh` (dynamic viewport height) adjusts when the browser chrome appears or disappears, giving you the actual visible height.",
     explanationWrong:
       "On mobile Safari and Chrome, `100vh` is taller than the visible area because it includes the space behind the collapsible URL bar. Users see a cut-off hero section and can't reach content at the bottom without scrolling.",
-    sourceUrl: "https://web.dev/blog/viewport-units",
-    sourceLabel: "web.dev: New viewport units",
+    sources: [
+      {
+        url: "https://web.dev/blog/viewport-units",
+        label: "web.dev: New viewport units",
+      },
+    ],
   },
   {
     id: "vu-002",
@@ -60,9 +64,12 @@ export const viewportUnitChallenges: BaseChallenge[] = [
       "`svh` (small viewport height) is the viewport with all browser chrome visible, meaning it's the smallest the viewport can be. For fixed elements, this prevents content from jumping when the URL bar collapses. Use `dvh` for full-screen heroes, `svh` for fixed/sticky UI.",
     explanationWrong:
       "`dvh` changes as the browser chrome animates in and out, causing the fixed footer's height to constantly resize as the user scrolls. `svh` gives a stable value based on the smallest viewport state.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport",
-    sourceLabel: "MDN: Viewport-relative units",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport",
+        label: "MDN: Viewport-relative units",
+      },
+    ],
   },
   {
     id: "vu-003",
@@ -91,8 +98,12 @@ export const viewportUnitChallenges: BaseChallenge[] = [
       "`min(90%, 1200px)` caps the container at 1200px on large screens while staying 90% wide on small screens, and no media query is needed. Using `%` instead of `vw` also respects parent constraints if the container is nested, and `margin-inline` is the logical property equivalent.",
     explanationWrong:
       "`90vw` always refers to the viewport, even inside a nested container. If this `.container` is inside a 50%-width sidebar, it will overflow because `90vw` is relative to the full screen, not the parent. Percentage-based widths respect the parent.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/min",
-    sourceLabel: "MDN: min()",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/min",
+        label: "MDN: min()",
+      },
+    ],
   },
   {
     id: "vu-004",
@@ -130,8 +141,12 @@ export const viewportUnitChallenges: BaseChallenge[] = [
       "`100vw` includes the scrollbar width on Windows/Linux, causing a horizontal scrollbar. `100%` refers to the containing block's width, which excludes the scrollbar. For section heights, `100dvh` gives the correct visible area on mobile.",
     explanationWrong:
       "`100vw` is the full viewport including the scrollbar (typically 15-17px on Windows). This creates a horizontal overflow that's invisible on macOS (overlay scrollbar) but breaks the layout on Windows. Never use `100vw` for full-width elements.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/length#vw",
-    sourceLabel: "MDN: vw unit",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/length#vw",
+        label: "MDN: vw unit",
+      },
+    ],
   },
   {
     id: "vu-005",
@@ -159,7 +174,11 @@ export const viewportUnitChallenges: BaseChallenge[] = [
       "CSS cascade lets you declare `100vh` first as a fallback for older browsers, then `100dvh` which modern browsers will use. Browsers that don't understand `dvh` ignore the second declaration and keep `100vh`. This is progressive enhancement in one rule.",
     explanationWrong:
       "While `dvh` has good browser support now, older browsers and some WebViews still don't support it. Without a `vh` fallback, the hero gets no height at all in unsupported browsers and just collapses to content height.",
-    sourceUrl: "https://caniuse.com/viewport-unit-variants",
-    sourceLabel: "Can I Use: Viewport unit variants",
+    sources: [
+      {
+        url: "https://caniuse.com/viewport-unit-variants",
+        label: "Can I Use: Viewport unit variants",
+      },
+    ],
   },
 ];

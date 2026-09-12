@@ -101,6 +101,6 @@ Stopping is a deliberate decision with a high bar, not a place you drift to once
 2. You listed at least five concrete candidates spanning at least three kinds of work (for example a test, a doc, an a11y fix, a refactor, a perf win, error handling).
 3. For each, you can say it is either already done or genuinely surface-first (needs an owner decision), so none is yours to ship.
 
-If you can still name one in-bounds candidate a senior reviewer would thank you for, the bar is not met: do it instead of stopping. Running low on *high-leverage* work means lower the bar and widen the scope, not wind down. The first time the obvious wins run out is never a valid stop; it is the signal to re-survey wider.
+If you can still name one in-bounds candidate a senior reviewer would thank you for, the bar is not met: do it instead of stopping. Running low on _high-leverage_ work means lower the bar and widen the scope, not wind down. The first time the obvious wins run out is never a valid stop; it is the signal to re-survey wider.
 
 This does not license manufactured motion, which is the worse failure. The senior-reviewer test still rules: if the only candidates left are ones a reviewer would sigh at, the gate is met and stopping is correct. So the honest stops are exactly three: the user interrupts you, the foundation is on fire in a way you cannot fix in bounds, or the gate above is truly met. "I've shipped a satisfying batch" is not on that list.

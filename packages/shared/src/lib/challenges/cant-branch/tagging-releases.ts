@@ -36,8 +36,12 @@ git show v1.4.0
       "Annotated tags store the tagger name, email, date, and a message as a full Git object. This metadata is essential for release management because it records **who** created the release and **why**.\n\nLightweight tags are just pointers to a commit with no additional context. Use them for temporary or personal bookmarks, not for releases.",
     explanationWrong:
       "Lightweight tags lack metadata. You cannot see who created the tag or when it was created independently of the commit it points to. For releases that other people depend on, annotated tags provide the audit trail and context that lightweight tags cannot.",
-    sourceUrl: "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
-    sourceLabel: "Git Book: Tagging",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
+        label: "Git Book: Tagging",
+      },
+    ],
   },
   {
     id: "tr-002",
@@ -73,8 +77,9 @@ git tag -a v3.0.0 -m "Rename getUserName to getDisplayName"
       "Semantic versioning defines MAJOR.MINOR.PATCH. A **major** bump signals breaking changes. Renaming a public API method breaks existing consumers, so the major version must increment.\n\nMinor bumps are for backwards-compatible new features. Patch bumps are for backwards-compatible bug fixes.",
     explanationWrong:
       "Renaming a public method is a breaking change. Consumers who call `getUserName()` will get errors after upgrading. A minor version bump (2.3.1 to 2.4.0) signals new features that are backwards-compatible, which this change is not. The correct bump is to major: 3.0.0.",
-    sourceUrl: "https://semver.org/",
-    sourceLabel: "Semantic Versioning 2.0.0",
+    sources: [
+      { url: "https://semver.org/", label: "Semantic Versioning 2.0.0" },
+    ],
   },
   {
     id: "tr-003",
@@ -109,8 +114,12 @@ git push origin main --tags`,
       "Tags should point to commits on the main branch, specifically the merge commit that includes all changes for the release. Tagging a feature branch commit means the tag points to a commit that may not exist on main after a squash merge.\n\nThe release tag should always reflect the exact state of the code that was shipped.",
     explanationWrong:
       "Tagging a feature branch before merging creates a disconnect. If the merge introduces a conflict resolution or if you use squash merging, the tagged commit and the actual main branch state will differ. Always tag after merging so the tag represents what was actually released.",
-    sourceUrl: "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
-    sourceLabel: "Git Book: Tagging",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
+        label: "Git Book: Tagging",
+      },
+    ],
   },
   {
     id: "tr-004",
@@ -152,8 +161,12 @@ git push origin main --tags`,
       "A release branch gives you a stabilization period where only bug fixes are allowed. New feature work continues on main without interfering with the release. This separation prevents last-minute features from sneaking into a release.\n\nDirect tagging on main works for small teams with continuous deployment, but release branches are safer for coordinated releases.",
     explanationWrong:
       "Releasing directly from main means every commit on main is a potential release candidate. If someone merges a half-finished feature while you are preparing a release, it gets included. A release branch isolates the release scope and gives QA a stable target to test against.",
-    sourceUrl: "https://nvie.com/posts/a-successful-git-branching-model/",
-    sourceLabel: "A Successful Git Branching Model",
+    sources: [
+      {
+        url: "https://nvie.com/posts/a-successful-git-branching-model/",
+        label: "A Successful Git Branching Model",
+      },
+    ],
   },
   {
     id: "tr-005",
@@ -190,8 +203,12 @@ git push origin v3.0.0`,
       "Signed tags (`git tag -s`) use GPG to cryptographically prove who created the tag. Anyone can verify the signature with `git tag -v`. This is critical for open source projects and security-sensitive releases where you need to confirm the tag was created by a trusted maintainer.\n\nUnsigned tags offer no proof of authorship.",
     explanationWrong:
       "Without signing, there is no way to verify who created a tag. An attacker with push access could delete and recreate a tag pointing to a different commit. Signed tags make tampering detectable because the signature would no longer match.",
-    sourceUrl: "https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work",
-    sourceLabel: "Git Book: Signing Your Work",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work",
+        label: "Git Book: Signing Your Work",
+      },
+    ],
   },
   {
     id: "tr-006",
@@ -225,8 +242,12 @@ git tag -a v2.0.0-rc.1 -m "Release candidate 1"
       "Semver specifies dot-separated pre-release identifiers with numeric ordering. `beta.1` and `beta.2` sort correctly because the numeric part after the dot is compared as an integer. Without the dot separator, `beta2` sorts lexicographically, which breaks at `beta10`.\n\nThis convention also makes it clear how many pre-releases have been published.",
     explanationWrong:
       "Tags like `v2.0.0-beta` and `v2.0.0-beta2` lack consistent structure. Lexicographic sorting puts `beta10` before `beta2`. The semver spec requires dot-separated identifiers so that numeric comparisons work correctly: `beta.1 < beta.2 < beta.10`.",
-    sourceUrl: "https://semver.org/#spec-item-11",
-    sourceLabel: "Semver: Pre-release Versions",
+    sources: [
+      {
+        url: "https://semver.org/#spec-item-11",
+        label: "Semver: Pre-release Versions",
+      },
+    ],
   },
   {
     id: "tr-007",
@@ -244,7 +265,11 @@ git tag -a v2.0.0-rc.1 -m "Release candidate 1"
       "Tags mark specific commits as release points, making it easy to check out, compare, and reference any version. Commands like git diff v1.0.0..v2.0.0 and git log v1.0.0..v2.0.0 become available. Without tags, you would need to look up commit hashes manually.",
     explanationWrong:
       "A repository without tags has no visible milestones in its history. Finding the commit that corresponds to a specific release requires searching through logs or external documentation. Tags provide permanent, human-readable markers that integrate with tooling and hosting platforms.",
-    sourceUrl: "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
-    sourceLabel: "Git Book: Tagging",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
+        label: "Git Book: Tagging",
+      },
+    ],
   },
 ];

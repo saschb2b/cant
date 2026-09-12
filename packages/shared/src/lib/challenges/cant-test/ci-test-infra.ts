@@ -43,8 +43,12 @@ jobs:
       "Vitest runs tests in parallel by default using worker threads. A single vitest command with default parallelism lets the runner distribute work across available CPU cores automatically, completing the suite faster with less configuration overhead.",
     explanationWrong:
       "Disabling threads with --no-threads forces sequential execution, removing the main performance benefit of modern test runners. Running separate vitest commands serially also wastes time because each invocation pays the startup cost again and cannot share work across the full suite.",
-    sourceUrl: "https://vitest.dev/guide/improving-performance",
-    sourceLabel: "Vitest: Improving Performance",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/improving-performance",
+        label: "Vitest: Improving Performance",
+      },
+    ],
   },
   {
     id: "ci-002",
@@ -89,8 +93,9 @@ export default defineConfig({
       "Generating structured output files (JSON, HTML) alongside console output makes results consumable by CI dashboards, PR comments, and coverage tracking tools. Multiple coverage reporters let developers browse HTML locally while CI parses the JSON summary for threshold checks.",
     explanationWrong:
       "Using only the default reporter and a single text coverage format limits visibility to whoever reads the raw CI log. There is no artifact for dashboards to consume, no HTML report for local debugging, and no structured data for automated coverage gates.",
-    sourceUrl: "https://vitest.dev/guide/reporters",
-    sourceLabel: "Vitest: Reporters",
+    sources: [
+      { url: "https://vitest.dev/guide/reporters", label: "Vitest: Reporters" },
+    ],
   },
   {
     id: "ci-003",
@@ -152,9 +157,12 @@ jobs:
       "Splitting lint, unit, and e2e into separate jobs lets them run in parallel where possible and fail independently. Cheap checks (lint, typecheck) surface errors in seconds, while expensive e2e tests only run after the fast jobs pass. This shortens the feedback loop and makes failures easier to diagnose.",
     explanationWrong:
       "Running every check sequentially in a single job means a lint error discovered in the last step wastes all the time spent on earlier test runs. A failure in any step blocks visibility into later steps, and there is no parallelism to reduce total wall-clock time.",
-    sourceUrl:
-      "https://docs.github.com/en/actions/using-jobs/using-jobs-in-a-workflow",
-    sourceLabel: "GitHub Docs: Using jobs in a workflow",
+    sources: [
+      {
+        url: "https://docs.github.com/en/actions/using-jobs/using-jobs-in-a-workflow",
+        label: "GitHub Docs: Using jobs in a workflow",
+      },
+    ],
   },
   {
     id: "ci-004",
@@ -206,8 +214,12 @@ export default defineConfig({
       "Keeping connection strings and credentials in a dedicated .env.test file separates configuration from code. Developers can override values locally without touching the vitest config, and CI can inject its own variables through environment settings. The envPrefix option adds a clear boundary between test and production variables.",
     explanationWrong:
       "Hardcoding database URLs and API keys directly in the vitest config file mixes infrastructure details with test runner settings. Every environment (local, CI, staging) that needs different values requires editing the config or layering overrides on top of it, which is fragile and easy to get wrong.",
-    sourceUrl: "https://vitest.dev/config/#env",
-    sourceLabel: "Vitest: Environment Config",
+    sources: [
+      {
+        url: "https://vitest.dev/config/#env",
+        label: "Vitest: Environment Config",
+      },
+    ],
   },
   {
     id: "ci-005",
@@ -273,8 +285,9 @@ export function createMockUser(overrides = {}) {
       "Splitting test helpers into focused modules (factories, render helpers, mocks) keeps each file small and easy to navigate. Using a library like faker with an incrementing counter ensures each test gets unique data by default, which prevents hidden coupling between tests that accidentally share the same hardcoded IDs.",
     explanationWrong:
       'Putting every factory and re-export in a single utils file works at first, but grows unwieldy as the test suite scales. Hardcoded IDs like "user-1" across all factories mean two tests creating a mock user get identical data, which can mask bugs or cause unexpected collisions in integration tests.',
-    sourceUrl: "https://fakerjs.dev/guide/",
-    sourceLabel: "Faker.js: Getting Started",
+    sources: [
+      { url: "https://fakerjs.dev/guide/", label: "Faker.js: Getting Started" },
+    ],
   },
   {
     id: "ci-006",
@@ -335,8 +348,12 @@ jobs:
       "Built-in sharding (--shard=N/M) splits the full test suite evenly across matrix jobs so each shard runs roughly the same number of tests. Adding more shards is a one-line change, and uploading artifacts lets you merge results after all shards finish. This scales linearly with the number of runners.",
     explanationWrong:
       "Splitting by project type (unit, api, e2e) creates a fixed number of jobs with unpredictable durations. If the unit suite takes ten minutes and the api suite takes one minute, most of the wall-clock time is spent waiting for the slowest job. There is no mechanism to rebalance work as the suite grows.",
-    sourceUrl: "https://vitest.dev/guide/cli.html#shard",
-    sourceLabel: "Vitest: CLI Shard Option",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/cli.html#shard",
+        label: "Vitest: CLI Shard Option",
+      },
+    ],
   },
   {
     id: "ci-007",
@@ -394,9 +411,12 @@ export function detectFlakes(current: TestRun[]) {
       "Tracking flaky tests in a structured log and reporting them surfaces the real problem instead of hiding it. With zero retries as the baseline, any test that needs a retry is flagged as flaky. Teams can quarantine known flakes into a separate suite and fix them deliberately rather than letting silent retries erode confidence in the suite.",
     explanationWrong:
       "Blindly retrying every failure three times masks genuine flakiness. A test that passes on the third attempt still indicates a real issue (race condition, timing dependency, shared state), but the green CI status hides it. Over time the suite accumulates hidden flakes that slow down runs and cause intermittent failures nobody investigates.",
-    sourceUrl:
-      "https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-warning-message",
-    sourceLabel: "GitHub Docs: Workflow Commands",
+    sources: [
+      {
+        url: "https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-warning-message",
+        label: "GitHub Docs: Workflow Commands",
+      },
+    ],
   },
   {
     id: "ci-008",
@@ -467,8 +487,11 @@ export function useTransaction() {
       "Wrapping each test in a transaction that rolls back after the assertion is the fastest way to isolate test data. No rows are ever committed, so there is nothing to truncate or reseed between tests. This approach is orders of magnitude faster than truncating every table and re-seeding, and it guarantees each test starts from a clean state.",
     explanationWrong:
       "Truncating all tables and reseeding between tests is correct in principle, but extremely slow at scale. Each reset issues multiple SQL statements, waits for cascading deletes, and then re-inserts seed rows. As the schema grows, this overhead adds seconds per test, turning a fast unit suite into a slow integration bottleneck.",
-    sourceUrl:
-      "https://www.prisma.io/docs/orm/prisma-client/queries/transactions",
-    sourceLabel: "Prisma Docs: Transactions",
+    sources: [
+      {
+        url: "https://www.prisma.io/docs/orm/prisma-client/queries/transactions",
+        label: "Prisma Docs: Transactions",
+      },
+    ],
   },
 ];

@@ -44,9 +44,12 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
       "Each child of the Epic answers what a customer will be able to do that they couldn't before. Product can sequence them, design can spot friction, and the operational backfill is correctly tagged as a Task because no human benefits from it directly.",
     explanationWrong:
       "Five Tasks under an Epic signal plumbing to everyone reading the board. The Epic's reason for existing evaporates between the description and the implementation list, and nobody outside the original author can tell what 'done' looks like for the Epic as a whole.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "est-002",
@@ -81,9 +84,12 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
       "The Epic states the outcome, the reason it matters, and what is explicitly out. Six months from now, when nobody on the team remembers the original support complaint, the Epic still answers 'why did we touch the auth layer?' for itself.",
     explanationWrong:
       "A one-line description and a Figma link puts the why entirely in the original author's head. New joiners cannot tell what is being shipped, and there is no shared definition of when the Epic is done.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "est-003",
@@ -127,9 +133,12 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
       "Plumbing is correctly shaped as a Task, and the link to EDIT-218 anchors it to the user value it unblocks. When that Story moves on the board, this Task moves with it. When the team sequences the sprint, they can see which user-facing work sits behind the upgrade.",
     explanationWrong:
       "The subtasks are honest and the work is real, but the Task is an island. Nobody reading the board can answer 'why now?' without asking the author. If the Story it was meant to unblock slips, this Task sits in a corner with no signal.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "est-004",
@@ -168,9 +177,12 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
       "Each Subtask is engineering detail inside the parent Story, scoped narrowly enough that it doesn't need its own acceptance criteria. The parent Story's Connextra and AC speak for the whole bundle.",
     explanationWrong:
       "Building an entire authentication feature for an unrelated payment Epic is not a Subtask, it is its own Story under a different Epic. Subtasks should be implementation steps inside one work item, not separate features smuggled in.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "est-005",
@@ -211,9 +223,12 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
       "Each Story names an admin action, which gives QA a thing to verify and product a thing to demo. The schema migration stays a Task because no admin sees it. Subtasks would live inside each Story, not directly under the Epic.",
     explanationWrong:
       "Subtasks hung directly off an Epic skip the Story layer entirely. There is no shippable, demoable unit between 'Epic' and 'engineering detail', so progress can only be reported as a percentage of subtasks, not as features delivered.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "est-006",
@@ -255,8 +270,11 @@ export const epicStoryTaskChallenges: BaseChallenge[] = [
       "Reading just the children, you can answer 'readers will be able to filter by topic, narrow by date, and see match snippets.' The infrastructure swap stays as a Task because readers don't see it. The Story layer is what makes the Epic readable to people who weren't in the planning meeting.",
     explanationWrong:
       "All-Task children describe the implementation, not the user-visible change. Without a Story layer, the Epic's name 'Search v2' has to carry the meaning, and 'v2' tells you nothing about what readers actually gain.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
 ];

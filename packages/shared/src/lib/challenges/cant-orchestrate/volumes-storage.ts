@@ -35,8 +35,12 @@ volumes:
       "Named volumes are easy to identify, back up, and manage with `docker volume` commands. They have a meaningful name (`pgdata`) so you can find them later. They persist across `docker compose down` by default.",
     explanationWrong:
       "Anonymous volumes get a random hash name like `a1b2c3d4...`. They're hard to identify, easy to lose track of, and accumulate as orphans over time. Running `docker compose down -v` deletes them, making accidental data loss more likely.",
-    sourceUrl: "https://docs.docker.com/engine/storage/volumes/",
-    sourceLabel: "Docker docs: Volumes",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/storage/volumes/",
+        label: "Docker docs: Volumes",
+      },
+    ],
   },
   {
     id: "vs-002",
@@ -70,8 +74,12 @@ volumes:
       "The anonymous volume at `/app/node_modules` prevents the host bind mount from overwriting the container's installed dependencies. The container keeps its own `node_modules` (built for its OS and architecture) while your source code is still synced from the host.",
     explanationWrong:
       "Bind-mounting the entire project directory overwrites `node_modules` inside the container with whatever is on your host. If your host OS differs from the container (e.g., macOS vs Linux), native modules will be incompatible and your app will crash.",
-    sourceUrl: "https://docs.docker.com/engine/storage/bind-mounts/",
-    sourceLabel: "Docker docs: Bind mounts",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/storage/bind-mounts/",
+        label: "Docker docs: Bind mounts",
+      },
+    ],
   },
   {
     id: "vs-003",
@@ -106,9 +114,12 @@ volumes:
       "The `:ro` flag makes bind mounts read-only inside the container. If the container is compromised, it cannot modify your configuration files or static assets on the host. This follows the principle of least privilege.",
     explanationWrong:
       "Without `:ro`, the container has full read-write access to mounted files. A compromised Nginx process could overwrite your configuration or inject malicious content into your HTML files, affecting the host filesystem.",
-    sourceUrl:
-      "https://docs.docker.com/engine/storage/bind-mounts/#use-a-read-only-bind-mount",
-    sourceLabel: "Docker docs: Read-only bind mounts",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/storage/bind-mounts/#use-a-read-only-bind-mount",
+        label: "Docker docs: Read-only bind mounts",
+      },
+    ],
   },
   {
     id: "vs-004",
@@ -145,7 +156,11 @@ services:
       "`tmpfs` mounts store data in memory only. It never touches disk, is not included in image layers, and is automatically cleaned up when the container stops. This is ideal for session tokens, temporary uploads, and other sensitive ephemeral data.",
     explanationWrong:
       "Writing temporary files to the container's writable layer persists them to disk. They can be recovered from the container filesystem, show up in `docker diff`, and survive container restarts. Sensitive data should never be written to the container layer.",
-    sourceUrl: "https://docs.docker.com/engine/storage/tmpfs/",
-    sourceLabel: "Docker docs: tmpfs mounts",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/storage/tmpfs/",
+        label: "Docker docs: tmpfs mounts",
+      },
+    ],
   },
 ];

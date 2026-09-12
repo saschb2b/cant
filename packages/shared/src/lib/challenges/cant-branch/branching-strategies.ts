@@ -35,9 +35,12 @@ git checkout -b feature/redesign-nav`,
       "Short-lived branches minimize merge conflicts by integrating changes frequently. Each branch tackles a small, well-defined slice of work. When branches live for days instead of weeks, the diff stays small and reviewable, and conflicts are rare and easy to resolve.",
     explanationWrong:
       "Long-lived feature branches diverge significantly from the main branch over time. The longer a branch lives, the more likely it is to conflict with other developers' work. Merging a 3-week branch often turns into a painful, error-prone process that can introduce subtle bugs.",
-    sourceUrl:
-      "https://trunkbaseddevelopment.com/short-lived-feature-branches/",
-    sourceLabel: "Trunk Based Development: Short-Lived Feature Branches",
+    sources: [
+      {
+        url: "https://trunkbaseddevelopment.com/short-lived-feature-branches/",
+        label: "Trunk Based Development: Short-Lived Feature Branches",
+      },
+    ],
   },
   {
     id: "bs-002",
@@ -81,8 +84,12 @@ function Dashboard() {
       "Feature flags let you merge incomplete work into main safely. The code is deployed but not active for users until you flip the flag. This keeps branches short-lived, enables trunk-based development, and allows gradual rollouts. You can enable the feature for 5% of users first, then ramp up.",
     explanationWrong:
       "Keeping incomplete features on long-running branches delays integration and increases merge conflict risk. The branch diverges further from main every day. When it finally merges, you face a large, risky deployment with no ability to gradually roll out or quickly disable the feature.",
-    sourceUrl: "https://martinfowler.com/articles/feature-toggles.html",
-    sourceLabel: "Martin Fowler: Feature Toggles",
+    sources: [
+      {
+        url: "https://martinfowler.com/articles/feature-toggles.html",
+        label: "Martin Fowler: Feature Toggles",
+      },
+    ],
   },
   {
     id: "bs-003",
@@ -125,8 +132,12 @@ git pull`,
       "GitHub Flow is simpler and works well for small teams doing continuous delivery. You have one main branch, create feature branches from it, open pull requests, and merge back. There is no need for develop, release, or hotfix branches when you deploy frequently and have good CI/CD.",
     explanationWrong:
       "Git Flow was designed for projects with scheduled releases and multiple supported versions. For a small team shipping continuously, the overhead of managing develop, release, and hotfix branches adds complexity without clear benefits. The extra ceremony slows down delivery without improving quality.",
-    sourceUrl: "https://docs.github.com/en/get-started/using-git/github-flow",
-    sourceLabel: "GitHub Docs: GitHub Flow",
+    sources: [
+      {
+        url: "https://docs.github.com/en/get-started/using-git/github-flow",
+        label: "GitHub Docs: GitHub Flow",
+      },
+    ],
   },
   {
     id: "bs-004",
@@ -165,8 +176,12 @@ git push -u origin add-user-auth
       "Trunk-based development does not mean skipping code review. The best practice is to use short-lived branches (1-2 days max) with pull requests. This gives you the benefits of frequent integration while maintaining quality through CI checks and peer review. The key constraint is branch lifespan, not the absence of branches.",
     explanationWrong:
       "Committing directly to main without review works for solo projects but creates risk on teams. A single broken commit can block everyone. Without CI gates, bugs slip into production unnoticed. Trunk-based development encourages frequent integration, but that does not mean abandoning review and automated checks.",
-    sourceUrl: "https://trunkbaseddevelopment.com/",
-    sourceLabel: "Trunk Based Development",
+    sources: [
+      {
+        url: "https://trunkbaseddevelopment.com/",
+        label: "Trunk Based Development",
+      },
+    ],
   },
   {
     id: "bs-005",
@@ -205,9 +220,12 @@ git tag v3.1.0
       "When you support multiple major versions simultaneously, release branches are essential. They let you backport critical fixes to older versions without forcing users to upgrade. Libraries, frameworks, and enterprise software commonly maintain release branches for each supported major version.",
     explanationWrong:
       "Tagging without release branches works when you only support the latest version. But if users depend on v2 and cannot upgrade to v3 immediately, you need a way to ship patches to v2. Without a release branch, your only option is telling users to upgrade, which is not always feasible.",
-    sourceUrl:
-      "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows",
-    sourceLabel: "Git Book: Branching Workflows",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows",
+        label: "Git Book: Branching Workflows",
+      },
+    ],
   },
   {
     id: "bs-006",
@@ -246,9 +264,12 @@ git merge feature/auth
       "Using CI/CD pipelines to promote a single artifact through environments eliminates branch drift. The same commit that passed tests in staging is exactly what deploys to production. Environment-specific config lives in environment variables or config files, not in separate branches.",
     explanationWrong:
       "Environment branches (develop, staging, production) inevitably drift apart. Hotfixes applied to production skip staging. Cherry-picks get lost. Over time, the branches diverge so much that merging staging into production becomes unpredictable. The environments no longer represent what they should.",
-    sourceUrl:
-      "https://www.atlassian.com/continuous-delivery/principles/pipeline",
-    sourceLabel: "Atlassian: Continuous Delivery Pipeline",
+    sources: [
+      {
+        url: "https://www.atlassian.com/continuous-delivery/principles/pipeline",
+        label: "Atlassian: Continuous Delivery Pipeline",
+      },
+    ],
   },
   {
     id: "bs-007",
@@ -266,8 +287,11 @@ git merge feature/auth
       "Short-lived branches stay close to the main branch and integrate frequently. Because they diverge for only a day or two, the chance of conflicting with other developers' work is minimal. Each merge is small, predictable, and easy to review.",
     explanationWrong:
       "Long-lived branches accumulate drift over time. The longer a branch exists, the more the main branch changes underneath it. When the branch finally merges, the resulting conflicts can be large and difficult to resolve correctly, increasing the risk of introducing bugs.",
-    sourceUrl:
-      "https://trunkbaseddevelopment.com/short-lived-feature-branches/",
-    sourceLabel: "Trunk Based Development: Short-Lived Feature Branches",
+    sources: [
+      {
+        url: "https://trunkbaseddevelopment.com/short-lived-feature-branches/",
+        label: "Trunk Based Development: Short-Lived Feature Branches",
+      },
+    ],
   },
 ];

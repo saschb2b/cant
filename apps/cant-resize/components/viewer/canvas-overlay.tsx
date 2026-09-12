@@ -219,7 +219,7 @@ export function CanvasOverlay({
       }
       setUrl(url);
     },
-    [urlInput, setUrl],
+    [urlInput, setUrl, setUrlInput],
   );
 
   const handleRefresh = useCallback(() => {

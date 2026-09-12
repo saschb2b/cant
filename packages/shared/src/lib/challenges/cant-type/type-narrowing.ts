@@ -32,9 +32,12 @@ double("hello"); // "hellohello"`,
       "Using `typeof` to check the type at runtime lets TypeScript narrow the type inside each branch. In the `number` branch, `value` is known to be a number, so multiplication is safe. In the `string` branch, string methods are available. No type assertions needed.",
     explanationWrong:
       "Casting with `as number` silences the compiler but does nothing at runtime. If `value` is a string, multiplying it produces `NaN`. Type assertions bypass safety checks instead of adding them.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards",
-    sourceLabel: "TypeScript Handbook: typeof type guards",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards",
+        label: "TypeScript Handbook: typeof type guards",
+      },
+    ],
   },
   {
     id: "tn-002",
@@ -67,9 +70,12 @@ greet(); // "Hello, stranger!"`,
       "Checking `if (name)` filters out both `undefined` and empty strings. Inside the truthy branch, TypeScript knows `name` is a non-empty string, so `.toUpperCase()` is safe. This is the simplest form of narrowing.",
     explanationWrong:
       "When `name` is `undefined`, calling `.toUpperCase()` on it throws a TypeError at runtime. TypeScript warns about this with strictNullChecks enabled. Always check optional values before using them.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#truthiness-narrowing",
-    sourceLabel: "TypeScript Handbook: Truthiness narrowing",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#truthiness-narrowing",
+        label: "TypeScript Handbook: Truthiness narrowing",
+      },
+    ],
   },
   {
     id: "tn-003",
@@ -110,9 +116,12 @@ function area(shape: Shape) {
       "Discriminated unions use a shared literal property (here `kind`) to tell variants apart. When you switch on `shape.kind`, TypeScript narrows each case to the correct variant. You get full autocompletion and type safety in every branch.",
     explanationWrong:
       "Without checking `kind`, TypeScript sees the full union and only allows access to properties shared by all variants. `width` only exists on the `rect` variant, so accessing it directly is a compile error.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
-    sourceLabel: "TypeScript Handbook: Discriminated unions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+        label: "TypeScript Handbook: Discriminated unions",
+      },
+    ],
   },
   {
     id: "tn-004",
@@ -151,9 +160,12 @@ function move(animal: Fish | Bird) {
       'The `in` operator checks whether a property exists on an object at runtime. TypeScript uses this to narrow the type: inside the `"swim" in animal` branch, `animal` is narrowed to `Fish`. This works well when union members have distinct properties but no shared discriminant.',
     explanationWrong:
       "Using `as Fish` tells the compiler to trust you, but at runtime there is no check. If the actual value is a `Bird`, calling `.swim()` throws because that method does not exist. Type assertions should be a last resort, not a substitute for runtime checks.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing",
-    sourceLabel: "TypeScript Handbook: in operator narrowing",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing",
+        label: "TypeScript Handbook: in operator narrowing",
+      },
+    ],
   },
   {
     id: "tn-005",
@@ -186,9 +198,12 @@ function move(animal: Fish | Bird) {
       "`instanceof` checks the prototype chain at runtime. Inside the `instanceof Error` branch, TypeScript knows `err` is an `Error` with `.message` and `.stack`. In the else branch, it is narrowed to `string`. This is especially useful for class hierarchies.",
     explanationWrong:
       'Accessing `.message` on a `string` value fails because strings do not have a `.message` property. In JavaScript, both `throw new Error("oops")` and `throw "oops"` are valid, so catch blocks often receive `Error | string` (or `unknown`).',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing",
-    sourceLabel: "TypeScript Handbook: instanceof narrowing",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing",
+        label: "TypeScript Handbook: instanceof narrowing",
+      },
+    ],
   },
   {
     id: "tn-006",
@@ -233,8 +248,11 @@ function handle(pet: Cat | Dog) {
       "A user-defined type guard uses the `pet is Cat` return type to tell TypeScript that when the function returns true, the argument is a specific type. Without this annotation, TypeScript cannot infer the narrowing across function boundaries. The return type `pet is Cat` bridges runtime logic and compile-time types.",
     explanationWrong:
       'A regular boolean return type tells TypeScript nothing about the argument\'s type. Even though the function checks `"meow" in pet`, TypeScript does not propagate that narrowing back to the caller. The type stays `Cat | Dog` in the if-block.',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
-    sourceLabel: "TypeScript Handbook: Type predicates",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        label: "TypeScript Handbook: Type predicates",
+      },
+    ],
   },
 ];

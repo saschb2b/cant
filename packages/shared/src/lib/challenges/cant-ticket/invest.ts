@@ -37,8 +37,12 @@ export const investChallenges: BaseChallenge[] = [
       "Independence is about being shippable on its own. The right story decouples the user-visible behavior from the realtime work, so it can land first. The realtime polish becomes its own story to prioritize separately.",
     explanationWrong:
       "Two hard blocks make this story a coordination problem before it is a delivery problem. If either dependency slips, the value never lands. Independence means: redesign the slice so something useful can ship now.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "inv-002",
@@ -95,8 +99,12 @@ export const investChallenges: BaseChallenge[] = [
       "The team owns the implementation. The story sets the outcome (under three minutes) and lets engineering pick which steps to drop, which library to use, and what the tradeoff with verification looks like.",
     explanationWrong:
       "When the description specifies the library, the steps to remove, and the staging shortcut, the team is just executing. They will hit a constraint the author missed and either ship a worse solution or escalate every variation.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "inv-003",
@@ -131,8 +139,12 @@ export const investChallenges: BaseChallenge[] = [
       "INVEST's V (Valuable) is the lever that distinguishes story from task. The right ticket names the on-call engineer and the cost they pay today (waiting four minutes at 2 a.m.). That defends the work to anyone who asks why now.",
     explanationWrong:
       "EOL deadlines are real. They are also a Task: the work has no user-facing value. Wrapping plumbing in story language is fine if you can name the value. If the only beneficiary is the future maintenance budget, file it as a Task.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "inv-004",
@@ -190,8 +202,12 @@ export const investChallenges: BaseChallenge[] = [
       "Three engineers can roughly agree on the right side. The scope is one field, two paths, and a defined failure mode. The left side is a research project hidden inside a story.",
     explanationWrong:
       "Open-ended scope ('handle conflicts', 'support partial failures', 'work for both push and pull') is what a 13-pointer or a spike looks like. Estimating it produces a wide spread and a wrong number.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "inv-005",
@@ -238,9 +254,12 @@ export const investChallenges: BaseChallenge[] = [
       "Small means it fits in a sprint. The right story carves out the simplest end-to-end slice and explicitly defers the variations. Each deferred slice is a separate story product can prioritize on its own merits.",
     explanationWrong:
       "Six features inside one story will not fit in a sprint and cannot be cleanly decomposed mid-sprint. Splitting before pulling is cheaper than splitting in flight.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "inv-006",
@@ -290,8 +309,12 @@ export const investChallenges: BaseChallenge[] = [
       "Testable is the letter teams fail most. The right side gives observable thresholds (p75 under 1s, p99 under 2s) on a defined dataset. QA can verify it without asking the engineer how it feels.",
     explanationWrong:
       "'Snappier', 'not frustrated', 'improved' are vibes. They cannot be verified without the engineer in the room, which means they will be argued about in retro and never re-tested when the next change ships.",
-    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
-    sourceLabel: "Dan North: Introducing BDD",
+    sources: [
+      {
+        url: "https://dannorth.net/blog/introducing-bdd/",
+        label: "Dan North: Introducing BDD",
+      },
+    ],
   },
   {
     id: "inv-007",
@@ -343,7 +366,11 @@ export const investChallenges: BaseChallenge[] = [
       "Independent (does not block other auth flows), Negotiable (the team picks the SAML library), Valuable (named admin, named cost), Estimable (one provider, scoped acceptance), Small (fits a sprint), Testable (Given/When/Then). Six for six.",
     explanationWrong:
       "Vague scope, vibe acceptance criteria, and a 13 in the points field: left fails three letters at once. Not Estimable, not Small, not Testable. The story is a wish dressed up.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
 ];

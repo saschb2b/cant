@@ -48,8 +48,12 @@ app.delete("/users/:id", (req, res) => {
       "RESTful URLs use plural nouns to represent resources, not verbs. The HTTP method (GET, POST, DELETE) already communicates the action being performed. Using /users as the resource path keeps the API consistent and predictable.",
     explanationWrong:
       "Using verbs like /getUsers, /createUser, and /deleteUser duplicates information already conveyed by the HTTP method. This pattern leads to inconsistent naming across teams and makes the API harder to discover. REST treats URLs as resource identifiers, not action descriptions.",
-    sourceUrl: "https://restfulapi.net/resource-naming/",
-    sourceLabel: "RESTful API: Resource Naming",
+    sources: [
+      {
+        url: "https://restfulapi.net/resource-naming/",
+        label: "RESTful API: Resource Naming",
+      },
+    ],
   },
   {
     id: "rest-002",
@@ -97,8 +101,12 @@ const res = await fetch("/api/products/abc-123");`,
       "GET is the correct HTTP method for retrieving resources. GET requests are cacheable, bookmarkable, and safe (they do not modify server state). Browsers and CDNs can cache GET responses, which improves performance significantly.",
     explanationWrong:
       "Using POST to read data defeats HTTP caching because POST responses are not cached by default. It also violates the semantic meaning of POST, which indicates a state-changing operation. Intermediaries like CDNs and proxies cannot optimize POST requests the way they optimize GET.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET",
-    sourceLabel: "MDN: GET method",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET",
+        label: "MDN: GET method",
+      },
+    ],
   },
   {
     id: "rest-003",
@@ -148,8 +156,12 @@ app.post("/orders", async (req, res) => {
       "HTTP 201 Created is the correct status code when a new resource has been successfully created. It signals to clients and intermediaries that the request resulted in a new resource. Pairing it with a Location header pointing to the new resource is also a best practice.",
     explanationWrong:
       "Returning 200 OK after creating a resource is technically valid but loses semantic meaning. Clients cannot distinguish between a successful read and a successful creation. Automated tools, API testing frameworks, and documentation generators rely on proper status codes to understand behavior.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201",
-    sourceLabel: "MDN: 201 Created",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201",
+        label: "MDN: 201 Created",
+      },
+    ],
   },
   {
     id: "rest-004",
@@ -204,9 +216,12 @@ app.patch("/users/:id", async (req, res) => {
       "PATCH is designed for partial updates where you send only the fields that changed. PUT, by definition, replaces the entire resource. When you only need to update an email address, PATCH communicates that intent clearly and avoids accidentally nullifying other fields.",
     explanationWrong:
       "PUT semantically means 'replace the entire resource at this URL.' Sending a partial payload with PUT is misleading. A strict REST server receiving a PUT with only { email } would be correct to set all other fields to null, since PUT implies a full replacement.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH",
-    sourceLabel: "MDN: PATCH method",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH",
+        label: "MDN: PATCH method",
+      },
+    ],
   },
   {
     id: "rest-005",
@@ -260,9 +275,12 @@ app.get("/posts", async (req, res) => {
       "Cursor-based pagination performs consistently regardless of dataset size. The database seeks directly to the cursor position instead of counting and skipping rows. It also avoids the problem of missing or duplicated items when records are inserted or deleted between page requests.",
     explanationWrong:
       "Offset pagination degrades as the page number grows because the database must count through all preceding rows before returning results. On page 50 with 20 items per page, the database skips 980 rows. It can also show duplicates or skip items when the dataset changes between requests.",
-    sourceUrl:
-      "https://www.prisma.io/docs/orm/prisma-client/queries/pagination#cursor-based-pagination",
-    sourceLabel: "Prisma: Cursor-based pagination",
+    sources: [
+      {
+        url: "https://www.prisma.io/docs/orm/prisma-client/queries/pagination#cursor-based-pagination",
+        label: "Prisma: Cursor-based pagination",
+      },
+    ],
   },
   {
     id: "rest-006",
@@ -313,8 +331,12 @@ export async function GET(req: Request) {
       "Path-based versioning is explicit, easy to understand, and simple to route. Each version has its own URL, making it straightforward to test in a browser, share in documentation, and configure in API gateways. Most major APIs (Stripe, GitHub, Twilio) use this approach.",
     explanationWrong:
       "Header-based versioning keeps URLs clean but adds complexity. Clients must remember to set custom Accept headers, browser testing requires extra tooling, and the routing logic becomes harder to maintain as versions grow. It also makes caching more complex since the URL alone does not determine the response.",
-    sourceUrl: "https://restfulapi.net/versioning/",
-    sourceLabel: "RESTful API: Versioning",
+    sources: [
+      {
+        url: "https://restfulapi.net/versioning/",
+        label: "RESTful API: Versioning",
+      },
+    ],
   },
   {
     id: "rest-007",
@@ -378,9 +400,12 @@ app.get("/orders", async (req, res) => {
       "Path parameters identify specific resources (/users/42/orders/7 points to exactly one order), while query parameters filter or modify collections. This separation makes URLs predictable and cacheable. Each unique path maps to a distinct resource, and query strings refine the result set.",
     explanationWrong:
       "Putting everything in query parameters blurs the line between identifying a resource and filtering a collection. The URL /orders?orderId=7 does not clearly communicate that you are requesting a single, specific resource. It also makes caching less effective and URL design inconsistent across the API.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#parameters",
-    sourceLabel: "MDN: URL parameters",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#parameters",
+        label: "MDN: URL parameters",
+      },
+    ],
   },
   {
     id: "rest-008",
@@ -439,7 +464,11 @@ app.get("/tasks/:taskId", async (req, res) => {
       "Limiting nesting to one level keeps URLs short, readable, and easy to maintain. Once you have a task ID, you can access it directly at /tasks/:taskId without reconstructing the entire hierarchy. This reduces coupling between resources and simplifies client code.",
     explanationWrong:
       "Deeply nested URLs force clients to know the full resource hierarchy just to fetch a single task. If the task moves to a different project or team, the URL changes and all client code breaks. The long parameter chains also make routes harder to read, test, and document.",
-    sourceUrl: "https://restfulapi.net/resource-naming/",
-    sourceLabel: "RESTful API: Resource Naming",
+    sources: [
+      {
+        url: "https://restfulapi.net/resource-naming/",
+        label: "RESTful API: Resource Naming",
+      },
+    ],
   },
 ];

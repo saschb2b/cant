@@ -40,9 +40,12 @@ export const errorHandlingChallenges: BaseChallenge[] = [
       "When catch variables are unknown, TypeScript forces you to narrow the type before accessing properties. This is correct because JavaScript allows throwing any value: strings, numbers, objects, or Error instances. The instanceof check narrows to Error and provides safe access to .message and .stack.",
     explanationWrong:
       "When catch variables are any, TypeScript lets you access .message directly. But if someone throws a string (throw 'failed') or a plain object (throw { code: 404 }), accessing .message gives undefined instead of the actual error. The bug is silent and hard to trace.",
-    sourceUrl:
-      "https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables",
-    sourceLabel: "TypeScript: useUnknownInCatchVariables",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables",
+        label: "TypeScript: useUnknownInCatchVariables",
+      },
+    ],
   },
   {
     id: "eh-002",
@@ -88,8 +91,12 @@ export const errorHandlingChallenges: BaseChallenge[] = [
       "A robust error handler should handle Error instances, plain strings, and objects with a message property. Each branch narrows the type progressively, and the final fallback ensures every case returns a useful string. This pattern works with any thrown value.",
     explanationWrong:
       "Asserting unknown to Error with 'as' bypasses type checking. If the caught value is a string, accessing .message returns undefined, and .stack returns undefined. The type assertion tells TypeScript to trust you, but the runtime value does not match.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
-    sourceLabel: "TypeScript: Narrowing",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+        label: "TypeScript: Narrowing",
+      },
+    ],
   },
   {
     id: "eh-003",
@@ -146,8 +153,12 @@ if (result.ok) {
       "The Result type makes failure explicit in the function signature. Callers cannot access the value without first checking ok, so error handling is enforced at compile time. This pattern is inspired by Rust's Result type and eliminates forgotten try/catch blocks.",
     explanationWrong:
       "Throwing exceptions hides failure modes from the type signature. Promise<User> says nothing about possible errors, so callers may forget to add try/catch. The error surfaces as an unhandled promise rejection at runtime instead of a compile-time type error.",
-    sourceUrl: "https://www.totaltypescript.com/concepts/result-type",
-    sourceLabel: "Total TypeScript: Result Type",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/concepts/result-type",
+        label: "Total TypeScript: Result Type",
+      },
+    ],
   },
   {
     id: "eh-004",
@@ -202,9 +213,12 @@ function process(order: Order | null) {
       "Assertion functions use the `asserts` return type to tell TypeScript that if the function returns normally (without throwing), the parameter has been narrowed. This lets you extract validation logic into reusable functions while preserving type narrowing in the caller.",
     explanationWrong:
       "A regular function that throws on invalid input does not communicate the narrowing to TypeScript. The caller still sees the original type after the function call. You would need to repeat the if-check inline or use a type assertion, both of which are worse than an assertion function.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions",
-    sourceLabel: "TypeScript: Assertion Functions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions",
+        label: "TypeScript: Assertion Functions",
+      },
+    ],
   },
   {
     id: "eh-005",
@@ -265,9 +279,12 @@ try {
       "Custom error classes let you use instanceof for type-safe branching. Each error class can carry structured data (like the resource name) instead of encoding information in message strings. TypeScript narrows the type inside each instanceof branch, giving you access to class-specific properties.",
     explanationWrong:
       "Comparing error messages with string equality is fragile. Changing the message text breaks the comparison silently. Custom error classes provide stable identity through instanceof and can carry structured metadata that string messages cannot represent.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/classes.html#extends-clauses",
-    sourceLabel: "TypeScript: Class Inheritance",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/classes.html#extends-clauses",
+        label: "TypeScript: Class Inheritance",
+      },
+    ],
   },
   {
     id: "eh-006",
@@ -330,8 +347,11 @@ function handleError(error: ApiError) {
       "The assertNever function takes a value of type never, which is only valid when all union members have been handled. If you add a new error type to the union without adding a case, TypeScript reports a compile error because the value is not never. This guarantees exhaustive handling.",
     explanationWrong:
       "Without exhaustive checking, adding a new member to the ApiError union does not produce any compiler warnings in existing switch statements. The new error type falls through silently, and the bug only appears when that specific error occurs at runtime and is not handled.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking",
-    sourceLabel: "TypeScript: Exhaustiveness Checking",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking",
+        label: "TypeScript: Exhaustiveness Checking",
+      },
+    ],
   },
 ];

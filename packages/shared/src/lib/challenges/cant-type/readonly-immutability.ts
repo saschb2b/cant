@@ -44,9 +44,12 @@ const config: Config = {
       "The readonly modifier on interface properties prevents reassignment after initialization. This catches accidental mutations at compile time. It is especially valuable for configuration objects that should be set once and never changed.",
     explanationWrong:
       "Without readonly, any code with a reference to the config object can change its properties. A single accidental assignment like config.timeout = -1 creates an invalid state that affects the entire application. The bug may surface far from where the mutation happened.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties",
-    sourceLabel: "TypeScript: Readonly Properties",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties",
+        label: "TypeScript: Readonly Properties",
+      },
+    ],
   },
   {
     id: "ri-002",
@@ -94,9 +97,12 @@ function promoteUser(user: User) {
       "Readonly<T> makes all properties of T readonly without changing the original type. Applying it to function parameters signals that the function only reads the data. Functions that need to mutate can still use the original mutable type.",
     explanationWrong:
       "Passing a mutable type to a function gives it permission to modify the object. Since objects are passed by reference, the caller's data is corrupted. This is a common source of bugs in functions that are supposed to only read their input.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype",
-    sourceLabel: "TypeScript: Readonly<T>",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype",
+        label: "TypeScript: Readonly<T>",
+      },
+    ],
   },
   {
     id: "ri-003",
@@ -143,9 +149,12 @@ const top3 = getTopScores(allScores);
       "readonly number[] (or ReadonlyArray<number>) removes mutating methods like sort, push, pop, and splice from the type. This forces you to copy the array before sorting, preventing accidental mutation of the caller's data. The spread operator creates a shallow copy that is safe to sort.",
     explanationWrong:
       "Array.sort() mutates the array in place and returns the same reference. When a function sorts its input array, the caller's original data is permanently reordered. This is one of the most common mutation bugs in JavaScript, and readonly arrays catch it at compile time.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-tuple-types",
-    sourceLabel: "TypeScript: Readonly Arrays",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-tuple-types",
+        label: "TypeScript: Readonly Arrays",
+      },
+    ],
   },
   {
     id: "ri-004",
@@ -188,9 +197,12 @@ setColor("red");    // OK
       "The as const assertion tells TypeScript to infer the narrowest possible type: a readonly tuple of literal strings instead of a mutable array of string. Indexing with [number] extracts a union of the literal types. This keeps the runtime array and the type in sync from a single source of truth.",
     explanationWrong:
       "Without as const, TypeScript widens the array to string[]. Extracting a type with typeof COLORS[number] gives string, which accepts any string value. The intended constraint of only three valid colors is lost, and typos like 'banana' pass without errors.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types",
-    sourceLabel: "TypeScript: Literal Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types",
+        label: "TypeScript: Literal Types",
+      },
+    ],
   },
   {
     id: "ri-005",
@@ -252,9 +264,12 @@ const state: DeepReadonly<AppState> = {
       "Readonly<T> and the readonly modifier only apply to the immediate properties. Nested objects remain mutable. A recursive DeepReadonly type applies readonly at every level by checking if the value is an object and recursively wrapping it. This provides true immutability for the entire object tree.",
     explanationWrong:
       "Marking only the top-level property as readonly gives a false sense of security. The nested properties are still fully mutable, so code can change user.name or preferences.theme without any compiler warning. For state management, shallow readonly is often insufficient.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype",
-    sourceLabel: "TypeScript: Readonly<T>",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype",
+        label: "TypeScript: Readonly<T>",
+      },
+    ],
   },
   {
     id: "ri-006",
@@ -309,8 +324,11 @@ function calculateTotal(
       "Combining ReadonlyArray (prevents push/pop/splice) with Readonly on each element (prevents property assignment) provides full protection. The function is forced to use local variables for computed values instead of mutating the input. This makes the function pure and safe to call repeatedly.",
     explanationWrong:
       "Mutating input data inside a calculation function is a common bug that produces incorrect results when the function is called more than once. The tax gets applied again to already-taxed prices, compounding with each call. Readonly parameters make this impossible at compile time.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties",
-    sourceLabel: "TypeScript: Readonly Properties",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties",
+        label: "TypeScript: Readonly Properties",
+      },
+    ],
   },
 ];

@@ -41,9 +41,12 @@ source.onerror = () => {
       "Server-Sent Events (SSE) are purpose-built for one-way server-to-client streaming. They use a simple HTTP connection, support automatic reconnection, work with HTTP/2 multiplexing, and are easier to load-balance. For read-only data streams like stock prices, SSE is the simpler and more efficient choice.",
     explanationWrong:
       "WebSockets provide full-duplex communication, which is unnecessary overhead when the client only needs to receive data. They require a custom protocol upgrade, manual reconnection logic, and are harder to scale behind load balancers compared to SSE for one-way streams.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events",
-    sourceLabel: "MDN: Using Server-Sent Events",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events",
+        label: "MDN: Using Server-Sent Events",
+      },
+    ],
   },
   {
     id: "ws-002",
@@ -84,9 +87,12 @@ function sendMessage(text: string) {
       "WebSockets maintain a persistent connection that delivers messages instantly in both directions. This eliminates the latency of polling intervals, reduces unnecessary network requests, and enables true real-time interaction between chat participants.",
     explanationWrong:
       "Polling creates a 2-second delay between messages, wastes bandwidth with empty responses when no new messages exist, and puts unnecessary load on the server. For bidirectional real-time features like chat, polling is both slower and more resource-intensive than WebSockets.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
-    sourceLabel: "MDN: WebSockets API",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+        label: "MDN: WebSockets API",
+      },
+    ],
   },
   {
     id: "ws-003",
@@ -122,9 +128,12 @@ ws.send(JSON.stringify({ type: "subscribe", channel: "feed" }));`,
       "Waiting for the `onopen` event before sending messages ensures the connection is established. Listening to `onclose` lets you respond to disconnections. Calling `ws.close(1000)` on page unload sends a clean close frame with the normal closure status code, allowing the server to free resources gracefully.",
     explanationWrong:
       "Calling `ws.send()` before the connection is open throws an error because the WebSocket is still in the CONNECTING state. Ignoring the close event means you have no way to detect disconnections. Without an explicit close on page unload, the server may not receive a clean close frame and will keep the connection alive until a timeout.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState",
-    sourceLabel: "MDN: WebSocket readyState",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState",
+        label: "MDN: WebSocket readyState",
+      },
+    ],
   },
   {
     id: "ws-004",
@@ -172,8 +181,12 @@ connect();`,
       "Exponential backoff (1s, 2s, 4s, 8s, capped at 30s) prevents overwhelming the server with reconnection attempts during outages. Resetting the attempt counter on successful open ensures fast reconnection after brief disconnects. This pattern is standard practice in production WebSocket clients.",
     explanationWrong:
       "Reconnecting immediately without any delay creates a tight loop during server outages. Hundreds or thousands of clients hammering the server with connection attempts can cause a thundering herd problem, making recovery even harder and potentially triggering rate limits or IP bans.",
-    sourceUrl: "https://web.dev/articles/websocket#exponential_backoff",
-    sourceLabel: "web.dev: WebSocket best practices",
+    sources: [
+      {
+        url: "https://web.dev/articles/websocket#exponential_backoff",
+        label: "web.dev: WebSocket best practices",
+      },
+    ],
   },
   {
     id: "ws-005",
@@ -218,9 +231,12 @@ ws.onmessage = (event) => {
       "A typed JSON message protocol with discriminated unions makes messages self-describing and easy to extend. Adding new message types does not break existing handlers. TypeScript can enforce exhaustive handling, and the messages are human-readable in browser dev tools for easier debugging.",
     explanationWrong:
       "Pipe-delimited strings with single-character codes are fragile and hard to debug. Adding a new field can shift positions and break parsing. The format cannot represent nested data, requires documentation to understand, and provides no type safety. The minor bandwidth savings rarely justify the maintenance cost.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
-    sourceLabel: "TypeScript: Discriminated Unions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+        label: "TypeScript: Discriminated Unions",
+      },
+    ],
   },
   {
     id: "ws-006",
@@ -264,8 +280,12 @@ ws.onmessage = (event) => {
       "Application-level ping/pong heartbeats detect dead connections that TCP keepalive might miss, such as connections dropped by intermediate proxies, NAT timeouts, or mobile network switches. If no pong arrives within the next interval, the client knows the connection is stale and can reconnect.",
     explanationWrong:
       "Relying on TCP keepalive alone is unreliable for WebSocket connections. Proxies, load balancers, and firewalls often terminate idle connections after 60 to 120 seconds without notifying either endpoint. Without application-level heartbeats, the client may believe it is connected while messages are silently lost.",
-    sourceUrl: "https://www.rfc-editor.org/rfc/rfc6455#section-5.5.2",
-    sourceLabel: "RFC 6455: Ping/Pong Frames",
+    sources: [
+      {
+        url: "https://www.rfc-editor.org/rfc/rfc6455#section-5.5.2",
+        label: "RFC 6455: Ping/Pong Frames",
+      },
+    ],
   },
   {
     id: "ws-007",
@@ -314,9 +334,12 @@ wss.on("connection", (ws) => {
       "Room-based routing sends messages only to clients who have subscribed to a specific channel or room. This reduces bandwidth usage dramatically, prevents users from receiving irrelevant messages, and scales much better as the number of concurrent connections grows. It also provides a natural boundary for authorization checks.",
     explanationWrong:
       "Broadcasting every message to every client wastes bandwidth and CPU on both the server and client side. Users receive messages they do not care about, creating unnecessary JSON parsing overhead. With 10,000 clients, a single message triggers 10,000 sends instead of just the relevant subset.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState",
-    sourceLabel: "MDN: WebSocket readyState",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState",
+        label: "MDN: WebSocket readyState",
+      },
+    ],
   },
   {
     id: "ws-008",
@@ -369,8 +392,11 @@ ws.onmessage = (event) => {
       "Proper error handling separates the error and close events, inspects close codes to distinguish normal disconnections from failures, and wraps message parsing in try/catch to handle malformed data. Reconnection logic belongs in the close handler because the error event always fires before close, and creating a new connection requires proper backoff scheduling.",
     explanationWrong:
       "Creating a new WebSocket directly in the error handler ignores the close event that always follows, leading to potential duplicate connections. Unguarded JSON.parse will throw on malformed messages and crash the handler. Without checking the close code, you cannot distinguish between intentional disconnects and server failures.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close_event",
-    sourceLabel: "MDN: WebSocket close event",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close_event",
+        label: "MDN: WebSocket close event",
+      },
+    ],
   },
 ];

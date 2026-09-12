@@ -43,9 +43,12 @@ spec:
       "Pinning a specific version tag (or image digest) ensures every deployment uses the exact same image. Rollbacks go to a known version. You can audit which version is running in each environment. Image digests provide cryptographic guarantees.",
     explanationWrong:
       "`latest` is a mutable tag. Different nodes might pull different versions if the tag was updated between pulls. Rollbacks deploy whatever `latest` currently points to, not the previous version. `imagePullPolicy: Always` adds latency to every pod start.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/containers/images/#image-names",
-    sourceLabel: "Kubernetes docs: Image names",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/containers/images/#image-names",
+        label: "Kubernetes docs: Image names",
+      },
+    ],
   },
   {
     id: "cm-002",
@@ -84,9 +87,12 @@ CMD ["python", "app.py"]`,
       "Creating a dedicated user and switching with `USER` ensures the application runs with minimal privileges. If an attacker exploits a vulnerability, they can't modify system files, install packages, or access sensitive host resources.",
     explanationWrong:
       "Running as root gives the application (and any attacker who compromises it) full control over the container filesystem. With certain misconfigurations, this can escalate to host-level access. Most security scanning tools flag root containers.",
-    sourceUrl:
-      "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user",
-    sourceLabel: "Docker docs: USER best practices",
+    sources: [
+      {
+        url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user",
+        label: "Docker docs: USER best practices",
+      },
+    ],
   },
   {
     id: "cm-003",
@@ -130,8 +136,12 @@ volumes:
       "Externalizing state to volumes, databases, and object storage lets containers be truly ephemeral. Any replica can handle any request because state lives outside the container. Scaling, restarts, and deployments don't lose data.",
     explanationWrong:
       "Storing uploads, sessions, and files inside the container means data is lost on restart. Scaling to multiple replicas means each one has different data. Users get inconsistent behavior depending on which container handles their request.",
-    sourceUrl: "https://12factor.net/processes",
-    sourceLabel: "Twelve-Factor App: Processes",
+    sources: [
+      {
+        url: "https://12factor.net/processes",
+        label: "Twelve-Factor App: Processes",
+      },
+    ],
   },
   {
     id: "cm-004",
@@ -178,9 +188,12 @@ Dockerfile`,
       "A comprehensive `.dockerignore` reduces build context size from hundreds of MB to just the files your image needs. Builds are faster, secrets don't leak into layers, and stale build artifacts don't override fresh ones inside the container.",
     explanationWrong:
       "Without `.dockerignore`, every build sends the entire project directory to the Docker daemon. This includes secrets in `.env`, hundreds of MB of `node_modules` and `.git`, and editor configs. Builds are slow and images contain unnecessary files.",
-    sourceUrl:
-      "https://docs.docker.com/build/concepts/context/#dockerignore-files",
-    sourceLabel: "Docker docs: .dockerignore",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/concepts/context/#dockerignore-files",
+        label: "Docker docs: .dockerignore",
+      },
+    ],
   },
   {
     id: "cm-005",
@@ -221,7 +234,11 @@ CMD ["node", "server.js"]
       "Running `node` directly as PID 1 ensures it receives SIGTERM from Docker. The app can finish in-flight requests, close database connections, and flush logs before exiting. Docker gives it 10 seconds (configurable) before sending SIGKILL.",
     explanationWrong:
       "`npm start` spawns a shell that wraps the node process. The shell receives SIGTERM but doesn't forward it to the child process. After the 10-second grace period, Docker sends SIGKILL, abruptly terminating the app mid-request.",
-    sourceUrl: "https://docs.docker.com/reference/dockerfile/#cmd",
-    sourceLabel: "Docker docs: CMD",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#cmd",
+        label: "Docker docs: CMD",
+      },
+    ],
   },
 ];

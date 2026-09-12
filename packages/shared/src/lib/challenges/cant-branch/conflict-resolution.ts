@@ -36,9 +36,12 @@ git commit -m "add JWT authentication"
       "Small, focused PRs touch fewer files and merge faster. The shorter a branch lives, the less opportunity there is for other changes to conflict with yours. A 180-line PR can be reviewed in minutes, merged the same day, and rarely conflicts with other work.",
     explanationWrong:
       "Large PRs that touch dozens of files over weeks are conflict magnets. Every PR that merges while yours is open increases the chance of conflicts. Beyond conflicts, large PRs get superficial reviews because reviewers lose focus after a few hundred lines.",
-    sourceUrl:
-      "https://google.github.io/eng-practices/review/developer/small-cls.html",
-    sourceLabel: "Google Engineering: Small CLs",
+    sources: [
+      {
+        url: "https://google.github.io/eng-practices/review/developer/small-cls.html",
+        label: "Google Engineering: Small CLs",
+      },
+    ],
   },
   {
     id: "cr-002",
@@ -80,9 +83,12 @@ function getUsers() {
       "Proper conflict resolution means understanding both changes and combining them correctly. Here, one branch added sorting and the other added profile inclusion. The correct resolution includes both additions. Always verify the resolved code compiles and passes tests.",
     explanationWrong:
       "Leaving conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) in committed code is a surprisingly common mistake. These markers are not valid syntax in any language. Always search your resolved files for these markers before committing. Many editors and CI tools can catch this automatically.",
-    sourceUrl:
-      "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#_basic_merge_conflicts",
-    sourceLabel: "Git Book: Basic Merge Conflicts",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#_basic_merge_conflicts",
+        label: "Git Book: Basic Merge Conflicts",
+      },
+    ],
   },
   {
     id: "cr-003",
@@ -127,8 +133,12 @@ git rebase main
       "Git rerere (reuse recorded resolution) remembers how you resolved a conflict and automatically applies the same resolution if it encounters the same conflict again. This is invaluable during long rebases, repeated merges, or when maintaining release branches. Enable it globally with `git config --global rerere.enabled true`.",
     explanationWrong:
       "Without rerere, you manually resolve the same conflict every time it appears. This is tedious and error-prone, especially during interactive rebases where the same conflict can appear for multiple commits. Enabling rerere is a one-time configuration that saves significant time over the life of a project.",
-    sourceUrl: "https://git-scm.com/book/en/v2/Git-Tools-Rerere",
-    sourceLabel: "Git Book: Rerere",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Tools-Rerere",
+        label: "Git Book: Rerere",
+      },
+    ],
   },
   {
     id: "cr-004",
@@ -173,9 +183,12 @@ git commit -m "resolve conflicts with redesign"`,
       "Different files deserve different resolution strategies. Lock files should accept one side entirely (they get regenerated). Config files may need your version. Source code almost always requires manual review to combine both sides correctly. Choosing per file prevents silent data loss.",
     explanationWrong:
       "Running `git checkout --theirs .` on everything is fast but dangerous. It discards all of your side's changes across every conflicting file. Important bug fixes, config adjustments, or logic changes on your branch are silently dropped. Always review source code conflicts individually.",
-    sourceUrl:
-      "https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---ours",
-    sourceLabel: "Git Docs: checkout --ours/--theirs",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---ours",
+        label: "Git Docs: checkout --ours/--theirs",
+      },
+    ],
   },
   {
     id: "cr-005",
@@ -216,8 +229,12 @@ git merge feature/api
       "A 3-way merge tool shows the common ancestor alongside both branches. This is critical for understanding what each side actually changed. Without the base version, you are guessing. For example, if both sides modified a function, the base shows you the original so you can combine both modifications correctly.",
     explanationWrong:
       "Editing conflict markers in a plain text editor only shows you two versions: yours and theirs. You cannot see what the code looked like before either change. This makes it easy to accidentally drop one side's changes or combine them incorrectly, especially in complex conflicts spanning many lines.",
-    sourceUrl: "https://git-scm.com/docs/git-mergetool",
-    sourceLabel: "Git Docs: git mergetool",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-mergetool",
+        label: "Git Docs: git mergetool",
+      },
+    ],
   },
   {
     id: "cr-006",
@@ -257,9 +274,12 @@ git merge feature/api
       "CODEOWNERS files establish clear ownership boundaries. When teams own specific directories, they coordinate changes within their area. PRs that touch shared code automatically request reviews from all owning teams, creating visibility. This does not prevent all conflicts, but it dramatically reduces accidental parallel edits to the same files.",
     explanationWrong:
       "Without file ownership, two developers can unknowingly work on the same files for days. The resulting conflicts waste time and create frustration. Even without formal CODEOWNERS, communicating about which files you are changing (via standups, Slack, or PR drafts) helps prevent this problem.",
-    sourceUrl:
-      "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
-    sourceLabel: "GitHub Docs: About Code Owners",
+    sources: [
+      {
+        url: "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
+        label: "GitHub Docs: About Code Owners",
+      },
+    ],
   },
   {
     id: "cr-007",
@@ -277,8 +297,11 @@ git merge feature/api
       "A properly resolved merge conflict removes all conflict markers and combines the changes from both branches correctly. The resulting code should compile, pass tests, and include the intent of both sides of the merge.",
     explanationWrong:
       "Leaving conflict markers in committed code is a common and dangerous mistake. The markers are not valid syntax and will cause build failures or runtime errors. Always search for conflict markers before committing a merge resolution, and verify the result compiles and passes tests.",
-    sourceUrl:
-      "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#_basic_merge_conflicts",
-    sourceLabel: "Git Book: Basic Merge Conflicts",
+    sources: [
+      {
+        url: "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#_basic_merge_conflicts",
+        label: "Git Book: Basic Merge Conflicts",
+      },
+    ],
   },
 ];

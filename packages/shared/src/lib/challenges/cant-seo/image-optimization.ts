@@ -60,9 +60,12 @@ export default async function Image({
       "The `opengraph-image.tsx` file convention generates unique OG images per route segment. Next.js automatically wires up the `og:image` meta tag. Each blog post gets a branded, dynamic image with its title, which stands out in social feeds compared to a generic static image.",
     explanationWrong:
       "Using a single static image for every page means all shared links look identical in social feeds. Users scrolling through LinkedIn or Slack cannot tell your blog posts apart. Dynamic OG images are one of the highest-impact SEO improvements for content-heavy sites.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image",
-    sourceLabel: "Next.js: opengraph-image convention",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+        label: "Next.js: opengraph-image convention",
+      },
+    ],
   },
   {
     id: "io-002",
@@ -131,9 +134,12 @@ export default function Image() {
       "The standard OG image size is 1200x630 pixels (1.91:1 ratio). This fits perfectly on Facebook, LinkedIn, Twitter, Slack, and Discord without cropping. Using the correct dimensions ensures your text and branding are fully visible on every platform.",
     explanationWrong:
       "A 600x600 square image will be cropped to a landscape format on most platforms, cutting off the top and bottom. The smaller resolution also looks blurry on high-DPI screens. Always use 1200x630 for maximum compatibility across social platforms.",
-    sourceUrl:
-      "https://developers.facebook.com/docs/sharing/best-practices/#images",
-    sourceLabel: "Facebook: Image best practices",
+    sources: [
+      {
+        url: "https://developers.facebook.com/docs/sharing/best-practices/#images",
+        label: "Facebook: Image best practices",
+      },
+    ],
   },
   {
     id: "io-003",
@@ -180,9 +186,12 @@ export function Hero() {
       "Using `fill` with `sizes` tells the browser how wide the image will be at each breakpoint, so it can download the smallest appropriate version. The `sizes='100vw'` indicates a full-width image. Without `sizes`, the browser may download a larger image than needed, wasting bandwidth.",
     explanationWrong:
       "Setting fixed `width` and `height` on a hero image that should be responsive forces a single image size for all viewports. Mobile users download a 1920px image when they only need 375px. This wastes bandwidth and hurts Core Web Vitals, especially on slower connections.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/components/image#sizes",
-    sourceLabel: "Next.js: Image sizes prop",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/components/image#sizes",
+        label: "Next.js: Image sizes prop",
+      },
+    ],
   },
   {
     id: "io-004",
@@ -236,9 +245,12 @@ export function Hero() {
       "The `priority` prop disables lazy loading and adds a preload link tag for the image. This is critical for the Largest Contentful Paint (LCP) element, which is often a hero image. Preloading the LCP image can improve your LCP score by hundreds of milliseconds.",
     explanationWrong:
       "Without `priority`, Next.js lazy-loads the image by default. For below-the-fold images this is good, but for the hero image (which is usually the LCP element), lazy loading delays rendering until the browser scrolls or reaches the image during layout. This directly hurts your Core Web Vitals score.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/components/image#priority",
-    sourceLabel: "Next.js: Image priority prop",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/components/image#priority",
+        label: "Next.js: Image priority prop",
+      },
+    ],
   },
   {
     id: "io-005",
@@ -295,8 +307,12 @@ export function ProductCard({
       "Next.js automatically serves images in WebP or AVIF format when the browser supports them. These modern formats are 25-50% smaller than JPEG/PNG with similar quality. The `quality` prop controls compression level. Removing `unoptimized` lets the built-in image optimizer do its job.",
     explanationWrong:
       "The `unoptimized` prop bypasses Next.js image optimization entirely, serving the original file as-is. Users receive uncompressed PNGs or JPEGs that are often 2-5x larger than necessary. This increases page load time and bandwidth costs, and directly harms your Core Web Vitals scores.",
-    sourceUrl: "https://web.dev/articles/serve-images-webp",
-    sourceLabel: "web.dev: Serve images in modern formats",
+    sources: [
+      {
+        url: "https://web.dev/articles/serve-images-webp",
+        label: "web.dev: Serve images in modern formats",
+      },
+    ],
   },
   {
     id: "io-006",
@@ -363,9 +379,12 @@ export function Gallery({
       "The `placeholder='blur'` prop shows a blurred preview while the full image loads. This prevents layout shift (improving CLS scores) and provides a smoother visual experience. For remote images, you provide a base64-encoded `blurDataURL` generated at build time or from your CMS.",
     explanationWrong:
       "Without a placeholder, images appear as empty rectangles that suddenly pop into view. This causes Cumulative Layout Shift (CLS) if dimensions are not properly set, and feels jarring to users. The abrupt appearance is especially noticeable on image galleries with many items.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/components/image#placeholder",
-    sourceLabel: "Next.js: Image placeholder",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/components/image#placeholder",
+        label: "Next.js: Image placeholder",
+      },
+    ],
   },
   {
     id: "io-007",
@@ -426,9 +445,12 @@ export function Hero() {
       "Art direction uses the `<picture>` element to serve different image crops for different screen sizes. A wide landscape hero on desktop can be replaced with a tighter square crop on mobile that keeps the important subject visible. This is different from responsive sizing, which just changes resolution.",
     explanationWrong:
       "Serving a wide 1920x600 landscape image on mobile squeezes the content into a tiny strip. The main subject becomes too small to see clearly. Art direction solves this by providing a differently composed image for mobile, not just a smaller version of the same crop.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images#art_direction",
-    sourceLabel: "MDN: Art direction",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images#art_direction",
+        label: "MDN: Art direction",
+      },
+    ],
   },
   {
     id: "io-008",
@@ -501,7 +523,11 @@ export function Testimonials({
       "Images below the fold should use lazy loading (which is the default for next/image). This defers loading until the image is about to enter the viewport. Only the LCP image should use `priority`. Lazy loading reduces initial page weight and speeds up the first meaningful paint.",
     explanationWrong:
       "Adding `priority` to every image defeats the purpose of lazy loading. The browser preloads all images immediately, even those the user may never scroll to. This wastes bandwidth, slows down the initial page load, and can actually hurt your LCP score by competing with the real LCP element.",
-    sourceUrl: "https://web.dev/articles/browser-level-image-lazy-loading",
-    sourceLabel: "web.dev: Browser-level lazy loading",
+    sources: [
+      {
+        url: "https://web.dev/articles/browser-level-image-lazy-loading",
+        label: "web.dev: Browser-level lazy loading",
+      },
+    ],
   },
 ];

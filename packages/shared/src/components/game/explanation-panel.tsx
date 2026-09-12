@@ -9,6 +9,7 @@ import { ExternalLink, BookOpen, Pencil } from "lucide-react";
 import { useTrackEvent } from "../../lib/analytics-context";
 import { buildChallengeIssueUrl } from "../../lib/github-issue";
 import { FormattedText } from "../formatted-text";
+import type { ChallengeSource } from "../../lib/game/types";
 
 // Standard screen-reader-only style: present in the accessibility tree and
 // announced by live regions, but visually hidden.
@@ -27,8 +28,8 @@ const visuallyHidden = {
 interface ExplanationPanelProps {
   isCorrect: boolean;
   explanationText: string;
-  sourceUrl: string;
-  sourceLabel: string;
+  /** Documentation links backing the explanation. Rendered in order. */
+  sources: ChallengeSource[];
   category: string;
   categoryLabel: string;
   challengeId: string;
@@ -41,8 +42,7 @@ interface ExplanationPanelProps {
 export function ExplanationPanel({
   isCorrect,
   explanationText,
-  sourceUrl,
-  sourceLabel,
+  sources,
   category,
   categoryLabel,
   challengeId,
@@ -97,30 +97,34 @@ export function ExplanationPanel({
           <Box sx={{ typography: "body2", lineHeight: 1.6, mb: 1 }}>
             <FormattedText text={explanationText} />
           </Box>
-          <Link
-            href={sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            onClick={() =>
-              trackEvent("source-link-clicked", {
-                challengeId,
-                category,
-                label: sourceLabel,
-              })
-            }
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 0.75,
-              typography: "caption",
-              fontWeight: 500,
-              color: `${color}.main`,
-            }}
-          >
-            <ExternalLink size={12} />
-            {sourceLabel}
-          </Link>
+          {sources.map(({ url, label }, index) => (
+            <Link
+              key={url}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              underline="hover"
+              onClick={() =>
+                trackEvent("source-link-clicked", {
+                  challengeId,
+                  category,
+                  label,
+                })
+              }
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.75,
+                typography: "caption",
+                fontWeight: 500,
+                color: `${color}.main`,
+                ml: index === 0 ? 0 : 2,
+              }}
+            >
+              <ExternalLink size={12} />
+              {label}
+            </Link>
+          ))}
           <Link
             href={`/learn/${category}`}
             underline="hover"

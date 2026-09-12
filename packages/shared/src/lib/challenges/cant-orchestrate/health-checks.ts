@@ -37,8 +37,12 @@ CMD ["node", "server.js"]`,
       "A `HEALTHCHECK` instruction lets Docker monitor whether your application is actually working, not just whether the process is running. The `--start-period` gives the app time to boot before checks begin. Docker marks unhealthy containers so orchestrators can restart them.",
     explanationWrong:
       "Without a health check, Docker only knows if the process is running. A container can have a running process that's deadlocked, out of memory, or stuck in a crash loop. Docker will report it as healthy when it's actually broken.",
-    sourceUrl: "https://docs.docker.com/reference/dockerfile/#healthcheck",
-    sourceLabel: "Docker docs: HEALTHCHECK",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#healthcheck",
+        label: "Docker docs: HEALTHCHECK",
+      },
+    ],
   },
   {
     id: "hc-002",
@@ -100,9 +104,12 @@ spec:
       "Liveness and readiness probes serve different purposes. Liveness checks if the app needs to be restarted (deadlocked, corrupted). Readiness checks if it can handle traffic (still loading data, warming caches). Using different endpoints and intervals lets each probe do its job correctly.",
     explanationWrong:
       "Using the same endpoint for both probes means you can't distinguish between 'needs restart' and 'temporarily busy'. If the health check fails during a slow startup, the liveness probe kills and restarts the pod before it finishes starting, creating a crash loop.",
-    sourceUrl:
-      "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
-    sourceLabel: "Kubernetes docs: Probes",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+        label: "Kubernetes docs: Probes",
+      },
+    ],
   },
   {
     id: "hc-003",
@@ -158,9 +165,12 @@ spec:
       "A startup probe runs during initialization and disables liveness/readiness probes until it succeeds. This gives slow-starting apps up to 300 seconds (30 x 10s) to boot. Once the startup probe passes, the liveness probe takes over with normal intervals.",
     explanationWrong:
       "A long `initialDelaySeconds` on the liveness probe means the app is unmonitored for 2 minutes after every restart. If it crashes at second 30, Kubernetes won't notice until second 120. The startup probe solves this without sacrificing ongoing health monitoring.",
-    sourceUrl:
-      "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes",
-    sourceLabel: "Kubernetes docs: Startup probes",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes",
+        label: "Kubernetes docs: Startup probes",
+      },
+    ],
   },
   {
     id: "hc-004",
@@ -199,8 +209,11 @@ app.get('/ready', async (req, res) => {
       "A readiness check that verifies downstream dependencies (database, cache) ensures the pod only receives traffic when it can actually serve requests. Returning 503 removes the pod from the service's endpoint list until dependencies recover.",
     explanationWrong:
       "A health check that always returns 200 tells the orchestrator everything is fine even when the database is down. Traffic gets routed to a pod that can't serve requests, causing user-facing errors that could have been avoided.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-readiness-gate",
-    sourceLabel: "Kubernetes docs: Pod readiness",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-readiness-gate",
+        label: "Kubernetes docs: Pod readiness",
+      },
+    ],
   },
 ];

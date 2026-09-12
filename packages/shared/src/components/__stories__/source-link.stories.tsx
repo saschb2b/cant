@@ -9,18 +9,15 @@ const meta: Meta<typeof SourceLink> = {
     docs: {
       description: {
         component:
-          "An external link to an authoritative source (React docs, MDN, TypeScript handbook, etc.) shown below a challenge explanation. Optionally renders a sibling 'Suggest a fix' link that opens a prefilled GitHub issue when githubUrl and challengeTitle are provided. Fires analytics events on click. Used on learn/[category] pages across all apps.",
+          "External links to the authoritative sources (React docs, MDN, TypeScript handbook, etc.) backing a challenge explanation, one link per entry. Shown below the explanation. Optionally renders a sibling 'Suggest a fix' link that opens a prefilled GitHub issue when githubUrl and challengeTitle are provided. Fires analytics events on click. Used on learn/[category] pages across all apps.",
       },
     },
   },
   argTypes: {
-    href: {
-      description: "Full URL of the external source page.",
-      control: "text",
-    },
-    label: {
-      description: "Visible link text, typically formatted as 'Source: Title'.",
-      control: "text",
+    sources: {
+      description:
+        "Authoritative references, each with a `url` and a visible `label` (typically 'Source: Title'). Rendered in order.",
+      control: "object",
     },
     challengeId: {
       description: "ID of the parent challenge, sent with the analytics event.",
@@ -55,8 +52,12 @@ type Story = StoryObj<typeof SourceLink>;
 /** Link to the React documentation site. */
 export const Default: Story = {
   args: {
-    href: "https://react.dev/reference/react/useMemo",
-    label: "React docs: useMemo",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/useMemo",
+        label: "React docs: useMemo",
+      },
+    ],
     challengeId: "use-memo-deps",
     category: "hooks",
   },
@@ -65,8 +66,12 @@ export const Default: Story = {
 /** Link to the Mozilla Developer Network (MDN). */
 export const MDN: Story = {
   args: {
-    href: "https://developer.mozilla.org/en-US/docs/Web/CSS/container-queries",
-    label: "MDN: Container queries",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/container-queries",
+        label: "MDN: Container queries",
+      },
+    ],
     challengeId: "container-queries-intro",
     category: "container-queries",
   },
@@ -75,12 +80,34 @@ export const MDN: Story = {
 /** With a sibling Suggest-a-fix link that opens a prefilled GitHub issue. */
 export const WithSuggestFix: Story = {
   args: {
-    href: "https://react.dev/reference/react/useMemo",
-    label: "React docs: useMemo",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/useMemo",
+        label: "React docs: useMemo",
+      },
+    ],
     challengeId: "use-memo-deps",
     category: "hooks",
     challengeTitle: "Memoizing expensive computations",
     categoryLabel: "Hooks",
     githubUrl: "https://github.com/saschb2b/cant",
+  },
+};
+
+/** Two sources for one challenge render as separate links in order. */
+export const MultipleSources: Story = {
+  args: {
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+        label: "React Docs: Passing JSX as children",
+      },
+      {
+        url: "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+        label: "Next.js Docs: Server and Client Components",
+      },
+    ],
+    challengeId: "rp-003",
+    category: "render-props",
   },
 };

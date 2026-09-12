@@ -59,7 +59,7 @@ Each agent evaluates these criteria:
 - **Difficulty accuracy**: Is the difficulty rating (easy/medium/hard) appropriate for the concept?
 - **correctSide**: Is the correct side actually correct? Is the educational claim factually accurate?
 - **Explanations**: Are both explanationCorrect and explanationWrong accurate, educational, and 2-4 sentences? No emotionally loaded language.
-- **Source**: Is the sourceUrl a real, authoritative source?
+- **Sources**: Is every entry in `sources` a real, authoritative source?
 
 #### Visual components (if type: "visual")
 

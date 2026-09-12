@@ -27,8 +27,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "The title names a user-visible outcome a designer, PM, or new engineer can reason about cold. Same work underneath, but the framing answers what changes for whoever is on the other end.",
     explanationWrong:
       "A title that names the implementation tells you what the engineer plans to do, not what users will get. A new joiner reads it and learns nothing about the product. Save implementation language for the subtasks or the PR description.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "svb-002",
@@ -92,8 +96,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "Acceptance criteria describe outcomes. Implementation steps live in subtasks where they belong. QA can verify each AC by clicking, without asking the engineer what the cookie helper does.",
     explanationWrong:
       "Refactoring a helper is not an acceptance criterion, it is engineering work. Mixed lists make QA's job impossible: half the items are not testable from the outside, half look like work that already happened.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "svb-003",
@@ -130,8 +138,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "The right side names the actor, the outcome, and the cost they pay today. Six months from now, when the team has rotated, the ticket still answers 'why did we do this?' on its own.",
     explanationWrong:
       "Pointing at a Slack thread and a person's name puts the why entirely in two places that will disappear: the thread will scroll out of search, and the person will rotate off the team.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "svb-004",
@@ -172,8 +184,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "The dependency is a linked ticket key, not a hallway conversation. When TAX-117 moves the planning board can see the unblock automatically and the next refinement can pull this story without hunting for context.",
     explanationWrong:
       "Mentioning a name and a service in prose is not a link. Nothing in the planning board updates when the dependency moves, and 'next sprint' has the half-life of one slipped commitment.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "svb-005",
@@ -241,8 +257,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "Outcome on the front, mechanism in the subtasks. Product can demo what changed, engineering still has the implementation breadcrumbs, and the SSR caveat is captured where it will be read by whoever picks up the work.",
     explanationWrong:
       "A description full of file names, hooks, and edge-case warnings is a note to self in disguise. Anyone reading cold has to pattern-match through the codebase to figure out what the user gets.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "svb-006",
@@ -280,9 +300,12 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "A new joiner reads three lines and is oriented: who suffers, what changes, why it matters, and roughly the size of the problem. The funnel datum makes the priority defensible without needing to find the meeting it came from.",
     explanationWrong:
       "Cross-referencing a retro doc, a name, and a meeting outcome makes the ticket only readable by people who were there. Six months later, none of those references will resolve.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/user-stories",
-    sourceLabel: "Atlassian Team Playbook: User Stories",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/user-stories",
+        label: "Atlassian Team Playbook: User Stories",
+      },
+    ],
   },
   {
     id: "svb-007",
@@ -338,7 +361,11 @@ export const storyVsBraindumpChallenges: BaseChallenge[] = [
       "The right ticket describes what shoppers experience and why it matters. The implementation choice (useSyncExternalStore, store wiring) lives in the code review, not the title. The same engineer can do the same work, but everyone else can read along.",
     explanationWrong:
       "A title that begins with 'Switch from X to Y' is a refactor in disguise. It might be the right refactor, but it is not a story until someone outside engineering can describe what changes for the user.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
 ];

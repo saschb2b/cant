@@ -11,6 +11,7 @@ import Chip from "@mui/material/Chip";
 import Link from "@mui/material/Link";
 import { useTrackEvent } from "../../lib/analytics-context";
 import { buildChallengeIssueUrl } from "../../lib/github-issue";
+import type { ChallengeSource } from "../../lib/game/types";
 import { FormattedText } from "../formatted-text";
 import {
   RotateCcw,
@@ -36,8 +37,7 @@ interface ResultsChallenge {
   category: string;
   explanationCorrect: string;
   explanationWrong?: string;
-  sourceUrl: string;
-  sourceLabel: string;
+  sources: ChallengeSource[];
 }
 
 /** Minimum game state shape the results screen needs. */
@@ -551,30 +551,33 @@ export function ResultsScreen<S extends ResultsGameState>({
                       useFlexGap
                       sx={{ rowGap: 0.5 }}
                     >
-                      <Link
-                        href={challenge.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        underline="hover"
-                        onClick={() =>
-                          trackEvent("source-link-clicked", {
-                            challengeId: challenge.id,
-                            category: challenge.category,
-                            label: challenge.sourceLabel,
-                          })
-                        }
-                        sx={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 0.5,
-                          typography: "caption",
-                          fontWeight: 500,
-                          color: "primary.main",
-                        }}
-                      >
-                        <ExternalLink size={12} />
-                        {challenge.sourceLabel}
-                      </Link>
+                      {challenge.sources.map(({ url, label }) => (
+                        <Link
+                          key={url}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          underline="hover"
+                          onClick={() =>
+                            trackEvent("source-link-clicked", {
+                              challengeId: challenge.id,
+                              category: challenge.category,
+                              label,
+                            })
+                          }
+                          sx={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                            typography: "caption",
+                            fontWeight: 500,
+                            color: "primary.main",
+                          }}
+                        >
+                          <ExternalLink size={12} />
+                          {label}
+                        </Link>
+                      ))}
                       <Link
                         href={`/learn/${challenge.category}`}
                         underline="hover"

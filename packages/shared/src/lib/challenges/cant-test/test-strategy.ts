@@ -64,9 +64,12 @@ test("rejects order with no items", () => {
       "Targeting 80% coverage with meaningful tests focuses effort on verifying real behavior and edge cases. This threshold is high enough to catch regressions while leaving room for code that is difficult or pointless to test, such as generated types or trivial getters.",
     explanationWrong:
       "Mandating 100% coverage forces developers to write tests that exist only to satisfy the metric. These tests often assert implementation details rather than behavior, making refactoring harder without actually catching more bugs.",
-    sourceUrl:
-      "https://testing.googleblog.com/2020/08/code-coverage-best-practices.html",
-    sourceLabel: "Google Testing Blog: Code Coverage Best Practices",
+    sources: [
+      {
+        url: "https://testing.googleblog.com/2020/08/code-coverage-best-practices.html",
+        label: "Google Testing Blog: Code Coverage Best Practices",
+      },
+    ],
   },
   {
     id: "strat-002",
@@ -85,8 +88,12 @@ test("rejects order with no items", () => {
       "Co-locating test files next to the source they cover makes it obvious when a module lacks tests and simplifies imports with relative paths. When a file moves or gets deleted, its test naturally moves or gets deleted with it.",
     explanationWrong:
       "A separate __tests__ directory mirrors the source tree, which means every rename or move requires updating two locations. It also hides gaps in coverage because a missing test file is not visible alongside the source.",
-    sourceUrl: "https://vitest.dev/guide/#configuring-vitest",
-    sourceLabel: "Vitest: Configuring Vitest",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/#configuring-vitest",
+        label: "Vitest: Configuring Vitest",
+      },
+    ],
   },
   {
     id: "strat-003",
@@ -154,8 +161,12 @@ test("rejects order with no items", () => {
       "Testing both the success path and multiple error paths verifies that validation logic works and that the API returns correct status codes for invalid input. Each error case documents an expected constraint of the endpoint.",
     explanationWrong:
       "Testing only the success path leaves validation and error handling completely unverified. Bugs in input parsing, missing fields, or negative values will reach production without any safety net.",
-    sourceUrl: "https://martinfowler.com/articles/practical-test-pyramid.html",
-    sourceLabel: "Martin Fowler: The Practical Test Pyramid",
+    sources: [
+      {
+        url: "https://martinfowler.com/articles/practical-test-pyramid.html",
+        label: "Martin Fowler: The Practical Test Pyramid",
+      },
+    ],
   },
   {
     id: "strat-004",
@@ -205,9 +216,12 @@ test("handles discount on small amounts", () => {
       "Adding a regression test that reproduces the exact bug (and its edge cases) ensures the fix stays in place. If a future refactor reintroduces the rounding error, the test fails immediately instead of relying on manual QA to catch it.",
     explanationWrong:
       "Relying on the original test and manual verification leaves a gap. The original test did not catch the bug in the first place, and manual QA will not be repeated on every future change to the discount logic.",
-    sourceUrl:
-      "https://testing.googleblog.com/2017/04/where-do-our-flaky-tests-come-from.html",
-    sourceLabel: "Google Testing Blog: Where Do Our Flaky Tests Come From?",
+    sources: [
+      {
+        url: "https://testing.googleblog.com/2017/04/where-do-our-flaky-tests-come-from.html",
+        label: "Google Testing Blog: Where Do Our Flaky Tests Come From?",
+      },
+    ],
   },
   {
     id: "strat-005",
@@ -270,8 +284,12 @@ test("purchase confirmation is shown", async () => {
       "Distributing tests across unit, integration, and E2E layers gives fast feedback on logic errors (units), verifies service boundaries (integration), and confirms the critical user flow works (E2E). This layered approach keeps the suite fast while still covering the full stack.",
     explanationWrong:
       "Running everything through the browser makes the suite slow and brittle. A tax calculation bug takes minutes to surface instead of milliseconds, and flaky selectors or network timeouts can mask real failures.",
-    sourceUrl: "https://martinfowler.com/articles/practical-test-pyramid.html",
-    sourceLabel: "Martin Fowler: The Practical Test Pyramid",
+    sources: [
+      {
+        url: "https://martinfowler.com/articles/practical-test-pyramid.html",
+        label: "Martin Fowler: The Practical Test Pyramid",
+      },
+    ],
   },
   {
     id: "strat-006",
@@ -337,9 +355,12 @@ test("refactored place matches legacy output", async () => {
       "Characterization tests lock in the existing behavior before any refactoring starts. This safety net ensures that each small structural change preserves the original output. Refactoring without this net risks silently changing behavior and shipping a regression.",
     explanationWrong:
       "Refactoring first and testing second removes the safety net that would catch accidental behavior changes. If the refactoring introduces a subtle bug, there is no baseline to compare against, and the new test simply encodes the broken behavior.",
-    sourceUrl:
-      "https://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052",
-    sourceLabel: "Michael Feathers: Working Effectively with Legacy Code",
+    sources: [
+      {
+        url: "https://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052",
+        label: "Michael Feathers: Working Effectively with Legacy Code",
+      },
+    ],
   },
   {
     id: "strat-007",
@@ -398,8 +419,9 @@ const interaction = {
       "Contract tests let each service verify its obligations independently. The consumer publishes what it expects, and the provider confirms it can deliver. Breaking changes surface in the provider's CI before deployment, without requiring both services to run simultaneously.",
     explanationWrong:
       "Integration tests against a live service couple both teams' CI pipelines and require orchestrating multiple containers. They are slow, flaky due to network issues, and only catch problems after both services are built, which delays feedback.",
-    sourceUrl: "https://docs.pact.io/",
-    sourceLabel: "Pact: Contract Testing",
+    sources: [
+      { url: "https://docs.pact.io/", label: "Pact: Contract Testing" },
+    ],
   },
   {
     id: "strat-008",
@@ -471,7 +493,11 @@ test("output is a permutation of input", () => {
       "Property-based tests generate hundreds of random inputs and verify invariants like ordering and length preservation. This approach surfaces edge cases that a developer would never think to write by hand, such as very large arrays, extreme integers, or unusual duplicate patterns.",
     explanationWrong:
       "Example-based tests only check the specific cases the developer anticipated. A subtle bug triggered by integer overflow, a large input size, or an unusual element distribution will slip through because none of the handpicked examples exercise that path.",
-    sourceUrl: "https://fast-check.dev/docs/introduction/",
-    sourceLabel: "fast-check: Introduction to Property-Based Testing",
+    sources: [
+      {
+        url: "https://fast-check.dev/docs/introduction/",
+        label: "fast-check: Introduction to Property-Based Testing",
+      },
+    ],
   },
 ];

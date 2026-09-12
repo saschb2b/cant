@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FormattedText } from "./formatted-text";
 import { SourceLink } from "./source-link";
+import type { ChallengeSource } from "../lib/game/types";
 
 interface ExplanationChallenge {
   id: string;
@@ -10,8 +11,7 @@ interface ExplanationChallenge {
   title: string;
   explanationCorrect: string;
   explanationWrong?: string;
-  sourceUrl: string;
-  sourceLabel: string;
+  sources: ChallengeSource[];
 }
 
 interface LearnExplanationProps {
@@ -108,8 +108,7 @@ export function LearnExplanation({
         isLast
       />
       <SourceLink
-        href={challenge.sourceUrl}
-        label={challenge.sourceLabel}
+        sources={challenge.sources}
         challengeId={challenge.id}
         category={challenge.category}
         challengeTitle={challenge.title}

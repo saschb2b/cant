@@ -36,8 +36,12 @@ interface ProfileCardProps {
       "Four `user*` props that always travel together belong in a `User` type. The component receives one structured object instead of four loose strings. If `User` gains a `phone` field later, only the type changes, not every component that forwards user data.",
     explanationWrong:
       "Flat props with a shared prefix (`userName`, `userEmail`, `userAvatar`, `userRole`) are a sign they belong to one concept. Passing them individually means every consumer must destructure and forward four props instead of one. Group related data into a typed object.",
-    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
-    sourceLabel: "React Docs: Passing Props",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component",
+        label: "React Docs: Passing Props",
+      },
+    ],
   },
   {
     id: "po-002",
@@ -71,9 +75,12 @@ interface ProfileCardProps {
       "Three of the five props are derivable from `products`. `productCount` is `products.length`, `hasProducts` is `products.length > 0`, and `isEmpty` is its inverse. Redundant props invite bugs: what happens when `products` has 3 items but `isEmpty` is `true`?",
     explanationWrong:
       "`productCount`, `hasProducts`, and `isEmpty` are all computable from `products.length`. Passing them as separate props creates three extra sources of truth for the same data. Derive values inside the component to eliminate the possibility of inconsistency.",
-    sourceUrl:
-      "https://react.dev/learn/choosing-the-state-structure#avoid-redundant-state",
-    sourceLabel: "React Docs: Avoid Redundant State",
+    sources: [
+      {
+        url: "https://react.dev/learn/choosing-the-state-structure#avoid-redundant-state",
+        label: "React Docs: Avoid Redundant State",
+      },
+    ],
   },
   {
     id: "po-003",
@@ -113,9 +120,12 @@ interface ProfileCardProps {
       "Seven booleans collapsed into three union props. Unions enforce mutual exclusivity; a button can't be both `primary` and `danger`. Booleans allow impossible combos like `<Button isPrimary isDanger isOutlined isGhost />`. Each union prop represents one independent design axis.",
     explanationWrong:
       "Mutually exclusive options are better expressed as unions than separate booleans. `isPrimary` and `isDanger` can't both be true, but nothing prevents `<Button isPrimary isDanger />`. Union types like `variant: 'primary' | 'danger'` enforce exactly one choice. Seven boolean props become three self-documenting unions.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
-    sourceLabel: "TypeScript: Union Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
+        label: "TypeScript: Union Types",
+      },
+    ],
   },
   {
     id: "po-004",
@@ -158,8 +168,12 @@ interface MapViewProps {
       "**Domain-specific names** beat generic ones: `LatLng` with `lat`/`lng` is immediately clear for a map, while `Coordinates` with `x`/`y` could mean screen pixels, grid positions, or anything.\n\n`position` tells you where the marker sits; `coords` is just a synonym for the type name. `label` specifies what gets displayed; `text` is vague.",
     explanationWrong:
       "`Coordinates` with `x`/`y` is a generic math concept; on a map, you work with latitude and longitude, not abstract axes. `coords` is redundant naming (the type already says `Coordinates`). `text` could be anything; `label` specifies it's the displayed identifier. **Domain-specific naming makes the API self-documenting.**",
-    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
-    sourceLabel: "React Docs: Passing Props",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component",
+        label: "React Docs: Passing Props",
+      },
+    ],
   },
   {
     id: "po-005",
@@ -209,9 +223,12 @@ interface MapViewProps {
       "Six out of eleven original props belonged to the toolbar, not the article. Extracting the toolbar into a `ReactNode` slot cuts the interface in half.\n\nConsumers compose their own toolbar, or omit it entirely. The `ArticlePage` no longer needs to know what toolbar actions exist.",
     explanationWrong:
       "When half your props share a concern (`toolbar*`, `is*Visible`, `on*`), that's a sub-component trying to escape. Each new action (export, translate) adds two more props.\n\nA `ReactNode` slot delegates toolbar composition to the consumer, keeping `ArticlePage` focused on displaying the article.",
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
-    sourceLabel: "React Docs: Passing JSX as children",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+        label: "React Docs: Passing JSX as children",
+      },
+    ],
   },
   {
     id: "po-006",
@@ -254,9 +271,12 @@ interface MapViewProps {
       "Not every piece of state needs to be a prop. Dropdown visibility and keyboard-highlighted index are UI interaction details; the parent doesn't care which item is highlighted.\n\nExposing internal state as props forces the parent to reimplement dropdown behavior. **Keep the API to what the parent actually needs: data in, selection out.**",
     explanationWrong:
       "Exposing `isDropdownOpen`, `highlightedIndex`, and their callbacks makes the parent responsible for reimplementing dropdown keyboard navigation. This isn't flexibility; it's leaking implementation details.\n\nA `SearchInput` should manage its own dropdown state, just like a native `<select>` manages its own open state.",
-    sourceUrl:
-      "https://react.dev/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state",
-    sourceLabel: "React Docs: Minimal UI State",
+    sources: [
+      {
+        url: "https://react.dev/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state",
+        label: "React Docs: Minimal UI State",
+      },
+    ],
   },
   {
     id: "po-007",
@@ -302,9 +322,12 @@ function Dashboard() {
       "Inline objects and arrays create new references on every render, causing unnecessary re-renders of memoized children and re-runs of effects that depend on them. Module-level constants have stable references.\n\nThe callback `(point) => setSelected(point)` is equivalent to `setSelected`; the wrapper adds nothing but a new function reference each render.",
     explanationWrong:
       "Every render creates a brand new `margins` object, `colors` array, and arrow function. If `Chart` uses `React.memo` or any internal effect depends on these props, it will re-run every render despite nothing changing.\n\nExtract static values to module-level constants and pass function references directly. This is one of the most common React performance pitfalls.",
-    sourceUrl:
-      "https://react.dev/reference/react/memo#minimizing-props-changes",
-    sourceLabel: "React Docs: Minimizing Props Changes",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/memo#minimizing-props-changes",
+        label: "React Docs: Minimizing Props Changes",
+      },
+    ],
   },
   {
     id: "po-008",
@@ -343,7 +366,11 @@ function Dashboard() {
       "Impression tracking is a cross-cutting concern: it could apply to any visible element (ads, articles, images), not just product cards. A custom hook like `useImpressionTracker` (built on IntersectionObserver) is reusable across every tracked element without changing any component's props.\n\nThe React docs list `useImpressionLog` as an example of a well-named custom hook for exactly this pattern.",
     explanationWrong:
       "Four tracking props landed on a display component that has nothing to do with analytics. The signal: these new props share no relationship with the existing ones (`product`, `onSelect`), and they could apply to any visible element.\n\nWhen new props are unrelated to the component's core purpose, they belong in a separate hook or component. A reusable `useImpressionTracker` hook keeps the display component focused and avoids duplicating the same four props on every tracked component.",
-    sourceUrl: "https://react.dev/learn/reusing-logic-with-custom-hooks",
-    sourceLabel: "React Docs: Reusing Logic with Custom Hooks",
+    sources: [
+      {
+        url: "https://react.dev/learn/reusing-logic-with-custom-hooks",
+        label: "React Docs: Reusing Logic with Custom Hooks",
+      },
+    ],
   },
 ];

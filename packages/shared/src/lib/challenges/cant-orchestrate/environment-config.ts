@@ -39,9 +39,12 @@ export const environmentConfigChallenges: BaseChallenge[] = [
       "An `env_file` keeps environment variables in a separate `.env` file that can be git-ignored, swapped per environment, and shared between services. Only environment-specific overrides belong in the Compose file itself.",
     explanationWrong:
       "Inlining all environment variables in the Compose file makes it hard to manage per-environment differences. Secrets end up in version control, and changing a single value requires editing the Compose file. The file grows unwieldy as services multiply.",
-    sourceUrl:
-      "https://docs.docker.com/reference/compose-file/services/#env_file",
-    sourceLabel: "Docker docs: env_file",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/compose-file/services/#env_file",
+        label: "Docker docs: env_file",
+      },
+    ],
   },
   {
     id: "ec-002",
@@ -96,8 +99,12 @@ spec:
       "Creating ConfigMaps from files (`--from-file`) keeps configuration in its native format where it can be linted, tested, and version-controlled independently. Mounting as a volume lets you update the config without rebuilding the image.",
     explanationWrong:
       "Inlining configuration as a YAML string loses syntax highlighting, editor support, and the ability to validate the config independently. Indentation errors in the embedded string are hard to spot and can break the application.",
-    sourceUrl: "https://kubernetes.io/docs/concepts/configuration/configmap/",
-    sourceLabel: "Kubernetes docs: ConfigMap",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/configuration/configmap/",
+        label: "Kubernetes docs: ConfigMap",
+      },
+    ],
   },
   {
     id: "ec-003",
@@ -142,8 +149,12 @@ CMD ["node", "server.js"]`,
       "`ARG` values are only available during build and don't persist in the final image metadata (though they remain in layer history). Removing `.npmrc` in the same `RUN` layer ensures the token isn't stored in any layer. Pass with `--build-arg NPM_TOKEN=...`.",
     explanationWrong:
       "`ENV` persists in the image and is visible via `docker inspect`. The token is baked into the image and accessible to anyone who pulls it. The `.npmrc` file also persists in the layer, creating two paths to credential exposure.",
-    sourceUrl: "https://docs.docker.com/reference/dockerfile/#arg",
-    sourceLabel: "Docker docs: ARG",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#arg",
+        label: "Docker docs: ARG",
+      },
+    ],
   },
   {
     id: "ec-004",
@@ -196,7 +207,11 @@ services:
       "Variable substitution with `${VAR:-default}` lets a single Compose file work across environments. Each environment provides its own `.env` file or exports variables. The `:-` syntax provides sensible defaults for local development.",
     explanationWrong:
       "Duplicating service definitions per environment leads to drift, maintenance burden, and copy-paste errors. Any change to the service configuration must be replicated across all variants. Environment-specific values should be external, not structural.",
-    sourceUrl: "https://docs.docker.com/reference/compose-file/interpolation/",
-    sourceLabel: "Docker docs: Interpolation",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/compose-file/interpolation/",
+        label: "Docker docs: Interpolation",
+      },
+    ],
   },
 ];

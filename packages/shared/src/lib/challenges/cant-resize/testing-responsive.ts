@@ -36,8 +36,12 @@ export const testingResponsiveChallenges: BaseChallenge[] = [
       "DevTools device mode is a viewport resizer, not a device emulator. It can't simulate touch physics, mobile browser chrome, virtual keyboards, or Safari's CSS quirks. A layered testing approach catches issues at each level before they reach production.",
     explanationWrong:
       "Chrome DevTools device mode doesn't simulate the mobile Safari rendering engine, touch events (hover states still fire), the dynamic viewport (URL bar), or the virtual keyboard pushing content up. Real device testing catches these.",
-    sourceUrl: "https://developer.chrome.com/docs/devtools/device-mode/",
-    sourceLabel: "Chrome: Device mode",
+    sources: [
+      {
+        url: "https://developer.chrome.com/docs/devtools/device-mode/",
+        label: "Chrome: Device mode",
+      },
+    ],
   },
   {
     id: "tr-002",
@@ -69,8 +73,12 @@ export const testingResponsiveChallenges: BaseChallenge[] = [
       "A multi-device viewer shows all breakpoints at once, revealing issues you'd miss by manually resizing. Scroll sync helps verify that content alignment works across viewports. It's faster iteration and more thorough coverage.",
     explanationWrong:
       "Manually resizing a single browser window means you can only see one viewport at a time. You miss how changes at one breakpoint affect others, and the constant resizing is slow. Multi-device viewers solve both problems.",
-    sourceUrl: "https://developer.chrome.com/docs/devtools/device-mode/",
-    sourceLabel: "Chrome: Device mode testing",
+    sources: [
+      {
+        url: "https://developer.chrome.com/docs/devtools/device-mode/",
+        label: "Chrome: Device mode testing",
+      },
+    ],
   },
   {
     id: "tr-003",
@@ -113,8 +121,12 @@ export const testingResponsiveChallenges: BaseChallenge[] = [
       "`setViewportSize` sets the actual viewport, triggering media queries. `toBeVisible()` checks CSS visibility (including `display: none`), while `toBeAttached()` only checks DOM presence. The test verifies the full mobile flow: hidden sidebar, visible hamburger, click to reveal.",
     explanationWrong:
       "`toBeAttached()` passes as long as the element exists in the DOM and it doesn't check if it's visible. A CSS-hidden sidebar is still \"attached\". Without setting the viewport size, the test runs at Playwright's default (1280x720), testing desktop layout instead.",
-    sourceUrl: "https://playwright.dev/docs/emulation#viewport",
-    sourceLabel: "Playwright: Viewport emulation",
+    sources: [
+      {
+        url: "https://playwright.dev/docs/emulation#viewport",
+        label: "Playwright: Viewport emulation",
+      },
+    ],
   },
   {
     id: "tr-004",
@@ -156,8 +168,12 @@ for (const vp of viewports) {
       "Visual regression tests at multiple viewports catch breakpoint-specific bugs. A CSS change that looks fine on desktop might break the mobile layout, and testing at one size misses this. Loop over viewports to get coverage without code duplication.",
     explanationWrong:
       "A single-viewport screenshot test gives you confidence at that one size. A padding change that fixes desktop alignment might overlap elements at 375px. Without mobile/tablet screenshots, the regression goes undetected until a user reports it.",
-    sourceUrl: "https://playwright.dev/docs/test-snapshots",
-    sourceLabel: "Playwright: Visual comparisons",
+    sources: [
+      {
+        url: "https://playwright.dev/docs/test-snapshots",
+        label: "Playwright: Visual comparisons",
+      },
+    ],
   },
   {
     id: "tr-005",
@@ -199,7 +215,11 @@ for (const vp of viewports) {
       "Test the *behavior* (sidebar visible/hidden, hamburger appears/disappears) rather than pixel values. Using ARIA roles (`complementary` for sidebar) and accessible names makes the test resilient to CSS changes and meaningful because it verifies what the user actually experiences.",
     explanationWrong:
       "Asserting exact pixel values (width = 0, height = 0) is brittle, and a 1px padding change breaks the test. It also doesn't verify the user experience: is the hamburger menu there? Can the user open the sidebar? Behavioral assertions are more valuable and maintainable.",
-    sourceUrl: "https://playwright.dev/docs/locators#locate-by-role",
-    sourceLabel: "Playwright: Role-based locators",
+    sources: [
+      {
+        url: "https://playwright.dev/docs/locators#locate-by-role",
+        label: "Playwright: Role-based locators",
+      },
+    ],
   },
 ];

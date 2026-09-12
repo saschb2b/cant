@@ -32,8 +32,12 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
       "Done means verified by someone other than the implementer, deployed, and observable. The closing comment names the verifier, the environments, the deploy, and a real metric the work moved.",
     explanationWrong:
       "Author-self-closes plus 'code merged' is the minimum bar that lets work skip QA, deploy verification, and the metric check. Two of those three will go wrong if nobody checks them.",
-    sourceUrl: "https://www.scrum.org/resources/what-definition-done",
-    sourceLabel: "Scrum.org: Definition of Done",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-definition-done",
+        label: "Scrum.org: Definition of Done",
+      },
+    ],
   },
   {
     id: "dod-002",
@@ -66,8 +70,12 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
       "Tests at the appropriate level for what shipped. The next person who touches the prepend logic will know if they broke the scroll-position behavior, which was the actual user-facing concern.",
     explanationWrong:
       "Snapshot tests passing only means the rendered HTML did not change. They do not exercise the WebSocket path or the scroll-position rule the story committed to. The next refactor will silently regress.",
-    sourceUrl: "https://www.scrum.org/resources/what-definition-done",
-    sourceLabel: "Scrum.org: Definition of Done",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-definition-done",
+        label: "Scrum.org: Definition of Done",
+      },
+    ],
   },
   {
     id: "dod-003",
@@ -100,8 +108,12 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
       "'Merged' is a halfway point. Done means deployed to the target environment and observable in metrics. The dashboard line confirms the feature is reaching users and the path the change took through the system actually works.",
     explanationWrong:
       "Closing on merge alone hides the deploy gap. If the change sat in a branch waiting on a release window, or rolled out only to a staging tier, nobody on the board can tell. Production reality and the board diverge silently.",
-    sourceUrl: "https://www.scrum.org/resources/what-definition-done",
-    sourceLabel: "Scrum.org: Definition of Done",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-definition-done",
+        label: "Scrum.org: Definition of Done",
+      },
+    ],
   },
   {
     id: "dod-004",
@@ -135,8 +147,12 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
       "Done includes the documentation that consumers depend on. For an API change, the OpenAPI spec, the partner portal, and the SDK changelog are part of the contract. Without them, the work landed but partners still cannot use it.",
     explanationWrong:
       "'Will write up the docs later' is a debt that grows. The next change will compound it; the team that depends on the API will keep filing 'how do I use this?' tickets; eventually someone has to spend a sprint catching docs up.",
-    sourceUrl: "https://www.scrum.org/resources/what-definition-done",
-    sourceLabel: "Scrum.org: Definition of Done",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-definition-done",
+        label: "Scrum.org: Definition of Done",
+      },
+    ],
   },
   {
     id: "dod-005",
@@ -169,7 +185,11 @@ export const definitionOfDoneChallenges: BaseChallenge[] = [
       "Stories drift. The right closing comment names what shipped, what was descoped, and where the descoped work lives now. Anyone reading the ticket later can reconstruct the decision without asking the team.",
     explanationWrong:
       "'Done' alone tells you nothing when scope changed mid-sprint. The next sprint planning will rediscover the descoped pieces from scratch, possibly twice.",
-    sourceUrl: "https://www.scrum.org/resources/what-definition-done",
-    sourceLabel: "Scrum.org: Definition of Done",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-definition-done",
+        label: "Scrum.org: Definition of Done",
+      },
+    ],
   },
 ];

@@ -18,8 +18,12 @@ export const stateChallenges: BaseChallenge[] = [
       "A discriminated union (tagged state) makes it impossible to be in two conflicting states at once. Each state carries only the data it needs, and the switch enforces that every state handles its own transitions explicitly. Adding a new state is a compile-time checklist: the exhaustiveness check tells you exactly which transitions to define.",
     explanationWrong:
       "Boolean flags create a combinatorial explosion: four flags means 16 possible combinations, most of which are invalid. Nothing prevents isJumping and isStunned from both being true, and every update tick must navigate a nest of conditionals that grows with each new ability. Bugs from invalid flag combinations are subtle and hard to test.",
-    sourceUrl: "https://gameprogrammingpatterns.com/state.html",
-    sourceLabel: "Game Programming Patterns: State",
+    sources: [
+      {
+        url: "https://gameprogrammingpatterns.com/state.html",
+        label: "Game Programming Patterns: State",
+      },
+    ],
   },
   {
     id: "state-002",
@@ -89,7 +93,11 @@ manager.push(new PauseScene());`,
       "A scene stack with enter/exit lifecycle hooks gives each scene a clear boundary for setup and teardown. Pushing a pause screen on top of the game scene preserves the game state underneath. Each scene is self-contained: it manages its own input, rendering, and transitions without knowing about other scenes.",
     explanationWrong:
       "A string-based scene variable with a giant if/else chain mixes all scene logic in one place and provides no lifecycle management. Transitioning from 'game' to 'pause' and back requires manually saving and restoring state. Adding new scenes means touching the central update function, and nothing enforces cleanup when leaving a scene.",
-    sourceUrl: "https://gameprogrammingpatterns.com/state.html",
-    sourceLabel: "Game Programming Patterns: State",
+    sources: [
+      {
+        url: "https://gameprogrammingpatterns.com/state.html",
+        label: "Game Programming Patterns: State",
+      },
+    ],
   },
 ];

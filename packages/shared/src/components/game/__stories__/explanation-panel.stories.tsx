@@ -24,13 +24,10 @@ const meta: Meta<typeof ExplanationPanel> = {
         "Markdown-ish text explaining the right answer. Backticks become inline code, **bold** becomes bold.",
       control: "text",
     },
-    sourceUrl: {
-      description: "URL of the authoritative source for the challenge.",
-      control: "text",
-    },
-    sourceLabel: {
-      description: "Visible label for the source link.",
-      control: "text",
+    sources: {
+      description:
+        "Authoritative references backing the explanation, each with a `url` and a `label`. Rendered as one external link per entry, in order.",
+      control: "object",
     },
     category: {
       description: "Category slug, sent with analytics events.",
@@ -66,8 +63,12 @@ export const Correct: Story = {
     isCorrect: true,
     explanationText:
       "Using `const` for values that are never reassigned makes the code more **predictable** and easier to reason about.\n\nThis is a well-established convention in modern JavaScript and TypeScript codebases.",
-    sourceUrl: "https://react.dev/reference/react/useMemo",
-    sourceLabel: "React docs: useMemo",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/useMemo",
+        label: "React docs: useMemo",
+      },
+    ],
     category: "hooks",
     categoryLabel: "Hooks",
     challengeId: "use-memo-deps",
@@ -80,8 +81,12 @@ export const Wrong: Story = {
     isCorrect: false,
     explanationText:
       "The `any` type defeats the purpose of TypeScript. Use `unknown` when the type is truly not known, and narrow it with type guards.\n\nThis prevents **runtime errors** that TypeScript was designed to catch.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/types.html",
-    sourceLabel: "TypeScript Handbook",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/types.html",
+        label: "TypeScript Handbook",
+      },
+    ],
     category: "type-assertions",
     categoryLabel: "Type Assertions",
     challengeId: "avoid-any",
@@ -94,12 +99,38 @@ export const WithSuggestFix: Story = {
     isCorrect: false,
     explanationText:
       "The `any` type defeats the purpose of TypeScript. Use `unknown` when the type is truly not known, and narrow it with type guards.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/types.html",
-    sourceLabel: "TypeScript Handbook",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/types.html",
+        label: "TypeScript Handbook",
+      },
+    ],
     category: "type-assertions",
     categoryLabel: "Type Assertions",
     challengeId: "avoid-any",
     title: "Avoiding the any type",
     githubUrl: "https://github.com/saschb2b/cant",
+  },
+};
+
+/** Two references for one challenge, e.g. a React doc plus the matching Next.js doc. */
+export const MultipleSources: Story = {
+  args: {
+    isCorrect: true,
+    explanationText:
+      "Prefer `ReactNode` for ordinary static slots. They also compose across React Server and Client Component boundaries, where function props cannot be passed.",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+        label: "React Docs: Passing JSX as children",
+      },
+      {
+        url: "https://nextjs.org/docs/app/getting-started/server-and-client-components#passing-server-components-to-client-components-as-props",
+        label: "Next.js Docs: Passing Server Components as props",
+      },
+    ],
+    category: "render-props",
+    categoryLabel: "Render Props",
+    challengeId: "rp-003",
   },
 };

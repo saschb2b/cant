@@ -29,8 +29,12 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "Walking the board surfaces what is stuck, not what each person did. The team coordinates around finishing in-progress work first; deeper threads happen with the right people, not in front of everyone.",
     explanationWrong:
       "A turn-taking status report is a meeting for the manager. The team learns nothing they did not already know, blockers surface late, and 30 minutes per day per engineer adds up to a day per week.",
-    sourceUrl: "https://www.scrum.org/resources/what-is-a-daily-scrum",
-    sourceLabel: "Scrum.org: Daily Scrum",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-is-a-daily-scrum",
+        label: "Scrum.org: Daily Scrum",
+      },
+    ],
   },
   {
     id: "cer-002",
@@ -60,8 +64,12 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "Refinement produces stories the team can pull next sprint without surprise. Splitting and AC clarification happen here so they are not happening mid-sprint. The Definition of Ready is the gate.",
     explanationWrong:
       "Speed-pointing ten stories produces ten numbers and zero shared understanding. The first sprint into those stories will spend the first three days re-refining the work the team supposedly already estimated.",
-    sourceUrl: "https://www.scrum.org/resources/product-backlog-refinement",
-    sourceLabel: "Scrum.org: Backlog Refinement",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/product-backlog-refinement",
+        label: "Scrum.org: Backlog Refinement",
+      },
+    ],
   },
   {
     id: "cer-003",
@@ -91,8 +99,12 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "A sprint goal anchors the work. Stories that serve the goal pull together; the headroom absorbs the unplanned. Walking through day one means nobody starts the sprint hunting for context.",
     explanationWrong:
       "Pulling to a velocity number with no goal produces a sprint where each story is unrelated to the next. The review is a list of disconnected demos, and the team cannot tell whether the sprint succeeded or failed.",
-    sourceUrl: "https://www.scrum.org/resources/what-is-sprint-planning",
-    sourceLabel: "Scrum.org: Sprint Planning",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-is-sprint-planning",
+        label: "Scrum.org: Sprint Planning",
+      },
+    ],
   },
   {
     id: "cer-004",
@@ -122,8 +134,12 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "A review is a working session, not a celebration. Showing the work in user-flow order with mid-sprint changes named makes it useful for prioritization. The questions feed straight into the next refinement.",
     explanationWrong:
       "Per-engineer demos optimize for individual recognition, not product alignment. Stakeholders see fragments and have nowhere to push back; the team learns nothing about how the work landed.",
-    sourceUrl: "https://www.scrum.org/resources/what-is-a-sprint-review",
-    sourceLabel: "Scrum.org: Sprint Review",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-is-a-sprint-review",
+        label: "Scrum.org: Sprint Review",
+      },
+    ],
   },
   {
     id: "cer-005",
@@ -153,8 +169,12 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "Retros that change behavior name a small number of changes, give them owners, and follow up. Reviewing last retro's tripwires at the start keeps the team honest about whether anything actually changed.",
     explanationWrong:
       "A round-robin retro that ends with a note in a doc is a feelings-check, not a learning loop. Without owners and follow-up, the same item appears in next sprint's retro and the one after.",
-    sourceUrl: "https://www.scrum.org/resources/what-is-a-sprint-retrospective",
-    sourceLabel: "Scrum.org: Sprint Retrospective",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-is-a-sprint-retrospective",
+        label: "Scrum.org: Sprint Retrospective",
+      },
+    ],
   },
   {
     id: "cer-006",
@@ -184,7 +204,11 @@ export const ceremoniesChallenges: BaseChallenge[] = [
       "Ceremonies are tools. When the tool stops doing the job, change it. Naming the purpose makes it possible to tell whether the ceremony is working, and dropping one for a sprint usually shows the team whether they actually needed it.",
     explanationWrong:
       "Keeping a broken ceremony on the calendar is the most common form of agile theater. The team attends, the work does not improve, and the cost is real (a half-day a week per engineer adds up).",
-    sourceUrl: "https://agilemanifesto.org/principles.html",
-    sourceLabel: "Agile Manifesto: Principles",
+    sources: [
+      {
+        url: "https://agilemanifesto.org/principles.html",
+        label: "Agile Manifesto: Principles",
+      },
+    ],
   },
 ];

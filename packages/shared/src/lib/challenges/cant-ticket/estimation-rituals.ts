@@ -29,9 +29,12 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
       "Independent estimates surface real disagreement. The reveal is the moment that lets the room see who saw what differently. Anchoring on one engineer's number first collapses the spread before it has a chance to inform anyone.",
     explanationWrong:
       "When the senior estimates first, the rest of the room rounds to that number. The disagreement that would have surfaced never does, and the team takes the implicit anchor into the sprint.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
   {
     id: "er-002",
@@ -61,9 +64,12 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
       "The number belongs to the people who do the work. Including QA, design, and on-call surfaces variations the dev-only estimate would miss. The PM's job is to bring the story; the team's job is to estimate it.",
     explanationWrong:
       "Pre-cooking the estimate excludes the people who carry the implementation cost. They will discover the missing scope mid-sprint and the team's trust in the planning ritual will degrade.",
-    sourceUrl:
-      "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
-    sourceLabel: "Ron Jeffries: Card, Conversation, Confirmation",
+    sources: [
+      {
+        url: "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
+        label: "Ron Jeffries: Card, Conversation, Confirmation",
+      },
+    ],
   },
   {
     id: "er-003",
@@ -93,9 +99,12 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
       "The number is a side effect; the conversation is the point. Capturing what made the size what it is plus the open questions means the next refinement starts with context, not from scratch.",
     explanationWrong:
       "A naked number tells the next reader nothing about the tradeoffs the room considered. When the story is pulled three sprints later, the team re-points it from scratch and the original disagreement reappears.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
   {
     id: "er-004",
@@ -125,9 +134,12 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
       "T-shirt sizes match the precision available at the Epic stage: rough relative size for roadmap planning. Fibonacci comes in once the work is concrete enough to estimate against reference stories.",
     explanationWrong:
       "Fibonacci numbers on Epics imply a precision the team does not have yet. The numbers will be wrong by 2x in either direction and stakeholders will treat them as commitments anyway.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/epics-stories-themes",
-    sourceLabel: "Atlassian: Epics, Stories, and Initiatives",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/epics-stories-themes",
+        label: "Atlassian: Epics, Stories, and Initiatives",
+      },
+    ],
   },
   {
     id: "er-005",
@@ -157,8 +169,11 @@ export const estimationRitualsChallenges: BaseChallenge[] = [
       "Pointing every two-minute change costs more than the change. The right side reserves the ritual for work where the conversation matters and lets small chores ride along on a cap so velocity stays meaningful.",
     explanationWrong:
       "Pointing a copy tweak as a 1 inflates velocity without telling you anything. Multiply it across 30 chores a sprint and the velocity number becomes unrelated to the size of real work.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
-    sourceLabel: "Mike Cohn: Why Fibonacci Works",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating",
+        label: "Mike Cohn: Why Fibonacci Works",
+      },
+    ],
   },
 ];

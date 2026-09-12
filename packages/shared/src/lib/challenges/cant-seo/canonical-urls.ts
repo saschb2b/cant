@@ -36,9 +36,12 @@ export const metadata: Metadata = {
       "Every page should have a self-referencing canonical tag that points to its own URL. This tells search engines that this is the authoritative version of the page. Without it, Google may choose a canonical on its own, which could be a version with query parameters or a different protocol.",
     explanationWrong:
       "Without a canonical tag, search engines must guess which URL version is the 'real' one. If your page is accessible at both `/about` and `/about?ref=footer`, Google might index the wrong version or split ranking signals between them.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/crawling-indexing/canonicalization",
-    sourceLabel: "Google: Canonicalization",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/crawling-indexing/canonicalization",
+        label: "Google: Canonicalization",
+      },
+    ],
   },
   {
     id: "cu-002",
@@ -74,9 +77,12 @@ export default nextConfig;`,
       "Setting `trailingSlash` explicitly ensures consistent URL behavior. When set to `false`, visiting `/about/` automatically redirects to `/about` (or vice versa when set to `true`). This prevents duplicate content issues where both URL variants are indexed separately.",
     explanationWrong:
       "Without the `trailingSlash` setting, both `/about` and `/about/` may serve the same content. Search engines treat these as two different URLs, which splits your page's ranking signals. Internal links with inconsistent trailing slashes make the problem worse.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/config/next-config-js/trailingSlash",
-    sourceLabel: "Next.js: trailingSlash config",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/config/next-config-js/trailingSlash",
+        label: "Next.js: trailingSlash config",
+      },
+    ],
   },
   {
     id: "cu-003",
@@ -117,9 +123,12 @@ export function middleware(request: NextRequest) {
       "Redirecting www to non-www (or vice versa) with a 301 ensures search engines consolidate all signals under one domain. A permanent redirect tells crawlers to update their index. This should also be configured at the DNS or CDN level for requests that never reach Next.js.",
     explanationWrong:
       "Serving identical content on both `www.acme.com` and `acme.com` creates a duplicate content problem. Google may index both versions, splitting backlink equity and ranking signals between two domains. Even with canonical tags, a redirect is the strongest signal.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",
-    sourceLabel: "Google: Consolidate duplicate URLs",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",
+        label: "Google: Consolidate duplicate URLs",
+      },
+    ],
   },
   {
     id: "cu-004",
@@ -168,9 +177,12 @@ export async function generateMetadata({
       "Each page of paginated content should have its own canonical URL. Page 2 has unique content (different blog posts) that deserves its own place in search results. Pointing all pages to page 1 tells Google that pages 2, 3, and beyond are duplicates, hiding their content from search.",
     explanationWrong:
       "Setting every paginated page's canonical to the first page tells Google to ignore pages 2 and beyond. Posts that only appear on later pages will never be discovered through search. Each page has unique content and needs its own canonical URL.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading",
-    sourceLabel: "Google: Pagination and SEO",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading",
+        label: "Google: Pagination and SEO",
+      },
+    ],
   },
   {
     id: "cu-005",
@@ -217,9 +229,12 @@ export async function generateMetadata({
       "When content is syndicated (republished on a partner site), the canonical should point back to the original source on your domain. This tells Google that the original lives at acme.com, so all ranking signals flow to your site instead of the partner's copy.",
     explanationWrong:
       "Setting the canonical to the partner site's own URL means the syndicated copy becomes the 'original' in Google's eyes. Your original article on acme.com could be treated as a duplicate, losing rankings to the partner's republished version.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/crawling-indexing/canonicalization#syndication",
-    sourceLabel: "Google: Canonical for syndication",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/crawling-indexing/canonicalization#syndication",
+        label: "Google: Canonical for syndication",
+      },
+    ],
   },
   {
     id: "cu-006",
@@ -268,9 +283,12 @@ export async function generateMetadata({
       "Next.js provides the `alternates.canonical` field specifically for setting canonical URLs. It renders the proper `<link rel='canonical'>` tag in the document head. This is the idiomatic approach that integrates with the rest of the metadata system.",
     explanationWrong:
       "Using the `other` field to set a canonical link is a hack that does not generate a proper `<link rel='canonical'>` element. The `other` field creates `<meta>` tags, not `<link>` tags. The canonical tag requires a `<link>` element to be recognized by search engines.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#alternates",
-    sourceLabel: "Next.js: alternates metadata",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#alternates",
+        label: "Next.js: alternates metadata",
+      },
+    ],
   },
   {
     id: "cu-007",
@@ -315,9 +333,12 @@ export async function generateMetadata({
       "Catch-all routes like `[...slug]` serve many different pages. Each one needs its own canonical URL built from the route parameters. This ensures `/docs/getting-started` and `/docs/api/reference` are recognized as distinct pages with their own search rankings.",
     explanationWrong:
       "Pointing every nested documentation page to `/docs` tells Google that hundreds of unique pages are all duplicates of the docs index. Google will likely ignore this incorrect signal, but it creates confusion and may delay proper indexing of your documentation.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#catch-all-segments",
-    sourceLabel: "Next.js: Catch-all segments",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#catch-all-segments",
+        label: "Next.js: Catch-all segments",
+      },
+    ],
   },
   {
     id: "cu-008",
@@ -372,8 +393,11 @@ export async function generateMetadata({
       "Only include query parameters that produce meaningfully different content. A color filter shows different products, so it deserves its own canonical. A sort parameter shows the same products in a different order, so it should be stripped from the canonical to avoid duplicate content.",
     explanationWrong:
       "Including all query parameters in the canonical creates a unique canonical for every combination of sort and filter. This fragments your page's ranking signals across dozens of URLs that all show similar content. Search engines may also waste crawl budget on low-value parameter variations.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/crawling-indexing/url-parameters",
-    sourceLabel: "Google: URL parameters",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/crawling-indexing/url-parameters",
+        label: "Google: URL parameters",
+      },
+    ],
   },
 ];

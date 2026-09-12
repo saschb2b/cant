@@ -42,9 +42,12 @@ import { slugify } from "./utils";
       "Declaration files (.d.ts) describe the types for JavaScript files without containing implementation code. They let TypeScript understand the shape of JS modules. When possible, converting the source file to .ts is even better because it keeps types and implementation together.",
     explanationWrong:
       "Importing a .js file without a corresponding .d.ts file or type declarations causes TypeScript to treat all exports as implicit any (or error under noImplicitAny). This defeats the purpose of using TypeScript because the imported functions have no type checking.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
-    sourceLabel: "TypeScript: Declaration Files",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
+        label: "TypeScript: Declaration Files",
+      },
+    ],
   },
   {
     id: "md-002",
@@ -82,9 +85,12 @@ import logo from "./logo.svg"; // OK`,
       "Ambient module declarations use wildcard patterns to tell TypeScript the shape of non-TypeScript imports like CSS modules and SVG files. The declare module statement goes in a .d.ts file included in your project. Each pattern matches any import path that ends with that extension.",
     explanationWrong:
       "Without ambient declarations for non-TypeScript files, every CSS module or asset import produces an error. Adding @ts-ignore on every import silences the errors but also removes all type information. Ambient modules provide correct types for these imports project-wide.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/modules/reference.html#ambient-modules",
-    sourceLabel: "TypeScript: Ambient Modules",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/modules/reference.html#ambient-modules",
+        label: "TypeScript: Ambient Modules",
+      },
+    ],
   },
   {
     id: "md-003",
@@ -123,9 +129,12 @@ declare module "@mui/material/styles" {
       "Module augmentation lets you add new properties to existing interfaces from external packages without redeclaring the entire type. TypeScript merges your additions with the original declarations. This is the officially supported way to extend library types like MUI's theme.",
     explanationWrong:
       "Redeclaring an entire interface from an external library means you must copy every existing property and keep it up to date across version upgrades. Module augmentation adds only your new properties, and TypeScript merges them with the library's original type automatically.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation",
-    sourceLabel: "TypeScript: Module Augmentation",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation",
+        label: "TypeScript: Module Augmentation",
+      },
+    ],
   },
   {
     id: "md-004",
@@ -162,9 +171,12 @@ window.analytics?.track("page_view");
       "The declare global block augments the global scope from within a module file. By extending the Window interface, you get full type checking and autocomplete for custom global properties. The optional (?) marker ensures you handle the case where the script has not loaded.",
     explanationWrong:
       "Casting window to any removes all type checking for the entire expression chain. If the analytics script fails to load, calling .track() crashes at runtime with no warning. Global augmentation provides the same access with proper types and null-safety through optional chaining.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#global-augmentation",
-    sourceLabel: "TypeScript: Global Augmentation",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#global-augmentation",
+        label: "TypeScript: Global Augmentation",
+      },
+    ],
   },
   {
     id: "md-005",
@@ -207,9 +219,12 @@ import { type User, fetchUser } from "./api";`,
       "The import type syntax guarantees the import is erased during compilation and produces no runtime JavaScript. This prevents accidental side effects, reduces bundle size, and avoids circular dependency issues. TypeScript 4.5 also supports inline type imports for mixed import statements.",
     explanationWrong:
       "Regular imports of type-only exports may be preserved in the compiled output depending on the module system and bundler configuration. While many tools can tree-shake unused imports, using import type makes the intent explicit and works correctly regardless of the bundler.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/modules.html#type-only-imports-and-exports",
-    sourceLabel: "TypeScript: Type-Only Imports",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/modules.html#type-only-imports-and-exports",
+        label: "TypeScript: Type-Only Imports",
+      },
+    ],
   },
   {
     id: "md-006",
@@ -263,7 +278,11 @@ expect(100).toBeWithinRange(90, 110); // OK`,
       "Jest's expect().toX() methods are defined in the jest.Matchers interface. By augmenting this interface inside a declare global block, you tell TypeScript about your custom matchers. The export {} at the end is required to make the file a module, which is necessary for declare global to work.",
     explanationWrong:
       "Calling expect.extend() adds the matcher at runtime, but TypeScript does not know about it. Every test file that uses the custom matcher gets a type error. Without the type augmentation, you would need to cast expect() to any, losing type safety on all assertions in the chain.",
-    sourceUrl: "https://jestjs.io/docs/expect#expectextendmatchers",
-    sourceLabel: "Jest: Custom Matchers",
+    sources: [
+      {
+        url: "https://jestjs.io/docs/expect#expectextendmatchers",
+        label: "Jest: Custom Matchers",
+      },
+    ],
   },
 ];

@@ -38,8 +38,12 @@ export const fluidTypographyChallenges: BaseChallenge[] = [
       "`clamp(min, preferred, max)` scales the font smoothly between 1.5rem and 3rem based on viewport width. No breakpoints needed, no jarring jumps. The `1rem + 2vw` preferred value blends a fixed base with a viewport-relative portion.",
     explanationWrong:
       "Stepped breakpoints create abrupt font size jumps at each threshold. A user at 767px sees 1.5rem, then at 768px it snaps to 2rem. `clamp()` eliminates these discontinuities with a single line.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/clamp",
-    sourceLabel: "MDN: clamp()",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/clamp",
+        label: "MDN: clamp()",
+      },
+    ],
   },
   {
     id: "ft-002",
@@ -66,9 +70,12 @@ export const fluidTypographyChallenges: BaseChallenge[] = [
       "Pure `vw` has no minimum or maximum. On a 320px phone it's just 16px (too small for a heading), and on a 2560px monitor it's 128px (enormous). `clamp()` provides guardrails at both ends. The `rem` base also respects the user's browser font-size preference.",
     explanationWrong:
       "`5vw` means the font is always 5% of the viewport width with no bounds. On ultrawide monitors the text becomes comically large; on small phones it may become unreadable. It also ignores the user's preferred font size setting.",
-    sourceUrl:
-      "https://web.dev/articles/responsive-web-design-basics#sizing_text",
-    sourceLabel: "web.dev: Sizing text",
+    sources: [
+      {
+        url: "https://web.dev/articles/responsive-web-design-basics#sizing_text",
+        label: "web.dev: Sizing text",
+      },
+    ],
   },
   {
     id: "ft-003",
@@ -113,8 +120,12 @@ export const fluidTypographyChallenges: BaseChallenge[] = [
       "A fluid type scale defined once with `clamp()` eliminates the need to redefine every token at each breakpoint. The scale naturally expands on larger screens and contracts on smaller ones, keeping proportions consistent.",
     explanationWrong:
       "Redefining every custom property at each breakpoint creates maintenance overhead and introduces abrupt jumps. Adding a new breakpoint means updating every variable again. The fluid approach is set-and-forget.",
-    sourceUrl: "https://utopia.fyi/type/calculator/",
-    sourceLabel: "Utopia: Fluid type scale calculator",
+    sources: [
+      {
+        url: "https://utopia.fyi/type/calculator/",
+        label: "Utopia: Fluid type scale calculator",
+      },
+    ],
   },
   {
     id: "ft-004",
@@ -143,9 +154,12 @@ export const fluidTypographyChallenges: BaseChallenge[] = [
       "A unitless `line-height` of `1.2` scales proportionally with the font size. When the heading is 1.5rem, line-height is 1.8rem; at 3rem, it's 3.6rem. The spacing always feels right because it's relative to the text.",
     explanationWrong:
       "A fixed `48px` line-height works when the font is ~3rem (48px) but creates excessive spacing when the font is 1.5rem (24px). With fluid font sizes, line-height must be relative to stay proportional.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/line-height#prefer_unitless_numbers_for_line-height_values",
-    sourceLabel: "MDN: Unitless line-height",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/line-height#prefer_unitless_numbers_for_line-height_values",
+        label: "MDN: Unitless line-height",
+      },
+    ],
   },
   {
     id: "ft-005",
@@ -172,7 +186,11 @@ export const fluidTypographyChallenges: BaseChallenge[] = [
       "Using `rem` for the min and max respects the user's browser font size preference. If they set their default to 20px for accessibility, `0.875rem` becomes 17.5px instead of being locked to 14px. The `rem` + `vw` blend in the preferred value also partially scales with their setting.",
     explanationWrong:
       "Hardcoded `px` values in `clamp()` override the user's font size preference. A user who set their browser default to 24px for low vision will still get 14-18px body text. This is a WCAG accessibility failure.",
-    sourceUrl: "https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html",
-    sourceLabel: "WCAG: Understanding Resize Text",
+    sources: [
+      {
+        url: "https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html",
+        label: "WCAG: Understanding Resize Text",
+      },
+    ],
   },
 ];

@@ -26,8 +26,12 @@ fetch(
       "The Authorization header is the standard place for bearer tokens. Headers are not stored in browser history, proxy logs, or referrer URLs. They are also excluded from caching by default, reducing the risk of credential leakage.",
     explanationWrong:
       "Query string parameters appear in browser history, server access logs, referrer headers sent to third parties, and can be cached by proxies. This makes tokens in URLs easy to extract and replay.",
-    sourceUrl: "https://datatracker.ietf.org/doc/html/rfc6750#section-2.1",
-    sourceLabel: "RFC 6750: Bearer Token Usage",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/html/rfc6750#section-2.1",
+        label: "RFC 6750: Bearer Token Usage",
+      },
+    ],
   },
   {
     id: "auth-002",
@@ -57,8 +61,12 @@ thirdPartySDK.init({ token });`,
       "OAuth 2.0 grants scoped, time-limited tokens that can be revoked without rotating your primary credentials. Users can see exactly what permissions they granted and revoke access at any time.",
     explanationWrong:
       "Sharing a single API key gives the third party full access to your account. If the key leaks, all integrations are compromised. You cannot limit scope per integration or revoke access for one consumer without breaking all of them.",
-    sourceUrl: "https://datatracker.ietf.org/doc/html/rfc6749#section-1.1",
-    sourceLabel: "RFC 6749: OAuth 2.0 Authorization Framework",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/html/rfc6749#section-1.1",
+        label: "RFC 6749: OAuth 2.0 Authorization Framework",
+      },
+    ],
   },
   {
     id: "auth-003",
@@ -94,8 +102,12 @@ const payload = {
       "JWTs are sent with every request, so keeping them small matters. Store only identifiers and essential authorization data (sub, role, org, exp). Fetch user profile details from a database or cache when needed.",
     explanationWrong:
       "Large JWTs increase bandwidth on every API call, may exceed header size limits (8 KB in many servers), and expose personal data in a format that is only base64-encoded, not encrypted. Stale profile data also lingers until the token expires.",
-    sourceUrl: "https://datatracker.ietf.org/doc/html/rfc7519#section-4",
-    sourceLabel: "RFC 7519: JWT Claims",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/html/rfc7519#section-4",
+        label: "RFC 7519: JWT Claims",
+      },
+    ],
   },
   {
     id: "auth-004",
@@ -125,9 +137,12 @@ await db.storeRefresh(refresh, userId);`,
       "Short-lived access tokens (15 minutes) limit the damage window if a token is stolen. Refresh token rotation issues a new refresh token on each use and invalidates the old one, so a stolen refresh token can only be used once before detection.",
     explanationWrong:
       "A 30-day access token gives an attacker a full month of access if compromised. Without rotation or server-side checks, there is no way to revoke it early. JWTs are stateless, so the server cannot invalidate them before expiry.",
-    sourceUrl:
-      "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#name-refresh-token-protection",
-    sourceLabel: "OAuth Security Best Practices: Refresh Tokens",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#name-refresh-token-protection",
+        label: "OAuth Security Best Practices: Refresh Tokens",
+      },
+    ],
   },
   {
     id: "auth-005",
@@ -166,9 +181,12 @@ if (count > 100) {
       "Sliding window rate limiting tracks each request timestamp, so the limit applies smoothly over any 60-second period. This prevents the boundary burst problem where a client sends 100 requests at 0:59 and another 100 at 1:01, effectively doubling their rate.",
     explanationWrong:
       "Fixed window counters reset at sharp boundaries. A client can send 100 requests at the end of one window and 100 at the start of the next, hitting 200 requests in a few seconds. This burst can overwhelm your API despite the rate limit.",
-    sourceUrl:
-      "https://cloud.google.com/architecture/rate-limiting-strategies-techniques",
-    sourceLabel: "Google Cloud: Rate Limiting Strategies",
+    sources: [
+      {
+        url: "https://cloud.google.com/architecture/rate-limiting-strategies-techniques",
+        label: "Google Cloud: Rate Limiting Strategies",
+      },
+    ],
   },
   {
     id: "auth-006",
@@ -198,8 +216,12 @@ function canEdit(user: User, doc: Doc) {
       "Scope-based authorization decouples permissions from role names. You can grant granular permissions like docs:write or docs:write:all without changing code. Adding a new permission is a data change, not a code change, making it easier to evolve access policies.",
     explanationWrong:
       "Pure role-based checks couple permissions to role names in code. When requirements change (e.g., editors limited to their org), you must update every role check. Roles also lack granularity: you cannot give someone write access to docs but not settings without creating a new role.",
-    sourceUrl: "https://datatracker.ietf.org/doc/html/rfc6749#section-3.3",
-    sourceLabel: "RFC 6749: OAuth 2.0 Scope",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/html/rfc6749#section-3.3",
+        label: "RFC 6749: OAuth 2.0 Scope",
+      },
+    ],
   },
   {
     id: "auth-007",
@@ -233,9 +255,12 @@ app.use(cors({
       "An explicit allowlist ensures only your trusted frontends can make credentialed requests. Browsers enforce that credentials: true cannot pair with origin: *, so the wildcard version silently breaks cookie-based auth. The allowlist approach works correctly and limits exposure to CSRF from untrusted origins.",
     explanationWrong:
       "Using origin: * with credentials: true is invalid per the CORS spec. Browsers will block the response, and cookies or auth headers will not be sent. Even if you remove credentials, a wildcard origin lets any website make requests to your API, which is a security risk for sensitive endpoints.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#credentialed_requests_and_wildcards",
-    sourceLabel: "MDN: CORS Credentialed Requests",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#credentialed_requests_and_wildcards",
+        label: "MDN: CORS Credentialed Requests",
+      },
+    ],
   },
   {
     id: "auth-008",
@@ -267,8 +292,11 @@ async function hashPassword(pw: string) {
       "bcrypt is purpose-built for password hashing. It includes a random salt per password, uses an adaptive cost factor that makes brute force slow, and is resistant to GPU acceleration. A cost factor of 12 takes about 250ms per hash, making large-scale cracking impractical.",
     explanationWrong:
       "MD5 is a fast general-purpose hash, not a password hash. It has no built-in salt, so identical passwords produce identical hashes. A modern GPU can compute billions of MD5 hashes per second, and precomputed rainbow tables can crack common passwords instantly.",
-    sourceUrl:
-      "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
-    sourceLabel: "OWASP: Password Storage Cheat Sheet",
+    sources: [
+      {
+        url: "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+        label: "OWASP: Password Storage Cheat Sheet",
+      },
+    ],
   },
 ];

@@ -18,8 +18,12 @@ export const gameLoopChallenges: BaseChallenge[] = [
       "A fixed timestep decouples simulation from frame rate. Physics, AI, and gameplay logic receive the same delta every tick, making behavior deterministic and reproducible regardless of whether the game runs at 30 or 144 FPS. The accumulator pattern processes multiple fixed steps per frame when the machine is slow and skips none when it is fast.",
     explanationWrong:
       "Passing the raw frame delta directly to update() ties game behavior to frame rate. At 30 FPS the delta is twice as large as at 60 FPS, which can cause tunneling in physics, inconsistent jump heights, and difficulty spikes on slower hardware. It also makes bugs nearly impossible to reproduce.",
-    sourceUrl: "https://gafferongames.com/post/fix_your_timestep/",
-    sourceLabel: "Gaffer On Games: Fix Your Timestep!",
+    sources: [
+      {
+        url: "https://gafferongames.com/post/fix_your_timestep/",
+        label: "Gaffer On Games: Fix Your Timestep!",
+      },
+    ],
   },
   {
     id: "loop-002",
@@ -88,9 +92,12 @@ function renderSystem(
       "Entity Component System (ECS) separates data (components) from behavior (systems). Adding a new capability means attaching a component, not creating a new subclass. Systems process all entities with a given component set, which keeps logic flat, cache-friendly, and easy to compose. A flying enemy is just an entity with Position, Velocity, and Hover components.",
     explanationWrong:
       "Deep inheritance hierarchies couple data and behavior tightly. Adding a FlyingEnemy that also needs networking means choosing between duplicating code or creating fragile diamond-shaped hierarchies. The deeper the tree, the harder it is to override behavior without breaking parent assumptions, and the more likely you are to pull in unused state.",
-    sourceUrl:
-      "https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/understanding-component-entity-systems-r3013/",
-    sourceLabel: "GameDev.net: Understanding ECS",
+    sources: [
+      {
+        url: "https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/understanding-component-entity-systems-r3013/",
+        label: "GameDev.net: Understanding ECS",
+      },
+    ],
   },
   {
     id: "loop-003",
@@ -149,8 +156,12 @@ function update(dt: number) {
       "Object pooling pre-allocates and recycles objects instead of creating and discarding them every frame. In a bullet-hell scenario with hundreds of projectiles spawning per second, pooling avoids garbage collection pauses that cause visible frame stutters. The swap-with-last trick keeps active objects contiguous for cache-friendly iteration.",
     explanationWrong:
       "Allocating a new object per spawn and filtering the array every frame generates garbage that the GC must eventually collect. In JavaScript and similar managed runtimes, GC pauses are unpredictable and can cause frame drops at the worst possible moment. The filter() call also allocates a new array every frame.",
-    sourceUrl: "https://gameprogrammingpatterns.com/object-pool.html",
-    sourceLabel: "Game Programming Patterns: Object Pool",
+    sources: [
+      {
+        url: "https://gameprogrammingpatterns.com/object-pool.html",
+        label: "Game Programming Patterns: Object Pool",
+      },
+    ],
   },
   {
     id: "loop-004",
@@ -169,8 +180,11 @@ function update(dt: number) {
       "A dampened camera (lerping toward the target each frame) creates smooth, natural-feeling movement. The slight delay as the character drifts off-center during direction changes gives the player a sense of momentum and makes the world feel alive. Most 2D and 3D games use some form of smoothed follow, often with configurable lookahead and deadzone parameters.",
     explanationWrong:
       "Snapping the camera to the player every frame keeps the character pixel-perfect centered, but the entire world jerks around with every movement change. This is especially noticeable on direction reversals and during fast movement. The rigid lock makes the scene feel mechanical and can cause motion discomfort in some players.",
-    sourceUrl:
-      "https://www.gamedeveloper.com/design/scroll-back-the-theory-and-practice-of-cameras-in-side-scrollers",
-    sourceLabel: "Game Developer: Cameras in Side-Scrollers",
+    sources: [
+      {
+        url: "https://www.gamedeveloper.com/design/scroll-back-the-theory-and-practice-of-cameras-in-side-scrollers",
+        label: "Game Developer: Cameras in Side-Scrollers",
+      },
+    ],
   },
 ];

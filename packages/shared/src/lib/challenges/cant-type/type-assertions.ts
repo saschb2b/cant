@@ -38,9 +38,12 @@ palette.oops;       // Error: property doesn't exist`,
       '`satisfies` validates that a value matches a type without widening it. The value keeps its inferred literal types, so `palette.primary` is `"red"` (not `Color`) and invalid keys are caught. It gives you validation and precision at the same time.',
     explanationWrong:
       "`as Record<string, Color>` widens the type, losing the specific keys and literal values. TypeScript thinks any string key is valid and every value is the full `Color` union. You lose the exact type information that makes TypeScript useful.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator",
-    sourceLabel: "TypeScript 4.9: satisfies operator",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator",
+        label: "TypeScript 4.9: satisfies operator",
+      },
+    ],
   },
   {
     id: "ta-002",
@@ -77,9 +80,12 @@ palette.oops;       // Error: property doesn't exist`,
       "`as const` makes every property `readonly` and narrows all values to their literal types. Strings become literal string types, arrays become readonly tuples with literal element types. This is essential for objects used as configuration or lookup tables.",
     explanationWrong:
       'Without `as const`, TypeScript widens literals to their base types: `"https://api.example.com"` becomes `string`, and the array becomes `string[]`. You lose the ability to use these values as discriminants or precise types downstream.',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions",
-    sourceLabel: "TypeScript 3.4: const assertions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions",
+        label: "TypeScript 3.4: const assertions",
+      },
+    ],
   },
   {
     id: "ta-003",
@@ -122,9 +128,12 @@ if (isFish(pet)) {
       "The `pet is Fish` return type is a type predicate that tells TypeScript the function acts as a type guard. When it returns `true`, the compiler narrows the argument to `Fish` in the calling scope. Without the predicate, the boolean return provides no narrowing information.",
     explanationWrong:
       "A plain `boolean` return type tells TypeScript nothing about how the argument's type changes. The narrowing logic is locked inside the function, invisible to the caller. The type stays as the full union even after the check passes.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
-    sourceLabel: "TypeScript Handbook: Type predicates",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        label: "TypeScript Handbook: Type predicates",
+      },
+    ],
   },
   {
     id: "ta-004",
@@ -165,9 +174,12 @@ console.log(config.host); // OK`,
       "An assertion function with `asserts val is T` tells TypeScript that if the function returns normally (does not throw), the value is narrowed for the rest of the scope. One call replaces repeated null checks throughout the function.",
     explanationWrong:
       "Repeating `if (!config) throw` before every use is noisy and error-prone. It is easy to forget a check, and the intent (fail-fast validation) is buried in boilerplate. Assertion functions centralize the check and communicate the narrowing to the compiler.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions",
-    sourceLabel: "TypeScript 3.7: Assertion functions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions",
+        label: "TypeScript 3.7: Assertion functions",
+      },
+    ],
   },
   {
     id: "ta-005",
@@ -210,9 +222,12 @@ if (isUser(data)) {
       "A type guard validates the shape at runtime, so the narrowed type reflects reality. The compiler trusts the guard, and you can trust the runtime. This is the correct approach when dealing with external data of unknown shape.",
     explanationWrong:
       "`as unknown as User` is a double assertion that forces any type into any other type with zero runtime checks. It is a complete escape hatch from the type system. The object has `title` and `price`, but TypeScript pretends it has `name` and `age`. Every property access is a lie.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions",
-    sourceLabel: "TypeScript Handbook: Type assertions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions",
+        label: "TypeScript Handbook: Type assertions",
+      },
+    ],
   },
   {
     id: "ta-006",
@@ -255,9 +270,12 @@ function getCity(user: User): string | undefined {
       "Optional chaining (`?.`) safely returns `undefined` if any part of the chain is nullish. The return type honestly reflects the possibility of `undefined`. This is a runtime-safe operation, unlike the non-null assertion which is erased at compile time.",
     explanationWrong:
       "The non-null assertion operator (`!`) tells TypeScript to pretend a value is not null or undefined. It is erased during compilation and provides zero runtime protection. If `address` is actually `undefined`, the code throws a TypeError.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining",
-    sourceLabel: "TypeScript 3.7: Optional chaining",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining",
+        label: "TypeScript 3.7: Optional chaining",
+      },
+    ],
   },
   {
     id: "ta-007",
@@ -297,7 +315,11 @@ getUser(userId);  // OK
       "A branded type adds a phantom `__brand` property that exists only at the type level. This makes `UserId` and `PostId` structurally incompatible even though both are numbers at runtime. The `as` cast is typically wrapped in a factory or validation function so callers never see it.",
     explanationWrong:
       "Plain type aliases for primitives are structurally identical. `UserId` and `PostId` are both just `number`, so TypeScript treats them as interchangeable. Accidentally passing a post ID where a user ID is expected compiles without error and causes bugs at runtime.",
-    sourceUrl: "https://www.typescriptlang.org/play#example/nominal-typing",
-    sourceLabel: "TypeScript Playground: Nominal Typing",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/play#example/nominal-typing",
+        label: "TypeScript Playground: Nominal Typing",
+      },
+    ],
   },
 ];

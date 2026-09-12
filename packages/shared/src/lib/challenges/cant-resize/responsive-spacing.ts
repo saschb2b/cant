@@ -34,8 +34,12 @@ export const responsiveSpacingChallenges: BaseChallenge[] = [
       "`clamp()` provides smooth scaling between 2rem and 6rem based on viewport width, all in one line instead of three rules. No breakpoints, no jumps. The spacing grows proportionally with the screen.",
     explanationWrong:
       "Stepped padding creates visual jumps at each breakpoint. At 767px you have 2rem padding; at 768px it snaps to 4rem. `clamp()` creates a smooth transition that feels more natural and requires no maintenance.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/clamp",
-    sourceLabel: "MDN: clamp()",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/clamp",
+        label: "MDN: clamp()",
+      },
+    ],
   },
   {
     id: "rs-002",
@@ -72,8 +76,9 @@ export const responsiveSpacingChallenges: BaseChallenge[] = [
       "MUI spacing units (1 unit = 8px by default) keep spacing consistent with the theme's spacing scale. `mt: 4` = 32px, `mb: 3` = 24px. If the theme's spacing factor changes, all values update together. Pixel strings bypass the system.",
     explanationWrong:
       "Hardcoded pixel strings like `\"32px\"` bypass MUI's spacing theme. If the team adjusts the spacing scale (e.g., from 8px to 4px units), these values won't update. Use the numeric shorthand to stay in sync with the design system.",
-    sourceUrl: "https://mui.com/system/spacing/",
-    sourceLabel: "MUI: Spacing",
+    sources: [
+      { url: "https://mui.com/system/spacing/", label: "MUI: Spacing" },
+    ],
   },
   {
     id: "rs-003",
@@ -113,9 +118,12 @@ export const responsiveSpacingChallenges: BaseChallenge[] = [
       "MUI's `sx` breakpoint objects compile to CSS media queries with no JavaScript hook needed. No re-renders on resize, no SSR hydration mismatch, and the responsive intent is declarative right where the styles are defined.",
     explanationWrong:
       "`useMediaQuery` triggers re-renders on breakpoint crossings and defaults to `false` during SSR. For purely visual spacing changes, CSS media queries (via `sx` breakpoint objects) are always the better choice.",
-    sourceUrl:
-      "https://mui.com/system/getting-started/usage/#responsive-values",
-    sourceLabel: "MUI: Responsive values",
+    sources: [
+      {
+        url: "https://mui.com/system/getting-started/usage/#responsive-values",
+        label: "MUI: Responsive values",
+      },
+    ],
   },
   {
     id: "rs-004",
@@ -146,9 +154,12 @@ export const responsiveSpacingChallenges: BaseChallenge[] = [
       "Logical properties (`margin-inline`, `padding-inline`) automatically flip for right-to-left languages. `margin-inline` is shorthand for `margin-inline-start` + `margin-inline-end`. Fewer lines, and your layout works for RTL users without any additional CSS.",
     explanationWrong:
       "`margin-left`/`margin-right` are physical properties and they don't flip in RTL layouts. If your app is ever translated to Arabic, Hebrew, or another RTL language, all physical spacing needs manual overrides. Logical properties handle this automatically.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values",
-    sourceLabel: "MDN: Logical properties",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values",
+        label: "MDN: Logical properties",
+      },
+    ],
   },
   {
     id: "rs-005",
@@ -195,7 +206,11 @@ export const responsiveSpacingChallenges: BaseChallenge[] = [
       "Fluid custom properties scale smoothly without breakpoints. Define them once, use everywhere. Adding a new breakpoint to the stepped approach means redefining every variable; the fluid approach needs no updates.",
     explanationWrong:
       "Every new breakpoint requires redefining every spacing variable. Forget one? That spacing token stays at the previous breakpoint's value. `clamp()` scales every token continuously with zero maintenance overhead.",
-    sourceUrl: "https://utopia.fyi/space/calculator/",
-    sourceLabel: "Utopia: Fluid space calculator",
+    sources: [
+      {
+        url: "https://utopia.fyi/space/calculator/",
+        label: "Utopia: Fluid space calculator",
+      },
+    ],
   },
 ];

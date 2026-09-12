@@ -35,8 +35,12 @@ export const reactionFavorabilityChallenges: BaseChallenge[] = [
       "SN2 reactions proceed much faster at primary carbons because the nucleophile can easily access the electrophilic carbon from the back side. Methyl and primary substrates have minimal steric hindrance, allowing the concerted mechanism to proceed readily.",
     explanationWrong:
       "Tertiary substrates are essentially unreactive via SN2 because three bulky methyl groups block backside attack by the nucleophile. Instead, tertiary substrates react through the SN1 mechanism, which does not require backside approach.",
-    sourceUrl: "https://en.wikipedia.org/wiki/SN2_reaction",
-    sourceLabel: "Wikipedia: SN2 reaction",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/SN2_reaction",
+        label: "Wikipedia: SN2 reaction",
+      },
+    ],
   },
   {
     id: "rf-003",
@@ -72,7 +76,11 @@ export const reactionFavorabilityChallenges: BaseChallenge[] = [
       "NaCl formation is far more thermodynamically favorable (Delta Hf = -411 kJ/mol vs -118 kJ/mol). Sodium readily gives up its single valence electron to chlorine, forming a strong ionic lattice with high lattice energy.",
     explanationWrong:
       "Gold(III) chloride has a much less negative enthalpy of formation and decomposes at relatively low temperatures. Gold's high ionization energy and reluctance to lose electrons make the formation less favorable.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Standard_enthalpy_of_formation",
-    sourceLabel: "Wikipedia: Standard enthalpy of formation",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Standard_enthalpy_of_formation",
+        label: "Wikipedia: Standard enthalpy of formation",
+      },
+    ],
   },
 ];

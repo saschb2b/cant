@@ -51,9 +51,12 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
       "Ready means actor, outcome, and reason are present, plus at least one testable acceptance criterion. The right story passes that bar; whoever pulls it knows exactly what 'done' looks like.",
     explanationWrong:
       "'Improve' is not an outcome and 'we agreed in product review' is not a reason that survives the meeting. Pulling this into a sprint means the team negotiates the spec mid-flight.",
-    sourceUrl:
-      "https://www.scrum.org/resources/blog/walking-through-definition-ready",
-    sourceLabel: "Scrum.org: Definition of Ready",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/blog/walking-through-definition-ready",
+        label: "Scrum.org: Definition of Ready",
+      },
+    ],
   },
   {
     id: "dor-002",
@@ -90,9 +93,12 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
       "Dependencies linked, not assumed. When TAX-117 moves, the planning board sees the unblock. The team will not pull this story prematurely and discover the dependency after they have started.",
     explanationWrong:
       "'Should be doable once the new service is live' is the kind of sentence that wastes a sprint. Without an explicit link, nobody knows whether the dependency is shipped, in progress, or still being argued about.",
-    sourceUrl:
-      "https://www.scrum.org/resources/blog/walking-through-definition-ready",
-    sourceLabel: "Scrum.org: Definition of Ready",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/blog/walking-through-definition-ready",
+        label: "Scrum.org: Definition of Ready",
+      },
+    ],
   },
   {
     id: "dor-003",
@@ -152,9 +158,12 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
       "Nobody in the refinement room walks out saying 'I still do not really know what this is.' The actor, the four stages, the persistence behavior, and the demo path are all on the card.",
     explanationWrong:
       "Pointing back at a previous refinement makes the story unreadable to anyone who was not there or has since rotated off the team. The story is not yet a contract; it is a memory.",
-    sourceUrl:
-      "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
-    sourceLabel: "Ron Jeffries: Card, Conversation, Confirmation",
+    sources: [
+      {
+        url: "https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/",
+        label: "Ron Jeffries: Card, Conversation, Confirmation",
+      },
+    ],
   },
   {
     id: "dor-004",
@@ -190,9 +199,12 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
       "13 points is a signal, not an estimate. The right side has been sliced before being pulled: the first slice ships and the variations exist as named follow-ups. Definition of Ready means the slicing has already happened.",
     explanationWrong:
       "Pulling a 13-pointer is taking a bet against the sprint. The team will discover halfway through that two of the three sub-flows are bigger than expected, miss the sprint, and re-split under pressure.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "dor-005",
@@ -245,7 +257,11 @@ export const definitionOfReadyChallenges: BaseChallenge[] = [
       "Connextra clauses present, observable AC, named scope. Whoever pulls the story knows what to build, what to demo, and what success looks like. Ready.",
     explanationWrong:
       "'More useful' is not an outcome. Without testable acceptance criteria, the team is guessing what 'better' means and will probably ship something that gets rejected in review.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
 ];

@@ -53,8 +53,12 @@ function render(sprites: Sprite[]) {
       "Batching groups sprites that share the same texture into a single draw call. Each draw call has fixed CPU overhead from driver validation and state changes, so reducing 1,000 calls to 4 can be the difference between 30 and 60 FPS. Sorting by texture minimizes the number of batches. Modern 2D engines do this automatically.",
     explanationWrong:
       "One draw call per sprite ignores the fact that GPU state changes are expensive on the CPU side. The GPU itself can handle millions of triangles, but the CPU bottleneck of issuing thousands of individual draw calls with texture binds and uniform uploads dominates. This is the single most common performance problem in 2D rendering.",
-    sourceUrl: "https://www.khronos.org/opengl/wiki/Performance",
-    sourceLabel: "Khronos: OpenGL Performance",
+    sources: [
+      {
+        url: "https://www.khronos.org/opengl/wiki/Performance",
+        label: "Khronos: OpenGL Performance",
+      },
+    ],
   },
   {
     id: "rend-002",
@@ -73,8 +77,11 @@ function render(sprites: Sprite[]) {
       "Frustum culling tests each object's bounding volume against the camera's view frustum before issuing a draw call. A bounding sphere test costs a handful of multiplies, while skipping a draw call saves the entire pipeline: vertex transforms, rasterization, and CPU-side state setup. In a scene with 10,000 objects where only 500 are visible, this cuts 95% of the work.",
     explanationWrong:
       "Relying on the GPU to clip off-screen triangles still pays the CPU cost of setting up each draw call, uploading uniforms, and binding resources. The GPU will discard the clipped geometry, but the driver overhead of issuing the command remains. For complex scenes this CPU bottleneck is often more limiting than the GPU itself.",
-    sourceUrl:
-      "https://learnopengl.com/Guest-Articles/2021/Scene/Frustum-Culling",
-    sourceLabel: "LearnOpenGL: Frustum Culling",
+    sources: [
+      {
+        url: "https://learnopengl.com/Guest-Articles/2021/Scene/Frustum-Culling",
+        label: "LearnOpenGL: Frustum Culling",
+      },
+    ],
   },
 ];

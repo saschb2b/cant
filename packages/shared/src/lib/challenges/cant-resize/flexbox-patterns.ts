@@ -39,8 +39,12 @@ export const flexboxPatternChallenges: BaseChallenge[] = [
       "`flex-wrap: wrap` with `flex: 1 1 300px` means each card wants to be at least 300px wide. When the container can't fit two 300px cards side by side, they automatically wrap without any breakpoint. The items also grow to fill available space.",
     explanationWrong:
       "A `max-width: 768px` breakpoint is arbitrary. What if the container is in a sidebar and only 400px wide? The cards would still try to sit side by side because the *viewport* is wider than 768px. `flex-wrap` responds to actual available space.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap",
-    sourceLabel: "MDN: flex-wrap",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap",
+        label: "MDN: flex-wrap",
+      },
+    ],
   },
   {
     id: "fb-002",
@@ -76,8 +80,12 @@ export const flexboxPatternChallenges: BaseChallenge[] = [
       "`gap` applies spacing *between* flex children only, so there's no extra margin on the first or last item and no `:last-child` override needed. It also works correctly when items wrap: no trailing gap on the last item of each row.",
     explanationWrong:
       "Margin-based spacing requires removing the margin from the last child. If items wrap, you also need to handle the last item of *each row*, which `:last-child` doesn't cover. `gap` handles all of this automatically.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/gap",
-    sourceLabel: "MDN: gap",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/gap",
+        label: "MDN: gap",
+      },
+    ],
   },
   {
     id: "fb-003",
@@ -133,8 +141,12 @@ export const flexboxPatternChallenges: BaseChallenge[] = [
       "`flex: 1 1 0%` makes the title take remaining space and shrink when needed. `min-width: 0` overrides the default `min-width: auto` so text truncation actually works. `flex-shrink: 0` on actions prevents buttons from compressing.",
     explanationWrong:
       "Without `min-width: 0`, the title's `min-width: auto` prevents it from shrinking below its content width, so the ellipsis never activates and the toolbar overflows. Without `flex-shrink: 0`, the action buttons may also compress.",
-    sourceUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink",
-    sourceLabel: "MDN: flex-shrink",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink",
+        label: "MDN: flex-shrink",
+      },
+    ],
   },
   {
     id: "fb-004",
@@ -177,9 +189,12 @@ export const flexboxPatternChallenges: BaseChallenge[] = [
       "With `flex-wrap: wrap`, the main content has a `flex-basis` of 600px. When the container is narrower than 250 + 600 + 250 = 1100px, items naturally wrap. No media query, no calc(), and it adapts to any container width.",
     explanationWrong:
       "Hardcoded `calc(100% - 500px)` breaks if either sidebar changes width. The 768px breakpoint is arbitrary and doesn't account for the actual content needs. `flex-wrap` with appropriate `flex-basis` values creates a self-adjusting layout.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Typical_use_cases_of_flexbox",
-    sourceLabel: "MDN: Typical flexbox use cases",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Typical_use_cases_of_flexbox",
+        label: "MDN: Typical flexbox use cases",
+      },
+    ],
   },
   {
     id: "fb-005",
@@ -224,8 +239,11 @@ export const flexboxPatternChallenges: BaseChallenge[] = [
       'A flex spacer (`flex: 1`) pushes nav and actions to the right. On mobile, nav is hidden with CSS and `ml: "auto"` pushes the actions to the far right. No `useMediaQuery`, no hydration flash, and the layout is controlled entirely with CSS.',
     explanationWrong:
       '`useMediaQuery` causes a hydration mismatch: the server renders `space-between` (desktop), then React corrects to `center` on mobile after hydration. The spacer + `display` approach avoids this entirely. `ml: "auto"` pushes the actions to the right when nav is hidden.',
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container#using_auto_margins_for_main_axis_alignment",
-    sourceLabel: "MDN: Auto margins in flexbox",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container#using_auto_margins_for_main_axis_alignment",
+        label: "MDN: Auto margins in flexbox",
+      },
+    ],
   },
 ];

@@ -29,8 +29,12 @@ export const prioritizationChallenges: BaseChallenge[] = [
       "Prioritization is a product conversation. Engineering provides the size and the risks; product decides the order based on value, customer commitments, and roadmap. Mixing the two collapses the accountability.",
     explanationWrong:
       "Letting the team vote on order turns prioritization into a popularity contest. The most senior engineer's preferences win, the product roadmap becomes a side effect of who is loudest, and product loses the lever they need to ship the right thing.",
-    sourceUrl: "https://www.scrum.org/resources/what-is-a-product-owner",
-    sourceLabel: "Scrum.org: Product Owner",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-is-a-product-owner",
+        label: "Scrum.org: Product Owner",
+      },
+    ],
   },
   {
     id: "pr-002",
@@ -59,9 +63,12 @@ export const prioritizationChallenges: BaseChallenge[] = [
       "MoSCoW only works if Must is genuinely scarce and Won't is named. The right side leaves room for unplanned work and tells the team what is explicitly off the table this quarter.",
     explanationWrong:
       "Fourteen Musts is a way of saying 'everything is the priority', which means nothing is. The team will negotiate the Musts at standup all quarter and finish about as many as a smaller, honestly-labeled list.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/product-management/prioritization-framework",
-    sourceLabel: "Atlassian: Prioritization Frameworks",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/product-management/prioritization-framework",
+        label: "Atlassian: Prioritization Frameworks",
+      },
+    ],
   },
   {
     id: "pr-003",
@@ -91,8 +98,12 @@ export const prioritizationChallenges: BaseChallenge[] = [
       "Cost of delay names what changes if a story slips by a sprint. It puts a number on what excitement and gut feel were doing implicitly, and it lets product defend the order to a stakeholder who asks.",
     explanationWrong:
       "'Whatever the engineer wants' is a fine policy until two engineers want different things. There is no shared rule for the disagreement, so it gets resolved in private and the backlog order has no defensible logic.",
-    sourceUrl: "https://blackswanfarming.com/cost-of-delay/",
-    sourceLabel: "Black Swan Farming: Cost of Delay",
+    sources: [
+      {
+        url: "https://blackswanfarming.com/cost-of-delay/",
+        label: "Black Swan Farming: Cost of Delay",
+      },
+    ],
   },
   {
     id: "pr-004",
@@ -122,9 +133,12 @@ export const prioritizationChallenges: BaseChallenge[] = [
       "RICE forces the comparison to be quantitative on its three axes (reach, impact, confidence) over effort. The score reveals when 'massive impact' on a small audience is beaten by 'high impact' on a large one for a third of the cost.",
     explanationWrong:
       "Calling A 'more important' without comparing reach and effort is exactly the kind of intuition RICE is designed to interrogate. Half the time the gut answer is right; half the time the cheaper option dominates.",
-    sourceUrl:
-      "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/",
-    sourceLabel: "Intercom: RICE Prioritization",
+    sources: [
+      {
+        url: "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/",
+        label: "Intercom: RICE Prioritization",
+      },
+    ],
   },
   {
     id: "pr-005",
@@ -153,9 +167,12 @@ export const prioritizationChallenges: BaseChallenge[] = [
       "When value is comparable, smaller is better. It ships sooner, it teaches the team something, and it leaves more room in the next sprint for the bigger work that benefits from the learning.",
     explanationWrong:
       "'Get it out of the way' is the kind of phrase that hides a real cost: a long story blocks the small ones behind it, and the small ones often turn out to be more valuable than the big one was estimated to be.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/product-management/prioritization-framework",
-    sourceLabel: "Atlassian: Prioritization Frameworks",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/product-management/prioritization-framework",
+        label: "Atlassian: Prioritization Frameworks",
+      },
+    ],
   },
   {
     id: "pr-006",
@@ -185,7 +202,11 @@ export const prioritizationChallenges: BaseChallenge[] = [
       "Naming the cost makes tech debt visible to product, which is the only way it gets prioritized against feature work honestly. The 20% rule looks fair on paper and tends to pick the wrong items in practice.",
     explanationWrong:
       "A blanket percentage hides which debt is actually expensive. The team will pick the debt that bothers them most, which is often not the debt that costs the company the most.",
-    sourceUrl: "https://martinfowler.com/bliki/TechnicalDebt.html",
-    sourceLabel: "Martin Fowler: Technical Debt",
+    sources: [
+      {
+        url: "https://martinfowler.com/bliki/TechnicalDebt.html",
+        label: "Martin Fowler: Technical Debt",
+      },
+    ],
   },
 ];

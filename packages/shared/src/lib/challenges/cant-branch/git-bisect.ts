@@ -30,8 +30,12 @@ git bisect good v1.2.0  # this tag was working
       "Git bisect performs a binary search through your commit history. You mark a known bad commit and a known good commit, and git automatically checks out the midpoint. This finds the offending commit in O(log n) steps instead of checking each one linearly.",
     explanationWrong:
       "Manually checking out commits one by one is time-consuming and error-prone, especially in long histories. With 1000 commits between good and bad, bisect finds the culprit in about 10 steps. Manual searching could take hundreds of attempts.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect",
-    sourceLabel: "Git Docs: git bisect",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect",
+        label: "Git Docs: git bisect",
+      },
+    ],
   },
   {
     id: "gb-002",
@@ -63,8 +67,12 @@ git bisect mark working
       "The commands `git bisect good` and `git bisect bad` are the standard way to mark commits during a bisect session. After each mark, git automatically calculates and checks out the next midpoint between the remaining good and bad boundaries.",
     explanationWrong:
       "There is no `git bisect mark` command with `broken` or `working` arguments. The correct commands are `git bisect good` and `git bisect bad`. You can also use `git bisect old` and `git bisect new` as alternative terms if the issue is not strictly a bug.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect#_basic_bisect_commands",
-    sourceLabel: "Git Docs: Basic Bisect Commands",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect#_basic_bisect_commands",
+        label: "Git Docs: Basic Bisect Commands",
+      },
+    ],
   },
   {
     id: "gb-003",
@@ -98,8 +106,12 @@ git bisect run npm test`,
       "The `git bisect run` command executes a script at each step and uses the exit code to determine good (0) or bad (non-zero). This fully automates the binary search. With a reliable test, you can walk away and come back to find the exact commit that introduced the regression.",
     explanationWrong:
       "Manual bisecting works but requires you to stay at your terminal, test each commit, and type good or bad. For regressions caught by an automated test, `git bisect run` does the same thing in seconds with no human intervention required.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect#_bisect_run",
-    sourceLabel: "Git Docs: Bisect Run",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect#_bisect_run",
+        label: "Git Docs: Bisect Run",
+      },
+    ],
   },
   {
     id: "gb-004",
@@ -125,8 +137,12 @@ git bisect skip`,
       "When a commit cannot be tested (for example, it does not compile), `git bisect skip` tells git to try a neighboring commit instead. Marking it as `bad` would be incorrect because you do not actually know whether the bug is present, and it would skew the binary search results.",
     explanationWrong:
       "Marking an untestable commit as `bad` corrupts the bisect results. If the commit does not compile for reasons unrelated to the bug, it is neither good nor bad. The `skip` command preserves the integrity of the search by trying adjacent commits. For automated runs, exit code 125 signals a skip.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect#_bisect_skip",
-    sourceLabel: "Git Docs: Bisect Skip",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect#_bisect_skip",
+        label: "Git Docs: Bisect Skip",
+      },
+    ],
   },
   {
     id: "gb-005",
@@ -156,8 +172,12 @@ npm test -- --grep "login"
       "Exit code 125 tells bisect to skip the current commit. If the build fails (unrelated to the bug), the script skips instead of falsely marking the commit as bad. Exit code 0 means good, and any other non-zero, non-125 code means bad. This three-way signaling makes automated bisect reliable.",
     explanationWrong:
       "Without handling build failures specially, a commit that fails to compile would be marked as bad (non-zero exit). This is incorrect if the build failure is unrelated to the bug you are hunting. Always use `exit 125` for untestable commits so bisect skips them and tries a neighbor.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect#_bisect_run",
-    sourceLabel: "Git Docs: Bisect Run",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect#_bisect_run",
+        label: "Git Docs: Bisect Run",
+      },
+    ],
   },
   {
     id: "gb-006",
@@ -186,8 +206,12 @@ git bisect reset
       "Running `git bisect reset` cleanly ends the bisect session, removes all bisect refs, and checks out the branch you were on before starting. This is the correct way to conclude a bisect, whether you found the culprit or want to abort the search early.",
     explanationWrong:
       "Using `git checkout` to leave a bisect session does not clean up the bisect state. Git will still think a bisect is in progress, and leftover refs in `.git/BISECT_*` files can cause confusing behavior. Always use `git bisect reset` to properly end the session.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect#_bisect_reset",
-    sourceLabel: "Git Docs: Bisect Reset",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect#_bisect_reset",
+        label: "Git Docs: Bisect Reset",
+      },
+    ],
   },
   {
     id: "gb-007",
@@ -205,7 +229,11 @@ git bisect reset
       "Automated bisect with `git bisect run` executes a test script at each step and determines good or bad from the exit code. This eliminates human error and completes in seconds what might take many minutes of manual testing. It is especially powerful when combined with a targeted test that reproduces the regression.",
     explanationWrong:
       "Manual bisect requires you to test each commit by hand, type good or bad, and stay at your terminal throughout the process. For regressions that have an automated test, this is unnecessarily slow and error-prone. A single mistyped `good` or `bad` can send the search in the wrong direction.",
-    sourceUrl: "https://git-scm.com/docs/git-bisect#_bisect_run",
-    sourceLabel: "Git Docs: Bisect Run",
+    sources: [
+      {
+        url: "https://git-scm.com/docs/git-bisect#_bisect_run",
+        label: "Git Docs: Bisect Run",
+      },
+    ],
   },
 ];

@@ -40,9 +40,12 @@ export const metadata: Metadata = {
       "The `alternates.languages` field generates `<link rel='alternate' hreflang='...'>` tags. These tell Google which URL to show for each language and region. Without them, German users might see the English page in search results even though a German version exists.",
     explanationWrong:
       "Without hreflang tags, Google treats each language version as an independent page and guesses which one to show based on signals like the user's location and browser language. This often results in the wrong version appearing in search results, frustrating users.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/specialty/international/localized-versions",
-    sourceLabel: "Google: Localized versions of pages",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/specialty/international/localized-versions",
+        label: "Google: Localized versions of pages",
+      },
+    ],
   },
   {
     id: "i18n-002",
@@ -92,9 +95,12 @@ export async function generateMetadata({
       "The `x-default` hreflang value specifies the fallback URL for users whose language does not match any of the listed variants. This is typically your homepage or a language selector page. Without it, Google has no guidance for users outside your supported locales.",
     explanationWrong:
       "Without `x-default`, users in countries you have not explicitly listed (e.g., Japan, Brazil) may see any version Google chooses. The `x-default` tag lets you direct them to a language selector or your primary language version, providing a better experience.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/specialty/international/localized-versions#xdefault",
-    sourceLabel: "Google: x-default hreflang",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/specialty/international/localized-versions#xdefault",
+        label: "Google: x-default hreflang",
+      },
+    ],
   },
   {
     id: "i18n-003",
@@ -147,9 +153,12 @@ export async function generateMetadata({
       "hreflang tags must point to the exact equivalent page in each language, not just the site root. Each blog post needs hreflang links to its translated versions at the same URL path. This helps Google serve the correct language version when someone searches for a topic covered by that specific post.",
     explanationWrong:
       "Layout-level hreflang tags only cover the layout's own URL pattern. Individual pages need their own hreflang tags that point to the exact translated counterparts. Without per-page tags, Google cannot connect `/en/blog/my-post` to `/de/blog/my-post` as language variants of the same content.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#alternates",
-    sourceLabel: "Next.js: alternates metadata",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#alternates",
+        label: "Next.js: alternates metadata",
+      },
+    ],
   },
   {
     id: "i18n-004",
@@ -197,9 +206,12 @@ export function middleware(request: NextRequest) {
       "Having the locale in the URL path (e.g., `/en/about`, `/de/about`) gives each language version its own unique, crawlable URL. Search engines can index and serve the correct version. Cookie-based detection is invisible to crawlers and prevents proper indexing of translated content.",
     explanationWrong:
       "Cookie-based locale detection means search engine crawlers always see the default language because they do not carry cookies. All your translated content is effectively invisible to Google. Users also cannot share a link to the German version because the URL does not encode the language.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/building-your-application/routing/internationalization",
-    sourceLabel: "Next.js: Internationalization",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/building-your-application/routing/internationalization",
+        label: "Next.js: Internationalization",
+      },
+    ],
   },
   {
     id: "i18n-005",
@@ -247,9 +259,12 @@ export function middleware(request: NextRequest) {
       "Domain-based routing uses country-code domains (acme.de, acme.fr) to signal the target audience to search engines. Google gives a strong geo-targeting signal to ccTLDs. Combined with hreflang tags, this is the most effective approach for international SEO when you own the relevant domains.",
     explanationWrong:
       "Redirecting acme.de to acme.com/de wastes the SEO value of the ccTLD. Country-code domains carry an inherent geo-targeting signal that subpaths do not. German users are more likely to click on acme.de in search results, and Google gives it a ranking boost for German searches.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
-    sourceLabel: "Google: Multi-regional sites",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+        label: "Google: Multi-regional sites",
+      },
+    ],
   },
   {
     id: "i18n-006",
@@ -304,9 +319,12 @@ export async function generateMetadata({
       "Meta titles and descriptions should be translated for each locale. German users searching on google.de expect to see German snippets in the results. Translated metadata improves click-through rates because users are more likely to click on results in their own language.",
     explanationWrong:
       "Serving English metadata on a German page creates a mismatch that confuses both users and search engines. A German user sees an English title in search results, which reduces trust and click-through rate. Google may also question whether the page is truly German content.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/specialty/international/localized-versions#guidelines",
-    sourceLabel: "Google: Localization guidelines",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/specialty/international/localized-versions#guidelines",
+        label: "Google: Localization guidelines",
+      },
+    ],
   },
   {
     id: "i18n-007",
@@ -351,9 +369,12 @@ export default function LocaleLayout({
       "Setting the `lang` attribute dynamically based on the current locale is essential for accessibility and SEO. Screen readers use it to select the correct pronunciation rules. Search engines use it as a signal for the page's language. Browser translation features also rely on it.",
     explanationWrong:
       "Without a `lang` attribute, the browser and screen readers must guess the page's language. A screen reader may read German text with English pronunciation rules, making it unintelligible. Search engines lose a clear signal about the content's language, which can affect ranking in localized results.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang",
-    sourceLabel: "MDN: lang attribute",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang",
+        label: "MDN: lang attribute",
+      },
+    ],
   },
   {
     id: "i18n-008",
@@ -407,8 +428,11 @@ export default function LocaleLayout({
       "The `dir` attribute on `<html>` sets the base text direction for the entire page. Arabic, Hebrew, Farsi, and Urdu are right-to-left languages that require `dir='rtl'` for correct text rendering. Without it, text alignment, punctuation placement, and UI layout are all wrong.",
     explanationWrong:
       "Without `dir='rtl'`, Arabic and Hebrew text still renders the individual characters correctly, but the overall layout is broken. Sentences start from the wrong side, punctuation appears in the wrong place, and UI elements like navigation and sidebars are mirrored incorrectly.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir",
-    sourceLabel: "MDN: dir attribute",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir",
+        label: "MDN: dir attribute",
+      },
+    ],
   },
 ];

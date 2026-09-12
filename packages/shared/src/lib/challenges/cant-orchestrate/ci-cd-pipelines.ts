@@ -43,8 +43,12 @@ jobs:
       "BuildKit's GitHub Actions cache backend (`type=gha`) stores and retrieves Docker layers between CI runs. Unchanged layers are reused, dramatically reducing build times. `mode=max` caches all layers, not just the final image.",
     explanationWrong:
       "Without layer caching, every CI run builds every layer from scratch. Installing dependencies, compiling code, and copying assets all run again even if nothing changed. This wastes time and compute resources on every commit.",
-    sourceUrl: "https://docs.docker.com/build/cache/backends/gha/",
-    sourceLabel: "Docker docs: GitHub Actions cache",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/cache/backends/gha/",
+        label: "Docker docs: GitHub Actions cache",
+      },
+    ],
   },
   {
     id: "ci-002",
@@ -80,9 +84,12 @@ kubectl set image deployment/web \\
       "Tagging with the commit SHA creates an immutable, traceable image. You can always determine which code is running in any environment. Rollbacks point to a specific previous SHA. Two environments running the same SHA are guaranteed to have identical code.",
     explanationWrong:
       "`latest` is a mutable tag that gets overwritten on every push. You can't tell which version is running without inspecting the image digest. Rollbacks to `latest` deploy whatever was last pushed, not a specific known-good version. Different environments pulling `latest` at different times get different code.",
-    sourceUrl:
-      "https://docs.docker.com/build/ci/github-actions/manage-tags-labels/",
-    sourceLabel: "Docker docs: Manage tags",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/ci/github-actions/manage-tags-labels/",
+        label: "Docker docs: Manage tags",
+      },
+    ],
   },
   {
     id: "ci-003",
@@ -117,8 +124,12 @@ docker buildx build \\
       "`docker buildx build --platform` creates a multi-architecture manifest. Docker automatically pulls the right image for the host architecture. Your image works on x86 CI runners, ARM-based cloud instances (Graviton, Ampere), and Apple Silicon Macs.",
     explanationWrong:
       "Building without `--platform` produces an image only for the CI runner's architecture (usually amd64). Deploying this on ARM servers causes exec format errors. Developers on Apple Silicon Macs run the image through slow emulation.",
-    sourceUrl: "https://docs.docker.com/build/building/multi-platform/",
-    sourceLabel: "Docker docs: Multi-platform builds",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/building/multi-platform/",
+        label: "Docker docs: Multi-platform builds",
+      },
+    ],
   },
   {
     id: "ci-004",
@@ -157,7 +168,11 @@ kubectl set image deployment/web \\
       "Scanning images before pushing to a registry catches known vulnerabilities in base images and dependencies. `--exit-code` makes the scan fail the pipeline on critical/high findings. Vulnerable images never reach production.",
     explanationWrong:
       "Deploying without scanning means known CVEs in your base image or dependencies go straight to production. By the time a periodic scan catches them, the vulnerable image has been serving traffic for hours or days.",
-    sourceUrl: "https://docs.docker.com/scout/",
-    sourceLabel: "Docker docs: Docker Scout",
+    sources: [
+      {
+        url: "https://docs.docker.com/scout/",
+        label: "Docker docs: Docker Scout",
+      },
+    ],
   },
 ];

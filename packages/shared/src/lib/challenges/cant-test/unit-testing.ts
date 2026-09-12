@@ -44,8 +44,12 @@ export const unitTestingChallenges: BaseChallenge[] = [
       "Descriptive test names serve as living documentation. When a test fails, a name like 'returns zero for an empty array' immediately tells you what broke, without needing to read the test body. This speeds up debugging and helps teammates understand intent.",
     explanationWrong:
       "Cryptic names like 'test1' and 'test2' force developers to read the full test body to understand what is being verified. As a test suite grows, this makes failures hard to triage and the suite difficult to maintain.",
-    sourceUrl: "https://vitest.dev/guide/#writing-tests",
-    sourceLabel: "Vitest: Writing Tests",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/#writing-tests",
+        label: "Vitest: Writing Tests",
+      },
+    ],
   },
   {
     id: "unit-002",
@@ -86,8 +90,12 @@ export const unitTestingChallenges: BaseChallenge[] = [
       "The Arrange-Act-Assert pattern gives each test a clear three-part rhythm: set up inputs, execute the code under test, then verify the outcome. This makes tests easy to scan and predictable in structure, even as the suite grows.",
     explanationWrong:
       "Mixing setup, execution, and assertions into a single block makes it hard to tell where one logical step ends and another begins. Cramming multiple scenarios into one test also means a failure message points to the wrong cause.",
-    sourceUrl: "https://testing-library.com/docs/guiding-principles",
-    sourceLabel: "Testing Library: Guiding Principles",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/guiding-principles",
+        label: "Testing Library: Guiding Principles",
+      },
+    ],
   },
   {
     id: "unit-003",
@@ -133,8 +141,12 @@ export const unitTestingChallenges: BaseChallenge[] = [
       "Testing the observable output (the sorted order) confirms that the function does what users care about. If the internal sorting algorithm changes, the test still passes as long as the result is correct, making refactoring safe.",
     explanationWrong:
       "Asserting that Array.prototype.sort was called checks how the function works, not what it produces. The test would break if the implementation switched to a different sorting approach, even though the output remained identical.",
-    sourceUrl: "https://testing-library.com/docs/guiding-principles",
-    sourceLabel: "Testing Library: Guiding Principles",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/guiding-principles",
+        label: "Testing Library: Guiding Principles",
+      },
+    ],
   },
   {
     id: "unit-004",
@@ -174,8 +186,12 @@ it("parses CSV rows into objects", () => {
       "Each test focuses on one behavior, so a failure pinpoints exactly which function broke. Isolated tests also run independently, making it straightforward to rerun or skip a single case during development.",
     explanationWrong:
       "Bundling unrelated assertions into one test means a failure in formatDate hides whether isValidEmail or parseCsv also failed. It also makes the test name meaningless since no single name can describe three unrelated checks.",
-    sourceUrl: "https://vitest.dev/guide/#writing-tests",
-    sourceLabel: "Vitest: Writing Tests",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/#writing-tests",
+        label: "Vitest: Writing Tests",
+      },
+    ],
   },
   {
     id: "unit-005",
@@ -227,8 +243,12 @@ it("denies edit access to viewers", () => {
       "A builder function provides sensible defaults and lets each test override only the fields that matter. This highlights what the test actually cares about (the role) and reduces noise from irrelevant properties.",
     explanationWrong:
       "Repeating full object literals in every test adds boilerplate and buries the important field among defaults. When the User type gains a new required property, every test that constructs a user inline must be updated.",
-    sourceUrl: "https://jestjs.io/docs/setup-teardown#repeating-setup",
-    sourceLabel: "Jest: Repeating Setup",
+    sources: [
+      {
+        url: "https://jestjs.io/docs/setup-teardown#repeating-setup",
+        label: "Jest: Repeating Setup",
+      },
+    ],
   },
   {
     id: "unit-006",
@@ -273,8 +293,12 @@ it("denies edit access to viewers", () => {
       "Testing at and beyond both boundaries catches off-by-one errors and incorrect comparison operators. Boundary values are where most bugs hide, so explicitly covering them provides much stronger confidence than a single happy-path check.",
     explanationWrong:
       "A single test with a value in the middle of the range only proves the function works for one easy case. It misses bugs at the boundaries, such as using < instead of <= or forgetting to clamp values below the minimum.",
-    sourceUrl: "https://jestjs.io/docs/expect#tobevalue",
-    sourceLabel: "Jest: Matchers",
+    sources: [
+      {
+        url: "https://jestjs.io/docs/expect#tobevalue",
+        label: "Jest: Matchers",
+      },
+    ],
   },
   {
     id: "unit-007",
@@ -317,8 +341,9 @@ it("accepts standard email", () => {
       "Parameterized tests (it.each) express many input/output pairs in a compact table. Adding a new case is a single line, and the pattern makes it obvious that every row follows the same logic. This reduces duplication and keeps the suite easy to extend.",
     explanationWrong:
       "Writing a separate test for each case duplicates the same assertion structure over and over. With five or more cases the file becomes long and repetitive, and adding a new scenario requires copying boilerplate instead of appending a row.",
-    sourceUrl: "https://vitest.dev/api/#test-each",
-    sourceLabel: "Vitest: test.each",
+    sources: [
+      { url: "https://vitest.dev/api/#test-each", label: "Vitest: test.each" },
+    ],
   },
   {
     id: "unit-008",
@@ -371,8 +396,11 @@ it("calculates international shipping", () => {
       "Pure functions take all inputs as arguments and return a result with no hidden dependencies. Tests for pure functions need no setup or teardown, run in any order, and never interfere with each other, making the suite fast and reliable.",
     explanationWrong:
       "Relying on global state means every test must set up and clean up that state correctly. If a test forgets teardown or runs out of order, it can leak configuration into other tests, causing flaky failures that are difficult to reproduce.",
-    sourceUrl:
-      "https://vitest.dev/guide/common-errors#cannot-redefine-property",
-    sourceLabel: "Vitest: Common Errors",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/common-errors#cannot-redefine-property",
+        label: "Vitest: Common Errors",
+      },
+    ],
   },
 ];

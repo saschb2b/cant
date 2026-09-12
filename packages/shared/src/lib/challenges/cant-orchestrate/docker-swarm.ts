@@ -40,9 +40,12 @@ docker service create \\
       "Swarm services automatically schedule replicas across nodes, restart failed containers, and load-balance incoming traffic. Scaling is a single command: `docker service scale web=5`. The desired state is maintained automatically.",
     explanationWrong:
       "Running standalone containers requires manual placement, manual restart on failure, and external load balancing. Scaling means manually running more containers and updating the load balancer. There's no built-in health monitoring or self-healing.",
-    sourceUrl:
-      "https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/",
-    sourceLabel: "Docker docs: Swarm services",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/",
+        label: "Docker docs: Swarm services",
+      },
+    ],
   },
   {
     id: "sw-002",
@@ -94,8 +97,12 @@ secrets:
       "Docker secrets are encrypted at rest in the Swarm Raft log and only mounted into containers that need them as in-memory files at `/run/secrets/`. They never appear in environment variables, docker inspect, or stack definitions.",
     explanationWrong:
       "Environment variables are visible in `docker inspect`, process listings (`/proc/*/environ`), and the stack file. Anyone with access to the Docker API or the host filesystem can read the plain text password.",
-    sourceUrl: "https://docs.docker.com/engine/swarm/secrets/",
-    sourceLabel: "Docker docs: Swarm secrets",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/swarm/secrets/",
+        label: "Docker docs: Swarm secrets",
+      },
+    ],
   },
   {
     id: "sw-003",
@@ -130,9 +137,12 @@ secrets:
       "`--update-parallelism 1` updates one task at a time. `--update-delay 10s` waits between updates. `--update-order start-first` starts the new task before stopping the old one (zero downtime). `--update-failure-action rollback` automatically reverts on failure.",
     explanationWrong:
       "Default update settings replace all tasks simultaneously, causing downtime. Without a failure action, a bad image leaves the service broken. Without `start-first`, each task has a brief period of unavailability during the swap.",
-    sourceUrl:
-      "https://docs.docker.com/engine/swarm/swarm-tutorial/rolling-update/",
-    sourceLabel: "Docker docs: Rolling updates",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/swarm/swarm-tutorial/rolling-update/",
+        label: "Docker docs: Rolling updates",
+      },
+    ],
   },
   {
     id: "sw-004",
@@ -172,8 +182,11 @@ secrets:
       "Placement constraints ensure workloads run on appropriate nodes. A database needs SSD storage and stable nodes (managers). Spread preferences distribute replicas across datacenters for high availability. This gives you predictable, hardware-aware scheduling.",
     explanationWrong:
       "Without constraints, the scheduler places the database on any available node, potentially one with slow storage, insufficient memory, or in the same datacenter as all other replicas. A single node or datacenter failure could take down the database.",
-    sourceUrl:
-      "https://docs.docker.com/engine/swarm/services/#placement-constraints",
-    sourceLabel: "Docker docs: Placement constraints",
+    sources: [
+      {
+        url: "https://docs.docker.com/engine/swarm/services/#placement-constraints",
+        label: "Docker docs: Placement constraints",
+      },
+    ],
   },
 ];

@@ -33,8 +33,12 @@ export const bondEnergyChallenges: BaseChallenge[] = [
       "The N≡N triple bond in molecular nitrogen is one of the strongest bonds in chemistry at 945 kJ/mol. Three shared electron pairs create an extremely strong and short bond, which is why N₂ is so chemically inert.",
     explanationWrong:
       "The N-N single bond in hydrazine is relatively weak at only 167 kJ/mol. With just one shared electron pair, it is about 5.7 times weaker than the triple bond in N₂.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Bond-dissociation_energy",
-    sourceLabel: "Wikipedia: Bond-dissociation energy",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Bond-dissociation_energy",
+        label: "Wikipedia: Bond-dissociation energy",
+      },
+    ],
   },
   {
     id: "be-002",
@@ -68,9 +72,12 @@ export const bondEnergyChallenges: BaseChallenge[] = [
       "The C-F bond (485 kJ/mol) is more than twice as strong as the C-I bond (213 kJ/mol). Fluorine's small atomic radius allows excellent orbital overlap with carbon, and its high electronegativity creates a very strong polar bond.",
     explanationWrong:
       "The C-I bond is relatively weak because iodine's large atomic radius results in poor orbital overlap with the small carbon 2p orbitals. This longer, weaker bond makes alkyl iodides excellent leaving groups in substitution reactions.",
-    sourceUrl:
-      "https://chem.libretexts.org/Bookshelves/Organic_Chemistry/Supplemental_Modules_(Organic_Chemistry)/Fundamentals/Bond_Energies",
-    sourceLabel: "LibreTexts: Bond Energies",
+    sources: [
+      {
+        url: "https://chem.libretexts.org/Bookshelves/Organic_Chemistry/Supplemental_Modules_(Organic_Chemistry)/Fundamentals/Bond_Energies",
+        label: "LibreTexts: Bond Energies",
+      },
+    ],
   },
   {
     id: "be-003",
@@ -104,8 +111,12 @@ export const bondEnergyChallenges: BaseChallenge[] = [
       "The C=C double bond (614 kJ/mol) is stronger than the C-C single bond (346 kJ/mol) because it consists of one sigma bond and one pi bond. Note that the double bond is not twice as strong, since the pi bond is weaker than the sigma bond.",
     explanationWrong:
       "While a C-C single bond is strong and stable at 346 kJ/mol, it consists of only one sigma bond. The double bond adds a pi bond on top of the sigma bond, providing 268 kJ/mol of additional bond energy.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Carbon%E2%80%93carbon_bond",
-    sourceLabel: "Wikipedia: Carbon-carbon bond",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Carbon%E2%80%93carbon_bond",
+        label: "Wikipedia: Carbon-carbon bond",
+      },
+    ],
   },
   {
     id: "be-004",
@@ -139,7 +150,11 @@ export const bondEnergyChallenges: BaseChallenge[] = [
       "The O-H bond (459 kJ/mol) is stronger than the S-H bond (363 kJ/mol). Oxygen is smaller and more electronegative than sulfur, allowing better orbital overlap with hydrogen and a shorter, stronger bond.",
     explanationWrong:
       "The S-H bond is weaker because sulfur's larger 3p orbitals overlap less effectively with hydrogen's 1s orbital compared to oxygen's smaller 2p orbitals. This weaker bond also explains why H₂S is a stronger acid than water.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Bond-dissociation_energy",
-    sourceLabel: "Wikipedia: Bond-dissociation energy",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Bond-dissociation_energy",
+        label: "Wikipedia: Bond-dissociation energy",
+      },
+    ],
   },
 ];

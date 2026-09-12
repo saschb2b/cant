@@ -37,9 +37,12 @@ export const breakpointHooksChallenges: BaseChallenge[] = [
       "Rendering both layouts and toggling visibility with CSS avoids the flash of wrong content during SSR hydration. `useMediaQuery` returns `false` on the server, so the conditional approach always shows DesktopLayout first, then snaps to MobileLayout after hydration on mobile.",
     explanationWrong:
       "Conditionally rendering based on `useMediaQuery` causes a layout shift on mobile: the server renders DesktopLayout (because the hook defaults to `false`), then React hydrates and swaps to MobileLayout. Users see a jarring flash.",
-    sourceUrl:
-      "https://mui.com/material-ui/react-use-media-query/#server-side-rendering",
-    sourceLabel: "MUI: useMediaQuery SSR",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/react-use-media-query/#server-side-rendering",
+        label: "MUI: useMediaQuery SSR",
+      },
+    ],
   },
   {
     id: "bh-002",
@@ -88,9 +91,12 @@ export const breakpointHooksChallenges: BaseChallenge[] = [
       "MUI's `sx` breakpoint objects compile to CSS media queries, so no JavaScript runs on resize. This is faster, avoids hydration mismatches, and eliminates the re-render on every breakpoint crossing.",
     explanationWrong:
       "`useMediaQuery` triggers a React re-render every time the viewport crosses 600px. For purely visual changes like direction, size, and font size, CSS media queries (via `sx` breakpoints) are more performant and SSR-safe.",
-    sourceUrl:
-      "https://mui.com/system/getting-started/usage/#responsive-values",
-    sourceLabel: "MUI: Responsive values",
+    sources: [
+      {
+        url: "https://mui.com/system/getting-started/usage/#responsive-values",
+        label: "MUI: Responsive values",
+      },
+    ],
   },
   {
     id: "bh-003",
@@ -140,9 +146,12 @@ export const breakpointHooksChallenges: BaseChallenge[] = [
       "Using `matchMedia` instead of `resize` events is more performant because the browser only fires the callback when the query result *changes*, not on every pixel of resize. Initializing state to `false` avoids crashing during SSR where `window` doesn't exist.",
     explanationWrong:
       "Accessing `window.innerWidth` in `useState` breaks SSR because `window` is undefined on the server. The `resize` event also fires continuously during drag, causing unnecessary re-renders for every pixel of width change.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia",
-    sourceLabel: "MDN: matchMedia",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia",
+        label: "MDN: matchMedia",
+      },
+    ],
   },
   {
     id: "bh-004",
@@ -213,9 +222,12 @@ export const breakpointHooksChallenges: BaseChallenge[] = [
       "Two `matchMedia` listeners fire only when crossing 640px or 1024px, not on every pixel of resize. No debounce needed, no stale 150ms delay, and the return value is a clean discriminated string instead of three booleans that could theoretically conflict.",
     explanationWrong:
       "Debouncing `resize` is a workaround for a problem `matchMedia` already solves. The 150ms delay makes the UI feel sluggish during resize, and tracking raw width means the component re-renders for every pixel change even within the same breakpoint.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList/change_event",
-    sourceLabel: "MDN: MediaQueryList change event",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList/change_event",
+        label: "MDN: MediaQueryList change event",
+      },
+    ],
   },
   {
     id: "bh-005",
@@ -266,8 +278,11 @@ export default function DashboardPage() {
       "Server Components have no access to browser APIs or React hooks. Plain CSS-based responsive switching works everywhere: server, client, and static HTML. Both components render in the HTML, and CSS hides the wrong one instantly with no JavaScript. Note: MUI's `sx` prop requires Emotion's client runtime, so use plain CSS or CSS modules in Server Components.",
     explanationWrong:
       '`useMediaQuery` is a React hook that requires client-side execution. Using it in a Server Component throws a build error. Even if you add `"use client"`, you\'d lose the benefits of server rendering for the entire page.',
-    sourceUrl:
-      "https://nextjs.org/docs/app/building-your-application/rendering/server-components",
-    sourceLabel: "Next.js: Server Components",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/building-your-application/rendering/server-components",
+        label: "Next.js: Server Components",
+      },
+    ],
   },
 ];

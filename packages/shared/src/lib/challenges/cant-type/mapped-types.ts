@@ -42,9 +42,12 @@ type AlsoPartialUser = Partial<User>;
       "Mapped types iterate over keys of an existing type using `[K in keyof T]` and can add or remove modifiers like `?` and `readonly`. This is exactly how the built-in Partial utility type works. Changes to the source type automatically propagate to the mapped type.",
     explanationWrong:
       "Manually duplicating an interface with optional properties creates two types that must be kept in sync. Adding a new field to User without updating PartialUser leads to inconsistencies that the compiler cannot detect. Mapped types derive one type from another, eliminating this drift.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html",
-    sourceLabel: "TypeScript: Mapped Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html",
+        label: "TypeScript: Mapped Types",
+      },
+    ],
   },
   {
     id: "mt-002",
@@ -88,9 +91,12 @@ type ConfigSetters = Setters<Config>;
       "The `as` clause in mapped types lets you remap keys to new names. Combined with template literal types and Capitalize, you can automatically generate setter method names from property keys. The value types stay correctly linked to their original properties.",
     explanationWrong:
       "Manually writing setter interfaces requires updating three places when a config property changes: the Config type, the setter type, and the implementation. Key remapping generates the setter type automatically, so adding a new config field produces the correct setter signature with no extra work.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as",
-    sourceLabel: "TypeScript: Key Remapping via as",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as",
+        label: "TypeScript: Key Remapping via as",
+      },
+    ],
   },
   {
     id: "mt-003",
@@ -137,9 +143,12 @@ type UserStrings = Pick<User, UserStringKeys>;
       "Conditional types inside mapped types can filter keys by their value type. Mapping non-matching keys to `never` and then indexing with `[keyof T]` produces a union of only the matching keys. Combined with Pick, this extracts a subset of properties based on their types.",
     explanationWrong:
       "Manually picking properties by hand creates a separate type that must be maintained whenever the source type changes. Adding a new string property to User would not appear in StringFields unless you remember to add it. Type-level filtering keeps the extracted type in sync automatically.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html",
-    sourceLabel: "TypeScript: Conditional Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html",
+        label: "TypeScript: Conditional Types",
+      },
+    ],
   },
   {
     id: "mt-004",
@@ -186,9 +195,12 @@ type FetchedUser = UnwrapPromise<
       "The infer keyword lets you declare a type variable within a conditional type and extract part of a matched type. Here it unwraps the Promise to get the resolved value type. Combined with ReturnType, this derives the type directly from the function, so changes to fetchUser automatically flow to FetchedUser.",
     explanationWrong:
       "Defining a separate type alias and manually keeping it in sync with the function's actual return type is fragile. If the API response shape changes in the function but not in the type alias, the compiler cannot detect the mismatch. Using infer with ReturnType extracts the type from the source of truth.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types",
-    sourceLabel: "TypeScript: Inferring Within Conditional Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types",
+        label: "TypeScript: Inferring Within Conditional Types",
+      },
+    ],
   },
   {
     id: "mt-005",
@@ -237,9 +249,12 @@ type Clean = DeepNonNullable<Form>;
       "Distributive conditional types (T extends object ? ...) distribute over union members. By recursively applying the transformation, DeepNonNullable strips null and undefined from every level of a nested type. The -? modifier removes optional markers as well.",
     explanationWrong:
       "A shallow mapped type only transforms the top-level properties. Nested objects retain their original nullability, which means you still need manual null checks inside deeply nested structures. Recursive conditional types solve this by applying the transformation at every depth.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types",
-    sourceLabel: "TypeScript: Distributive Conditional Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types",
+        label: "TypeScript: Distributive Conditional Types",
+      },
+    ],
   },
   {
     id: "mt-006",
@@ -285,8 +300,11 @@ type ConfigPath = Paths<Config>;
       "Recursive mapped types can generate dot-notation path strings for any nested object structure. By iterating over keys and recursing into object values, the type builds a union of all valid paths. Adding a new nested field to Config automatically produces the correct path string.",
     explanationWrong:
       "Manually enumerating dot-notation paths is tedious and impossible to keep in sync with a changing type. A recursive type computes the full set of valid paths from the source type, enabling type-safe deep access patterns like get(config, 'db.host') without maintaining a separate path list.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
-    sourceLabel: "TypeScript: Creating Types from Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
+        label: "TypeScript: Creating Types from Types",
+      },
+    ],
   },
 ];

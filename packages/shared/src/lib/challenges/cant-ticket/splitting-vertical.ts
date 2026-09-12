@@ -54,9 +54,12 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "Each vertical slice goes through the data, logic, and UI layers it needs and ships a piece of customer-visible value end-to-end. After slice one, the team has shipped something real and learned what the next slice should look like.",
     explanationWrong:
       "Layer-by-layer splits fail INVEST on three letters at once: the backend slice is not Independent (frontend waits), not Valuable (no user benefits from an API nobody calls), and not Testable from the user perspective. Nothing ships until everything ships.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "sv-002",
@@ -89,9 +92,12 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "The right slice ships value AND teaches the team about real SAML edge cases the second slice would otherwise rediscover. The 'infrastructure first' framing is horizontal slicing in disguise.",
     explanationWrong:
       "An infrastructure-only slice carries all the cost of the provider integration without the learning. The next sprint will discover that the chosen abstraction does not fit Okta's actual response shape and rework most of it.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "sv-003",
@@ -138,8 +144,12 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "Each slice ships a usable view a manager can demo. Slice one is rough but real; slice two broadens the scope; slice three polishes it. Product can deprioritize slice three on its own merits.",
     explanationWrong:
       "Schema → job → API → UI is a textbook horizontal split. Three slices have no user-visible result. The fourth slice has all the integration cost, and product cannot demo anything until the entire epic is done.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "sv-004",
@@ -169,9 +179,12 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "The first workable split is rarely the best one. Generating three lets the team see which one yields the most product optionality. That is the lever that turns slicing from 'making it smaller' into 'making it deliverable'.",
     explanationWrong:
       "Stopping at the first workable split is a common shortcut that costs the team product flexibility. The senior's split may be technically valid and still leave product with one big slice and two unimportant ones.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "sv-005",
@@ -217,9 +230,12 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "Three roughly equal slices give product three real options: ship all, drop the SSO slice for now, or move the plan slice to a later sprint. The slices are individually valuable.",
     explanationWrong:
       "A 12-1-1 split has one real slice plus two rounding errors. Product cannot meaningfully reorder them, and the big slice is the same Epic with two trivial decorations attached.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "sv-006",
@@ -250,8 +266,11 @@ export const splittingVerticalChallenges: BaseChallenge[] = [
       "Splitting patterns apply to stories. 'Refactor the payment module' is not a story, and no pattern will turn it into one. Confirming the framing first prevents the team from generating four equally-bad sub-tasks.",
     explanationWrong:
       "Reaching for splitting patterns first will produce four small things that still fail INVEST in the same way the original did. The split looks like progress; the work has not actually been clarified.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
 ];

@@ -36,9 +36,12 @@ CMD ["node", "server.js"]`,
       "`COPY` is explicit and predictable: it copies files from the build context into the image. Use `COPY` unless you specifically need `ADD`'s extra features (auto-extracting tarballs or fetching remote URLs). Most builds only need `COPY`.",
     explanationWrong:
       "`ADD` has implicit behavior: it auto-extracts compressed archives and can fetch remote URLs. This makes builds less predictable. Docker's own best practices recommend `COPY` for plain file copying.",
-    sourceUrl:
-      "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy",
-    sourceLabel: "Docker docs: ADD or COPY",
+    sources: [
+      {
+        url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy",
+        label: "Docker docs: ADD or COPY",
+      },
+    ],
   },
   {
     id: "df-002",
@@ -73,8 +76,12 @@ CMD ["npm", "start"]`,
       'The exec form (`CMD ["npm", "start"]`) runs the command directly without a shell wrapper. This means the process receives signals like SIGTERM properly, enabling graceful shutdown. It also avoids unexpected shell variable expansion.',
     explanationWrong:
       "The shell form (`CMD npm start`) wraps the command in `/bin/sh -c`, which means the shell process (PID 1) receives signals instead of your app. Your container won't shut down gracefully because the app never gets SIGTERM.",
-    sourceUrl: "https://docs.docker.com/reference/dockerfile/#cmd",
-    sourceLabel: "Docker docs: CMD",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#cmd",
+        label: "Docker docs: CMD",
+      },
+    ],
   },
   {
     id: "df-003",
@@ -110,9 +117,12 @@ CMD ["--port", "8080"]`,
       "Splitting `ENTRYPOINT` (the fixed executable) from `CMD` (the default arguments) lets users override arguments at runtime with `docker run myimage --port 9090` without replacing the entire command. This is the standard pattern for flexible container images.",
     explanationWrong:
       "Putting all arguments in `ENTRYPOINT` means users must use `--entrypoint` to change anything, which replaces the entire command. This makes the image inflexible and harder to use in different environments.",
-    sourceUrl:
-      "https://docs.docker.com/reference/dockerfile/#understand-how-cmd-and-entrypoint-interact",
-    sourceLabel: "Docker docs: CMD and ENTRYPOINT",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#understand-how-cmd-and-entrypoint-interact",
+        label: "Docker docs: CMD and ENTRYPOINT",
+      },
+    ],
   },
   {
     id: "df-004",
@@ -148,9 +158,12 @@ RUN apt-get update && \\
       "Combining related commands in a single `RUN` instruction creates one layer instead of five. The cleanup (`rm -rf /var/lib/apt/lists/*`) actually removes files from the image because it happens in the same layer as the install. Fewer layers also mean a smaller image.",
     explanationWrong:
       "Each `RUN` creates a new layer. The `apt-get update` layer is separate from the install layers, so the package index can go stale in cached builds. The cleanup in a separate `RUN` doesn't reduce image size because the files still exist in earlier layers.",
-    sourceUrl:
-      "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#minimize-the-number-of-layers",
-    sourceLabel: "Docker docs: Minimize layers",
+    sources: [
+      {
+        url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#minimize-the-number-of-layers",
+        label: "Docker docs: Minimize layers",
+      },
+    ],
   },
   {
     id: "df-005",
@@ -189,7 +202,11 @@ CMD ["node", "server.js"]`,
       "`WORKDIR` sets the working directory for all subsequent instructions. It creates the directory if it doesn't exist and persists across layers. This eliminates repetitive `cd` commands and makes paths relative to the app directory.",
     explanationWrong:
       "`cd` inside `RUN` only affects that single `RUN` instruction. Each new `RUN` starts from `/` again unless you repeat the `cd`. This leads to repetitive code and easy-to-miss bugs when you forget the `cd` in one layer.",
-    sourceUrl: "https://docs.docker.com/reference/dockerfile/#workdir",
-    sourceLabel: "Docker docs: WORKDIR",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#workdir",
+        label: "Docker docs: WORKDIR",
+      },
+    ],
   },
 ];

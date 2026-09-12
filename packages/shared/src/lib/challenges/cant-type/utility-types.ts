@@ -42,9 +42,12 @@ updateUser("1", { name: "Alice" }); // OK`,
       "`Partial<User>` makes every property optional, so callers can pass only the fields they want to update. This is the standard pattern for PATCH-style updates. The type still ensures only valid `User` properties with correct types are provided.",
     explanationWrong:
       "Requiring the full `User` object for an update forces callers to re-supply every field, which is tedious and error-prone. If a field is added to `User` later, every update call breaks. `Partial` solves this cleanly.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype",
-    sourceLabel: "TypeScript Handbook: Partial",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype",
+        label: "TypeScript Handbook: Partial",
+      },
+    ],
   },
   {
     id: "ut-002",
@@ -84,9 +87,12 @@ type UserPreview = Pick<User, "id" | "name" | "email">;`,
       '`Pick<User, "id" | "name" | "email">` creates a new type with only those three properties. If `User` changes a field\'s type, the preview type updates automatically. This keeps your types DRY and avoids drift between related shapes.',
     explanationWrong:
       "Manually copying properties into a separate interface creates two sources of truth. If `name` changes from `string` to `{ first: string; last: string }`, the hand-written `UserPreview` is silently out of date. `Pick` prevents this.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys",
-    sourceLabel: "TypeScript Handbook: Pick",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys",
+        label: "TypeScript Handbook: Pick",
+      },
+    ],
   },
   {
     id: "ut-003",
@@ -124,9 +130,12 @@ type PublicUser = Omit<DbUser, "passwordHash">;`,
       '`Omit<DbUser, "passwordHash">` creates a type with every property except `passwordHash`. If new fields are added to `DbUser`, they automatically appear in `PublicUser`. This is safer than `Pick` when you want to exclude a small number of fields from a large type.',
     explanationWrong:
       "Manually listing all safe fields is fragile. When a new field like `avatarUrl` is added to `DbUser`, the manual `PublicUser` does not include it unless you remember to add it. `Omit` ensures only the explicitly excluded fields are removed.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
-    sourceLabel: "TypeScript Handbook: Omit",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
+        label: "TypeScript Handbook: Omit",
+      },
+    ],
   },
   {
     id: "ut-004",
@@ -162,9 +171,12 @@ themes.forest; // Error: not in Theme`,
       "`Record<Theme, string>` creates an object type where every key in the `Theme` union must be present and map to a `string`. It catches missing keys (if you add a new theme, you must add a color) and rejects invalid keys. Much safer than an index signature.",
     explanationWrong:
       "An index signature `{ [key: string]: string }` accepts any string as a key, so TypeScript cannot catch typos or missing entries. It also allows accessing nonexistent keys without errors, returning `undefined` at runtime.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type",
-    sourceLabel: "TypeScript Handbook: Record",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type",
+        label: "TypeScript Handbook: Record",
+      },
+    ],
   },
   {
     id: "ut-005",
@@ -199,9 +211,12 @@ type NonMouseEvent = Exclude<AppEvent, { type: "click" }>;
       "`Extract` filters a union to members assignable to the given shape. `Exclude` does the opposite, removing matching members. Both stay in sync when the original union changes. This is cleaner and safer than manually copying type definitions.",
     explanationWrong:
       "Manually duplicating union members creates a maintenance risk. If the `click` event gains a `target` property, the hand-written copy is out of date. `Extract` always reflects the current shape of the source union.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#extracttype-union",
-    sourceLabel: "TypeScript Handbook: Extract",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#extracttype-union",
+        label: "TypeScript Handbook: Extract",
+      },
+    ],
   },
   {
     id: "ut-006",
@@ -235,9 +250,12 @@ type CreateArgs = Parameters<typeof createUser>;
       "`ReturnType` extracts the return type and `Parameters` extracts the parameter tuple from a function type. Both stay in sync with the implementation automatically. This is especially useful when you do not control the function's source or want to avoid exporting an extra type.",
     explanationWrong:
       "Manually writing the return type and parameter types creates a second source of truth. If `createUser` starts returning an `email` field, the hand-written `NewUser` type is silently wrong. `ReturnType` and `Parameters` eliminate this class of bugs.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype",
-    sourceLabel: "TypeScript Handbook: ReturnType",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype",
+        label: "TypeScript Handbook: ReturnType",
+      },
+    ],
   },
   {
     id: "ut-007",
@@ -274,8 +292,12 @@ type User = Prettify<
       "The `Prettify` helper uses a mapped type to flatten intersections into a single object type. IDE hover tooltips show a clean, readable object instead of a chain of `&` intersections. This is especially valuable when composing types from multiple sources like mixins, Pick/Omit combinations, or module augmentations.",
     explanationWrong:
       "Raw intersections display as a chain of `&` in IDE tooltips. With two or three intersections this is manageable, but with more it becomes hard to see what properties are available. The `Prettify` helper solves this with zero runtime cost since it resolves to the same type.",
-    sourceUrl: "https://www.totaltypescript.com/concepts/the-prettify-helper",
-    sourceLabel: "Total TypeScript: The Prettify Helper",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/concepts/the-prettify-helper",
+        label: "Total TypeScript: The Prettify Helper",
+      },
+    ],
   },
   {
     id: "ut-008",
@@ -306,8 +328,11 @@ function hasRole(role: Role) { }`,
       "Indexing a tuple or readonly array with `[number]` extracts a union of all element types. Combined with `as const` and `typeof`, this derives a string literal union directly from a runtime array. Adding or removing an element in `ROLES` updates the `Role` type automatically.",
     explanationWrong:
       "Manually writing the union duplicates the values. When you add a new role to the array but forget to update the type, the type and runtime array drift apart silently. The indexed access pattern keeps them in sync with zero maintenance.",
-    sourceUrl:
-      "https://www.totaltypescript.com/tips/access-deeper-parts-of-objects-and-arrays",
-    sourceLabel: "Total TypeScript: Indexed Access Types",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/tips/access-deeper-parts-of-objects-and-arrays",
+        label: "Total TypeScript: Indexed Access Types",
+      },
+    ],
   },
 ];

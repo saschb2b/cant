@@ -49,9 +49,12 @@ spec:
       "Deployments manage Pod replicas, rolling updates, and rollbacks. If a Pod crashes, the Deployment controller creates a replacement. Scaling is a single field change. This is the standard way to run stateless workloads in Kubernetes.",
     explanationWrong:
       "A bare Pod is not managed by any controller. If it crashes or its node goes down, nothing recreates it. You can't scale it, roll back a bad deploy, or do zero-downtime updates. Bare Pods should only be used for one-off debugging.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
-    sourceLabel: "Kubernetes docs: Deployment",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        label: "Kubernetes docs: Deployment",
+      },
+    ],
   },
   {
     id: "kp-002",
@@ -108,9 +111,12 @@ spec:
       "Resource requests guarantee minimum resources for scheduling. Limits cap maximum usage to prevent runaway containers from starving others. The scheduler uses requests to place Pods on nodes with enough capacity, ensuring stable performance.",
     explanationWrong:
       "Without resource constraints, a single container can consume all available CPU and memory on a node, causing other Pods to be evicted or throttled. The scheduler can't make informed placement decisions, leading to overloaded nodes.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
-    sourceLabel: "Kubernetes docs: Resource management",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+        label: "Kubernetes docs: Resource management",
+      },
+    ],
   },
   {
     id: "kp-003",
@@ -166,9 +172,12 @@ spec:
       "`RollingUpdate` with `maxUnavailable: 0` ensures all existing Pods keep running while new ones start. `maxSurge: 1` creates one extra Pod at a time. This gives you zero-downtime deployments. If the new version fails health checks, the rollout pauses automatically.",
     explanationWrong:
       "`Recreate` kills all existing Pods before creating new ones. This causes downtime equal to the startup time of the new Pods. If the new version has a bug, you have zero running Pods until you roll back. This is only appropriate for workloads that can't run two versions simultaneously.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
-    sourceLabel: "Kubernetes docs: Deployment strategy",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+        label: "Kubernetes docs: Deployment strategy",
+      },
+    ],
   },
   {
     id: "kp-004",
@@ -231,8 +240,11 @@ spec:
       "A PodDisruptionBudget guarantees that at least 2 Pods remain available during voluntary disruptions like node upgrades, cluster autoscaling, or `kubectl drain`. The API server blocks eviction requests that would violate the budget.",
     explanationWrong:
       "Without a PDB, `kubectl drain` or a cluster autoscaler can evict all Pods simultaneously during node maintenance. This causes a complete outage even though you have 3 replicas, defeating the purpose of running multiple instances.",
-    sourceUrl:
-      "https://kubernetes.io/docs/tasks/run-application/configure-pdb/",
-    sourceLabel: "Kubernetes docs: PDB",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/tasks/run-application/configure-pdb/",
+        label: "Kubernetes docs: PDB",
+      },
+    ],
   },
 ];

@@ -41,8 +41,12 @@ paths:
       "An OpenAPI spec serves as both documentation and a machine-readable contract. Tools can validate requests against it, generate client SDKs, and render interactive docs automatically. Because it is the source of truth, it stays in sync with the actual API behavior.",
     explanationWrong:
       "Hand-written docs drift from reality almost immediately. There is no automated way to verify they match the code, so every schema change requires a manual doc update. Over time the docs become unreliable, and developers stop trusting them entirely.",
-    sourceUrl: "https://swagger.io/specification/",
-    sourceLabel: "OpenAPI Specification",
+    sources: [
+      {
+        url: "https://swagger.io/specification/",
+        label: "OpenAPI Specification",
+      },
+    ],
   },
   {
     id: "doc-002",
@@ -86,8 +90,12 @@ export function handleCreate(body: any) {
       "Zod validates data at runtime and infers TypeScript types from the same schema. You define the shape once and get both validation and type safety. Parse errors include detailed messages showing exactly which field failed and why.",
     explanationWrong:
       "Manual runtime checks are incomplete and error-prone. They miss edge cases (empty strings, wrong types, invalid formats), and the type assertion at the end bypasses the compiler. Every new field requires another hand-written check that someone might forget.",
-    sourceUrl: "https://zod.dev/",
-    sourceLabel: "Zod: TypeScript-first schema validation",
+    sources: [
+      {
+        url: "https://zod.dev/",
+        label: "Zod: TypeScript-first schema validation",
+      },
+    ],
   },
   {
     id: "doc-003",
@@ -118,8 +126,12 @@ app.get("/api/v1/users", (req, res) => {
       "Deprecation and Sunset headers give API consumers advance notice and a clear migration path. The Link header with rel='successor-version' points to the replacement endpoint. Clients can detect these headers and log warnings automatically, giving teams time to migrate.",
     explanationWrong:
       "Silently removing an endpoint breaks every client immediately with no explanation. Consumers have no way to prepare, and support teams get flooded with bug reports. Even a simple deprecation notice in docs is better than no warning at all.",
-    sourceUrl: "https://datatracker.ietf.org/doc/html/rfc8594",
-    sourceLabel: "RFC 8594: The Sunset HTTP Header Field",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/html/rfc8594",
+        label: "RFC 8594: The Sunset HTTP Header Field",
+      },
+    ],
   },
   {
     id: "doc-004",
@@ -158,8 +170,12 @@ async function getUsers(page: number, limit: number) {
       "Generated SDK clients stay in sync with the API spec automatically. When the spec changes, you regenerate the client and the compiler catches every call site that needs updating. This eliminates the entire class of bugs where the client and server disagree on types.",
     explanationWrong:
       "Hand-written clients require manual updates for every API change. The type assertion (as Promise<User[]>) is unchecked, so the types can silently drift from reality. With dozens of endpoints, keeping manual clients accurate becomes a full-time maintenance burden.",
-    sourceUrl: "https://heyapi.dev/",
-    sourceLabel: "Hey API: OpenAPI TypeScript client generator",
+    sources: [
+      {
+        url: "https://heyapi.dev/",
+        label: "Hey API: OpenAPI TypeScript client generator",
+      },
+    ],
   },
   {
     id: "doc-005",
@@ -214,8 +230,12 @@ async function getUsers(page: number, limit: number) {
       "Concrete examples in OpenAPI specs let developers understand the API at a glance without reading every schema definition. Tools like Swagger UI and Redoc render these examples inline, and they can be used to generate mock servers for testing.",
     explanationWrong:
       "A spec with only schema references forces consumers to mentally assemble what a real request looks like by navigating through nested $ref definitions. This slows down onboarding and increases the chance of integration mistakes.",
-    sourceUrl: "https://swagger.io/docs/specification/v3_0/adding-examples/",
-    sourceLabel: "Swagger: Adding Examples",
+    sources: [
+      {
+        url: "https://swagger.io/docs/specification/v3_0/adding-examples/",
+        label: "Swagger: Adding Examples",
+      },
+    ],
   },
   {
     id: "doc-006",
@@ -254,8 +274,12 @@ const interaction = {
       "Consumer-driven contracts let each client declare exactly what fields and formats it depends on. The provider verifies these contracts in CI, so breaking changes are caught before deployment. This catches the subtle mismatches that traditional integration tests miss.",
     explanationWrong:
       "Provider-only tests verify the API works in isolation but say nothing about what consumers actually use. A provider can rename a field, pass all its own tests, and still break every client. The gap between provider tests and real consumer expectations is where integration bugs hide.",
-    sourceUrl: "https://docs.pact.io/",
-    sourceLabel: "Pact: Consumer-Driven Contract Testing",
+    sources: [
+      {
+        url: "https://docs.pact.io/",
+        label: "Pact: Consumer-Driven Contract Testing",
+      },
+    ],
   },
   {
     id: "doc-007",
@@ -296,8 +320,12 @@ const interaction = {
       "A structured changelog with explicit breaking change sections and migration instructions lets consumers assess upgrade effort before starting. Listing deprecated endpoints with removal timelines gives teams a clear window to migrate without surprise breakage.",
     explanationWrong:
       "Vague changelogs like 'updated endpoints' and 'changed some response formats' force consumers to discover breaking changes by trial and error. Without migration instructions, each consumer has to reverse-engineer what changed and how to adapt, multiplying the upgrade cost across every team.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/",
-    sourceLabel: "Keep a Changelog",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/",
+        label: "Keep a Changelog",
+      },
+    ],
   },
   {
     id: "doc-008",
@@ -328,7 +356,11 @@ type User = components["schemas"]["User"];
       "Generating TypeScript types from the OpenAPI spec creates a single source of truth. When the API adds a role or renames a field, the generated types update and the compiler flags every call site that needs fixing. This moves integration errors from runtime to build time.",
     explanationWrong:
       "Manually maintained frontend types are a snapshot that drifts from reality with every API change. The compiler cannot warn you because the hand-written types always look valid. The bugs surface as undefined values, missing fields, or wrong enum variants in production.",
-    sourceUrl: "https://openapi-ts.dev/",
-    sourceLabel: "openapi-typescript: Generate TypeScript from OpenAPI",
+    sources: [
+      {
+        url: "https://openapi-ts.dev/",
+        label: "openapi-typescript: Generate TypeScript from OpenAPI",
+      },
+    ],
   },
 ];

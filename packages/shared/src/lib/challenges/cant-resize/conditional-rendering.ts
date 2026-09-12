@@ -37,8 +37,12 @@ export const conditionalRenderingChallenges: BaseChallenge[] = [
       "Rendering both and toggling with CSS `display` avoids the hydration flash from `useMediaQuery`. Both components exist in the DOM (good for SEO and accessibility), and the switch is instant because no JavaScript needs to run.",
     explanationWrong:
       "`useMediaQuery` returns `false` during SSR. On a mobile device, the server sends DesktopNav, then React hydrates and swaps to MobileNav, causing a visible flash. CSS display toggling eliminates this entirely.",
-    sourceUrl: "https://mui.com/system/display/#hiding-elements",
-    sourceLabel: "MUI: Hiding elements",
+    sources: [
+      {
+        url: "https://mui.com/system/display/#hiding-elements",
+        label: "MUI: Hiding elements",
+      },
+    ],
   },
   {
     id: "cr-002",
@@ -83,9 +87,12 @@ function Dashboard() {
       "When both versions are expensive (data fetching, chart rendering, heavy DOM), rendering both wastes resources. `useMediaQuery` with `defaultMatches: true` reduces the SSR flash. For heavy components, the hydration tradeoff is worth avoiding double the work.",
     explanationWrong:
       "Rendering both dashboards means both fetch data, both calculate charts, and both build their DOM trees. Only one is visible. For lightweight UI differences, CSS display is better, but for expensive components, conditional rendering saves real resources.",
-    sourceUrl:
-      "https://mui.com/material-ui/react-use-media-query/#server-side-rendering",
-    sourceLabel: "MUI: useMediaQuery SSR",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/react-use-media-query/#server-side-rendering",
+        label: "MUI: useMediaQuery SSR",
+      },
+    ],
   },
   {
     id: "cr-003",
@@ -141,8 +148,12 @@ function Dashboard() {
       "Hiding filters entirely on mobile removes functionality users need. A drawer provides the same filters in a mobile-friendly pattern called progressive disclosure. The filters are always accessible, just presented differently.",
     explanationWrong:
       "Removing filters on mobile means mobile users can't filter results at all. Responsive design isn't about removing features. It's about presenting them appropriately for the device. A drawer or bottom sheet is the mobile pattern for filters.",
-    sourceUrl: "https://m3.material.io/components/navigation-drawer/overview",
-    sourceLabel: "Material Design: Navigation drawer",
+    sources: [
+      {
+        url: "https://m3.material.io/components/navigation-drawer/overview",
+        label: "Material Design: Navigation drawer",
+      },
+    ],
   },
   {
     id: "cr-004",
@@ -199,9 +210,12 @@ function Dashboard() {
       "Share the component tree and use responsive props for the differences. Duplicating the entire page means every change needs updating in two places, event handlers fire twice, and the DOM is much larger. Only split when the differences are truly fundamental.",
     explanationWrong:
       "Two complete page trees means Header, ProductGrid, and Footer are mounted twice, resulting in double the DOM nodes, double the event listeners, and double the data fetching. Any bug fix or feature change must be applied to both copies.",
-    sourceUrl:
-      "https://mui.com/system/getting-started/usage/#responsive-values",
-    sourceLabel: "MUI: Responsive values",
+    sources: [
+      {
+        url: "https://mui.com/system/getting-started/usage/#responsive-values",
+        label: "MUI: Responsive values",
+      },
+    ],
   },
   {
     id: "cr-005",
@@ -246,8 +260,11 @@ function EditorPage() {
       "Dynamic imports with `next/dynamic` code-split each editor into its own chunk. Mobile users only download the mobile editor bundle. This is the correct use of `useMediaQuery`: when you need to avoid *loading* heavy code, not just hiding it with CSS. The hydration flash tradeoff is acceptable here because the alternative (loading both heavy bundles) is worse.",
     explanationWrong:
       "Static imports bundle both editors into the main JavaScript file. Mobile users download the entire desktop editor they'll never use. For heavy, device-specific components, dynamic imports save significant bundle size.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading",
-    sourceLabel: "Next.js: Lazy loading",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading",
+        label: "Next.js: Lazy loading",
+      },
+    ],
   },
 ];

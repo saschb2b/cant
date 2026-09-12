@@ -36,8 +36,12 @@ paint("RED");`,
       "String literal unions are erased at compile time, so they add nothing to the bundle. Plain strings from JSON or APIs match directly without conversion. You get the same autocomplete and type checking as enums, with less overhead.",
     explanationWrong:
       "String enums generate a runtime object that maps keys to values. This adds bundle size and requires importing the enum everywhere. When consuming JSON, you need to validate or convert string values into enum members, adding unnecessary friction.",
-    sourceUrl: "https://www.totaltypescript.com/concepts/unions-vs-enums",
-    sourceLabel: "Total TypeScript: Unions vs Enums",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/concepts/unions-vs-enums",
+        label: "Total TypeScript: Unions vs Enums",
+      },
+    ],
   },
   {
     id: "el-002",
@@ -73,9 +77,12 @@ setStatus("xyz");     // Error: not assignable`,
       "String literal unions only accept exact string values. There is no way to accidentally pass an invalid value. Numeric enums in TypeScript accept any number, which is a known design flaw that can lead to subtle bugs.",
     explanationWrong:
       "Numeric enums accept any number value, not just the defined members. `setStatus(999)` compiles without error even though there is no member with value 999. This is a TypeScript design limitation that makes numeric enums unreliable for input validation.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/enums.html#numeric-enums",
-    sourceLabel: "TypeScript Handbook: Numeric enums",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/enums.html#numeric-enums",
+        label: "TypeScript Handbook: Numeric enums",
+      },
+    ],
   },
   {
     id: "el-003",
@@ -115,9 +122,12 @@ const dir: Direction = Direction.Up;
       "`as const` objects provide named constants like enums but without the compatibility issues. You can iterate over values with `Object.values()`, and they work with `--isolatedModules` and all bundlers. The derived union type gives you the same compile-time safety.",
     explanationWrong:
       "`const enum` is inlined at compile time, which means the runtime object does not exist. This breaks `--isolatedModules` (required by most modern bundlers), prevents iteration over members, and causes issues with declaration files consumed by other packages.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/enums.html#const-enums",
-    sourceLabel: "TypeScript Handbook: const enums",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/enums.html#const-enums",
+        label: "TypeScript Handbook: const enums",
+      },
+    ],
   },
   {
     id: "el-004",
@@ -158,8 +168,12 @@ type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
       "An `as const` object is plain JavaScript, so it works everywhere without special TypeScript compilation. It provides the same namespace for values (`HttpMethod.GET`) and the same union type for function parameters. It also supports runtime operations like `Object.values(HttpMethod)`.",
     explanationWrong:
       "String enums are a TypeScript-specific construct that generates runtime code. They do not support `Object.values()` in the same ergonomic way and add complexity for libraries that need to interoperate with plain JavaScript. For string-based value sets, `as const` objects are more versatile.",
-    sourceUrl: "https://www.totaltypescript.com/concepts/as-const",
-    sourceLabel: "Total TypeScript: as const",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/concepts/as-const",
+        label: "Total TypeScript: as const",
+      },
+    ],
   },
   {
     id: "el-005",
@@ -198,9 +212,12 @@ type Route = (typeof ROUTES)[keyof typeof ROUTES];
       "`(typeof ROUTES)[keyof typeof ROUTES]` extracts all values from the `as const` object as a union type. When you add or remove a route, the `Route` type updates automatically. This single-source-of-truth pattern eliminates manual synchronization.",
     explanationWrong:
       'Manually writing the union means two places to update when routes change. If you add `contact: "/contact"` to the object but forget to update the type, TypeScript cannot catch routes that reference `"/contact"`. The derived approach prevents this class of bugs.',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/typeof-types.html",
-    sourceLabel: "TypeScript Handbook: typeof type operator",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/typeof-types.html",
+        label: "TypeScript Handbook: typeof type operator",
+      },
+    ],
   },
   {
     id: "el-006",
@@ -241,9 +258,12 @@ const data: User = await fetch("/api/user")
       'When your API sends string values like `"active"`, a string literal union matches those values directly. No conversion step is needed between the JSON response and your TypeScript types. This makes API integration simpler and less error-prone.',
     explanationWrong:
       "Enums create a layer of indirection between the API's string values and your code's enum values. You need to validate or convert every API response, and forgetting to do so means the value is typed as `string` instead of the enum. Unions eliminate this friction for string-based API contracts.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/enums.html#enums-at-compile-time",
-    sourceLabel: "TypeScript Handbook: Enums at compile time",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/enums.html#enums-at-compile-time",
+        label: "TypeScript Handbook: Enums at compile time",
+      },
+    ],
   },
   {
     id: "el-007",
@@ -290,7 +310,11 @@ class User {
       'The `--erasableSyntaxOnly` flag (TypeScript 5.8) ensures all TypeScript syntax can be removed without changing runtime behavior. This is required for Node.js type stripping and the future "types as comments" proposal. Unions replace enums, plain objects replace namespaces, and explicit assignments replace parameter properties.',
     explanationWrong:
       "Enums, namespaces, and parameter properties generate JavaScript code that does not exist in the original source. Tools that strip types (like Node.js 23+ and future browsers) cannot handle these constructs because removing them would change runtime behavior. The erasableSyntaxOnly flag catches these at compile time.",
-    sourceUrl: "https://www.totaltypescript.com/erasable-syntax-only",
-    sourceLabel: "Total TypeScript: Erasable Syntax Only",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/erasable-syntax-only",
+        label: "Total TypeScript: Erasable Syntax Only",
+      },
+    ],
   },
 ];

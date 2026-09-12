@@ -36,9 +36,12 @@ export const pullRequestsChallenges: BaseChallenge[] = [
       "Small, focused PRs are easier to review, faster to merge, and less likely to introduce hidden bugs. Reviewers can give meaningful feedback when the scope is narrow. Each PR also becomes a clean revert target if something goes wrong.",
     explanationWrong:
       "Large PRs overwhelm reviewers and often receive superficial approvals. Studies show that review quality drops significantly after 400 lines of changes. Breaking work into smaller PRs leads to more thorough reviews and faster iteration.",
-    sourceUrl:
-      "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
-    sourceLabel: "GitHub Docs: Best practices for pull requests",
+    sources: [
+      {
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
+        label: "GitHub Docs: Best practices for pull requests",
+      },
+    ],
   },
   {
     id: "pr-002",
@@ -77,9 +80,12 @@ with a retry mechanism.
       "A good PR description answers what changed, why it changed, and how it was tested. This context helps reviewers focus their attention and makes the PR a useful historical reference when someone investigates the code months later.",
     explanationWrong:
       "Vague descriptions force reviewers to reverse-engineer the intent from the diff. This wastes time and increases the risk of approving changes that do not actually solve the problem. The description is documentation for your future team.",
-    sourceUrl:
-      "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
-    sourceLabel: "GitHub Docs: Best practices for pull requests",
+    sources: [
+      {
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
+        label: "GitHub Docs: Best practices for pull requests",
+      },
+    ],
   },
   {
     id: "pr-003",
@@ -113,9 +119,12 @@ gh pr create --draft \\
       "Draft PRs signal that work is in progress while inviting early feedback. Opening a draft on day one lets teammates flag architectural concerns before you invest days of effort. It also makes your work visible to the team.",
     explanationWrong:
       "Waiting until the feature is complete before opening a PR risks wasted effort. If a reviewer disagrees with the fundamental approach, you may need to rewrite most of the code. Draft PRs catch these issues early with minimal cost.",
-    sourceUrl:
-      "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests",
-    sourceLabel: "GitHub Docs: Draft pull requests",
+    sources: [
+      {
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests",
+        label: "GitHub Docs: Draft pull requests",
+      },
+    ],
   },
   {
     id: "pr-004",
@@ -150,9 +159,12 @@ slow identity providers.
       "Using closing keywords like 'Closes #287' automatically closes the issue when the PR merges. Linking related issues creates a traceable chain from bug report to fix. This makes it easy to understand why a change was made months later.",
     explanationWrong:
       "Without issue links, there is no connection between the problem report and the fix. Team members searching for context must dig through commit history manually. GitHub's closing keywords automate issue management and create an audit trail.",
-    sourceUrl:
-      "https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue",
-    sourceLabel: "GitHub Docs: Linking a pull request to an issue",
+    sources: [
+      {
+        url: "https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue",
+        label: "GitHub Docs: Linking a pull request to an issue",
+      },
+    ],
   },
   {
     id: "pr-005",
@@ -192,8 +204,12 @@ gh pr create \\
       "Reviewing your own diff before requesting review catches trivial issues that waste reviewer time. Running lint and type checks locally prevents CI failures. This shows respect for your teammates' attention and keeps reviews focused on design and logic.",
     explanationWrong:
       "Pushing code with debug statements, TODO comments, and lint failures signals carelessness. Reviewers waste cycles on mechanical issues instead of providing valuable architectural feedback. A quick self-review takes five minutes and dramatically improves PR quality.",
-    sourceUrl: "https://google.github.io/eng-practices/review/developer/",
-    sourceLabel: "Google Engineering: The CL Author's Guide",
+    sources: [
+      {
+        url: "https://google.github.io/eng-practices/review/developer/",
+        label: "Google Engineering: The CL Author's Guide",
+      },
+    ],
   },
   {
     id: "pr-006",
@@ -228,9 +244,12 @@ git checkout -b feat/notif-ui
       "Stacked PRs break large features into reviewable layers. Each PR builds on the previous one and can be reviewed and merged independently. This keeps individual reviews small, reduces merge conflicts, and unblocks teammates who depend on lower layers.",
     explanationWrong:
       "A single massive branch accumulates merge conflicts and becomes nearly impossible to review thoroughly. Stacking PRs in layers lets you ship incremental progress, get faster feedback, and avoid the risk of a painful all-or-nothing merge at the end.",
-    sourceUrl:
-      "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
-    sourceLabel: "GitHub Docs: Best practices for pull requests",
+    sources: [
+      {
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
+        label: "GitHub Docs: Best practices for pull requests",
+      },
+    ],
   },
   {
     id: "pr-007",
@@ -248,9 +267,12 @@ git checkout -b feat/notif-ui
       "A focused PR with a small, well-scoped diff is far easier to review. Reviewers can understand the full context, spot edge cases, and give meaningful feedback. Studies show that review quality drops sharply beyond 400 lines of changes.",
     explanationWrong:
       "A giant PR with thousands of lines across dozens of files overwhelms reviewers. The typical result is a quick skim and an approval without catching subtle bugs. Large PRs also take longer to merge, increasing the chance of merge conflicts with other work.",
-    sourceUrl:
-      "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
-    sourceLabel: "GitHub Docs: Best practices for pull requests",
+    sources: [
+      {
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/best-practices-for-pull-requests",
+        label: "GitHub Docs: Best practices for pull requests",
+      },
+    ],
   },
   {
     id: "pr-008",
@@ -268,8 +290,11 @@ git checkout -b feat/notif-ui
       "A well-documented PR description provides the why behind the changes, links to related issues, and explains testing steps. This context lets reviewers focus on design and correctness rather than reverse-engineering intent from the diff alone.",
     explanationWrong:
       "A PR with no description or context forces reviewers to guess the purpose of the changes. They cannot tell if the code achieves its goal because they do not know what the goal is. Missing context leads to superficial reviews and missed bugs.",
-    sourceUrl:
-      "https://google.github.io/eng-practices/review/developer/cl-descriptions.html",
-    sourceLabel: "Google Engineering: Writing Good CL Descriptions",
+    sources: [
+      {
+        url: "https://google.github.io/eng-practices/review/developer/cl-descriptions.html",
+        label: "Google Engineering: Writing Good CL Descriptions",
+      },
+    ],
   },
 ];

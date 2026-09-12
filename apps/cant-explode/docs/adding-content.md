@@ -16,8 +16,7 @@ Add to the relevant file in `lib/learn/challenges/`:
   correctSide: "right",
   explanationCorrect: "Why the good code is better.",
   explanationWrong: "Why the bad code is problematic.",
-  sourceUrl: "https://...",
-  sourceLabel: "Source: Description",
+  sources: [{ url: "https://...", label: "Source: Description" }],
 }
 ```
 

@@ -30,9 +30,12 @@ export const responsiveImageChallenges: BaseChallenge[] = [
       "Setting `width` and `height` attributes lets the browser calculate the aspect ratio and reserve space before the image loads. Combined with `width: 100%` and `height: auto`, the image scales responsively while preventing Cumulative Layout Shift (CLS).",
     explanationWrong:
       "Without dimensions, the browser doesn't know how tall the image will be until it downloads. The page content shifts downward when the image loads, causing a poor CLS score and a jarring user experience.",
-    sourceUrl:
-      "https://web.dev/articles/optimize-cls#images-without-dimensions",
-    sourceLabel: "web.dev: Optimize CLS",
+    sources: [
+      {
+        url: "https://web.dev/articles/optimize-cls#images-without-dimensions",
+        label: "web.dev: Optimize CLS",
+      },
+    ],
   },
   {
     id: "ri-002",
@@ -66,8 +69,12 @@ export const responsiveImageChallenges: BaseChallenge[] = [
       "Next.js `Image` automatically generates `srcSet` with multiple resolutions, serves WebP/AVIF, lazy-loads by default, and prevents layout shift. The `sizes` prop tells the browser how wide the image will be at each viewport, so it downloads the right size.",
     explanationWrong:
       "A plain `<img>` serves the same 800px image to every device. A mobile user downloads 4x more pixels than needed. No lazy loading, no modern format negotiation, no srcSet. `next/image` handles all of this.",
-    sourceUrl: "https://nextjs.org/docs/app/api-reference/components/image",
-    sourceLabel: "Next.js: Image component",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/components/image",
+        label: "Next.js: Image component",
+      },
+    ],
   },
   {
     id: "ri-003",
@@ -115,9 +122,12 @@ export const responsiveImageChallenges: BaseChallenge[] = [
       "Art direction uses `<picture>` to serve different crops for different screens. A wide panoramic hero on desktop becomes a tall portrait crop on mobile, keeping the subject visible. `srcSet` alone only changes resolution, not composition.",
     explanationWrong:
       "A 1600x600 panoramic image on a 375px phone becomes a tiny strip where you can't see the subject. Art direction means changing the crop/composition, not just the resolution. Use `<picture>` when the image needs different framing at different sizes.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images#art_direction",
-    sourceLabel: "MDN: Art direction",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images#art_direction",
+        label: "MDN: Art direction",
+      },
+    ],
   },
   {
     id: "ri-004",
@@ -154,9 +164,12 @@ export const responsiveImageChallenges: BaseChallenge[] = [
       "The `sizes` attribute tells the browser how wide the image will display at each viewport width *before* CSS loads. With `100vw`, a card in a 3-column grid triggers downloading a full-width image. Accurate sizes lets the browser pick the right resolution from the srcSet.",
     explanationWrong:
       '`sizes="100vw"` tells the browser this image fills the viewport. But in a 3-column grid, each image is only ~33% of the viewport. The browser downloads a 1440px-wide image when a 480px-wide one would suffice, wasting 3x the bandwidth.',
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#sizes",
-    sourceLabel: "MDN: img sizes attribute",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#sizes",
+        label: "MDN: img sizes attribute",
+      },
+    ],
   },
   {
     id: "ri-005",
@@ -206,8 +219,11 @@ export const responsiveImageChallenges: BaseChallenge[] = [
       "Background images can't use `srcSet`, so media queries swap resolution manually. `image-set()` provides format negotiation (AVIF > WebP > JPEG). Mobile users get a 640px image instead of a 4K one, saving up to 10x the file size.",
     explanationWrong:
       "A 4K background image on a 375px phone downloads megabytes of unnecessary pixels. Unlike `<img srcSet>`, CSS `background-image` has no built-in resolution switching, so you must use media queries to serve appropriate sizes.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set",
-    sourceLabel: "MDN: image-set()",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set",
+        label: "MDN: image-set()",
+      },
+    ],
   },
 ];

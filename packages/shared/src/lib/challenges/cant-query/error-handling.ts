@@ -35,8 +35,12 @@ app.use((err, req, res, next) => {
       "RFC 7807 Problem Details provides a standardized error format with well-defined fields like type, title, status, detail, and instance. Clients can parse errors consistently across different APIs without guessing the shape of the response body.",
     explanationWrong:
       "Ad-hoc error objects with a single message string give clients no structured way to distinguish error types, map them to UI states, or build reliable retry logic. Every API ends up inventing its own format, forcing clients to write custom parsing for each one.",
-    sourceUrl: "https://www.rfc-editor.org/rfc/rfc7807",
-    sourceLabel: "RFC 7807: Problem Details for HTTP APIs",
+    sources: [
+      {
+        url: "https://www.rfc-editor.org/rfc/rfc7807",
+        label: "RFC 7807: Problem Details for HTTP APIs",
+      },
+    ],
   },
   {
     id: "err-002",
@@ -77,9 +81,12 @@ app.post("/users", (req, res) => {
       "400 Bad Request tells the client that the problem is with its input, not the server. This distinction matters because clients know they should fix the request before retrying. Monitoring systems also rely on 4xx vs 5xx to separate client mistakes from server failures.",
     explanationWrong:
       "Using 500 Internal Server Error for validation failures conflates client mistakes with actual server bugs. Alerting systems will fire false alarms, retry logic will pointlessly retry requests that can never succeed, and clients have no signal that they need to fix their input.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/400",
-    sourceLabel: "MDN: 400 Bad Request",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/400",
+        label: "MDN: 400 Bad Request",
+      },
+    ],
   },
   {
     id: "err-003",
@@ -117,9 +124,12 @@ app.use((err, req, res, next) => {
       "Safe error responses hide implementation details (stack traces, SQL queries, hostnames) while providing a trace ID so support teams can look up the full error in server logs. This prevents attackers from gathering information about your infrastructure.",
     explanationWrong:
       "Exposing stack traces, SQL statements, and database hostnames in API responses is a security vulnerability. Attackers can use this information to map your infrastructure, identify vulnerable dependencies, and craft targeted attacks against your database.",
-    sourceUrl:
-      "https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html",
-    sourceLabel: "OWASP: Error Handling Cheat Sheet",
+    sources: [
+      {
+        url: "https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html",
+        label: "OWASP: Error Handling Cheat Sheet",
+      },
+    ],
   },
   {
     id: "err-004",
@@ -166,8 +176,12 @@ async function charge(amount: number) {
       "An idempotency key generated once before the retry loop ensures the server processes the payment exactly once, even if the client sends multiple requests. The server checks the key and returns the original response for duplicate requests instead of charging again.",
     explanationWrong:
       "Retrying a POST request without an idempotency key risks duplicate side effects. If the first request succeeded but the response was lost due to a network error, the retry will create a second charge. For financial operations this can mean double-billing a customer.",
-    sourceUrl: "https://datatracker.ietf.org/doc/rfc9110/",
-    sourceLabel: "RFC 9110: HTTP Semantics (Idempotent Methods)",
+    sources: [
+      {
+        url: "https://datatracker.ietf.org/doc/rfc9110/",
+        label: "RFC 9110: HTTP Semantics (Idempotent Methods)",
+      },
+    ],
   },
   {
     id: "err-005",
@@ -213,9 +227,12 @@ async function fetchData(url: string) {
       "AbortController actually cancels the underlying HTTP request when the timeout fires. The browser tears down the TCP connection and frees resources immediately. The finally block cleans up the timer if the fetch completes before the timeout.",
     explanationWrong:
       "Promise.race resolves the outer promise on timeout, but the fetch request keeps running in the background. The connection stays open, the response body is still being downloaded, and the callback will eventually resolve with no one listening. This wastes bandwidth and can cause memory leaks.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
-    sourceLabel: "MDN: AbortController",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
+        label: "MDN: AbortController",
+      },
+    ],
   },
   {
     id: "err-006",
@@ -267,9 +284,12 @@ async function getPrice(id: string) {
       "A circuit breaker stops sending requests to a service that has failed repeatedly. After a threshold of failures, the circuit opens and subsequent calls return a fallback immediately. This prevents cascading failures, reduces latency for users, and gives the downstream service time to recover.",
     explanationWrong:
       "Calling a failing service on every request wastes time waiting for inevitable timeouts. If the service is down, every request adds load to an already struggling system, increases response times for your users, and can cause cascading failures across your infrastructure.",
-    sourceUrl:
-      "https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker",
-    sourceLabel: "Azure: Circuit Breaker Pattern",
+    sources: [
+      {
+        url: "https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker",
+        label: "Azure: Circuit Breaker Pattern",
+      },
+    ],
   },
   {
     id: "err-007",
@@ -321,9 +341,12 @@ app.post("/api/users/bulk", async (req, res) => {
       "Promise.allSettled processes every item regardless of individual failures, and the response includes per-item status. HTTP 207 Multi-Status signals that the response contains mixed results. Clients can identify which items succeeded and retry only the failures.",
     explanationWrong:
       "Promise.all rejects on the first failure and discards all results, including items that succeeded. The client has no way to know which items were created and which were not. Re-submitting the entire batch risks duplicating the items that already succeeded.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled",
-    sourceLabel: "MDN: Promise.allSettled()",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled",
+        label: "MDN: Promise.allSettled()",
+      },
+    ],
   },
   {
     id: "err-008",
@@ -370,9 +393,12 @@ app.use(rateLimiter({
       "Including the Retry-After header and rate limit metadata (limit, remaining, reset) lets clients implement smart backoff automatically. Well-behaved clients read these headers to schedule their next request precisely, reducing unnecessary retries and server load.",
     explanationWrong:
       "A bare 429 response without Retry-After or rate limit headers forces clients to guess when they can retry. Most will use aggressive exponential backoff or fixed intervals, leading to either thundering herd problems when all clients retry simultaneously or unnecessarily long delays.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/429",
-    sourceLabel: "MDN: 429 Too Many Requests",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/429",
+        label: "MDN: 429 Too Many Requests",
+      },
+    ],
   },
   {
     id: "err-009",
@@ -415,8 +441,11 @@ app.use(rateLimiter({
       "Adding random jitter spreads retry attempts across time. When a server goes down and 1,000 clients all start retrying, pure exponential backoff makes them all retry at exactly the same intervals (1s, 2s, 4s), creating repeated traffic spikes. Jitter randomizes the timing so retries arrive gradually, giving the server a smooth recovery window instead of repeated bursts.",
     explanationWrong:
       "Pure exponential backoff without jitter causes a thundering herd problem. All clients that failed at the same moment will retry at the same moment (after 1s, then 2s, then 4s). Each synchronized retry wave can re-overwhelm the recovering server, potentially causing a cycle of failures that takes much longer to resolve.",
-    sourceUrl:
-      "https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/",
-    sourceLabel: "AWS: Exponential Backoff and Jitter",
+    sources: [
+      {
+        url: "https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/",
+        label: "AWS: Exponential Backoff and Jitter",
+      },
+    ],
   },
 ];

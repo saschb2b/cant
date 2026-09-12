@@ -23,8 +23,12 @@ to the login page"`,
       'Git itself uses imperative mood in generated messages like "Merge branch" and "Revert commit". Writing "Add" instead of "Added" keeps your history consistent with these conventions.\n\nThink of the subject line as completing the sentence: "If applied, this commit will **add user authentication**".',
     explanationWrong:
       'Past tense ("Added", "Fixed", "Changed") describes what you did. Imperative mood ("Add", "Fix", "Change") describes what the commit does when applied. The imperative form is shorter, more consistent with git\'s own messages, and reads naturally in changelogs and release notes.',
-    sourceUrl: "https://cbea.ms/git-commit/#imperative",
-    sourceLabel: "How to Write a Git Commit Message: Use the Imperative Mood",
+    sources: [
+      {
+        url: "https://cbea.ms/git-commit/#imperative",
+        label: "How to Write a Git Commit Message: Use the Imperative Mood",
+      },
+    ],
   },
   {
     id: "cm-002",
@@ -48,8 +52,12 @@ when user session expires"`,
       "Conventional Commits uses structured prefixes like `feat:`, `fix:`, `chore:`, `docs:`, and `refactor:` followed by a colon and space. This format enables automated changelog generation, semantic versioning, and consistent filtering.\n\nTools like `semantic-release` and `commitlint` parse these prefixes to determine version bumps automatically.",
     explanationWrong:
       "Free-form prefixes like `bugfix/` are not part of any standard convention. They cannot be parsed by tooling, vary between developers, and do not map to semantic versioning. Conventional Commits provides a well-defined specification that the entire ecosystem supports.",
-    sourceUrl: "https://www.conventionalcommits.org/en/v1.0.0/",
-    sourceLabel: "Conventional Commits Specification",
+    sources: [
+      {
+        url: "https://www.conventionalcommits.org/en/v1.0.0/",
+        label: "Conventional Commits Specification",
+      },
+    ],
   },
   {
     id: "cm-003",
@@ -77,9 +85,12 @@ Closes #1842"`,
       "A blank line between subject and body is required by git's own formatting tools. Commands like `git log --oneline`, `git shortlog`, and `git format-patch` all rely on this separation to display the subject line alone.\n\nThe body provides context for reviewers. The subject provides a scannable summary for everyone else.",
     explanationWrong:
       "Cramming everything into a single line produces an unreadable wall of text in `git log --oneline`. Git treats the first line as the subject and everything after the blank line as the body. Without that separation, tools cannot distinguish between the summary and the details.",
-    sourceUrl: "https://cbea.ms/git-commit/#separate",
-    sourceLabel:
-      "How to Write a Git Commit Message: Separate Subject from Body",
+    sources: [
+      {
+        url: "https://cbea.ms/git-commit/#separate",
+        label: "How to Write a Git Commit Message: Separate Subject from Body",
+      },
+    ],
   },
   {
     id: "cm-004",
@@ -105,8 +116,12 @@ src/lib/validation/."`,
       "The widely adopted convention is to keep subject lines under 50 characters and wrap body text at 72 characters. This ensures readability in `git log`, terminal output, email patches, and GitHub's commit list.\n\nGitHub truncates subjects longer than 72 characters with an ellipsis, hiding important context.",
     explanationWrong:
       "A 150-character subject line wraps awkwardly in every tool that displays commits. Terminal windows, GitHub's commit list, and email notifications all assume short subjects. Move the details into the body where they have room to breathe and can be formatted with line breaks.",
-    sourceUrl: "https://cbea.ms/git-commit/#limit-50",
-    sourceLabel: "How to Write a Git Commit Message: Limit the Subject Line",
+    sources: [
+      {
+        url: "https://cbea.ms/git-commit/#limit-50",
+        label: "How to Write a Git Commit Message: Limit the Subject Line",
+      },
+    ],
   },
   {
     id: "cm-005",
@@ -130,8 +145,12 @@ in pagination offset calculation"`,
       'A good commit message answers **why** the change was made. "fix stuff" tells you nothing. Six months from now, when you run `git blame` on a confusing line, a descriptive message saves you from re-reading the entire diff to understand the intent.\n\nSpecific messages also make `git log --grep` useful for finding related changes.',
     explanationWrong:
       'Messages like "fix stuff", "wip", "updates", and "misc changes" provide zero information to future readers. They make `git bisect` painful, code review harder, and changelogs useless. Every commit message is documentation for your future self and your teammates.',
-    sourceUrl: "https://cbea.ms/git-commit/#why-not-how",
-    sourceLabel: "How to Write a Git Commit Message",
+    sources: [
+      {
+        url: "https://cbea.ms/git-commit/#why-not-how",
+        label: "How to Write a Git Commit Message",
+      },
+    ],
   },
   {
     id: "cm-006",
@@ -163,8 +182,12 @@ Closes #2104"`,
       "The scope in `fix(auth)` tells you which module is affected without opening the diff. The body explains the root cause, the fix, and references the issue. This level of detail makes `git log --grep` and `git bisect` genuinely useful.\n\nA scope like `(code)` is meaningless because all commits change code.",
     explanationWrong:
       'The scope `(code)` adds no information since every commit touches code. The subject "fix the bug" repeats the prefix, and the body says "fixed a bug" a third time without explaining what the bug was. Good commit messages describe the problem, the cause, and the solution.',
-    sourceUrl: "https://www.conventionalcommits.org/en/v1.0.0/#summary",
-    sourceLabel: "Conventional Commits: Summary",
+    sources: [
+      {
+        url: "https://www.conventionalcommits.org/en/v1.0.0/#summary",
+        label: "Conventional Commits: Summary",
+      },
+    ],
   },
   {
     id: "cm-007",
@@ -182,7 +205,11 @@ Closes #2104"`,
       "A well-written commit message uses a conventional prefix, stays concise, and explains the intent of the change. This makes the git history scannable and useful for debugging, reviewing, and generating changelogs automatically.",
     explanationWrong:
       "Vague or poorly formatted commit messages provide no context about what changed or why. They make git log, git blame, and git bisect far less useful. Taking a few extra seconds to write a clear message pays off every time someone reads the history.",
-    sourceUrl: "https://cbea.ms/git-commit/",
-    sourceLabel: "How to Write a Git Commit Message",
+    sources: [
+      {
+        url: "https://cbea.ms/git-commit/",
+        label: "How to Write a Git Commit Message",
+      },
+    ],
   },
 ];

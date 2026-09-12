@@ -33,8 +33,12 @@ export const acidStrengthChallenges: BaseChallenge[] = [
       "HCl is a much stronger acid than HF in water. Although fluorine is more electronegative, the H-F bond is significantly stronger (568 vs 431 kJ/mol), making it much harder to break. Bond strength dominates over electronegativity for this comparison.",
     explanationWrong:
       "Despite fluorine being the most electronegative element, HF is a weak acid (pKa 3.17) because the very strong H-F bond resists dissociation in water. HCl dissociates completely and is classified as a strong acid.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Hydrofluoric_acid#Acidity",
-    sourceLabel: "Wikipedia: Hydrofluoric acid, Acidity",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Hydrofluoric_acid#Acidity",
+        label: "Wikipedia: Hydrofluoric acid, Acidity",
+      },
+    ],
   },
   {
     id: "as-002",
@@ -68,8 +72,12 @@ export const acidStrengthChallenges: BaseChallenge[] = [
       "Acetic acid (pKa 4.76) is far more acidic than ethanol (pKa ~16). The acetate conjugate base is stabilized by resonance delocalization of the negative charge across two equivalent oxygen atoms.",
     explanationWrong:
       "Ethanol is a very weak acid because its conjugate base, ethoxide, has the negative charge localized on a single oxygen atom with no resonance stabilization. This makes deprotonation much less favorable.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Acetic_acid#Acidity_and_basicity",
-    sourceLabel: "Wikipedia: Acetic acid, Acidity",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Acetic_acid#Acidity_and_basicity",
+        label: "Wikipedia: Acetic acid, Acidity",
+      },
+    ],
   },
   {
     id: "as-003",
@@ -103,8 +111,12 @@ export const acidStrengthChallenges: BaseChallenge[] = [
       "Phenol is about a million times more acidic than cyclohexanol. The phenoxide conjugate base is stabilized by delocalization of the negative charge into the aromatic ring through resonance.",
     explanationWrong:
       "Cyclohexanol lacks an aromatic ring, so its conjugate base cannot delocalize the negative charge. The resulting cyclohexanoxide ion is much less stable than phenoxide, making cyclohexanol a weaker acid.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Phenol#Acidity",
-    sourceLabel: "Wikipedia: Phenol, Acidity",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Phenol#Acidity",
+        label: "Wikipedia: Phenol, Acidity",
+      },
+    ],
   },
   {
     id: "as-004",
@@ -138,8 +150,11 @@ export const acidStrengthChallenges: BaseChallenge[] = [
       "Sulfuric acid is a much stronger acid than phosphoric acid. Sulfur is more electronegative than phosphorus and has a higher oxidation state in H₂SO₄, which stabilizes the conjugate base more effectively through charge delocalization.",
     explanationWrong:
       "Phosphoric acid is a moderate-strength acid (pKa₁ = 2.15) but not a strong acid. It does not fully dissociate in water, unlike sulfuric acid which completely donates its first proton.",
-    sourceUrl:
-      "https://en.wikipedia.org/wiki/Sulfuric_acid#Physical_properties",
-    sourceLabel: "Wikipedia: Sulfuric acid",
+    sources: [
+      {
+        url: "https://en.wikipedia.org/wiki/Sulfuric_acid#Physical_properties",
+        label: "Wikipedia: Sulfuric acid",
+      },
+    ],
   },
 ];

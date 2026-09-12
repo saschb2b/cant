@@ -65,8 +65,7 @@ describe("buildSearchItems", () => {
     correctSide: "right",
     explanationCorrect: "Mobile-first scales up cleanly. It avoids overrides.",
     explanationWrong: "Desktop-first forces undoing styles.",
-    sourceUrl: "https://example.com",
-    sourceLabel: "MDN",
+    sources: [{ url: "https://example.com", label: "MDN" }],
   };
 
   const visualChallenge: BaseChallenge = {
@@ -83,8 +82,7 @@ describe("buildSearchItems", () => {
     correctSide: "right",
     explanationCorrect: "Spaced forms are easier to scan.",
     explanationWrong: "Cramped forms hide structure.",
-    sourceUrl: "https://example.com",
-    sourceLabel: "NN/g",
+    sources: [{ url: "https://example.com", label: "NN/g" }],
   };
 
   const config = {

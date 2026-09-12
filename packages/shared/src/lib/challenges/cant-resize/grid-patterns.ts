@@ -37,9 +37,12 @@ export const gridPatternChallenges: BaseChallenge[] = [
       "`auto-fill` with `minmax(250px, 1fr)` creates as many columns as fit, each at least 250px wide, growing to fill space. Three columns on desktop, two on tablet, one on mobile, all with zero media queries. The grid responds to its container, not the viewport.",
     explanationWrong:
       "Hardcoded `1fr 1fr 1fr` always creates three columns. On a 320px phone, each column is ~100px wide, which is far too narrow. The media query at 768px is a bandaid: the grid should naturally adapt to available space.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat#auto-fill",
-    sourceLabel: "MDN: repeat(auto-fill)",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat#auto-fill",
+        label: "MDN: repeat(auto-fill)",
+      },
+    ],
   },
   {
     id: "gp-002",
@@ -76,9 +79,12 @@ export const gridPatternChallenges: BaseChallenge[] = [
       "`auto-fit` collapses empty tracks to 0px, so the remaining items stretch via `1fr` to fill the full container width. With 2 items in a 1200px container, `auto-fit` gives two ~600px items. Use `auto-fit` when you want items to expand to fill available space.",
     explanationWrong:
       "`auto-fill` creates as many tracks as can fit, even if some are empty. These empty tracks still participate in the `1fr` distribution, so items share the space with invisible empty columns. The visual result: items don't stretch to fill the row. Use `auto-fill` when you want a consistent grid structure regardless of item count.",
-    sourceUrl:
-      "https://css-tricks.com/auto-sizing-columns-css-grid-auto-fill-vs-auto-fit/",
-    sourceLabel: "CSS-Tricks: auto-fill vs auto-fit",
+    sources: [
+      {
+        url: "https://css-tricks.com/auto-sizing-columns-css-grid-auto-fill-vs-auto-fit/",
+        label: "CSS-Tricks: auto-fill vs auto-fit",
+      },
+    ],
   },
   {
     id: "gp-003",
@@ -128,9 +134,12 @@ export const gridPatternChallenges: BaseChallenge[] = [
       "`subgrid` aligns the card's internal rows (header, body, footer) across all cards in the same grid row. Every card's footer sits at the same vertical position regardless of content height. This is what `margin-top: auto` approximates but can't guarantee across siblings.",
     explanationWrong:
       "`margin-top: auto` pushes the footer down within each card, but cards in the same row still have different internal proportions. The header of one card might be 2 lines while another is 1, and subgrid ensures these internal rows align across the grid.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid",
-    sourceLabel: "MDN: Subgrid",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid",
+        label: "MDN: Subgrid",
+      },
+    ],
   },
   {
     id: "gp-004",
@@ -181,9 +190,12 @@ export const gridPatternChallenges: BaseChallenge[] = [
       "Named grid areas make the layout intent readable at a glance because you can see the visual structure in the CSS. Reordering with `grid-template-areas` is explicit about the new arrangement, while `order` just shifts items without showing the full picture.",
     explanationWrong:
       "`order` rearranges items but doesn't convey the intended layout shape. With named areas, any developer can look at the `grid-template-areas` string and immediately see \"main on top, sidebar below\". It's a visual diagram in CSS.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas",
-    sourceLabel: "MDN: grid-template-areas",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas",
+        label: "MDN: grid-template-areas",
+      },
+    ],
   },
   {
     id: "gp-005",
@@ -227,7 +239,11 @@ export const gridPatternChallenges: BaseChallenge[] = [
       "The 3-column grid creates automatic gutters (outer `1fr` columns) with content centered in the middle column. `.full-bleed` spans all columns. No `100vw` scrollbar issues, no negative margin hacks, and it works inside any container.",
     explanationWrong:
       "`100vw` includes the scrollbar width on Windows, causing horizontal overflow. The `calc(-50vw + 50%)` hack is fragile and breaks inside flex/grid containers. It also doesn't account for scrollbars. The grid approach is robust and readable.",
-    sourceUrl: "https://www.joshwcomeau.com/css/full-bleed/",
-    sourceLabel: "Josh Comeau: Full-bleed layout",
+    sources: [
+      {
+        url: "https://www.joshwcomeau.com/css/full-bleed/",
+        label: "Josh Comeau: Full-bleed layout",
+      },
+    ],
   },
 ];

@@ -41,9 +41,12 @@ function Badge({
       "`defaultProps` is deprecated in React 19 and will be removed. ES6 destructuring defaults are type-safe, colocated with the function, and work with TypeScript out of the box. Bonus: `@default` JSDoc tags document the defaults in IDE hover tooltips.",
     explanationWrong:
       "`defaultProps` is a legacy pattern from class components. It's deprecated in React 19, doesn't benefit from TypeScript inference, and separates defaults from where they're used. Use destructuring defaults instead. They're the modern standard.",
-    sourceUrl:
-      "https://react.dev/blog/2024/04/25/react-19#removed-deprecated-react-apis",
-    sourceLabel: "React 19: Removed Deprecated APIs",
+    sources: [
+      {
+        url: "https://react.dev/blog/2024/04/25/react-19#removed-deprecated-react-apis",
+        label: "React 19: Removed Deprecated APIs",
+      },
+    ],
   },
   {
     id: "dv-002",
@@ -82,9 +85,12 @@ function Badge({
       'Destructuring defaults only apply when the value is `undefined`, which is exactly what "not passed" means in React.\n\nThe `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
     explanationWrong:
       'The `||` operator treats `0`, `""`, and `false` as falsy, so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.',
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
-    sourceLabel: "MDN: Destructuring Default Values",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
+        label: "MDN: Destructuring Default Values",
+      },
+    ],
   },
   {
     id: "dv-003",
@@ -135,9 +141,12 @@ function Badge({
       'Destructuring defaults apply when a prop is `undefined`, which is exactly what "not passed" means in React. This eliminates the intermediate variables and makes defaults visible in the function signature. Any developer reading the code instantly sees the fallback values.',
     explanationWrong:
       "Using `??` in the function body works correctly (unlike `||`), but it buries defaults inside the implementation. Destructuring defaults put them right in the signature where they're most discoverable. Compare: scanning one line vs reading through the function body to find each fallback.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
-    sourceLabel: "MDN: Destructuring Default Values",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
+        label: "MDN: Destructuring Default Values",
+      },
+    ],
   },
   {
     id: "dv-004",
@@ -183,9 +192,12 @@ function DataGrid({
       "Inline `= {}`, `= []`, and `= { ... }` create **new object references on every render**. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time.\n\nModule-level constants are created once and have stable references.\n\n**Caveat:** Shared constants can be mutated by code that receives them. If that's a concern, `Object.freeze()` the defaults or create per-instance stable references with `useRef`.",
     explanationWrong:
       "Every render where `filters` isn't passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing the effect to re-run on every render. Hoisting defaults to module scope gives them stable identity.\n\n**Caveat:** Shared module-level constants could be mutated by consumers, causing collateral damage across all component instances. `Object.freeze()` guards against this.",
-    sourceUrl:
-      "https://react.dev/reference/react/useMemo#every-time-my-component-renders-the-calculation-in-usememo-re-runs",
-    sourceLabel: "React Docs: useMemo troubleshooting",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/useMemo#every-time-my-component-renders-the-calculation-in-usememo-re-runs",
+        label: "React Docs: useMemo troubleshooting",
+      },
+    ],
   },
   {
     id: "dv-005",
@@ -246,8 +258,11 @@ function FormField({
       "Default callbacks eliminate `?.()` scattered throughout the component. This is especially valuable when a callback is used in multiple places. Module-level defaults also provide stable references for dependency arrays.\n\n**Tradeoff:** If you conditionally render UI based on whether a callback was passed (e.g., showing a delete button only when `onDelete` is provided), keep it `undefined`. A `noop` default would hide that signal. Use defaults for callbacks you always want to *call*, not ones you want to *check*.",
     explanationWrong:
       "Optional chaining (`validate?.(value)`, `onBlur?.()`) is concise and perfectly fine for single call sites. But when multiple optional callbacks are used in several places, defaults reduce repetition and provide stable references for hooks.\n\n**Tradeoff:** Don't default callbacks you check to conditionally render UI, e.g., only showing a delete button when `onDelete` is passed. In that case, `undefined` is the right signal.",
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop",
-    sourceLabel: "React Docs: Default Prop Values",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop",
+        label: "React Docs: Default Prop Values",
+      },
+    ],
   },
 ];

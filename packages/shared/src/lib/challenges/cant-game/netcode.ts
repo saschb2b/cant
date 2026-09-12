@@ -51,8 +51,12 @@ function onPlayerInput(
       "A server-authoritative model treats clients as input devices: they send button presses, not positions. The server runs the simulation, validates every action, and broadcasts the canonical state. Cheating is limited to information the server chooses to share. Client-side prediction keeps the game feeling responsive despite the round trip.",
     explanationWrong:
       "Trusting the client means any player with a modified client can teleport, give themselves infinite health, or move at any speed. The server has no ground truth to compare against, so there is no reliable way to detect or prevent cheating. This is why nearly every competitive multiplayer game uses server authority.",
-    sourceUrl: "https://gafferongames.com/post/client_server_connection/",
-    sourceLabel: "Gaffer On Games: Client Server Connection",
+    sources: [
+      {
+        url: "https://gafferongames.com/post/client_server_connection/",
+        label: "Gaffer On Games: Client Server Connection",
+      },
+    ],
   },
   {
     id: "net-002",
@@ -72,7 +76,11 @@ function onPlayerInput(
       "Entity interpolation renders remote entities slightly in the past, smoothly blending between two known server states. Since both endpoints are real server snapshots, the result is always accurate. The 100ms delay is barely perceptible but provides enough buffer to absorb network jitter. This is how Source Engine, Overwatch, and most competitive games handle remote entities.",
     explanationWrong:
       "Snapping to the latest server position creates visible teleporting every time a network update arrives. At 20 ticks per second, entities move in 50ms jerks. Increasing the tick rate helps but wastes bandwidth. Extrapolation (predicting forward) can overshoot and cause rubber-banding. Interpolation between known states avoids both problems.",
-    sourceUrl: "https://gafferongames.com/post/snapshot_interpolation/",
-    sourceLabel: "Gaffer On Games: Snapshot Interpolation",
+    sources: [
+      {
+        url: "https://gafferongames.com/post/snapshot_interpolation/",
+        label: "Gaffer On Games: Snapshot Interpolation",
+      },
+    ],
   },
 ];

@@ -9,8 +9,12 @@ const challenge = {
     "Mobile-first starts with the simplest layout and adds complexity as space allows, so each breakpoint only adds what it needs.",
   explanationWrong:
     "Desktop-first forces you to undo styles at every breakpoint, so the smallest screens carry the most overrides.",
-  sourceUrl: "https://developer.mozilla.org/en-US/docs/Learn/CSS",
-  sourceLabel: "MDN: Mobile-first responsive design",
+  sources: [
+    {
+      url: "https://developer.mozilla.org/en-US/docs/Learn/CSS",
+      label: "MDN: Mobile-first responsive design",
+    },
+  ],
 };
 
 const meta: Meta<typeof LearnExplanation> = {
@@ -86,5 +90,21 @@ export const CustomLabels: Story = {
 export const WithoutSuggestFix: Story = {
   args: {
     githubUrl: undefined,
+  },
+};
+
+/** Two references render as separate links, e.g. React docs plus Next.js docs. */
+export const MultipleSources: Story = {
+  args: {
+    challenge: {
+      ...challenge,
+      sources: [
+        ...challenge.sources,
+        {
+          url: "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+          label: "Next.js Docs: Server and Client Components",
+        },
+      ],
+    },
   },
 };

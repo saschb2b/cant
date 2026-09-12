@@ -41,8 +41,12 @@ export const changelogsChallenges: BaseChallenge[] = [
       "The [Keep a Changelog](https://keepachangelog.com) format groups entries by version and change type: Added, Changed, Deprecated, Removed, Fixed, and Security. This structure lets users quickly find what matters to them.\n\nA flat bullet list mixes features, fixes, and removals with no version boundaries, making it impossible to know what shipped when.",
     explanationWrong:
       "An unstructured list of changes gives no indication of which version introduced each change. Users upgrading from 1.0 to 1.2 cannot tell which changes affect them. The Keep a Changelog format solves this by organizing entries under version headings with categorized sections.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/",
-    sourceLabel: "Keep a Changelog",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/",
+        label: "Keep a Changelog",
+      },
+    ],
   },
   {
     id: "cl-002",
@@ -85,8 +89,12 @@ export const changelogsChallenges: BaseChallenge[] = [
       "An `[Unreleased]` section at the top of the changelog collects changes that have been merged but not yet released. When release day comes, you rename it to the new version number and add the date.\n\nUsing a version number with `TBD` as the date implies the version is decided before the scope is finalized, which can lead to incorrect semver bumps.",
     explanationWrong:
       "Assigning a version number before the release is finalized can cause problems. If a breaking change is merged later, you would need to change `1.3.0` to `2.0.0`. The `[Unreleased]` convention avoids premature versioning and makes it clear these changes are not yet shipped.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/#effort",
-    sourceLabel: "Keep a Changelog: Effort",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/#effort",
+        label: "Keep a Changelog: Effort",
+      },
+    ],
   },
   {
     id: "cl-003",
@@ -120,8 +128,12 @@ git log --oneline
       "Conventional Commits follow a structured format (`type: description`) that tools like `conventional-changelog` and `semantic-release` can parse automatically. The type prefix determines which changelog section the entry belongs to: `feat` goes under Added, `fix` goes under Fixed.\n\nThe `!` after the type signals a breaking change, which triggers a major version bump.",
     explanationWrong:
       'Freeform commit messages like "fixed the login thing" and "updated stuff" cannot be parsed by changelog generators. There is no way to automatically determine whether a commit is a feature, fix, or breaking change. Conventional Commits provide the structure that automation requires.',
-    sourceUrl: "https://www.conventionalcommits.org/en/v1.0.0/",
-    sourceLabel: "Conventional Commits",
+    sources: [
+      {
+        url: "https://www.conventionalcommits.org/en/v1.0.0/",
+        label: "Conventional Commits",
+      },
+    ],
   },
   {
     id: "cl-004",
@@ -159,8 +171,12 @@ git log --oneline
       "Linking to pull requests and issues gives readers a direct path to the discussion, code changes, and context behind each entry. When a user encounters a regression, they can trace it back to the exact PR that introduced the change.\n\nPlain text entries require searching through the repository to find related context.",
     explanationWrong:
       "Changelog entries without links are a dead end. If someone needs more detail about a change, they must search through commit history, PR titles, and issue trackers manually. Links make the changelog a navigable document instead of a flat summary.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/",
-    sourceLabel: "Keep a Changelog",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/",
+        label: "Keep a Changelog",
+      },
+    ],
   },
   {
     id: "cl-005",
@@ -198,8 +214,12 @@ git log --oneline
       "ISO 8601 format (YYYY-MM-DD) is unambiguous worldwide. The date `03/06/2025` could mean March 6th (US) or June 3rd (most other countries). `2025-03-06` can only mean March 6th, 2025.\n\nISO 8601 also sorts chronologically as plain text, which is useful for tooling and scripting.",
     explanationWrong:
       "The MM/DD/YYYY format is ambiguous outside the United States. `03/06/2025` is interpreted as June 3rd in Europe and much of the world. For an open source project with international contributors and users, ISO 8601 (YYYY-MM-DD) eliminates this confusion entirely.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/",
-    sourceLabel: "Keep a Changelog",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/",
+        label: "Keep a Changelog",
+      },
+    ],
   },
   {
     id: "cl-006",
@@ -240,8 +260,12 @@ git log --oneline
       "A changelog is written for **users**, not developers. Users do not care about CI pipeline changes, linting fixes, or dependency bumps. They need to know what changed in behavior, what broke, and how to upgrade.\n\nDumping the git log into a changelog drowns the important changes in noise. Curate the entries to highlight user-facing impact.",
     explanationWrong:
       "Pasting raw git log output into a changelog forces users to read through chores, refactors, and test additions to find the changes that affect them. A curated changelog filters out internal changes and translates commit messages into user-friendly descriptions with context and migration guidance.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/#bad-practices",
-    sourceLabel: "Keep a Changelog: Bad Practices",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/#bad-practices",
+        label: "Keep a Changelog: Bad Practices",
+      },
+    ],
   },
   {
     id: "cl-007",
@@ -259,7 +283,11 @@ git log --oneline
       "A structured changelog groups entries by version and change type (Added, Fixed, Changed, Removed). This lets users quickly find breaking changes, new features, and bug fixes relevant to their upgrade. The Keep a Changelog format is the most widely adopted standard for this.",
     explanationWrong:
       "An unstructured changelog that dumps all changes into a flat list with no versioning or categorization forces readers to scan every entry. They cannot tell which version introduced a change, whether it is a feature or a fix, or if there are breaking changes they need to handle.",
-    sourceUrl: "https://keepachangelog.com/en/1.1.0/",
-    sourceLabel: "Keep a Changelog",
+    sources: [
+      {
+        url: "https://keepachangelog.com/en/1.1.0/",
+        label: "Keep a Changelog",
+      },
+    ],
   },
 ];

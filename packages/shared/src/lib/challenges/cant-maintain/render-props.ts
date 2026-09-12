@@ -49,8 +49,12 @@ export const renderPropsChallenges: BaseChallenge[] = [
       "A render function gives the consumer access to runtime data the component owns. Here, the Combobox knows which option is highlighted and selected. A static `ReactNode` can't receive these states, so custom options can't react to keyboard navigation or selection.\n\nThis is exactly how MUI's Autocomplete `renderOption` works.",
     explanationWrong:
       "A `ReactNode` slot works for static content, but each option in a Combobox has runtime state: is it highlighted? Selected? With `optionContent: ReactNode`, every option renders identically. A render function passes per-option data so the consumer can style highlighted and selected states differently.",
-    sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
-    sourceLabel: "MUI: Autocomplete API",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/api/autocomplete/",
+        label: "MUI: Autocomplete API",
+      },
+    ],
   },
   {
     id: "rp-002",
@@ -83,8 +87,12 @@ export const renderPropsChallenges: BaseChallenge[] = [
       "`render*` functions return JSX (`React.ReactNode`); they control what appears on screen. `get*` functions return data (strings, numbers, booleans); they extract or compute values.\n\nMUI follows this strictly: `renderOption` returns JSX for the dropdown, `getOptionLabel` returns a plain string for the input field. Swapping the prefixes reverses the reader's expectation.",
     explanationWrong:
       "The prefixes are swapped. `renderLabel` implies it returns JSX, but it returns a `string`; that's a `get*` function. `getOption` implies it extracts data, but it returns JSX; that's a `render*` function. Match the prefix to the return type: `get*` for data, `render*` for UI.",
-    sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
-    sourceLabel: "MUI: Autocomplete API",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/api/autocomplete/",
+        label: "MUI: Autocomplete API",
+      },
+    ],
   },
   {
     id: "rp-003",
@@ -124,12 +132,19 @@ export const renderPropsChallenges: BaseChallenge[] = [
 
     correctSide: "right",
     explanationCorrect:
-      "Render functions are only needed when the component passes data back to the consumer. Here, EmptyState doesn't provide any data; it just displays content. Plain `ReactNode` slots are simpler: `icon={<SearchIcon />}` vs `renderIcon={() => <SearchIcon />}`.",
+      "Prefer `ReactNode` for ordinary static slots. EmptyState never hands runtime data to the consumer and always renders every slot, so `icon={<SearchIcon />}` says the same thing as `renderIcon={() => <SearchIcon />}` with less ceremony. `ReactNode` slots also compose across React Server and Client Component boundaries, where function props cannot be passed because they are not serializable.",
     explanationWrong:
-      "These render functions take no arguments and return JSX; they're just `ReactNode` with extra ceremony. `renderIcon={() => <SearchIcon />}` creates a new function on every render for no benefit.\n\nUse `icon={<SearchIcon />}` instead. Reserve `render*` for when the component passes runtime data to the callback.",
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
-    sourceLabel: "React Docs: Passing JSX as children",
+      "These render functions take no arguments and always run, so they add a wrapper without adding capability. Reserve `render*` props for when the component passes runtime data to the callback, or when deferring the JSX until the component decides to call it is a deliberate part of the API. Neither applies here.\n\nFunction props also cannot cross a Server to Client Component boundary, while `<SearchIcon />` passed as a `ReactNode` can.",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+        label: "React Docs: Passing JSX as children",
+      },
+      {
+        url: "https://nextjs.org/docs/app/getting-started/server-and-client-components#passing-server-components-to-client-components-as-props",
+        label: "Next.js Docs: Passing Server Components as props",
+      },
+    ],
   },
   {
     id: "rp-004",
@@ -176,9 +191,12 @@ export const renderPropsChallenges: BaseChallenge[] = [
       "A render function gives the fallback access to the actual `Error` and a `reset` function. A static `ReactNode` can't show the error message or offer a retry button. Use `render*` when the component has runtime data the consumer needs.",
     explanationWrong:
       "A static `fallback` works for generic error messages, but it can't show what went wrong or let the user retry. The Error Boundary knows the error and can reset itself, and a `renderFallback` callback passes this context to the consumer.",
-    sourceUrl:
-      "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary",
-    sourceLabel: "React Docs: Error Boundaries",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary",
+        label: "React Docs: Error Boundaries",
+      },
+    ],
   },
   {
     id: "rp-005",
@@ -233,7 +251,11 @@ export const renderPropsChallenges: BaseChallenge[] = [
       "Scoped render props expose only what each customization point needs. `renderRow` gets row-level state, `renderPagination` gets page state. The broad `children` callback dumps all internal state into one bag, coupling the consumer to every implementation detail.\n\nIf the table adds filtering or column resizing internally, the scoped render props don't change. The broad callback's type signature breaks.",
     explanationWrong:
       "Exposing all internal state through a single `children` callback seems flexible, but it couples consumers to every detail. If the table refactors sorting or adds virtual scrolling, the callback signature changes and every consumer breaks.\n\nScoped render props (`renderRow`, `renderPagination`, `renderEmpty`) are stable contracts. Each one exposes only the state relevant to that customization point.",
-    sourceUrl: "https://tanstack.com/table/latest/docs/guide/introduction",
-    sourceLabel: "TanStack Table: Introduction",
+    sources: [
+      {
+        url: "https://tanstack.com/table/latest/docs/guide/introduction",
+        label: "TanStack Table: Introduction",
+      },
+    ],
   },
 ];

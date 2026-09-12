@@ -55,8 +55,12 @@ spec:
       "ConfigMaps separate configuration from Pod specs. Using `envFrom` injects all keys as environment variables automatically. You can update the ConfigMap independently, share it across Deployments, and manage it with GitOps tools.",
     explanationWrong:
       "Hardcoding environment variables in the Pod spec means every config change requires editing the Deployment and triggering a rollout. Shared config must be duplicated across every Deployment that needs it, leading to drift.",
-    sourceUrl: "https://kubernetes.io/docs/concepts/configuration/configmap/",
-    sourceLabel: "Kubernetes docs: ConfigMap",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/configuration/configmap/",
+        label: "Kubernetes docs: ConfigMap",
+      },
+    ],
   },
   {
     id: "kc-002",
@@ -102,8 +106,12 @@ spec:
       "ResourceQuotas cap the total resources a namespace can consume. This prevents one team from monopolizing cluster capacity. It also forces developers to set resource requests/limits on their Pods, since Pods without them are rejected.",
     explanationWrong:
       "Without quotas, a runaway deployment or a developer testing with 100 replicas can exhaust cluster resources. Other teams' workloads get evicted or can't schedule. Quotas are essential in multi-tenant clusters.",
-    sourceUrl: "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
-    sourceLabel: "Kubernetes docs: Resource quotas",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
+        label: "Kubernetes docs: Resource quotas",
+      },
+    ],
   },
   {
     id: "kc-003",
@@ -143,9 +151,12 @@ data:
       "Immutable ConfigMaps cannot be changed after creation. This prevents accidental edits that propagate to all consuming Pods. Changes require creating a new ConfigMap and updating Deployments, giving you a clear audit trail and the ability to roll back.",
     explanationWrong:
       "A mutable ConfigMap can be edited by anyone with access. Changes propagate to Pods automatically (when mounted as volumes), potentially breaking running applications. There's no audit trail of what changed and no easy rollback path.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/configuration/configmap/#configmap-immutable",
-    sourceLabel: "Kubernetes docs: Immutable ConfigMaps",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/configuration/configmap/#configmap-immutable",
+        label: "Kubernetes docs: Immutable ConfigMaps",
+      },
+    ],
   },
   {
     id: "kc-004",
@@ -209,8 +220,11 @@ spec:
       "Topology spread constraints distribute Pods evenly across nodes (or zones). `maxSkew: 1` ensures the difference in Pod count between any two nodes is at most 1. If a node goes down, only a fraction of your capacity is lost.",
     explanationWrong:
       "Without topology constraints, the scheduler might place all 6 Pods on a single node for efficiency. If that node fails, you lose 100% of capacity. Even with multiple replicas, you have a single point of failure at the node level.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/",
-    sourceLabel: "Kubernetes docs: Topology spread",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/",
+        label: "Kubernetes docs: Topology spread",
+      },
+    ],
   },
 ];

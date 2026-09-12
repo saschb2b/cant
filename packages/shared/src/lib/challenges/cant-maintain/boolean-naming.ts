@@ -26,8 +26,12 @@ export const booleanNamingChallenges: BaseChallenge[] = [
       'The `is` prefix makes boolean props read as yes/no questions: "Is it loading?"\n\nSome established libraries (MUI, HTML) use bare names like `disabled`, and that\'s fine for well-known HTML attributes. But for custom props, the prefix removes ambiguity: is `loading` a boolean, an enum, or a string?',
     explanationWrong:
       "Without a prefix, `loading` could be a boolean, a loading state enum, or a loading message string. The `is`/`has`/`should` convention is most valuable for custom props where the type isn't obvious.\n\nNote: native HTML attributes like `disabled` are the exception; everyone knows those are booleans.",
-    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
-    sourceLabel: "React Docs: Passing Props to a Component",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component",
+        label: "React Docs: Passing Props to a Component",
+      },
+    ],
   },
   {
     id: "bl-002",
@@ -56,8 +60,12 @@ export const booleanNamingChallenges: BaseChallenge[] = [
       "`isOpen` makes the boolean explicit, and `onClose` follows the event callback convention.\n\nFun fact: MUI uses bare `open` for modals, and that's fine for a well-known pattern. But `close` as an imperative verb is the real problem here: it should always be `onClose` to signal it's an event callback, not a command.",
     explanationWrong:
       'The bigger issue is `close`, which reads like an imperative command ("close the modal!") rather than an event callback ("the user requested closing"). `onClose` fixes that. For the boolean, `open` vs `isOpen` is a style choice (MUI uses `open`), but `isOpen` is more self-documenting in your own components.',
-    sourceUrl: "https://react.dev/learn/responding-to-events",
-    sourceLabel: "React Docs: Responding to Events",
+    sources: [
+      {
+        url: "https://react.dev/learn/responding-to-events",
+        label: "React Docs: Responding to Events",
+      },
+    ],
   },
   {
     id: "bl-004",
@@ -96,8 +104,12 @@ export const booleanNamingChallenges: BaseChallenge[] = [
       'The `disable*` prefix is ideal for opt-out booleans: features that are on by default and can be turned off. `<Button disableElevation />` reads as "disable the elevation," which is clear and imperative. MUI uses this pattern across its entire library.\n\nThe key rule: boolean props should default to `false` so that the JSX shorthand `<Button disableRipple />` means "true".',
     explanationWrong:
       '`no*` prefixes create double-negative confusion. `noElevation={false}` means... elevation is on? The `disable*` prefix avoids this: `disableElevation={false}` clearly means "don\'t disable it" (elevation stays on).\n\nAlso, `disable*` is the established MUI convention, and consistency with the library your team uses matters.',
-    sourceUrl: "https://mui.com/material-ui/api/button/",
-    sourceLabel: "MUI: Button API",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/api/button/",
+        label: "MUI: Button API",
+      },
+    ],
   },
   {
     id: "bl-005",
@@ -138,8 +150,12 @@ export const booleanNamingChallenges: BaseChallenge[] = [
       'Different boolean intents deserve different prefixes: `keep*` means "preserve this behavior that would normally stop," `hide*` means "don\'t render this visual element," and `disable*` means "turn off this feature."\n\n`<Modal keepMounted hideBackdrop />` reads as clear instructions. MUI\'s Modal uses all three of these exact props.',
     explanationWrong:
       "`is*` works for state booleans, but `isMounted` is confusing: is it a read-only status or a setting? `isBackdropHidden` is a double description (`is` + `hidden`). `isScrollLocked` reverses the default mental model. Intent-specific prefixes (`keep*`, `hide*`, `disable*`) make each prop's purpose unambiguous without reading the docs.",
-    sourceUrl: "https://mui.com/material-ui/api/modal/",
-    sourceLabel: "MUI: Modal API",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/api/modal/",
+        label: "MUI: Modal API",
+      },
+    ],
   },
   {
     id: "bl-003",
@@ -194,8 +210,12 @@ export const booleanNamingChallenges: BaseChallenge[] = [
       "Three prefixes, three meanings: `is` for current state (`isCollapsed`), `has` for feature presence (`hasIcons`), and JSDoc `@default` so consumers know the baseline.\n\nAt the call site, `<Navigation hasIcons isMobile />` reads like a sentence. Each prefix tells you the **kind** of boolean without reading the type.",
     explanationWrong:
       '`collapsed`: is this a past-tense verb ("it was collapsed") or a boolean? `icons`: a boolean or an array of Icon objects? `mobile`: a boolean, a phone number, or a breakpoint?\n\nWithout prefixes, every prop requires reading the type definition to understand. `is`/`has`/`should` prefixes make the intent obvious at the call site.',
-    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
-    sourceLabel: "React Docs: Passing Props to a Component",
+    sources: [
+      {
+        url: "https://react.dev/learn/passing-props-to-a-component",
+        label: "React Docs: Passing Props to a Component",
+      },
+    ],
   },
   {
     id: "bl-006",
@@ -240,7 +260,11 @@ export const booleanNamingChallenges: BaseChallenge[] = [
       "Props that map directly to HTML attributes should use the native name: `disabled` (not `isDisabled`), `required` (not `isRequired`). These are universally understood and are already in `ComponentProps<'input'>`.\n\n`hasError` gets a prefix because it's a custom boolean that doesn't exist in HTML, so the prefix removes ambiguity. General guideline: native HTML booleans stay bare, custom booleans get prefixes.",
     explanationWrong:
       "Adding `is` prefix to well-known HTML attributes like `disabled` and `required` creates inconsistency with native elements and re-declares props already inherited from `ComponentProps<'input'>`. It also means `<Input isDisabled />` doesn't set the native `disabled` attribute without manual mapping.\n\nReserve prefixes for **custom** booleans like `hasError` where the type isn't obvious from the name alone.",
-    sourceUrl: "https://react.dev/reference/react-dom/components/input",
-    sourceLabel: "React Docs: input",
+    sources: [
+      {
+        url: "https://react.dev/reference/react-dom/components/input",
+        label: "React Docs: input",
+      },
+    ],
   },
 ];

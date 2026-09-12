@@ -65,9 +65,12 @@ export const aiChallenges: BaseChallenge[] = [
       "A behavior tree makes the decision hierarchy explicit and composable. Each node is a reusable building block: selectors try children until one succeeds, sequences run children in order. Adding 'take cover' behavior means inserting a node, not restructuring nested if/else. Trees can be serialized, visualized in debug tools, and edited by designers.",
     explanationWrong:
       "Nested if/else chains encode the decision tree implicitly in control flow. Adding a new behavior means finding the right nesting level and carefully inserting conditions without breaking existing branches. The structure is invisible to debugging tools, and two developers editing the same function will almost certainly cause merge conflicts.",
-    sourceUrl:
-      "https://www.gamedeveloper.com/programming/behavior-trees-for-ai-how-they-work",
-    sourceLabel: "Game Developer: Behavior Trees for AI",
+    sources: [
+      {
+        url: "https://www.gamedeveloper.com/programming/behavior-trees-for-ai-how-they-work",
+        label: "Game Developer: Behavior Trees for AI",
+      },
+    ],
   },
   {
     id: "ai-002",
@@ -87,9 +90,12 @@ export const aiChallenges: BaseChallenge[] = [
       "Octile distance is the correct heuristic for 8-directional grids because it accounts for diagonal moves costing sqrt(2) instead of 1. It never overestimates, so A* remains optimal while exploring fewer nodes than a looser heuristic. The formula takes min(dx, dy) diagonal steps and the remainder as cardinal steps.",
     explanationWrong:
       "Manhattan distance assumes only 4-directional movement. On an 8-directional grid, it overestimates the cost of diagonal paths, which can cause A* to explore unnecessary nodes and return suboptimal paths if the implementation does not handle inadmissible heuristics. It works, but it is not the right tool for the grid.",
-    sourceUrl:
-      "http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html",
-    sourceLabel: "Red Blob Games: A* Heuristics",
+    sources: [
+      {
+        url: "http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html",
+        label: "Red Blob Games: A* Heuristics",
+      },
+    ],
   },
   {
     id: "ai-003",
@@ -109,7 +115,11 @@ export const aiChallenges: BaseChallenge[] = [
       "Arrive behavior scales the steering force based on distance to the target. Outside the slowing radius it behaves like seek, but inside it reduces desired speed proportionally, causing the agent to decelerate smoothly to a stop. This is the standard approach for any AI that needs to reach a specific position, from RTS unit movement to NPC navigation.",
     explanationWrong:
       "Pure seek always applies maximum steering force toward the target regardless of distance. When the agent reaches the target it is still at full speed, so it overshoots, turns around, overshoots again, and oscillates indefinitely. Clamping speed near the target is a hack that produces abrupt stops. The arrive behavior solves this naturally.",
-    sourceUrl: "https://www.red3d.com/cwr/steer/gdc99/",
-    sourceLabel: "Craig Reynolds: Steering Behaviors for Autonomous Characters",
+    sources: [
+      {
+        url: "https://www.red3d.com/cwr/steer/gdc99/",
+        label: "Craig Reynolds: Steering Behaviors for Autonomous Characters",
+      },
+    ],
   },
 ];

@@ -42,8 +42,12 @@ test("renders the submit button", () => {
       "getByRole queries the accessibility tree, which mirrors how users and assistive technology interact with the page. Tests using role-based queries keep working even when class names, data attributes, or DOM structure change. They also surface missing ARIA roles early.",
     explanationWrong:
       "getByTestId relies on a custom attribute that has no meaning to users or assistive technology. If someone removes or renames the data-testid during a refactor, the test breaks even though the button still works. Role-based queries tie tests to behavior rather than implementation details.",
-    sourceUrl: "https://testing-library.com/docs/queries/about/#priority",
-    sourceLabel: "Testing Library: Query Priority",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/queries/about/#priority",
+        label: "Testing Library: Query Priority",
+      },
+    ],
   },
   {
     id: "comp-002",
@@ -90,8 +94,12 @@ test("filters results on input", async () => {
       "userEvent.type fires the full sequence of keyDown, keyPress, input, and keyUp events for each character, just like a real keyboard. This catches bugs that only appear when event handlers depend on intermediate events such as debounced search or character validation.",
     explanationWrong:
       "fireEvent.change dispatches a single synthetic change event and skips keyboard events entirely. Code that listens for keyDown, input, or focus and blur transitions will not be exercised, leaving gaps in coverage that may hide real bugs.",
-    sourceUrl: "https://testing-library.com/docs/user-event/intro/",
-    sourceLabel: "Testing Library: user-event Introduction",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/user-event/intro/",
+        label: "Testing Library: user-event Introduction",
+      },
+    ],
   },
   {
     id: "comp-003",
@@ -134,9 +142,12 @@ test("shows the username after fetch", async () => {
       "findByText internally uses waitFor with a configurable timeout, polling the DOM until the element appears or the timeout expires. This approach is deterministic: it resolves as soon as the element is present, keeping tests fast and independent of network speed.",
     explanationWrong:
       "A fixed setTimeout is a race condition. If the fetch takes longer than 1000 ms in CI, the test fails. If it resolves in 50 ms, the test wastes 950 ms of wall time. Hard-coded delays are a common source of flaky tests and slow suites.",
-    sourceUrl:
-      "https://testing-library.com/docs/dom-testing-library/api-async/",
-    sourceLabel: "Testing Library: Async Utilities",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/dom-testing-library/api-async/",
+        label: "Testing Library: Async Utilities",
+      },
+    ],
   },
   {
     id: "comp-004",
@@ -179,8 +190,12 @@ test("renders the expected sections", () => {
       "Targeted assertions describe the intent of the test. Reviewers can tell at a glance what the test verifies, and the test only fails when the actual contract (landmark roles) changes. This makes pull-request diffs meaningful rather than pages of serialized HTML.",
     explanationWrong:
       "A whole-tree snapshot captures every element, attribute, and whitespace character. Any cosmetic change, such as a new class name or a reordered attribute, produces a diff that reviewers typically approve without reading. Over time these snapshots become rubber-stamped artifacts that verify nothing intentional.",
-    sourceUrl: "https://kentcdodds.com/blog/effective-snapshot-testing",
-    sourceLabel: "Kent C. Dodds: Effective Snapshot Testing",
+    sources: [
+      {
+        url: "https://kentcdodds.com/blog/effective-snapshot-testing",
+        label: "Kent C. Dodds: Effective Snapshot Testing",
+      },
+    ],
   },
   {
     id: "comp-005",
@@ -241,8 +256,12 @@ test("shows error for short password", () => {
       "Typing into a labelled field and clicking the submit button replicates the exact flow a user follows. The assertion checks visible text, so the test remains valid regardless of how the error is rendered internally. Label queries also confirm that the input is properly associated with its label.",
     explanationWrong:
       "Querying by CSS selector and manually dispatching events couples the test to class names, DOM structure, and event wiring. If the team switches from a .field-error div to an aria-live region or a toast notification, the test breaks even though the feature still works correctly.",
-    sourceUrl: "https://testing-library.com/docs/guide-which-query/",
-    sourceLabel: "Testing Library: Which Query Should I Use?",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/guide-which-query/",
+        label: "Testing Library: Which Query Should I Use?",
+      },
+    ],
   },
   {
     id: "comp-006",
@@ -301,9 +320,12 @@ test("increments the count", async () => {
       "A lightweight consumer component exercises the hook the same way a real component would, including the render cycle and event handling. This catches issues such as stale closures, missing dependencies in effect arrays, and incorrect batching that renderHook may not surface.",
     explanationWrong:
       "renderHook is convenient, but it calls the hook outside a realistic render tree. Bugs that only manifest during a full React render, such as state batching differences or context-dependent behavior, can slip through. The Testing Library docs recommend testing hooks through a component whenever practical.",
-    sourceUrl:
-      "https://testing-library.com/docs/react-testing-library/api/#renderhook",
-    sourceLabel: "Testing Library: renderHook API",
+    sources: [
+      {
+        url: "https://testing-library.com/docs/react-testing-library/api/#renderhook",
+        label: "Testing Library: renderHook API",
+      },
+    ],
   },
   {
     id: "comp-007",
@@ -366,8 +388,9 @@ test("renders order with line items", async () => {
       "Rendering the full component tree with a mocked network layer tests the real integration between parent and children. If a prop name changes or a child is refactored, the test still passes as long as the visible output is correct. MSW intercepts requests at the network level, leaving application code untouched.",
     explanationWrong:
       "Mocking child components replaces the actual rendering with stubs that only prove the parent references the right module path. The test cannot verify that props are passed correctly, that children render the data, or that the overall layout is intact. Any refactor that splits or merges child components forces the mocks to be rewritten.",
-    sourceUrl: "https://mswjs.io/docs/philosophy",
-    sourceLabel: "MSW: Philosophy",
+    sources: [
+      { url: "https://mswjs.io/docs/philosophy", label: "MSW: Philosophy" },
+    ],
   },
   {
     id: "comp-008",
@@ -421,7 +444,11 @@ test("modal has no a11y violations", async () => {
       "Running axe against the rendered DOM audits dozens of WCAG rules at once: color contrast, missing labels, invalid ARIA attributes, focus order, and more. This catches classes of issues that a few manual assertions would never cover, and the audit stays current as axe updates its rule set.",
     explanationWrong:
       "Checking individual ARIA attributes is useful but narrow. A test that asserts aria-modal and a role can still pass while the modal traps focus incorrectly, has insufficient color contrast, or nests interactive elements improperly. Manual assertions scale poorly as components grow in complexity.",
-    sourceUrl: "https://github.com/dequelabs/axe-core/blob/develop/doc/API.md",
-    sourceLabel: "axe-core: API Documentation",
+    sources: [
+      {
+        url: "https://github.com/dequelabs/axe-core/blob/develop/doc/API.md",
+        label: "axe-core: API Documentation",
+      },
+    ],
   },
 ];

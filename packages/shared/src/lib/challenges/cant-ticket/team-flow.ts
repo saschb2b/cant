@@ -29,9 +29,12 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Throughput counts what users got. Lead time names how long they waited. Velocity is a useful capacity number for the next sprint, but it is not the goal; treating it as one creates pressure to inflate point estimates rather than ship.",
     explanationWrong:
       "Velocity going up can mean the team got faster, or it can mean the team learned to point bigger. Without throughput as a counter-check, the trend is unreadable.",
-    sourceUrl:
-      "https://www.scrum.org/resources/blog/velocity-false-metric-productivity",
-    sourceLabel: "Scrum.org: Velocity is a planning aid",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/blog/velocity-false-metric-productivity",
+        label: "Scrum.org: Velocity is a planning aid",
+      },
+    ],
   },
   {
     id: "tf-002",
@@ -61,8 +64,12 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "WIP limits force the team to finish before starting. Two cards per person caps the context-switching cost; the swarm-to-unblock rule turns 'waiting on review' from a personal problem into a team one.",
     explanationWrong:
       "Four cards in progress means three are waiting for something. The team is busy and slow at the same time. Throughput drops, lead time stretches, and the board fills up with 'in progress' that is not progressing.",
-    sourceUrl: "https://www.atlassian.com/agile/kanban/wip-limits",
-    sourceLabel: "Atlassian: WIP Limits",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/kanban/wip-limits",
+        label: "Atlassian: WIP Limits",
+      },
+    ],
   },
   {
     id: "tf-003",
@@ -92,9 +99,12 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "70% leaves room for the work the team will discover mid-sprint. Incidents, support escalations, and 'oh, this story was bigger than we thought' all need somewhere to land. A pre-allocated buffer means they land cleanly.",
     explanationWrong:
       "Pulling to 100% of velocity means every interruption forces a story to be cut, and the team drifts into a culture of over-commitment. Reviews become rationalization sessions instead of learning.",
-    sourceUrl:
-      "https://www.scrum.org/resources/blog/obsession-commitment-matching-velocity",
-    sourceLabel: "Scrum.org: Forecast vs Commitment",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/blog/obsession-commitment-matching-velocity",
+        label: "Scrum.org: Forecast vs Commitment",
+      },
+    ],
   },
   {
     id: "tf-004",
@@ -124,9 +134,12 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Lead time tells the customer how long they wait. Cycle time tells the team how long the work itself took. Reporting percentiles (not averages) catches the long tail that averages hide.",
     explanationWrong:
       "An average flattens the long-tailed distribution that matters most. The 5% of stories that take three sprints are exactly the stories the team needs to talk about, and the average buries them.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/kanban-metrics",
-    sourceLabel: "Atlassian: Cycle Time",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/kanban-metrics",
+        label: "Atlassian: Cycle Time",
+      },
+    ],
   },
   {
     id: "tf-005",
@@ -157,9 +170,12 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Engineers do not spend 100% of their day shipping. Meetings, reviews, on-call, and support are real. A ~0.6 focus factor is honest; pretending the number is 1.0 produces over-commitment every sprint.",
     explanationWrong:
       "Treating every working day as a delivery day means the sprint is over-pulled by 40% before it starts. The team finishes 60% of the plan and is told they are slow.",
-    sourceUrl:
-      "https://www.scrum.org/resources/blog/obsession-commitment-matching-velocity",
-    sourceLabel: "Scrum.org: Forecast vs Commitment",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/blog/obsession-commitment-matching-velocity",
+        label: "Scrum.org: Forecast vs Commitment",
+      },
+    ],
   },
   {
     id: "tf-006",
@@ -189,7 +205,11 @@ export const teamFlowChallenges: BaseChallenge[] = [
       "Stories that did not finish are signal. Sending them back through refinement forces the team to name what went wrong (under-scoped, over-estimated, blocked). Auto-rolling buries the signal and the same problem recurs.",
     explanationWrong:
       "Auto-carryover is a way of pretending the sprint succeeded. The same story will roll again, the velocity number will be unreadable, and the retro will not see the pattern because the carry happens silently.",
-    sourceUrl: "https://www.scrum.org/resources/what-is-a-sprint-retrospective",
-    sourceLabel: "Scrum.org: Retrospective",
+    sources: [
+      {
+        url: "https://www.scrum.org/resources/what-is-a-sprint-retrospective",
+        label: "Scrum.org: Retrospective",
+      },
+    ],
   },
 ];

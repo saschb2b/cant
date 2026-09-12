@@ -38,9 +38,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "Workflow-step splits ship the simplest end-to-end path first, then layer in the intermediate steps. Each slice is a real flow editors can use today.",
     explanationWrong:
       "Splitting by component (data model, routing, queue UI, notifications) is horizontal slicing. None of those stories ship a working publish flow on their own; an editor cannot publish anything until the whole stack lands.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-002",
@@ -76,9 +79,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "'Manage' is almost always a clue that multiple operations are hiding behind one verb. CRUD-style splitting names them, often with very different priorities. Sign-up is urgent; close-account can wait until next quarter.",
     explanationWrong:
       "'UI' and 'API' is horizontal slicing. The team builds the bones for all four operations, ships none of them, and product cannot reorder a single piece against its actual urgency.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-003",
@@ -123,9 +129,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "Three rules, three stories. The team can ship the most-used variant first and learn whether the other two are actually wanted before building them. The split exposes priorities; the lump hides them.",
     explanationWrong:
       "Splitting into picker UI, API, and results list is horizontal slicing dressed up as a feature breakdown. None of the three stories ships a working search alone, and the three actual rule variations are still hidden inside whichever story claims them.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-004",
@@ -164,9 +173,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "Start with the simplest data shape (country), ship it end-to-end, then broaden. You often discover that later variations are wanted less than you assumed and can be deprioritized.",
     explanationWrong:
       "Splitting into geocoder, index, and UI is layer-by-layer work. All three data variations are still bundled into each layer, so country users wait for the neighborhood index to land before anything ships.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-005",
@@ -209,9 +221,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "When the UI is doing most of the work, ship the feature with a minimal input first. The booking logic, validation, and confirmation are live on day one. The fancy interface lands in slice two without blocking the core value.",
     explanationWrong:
       "Splitting into model, API, UI, and email is layer-by-layer slicing. No customer can book anything until all four ship together; the team cannot trade the calendar picker for an earlier launch even though it is the most expensive piece.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
-    sourceLabel: "Mike Cohn: SPIDR",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+        label: "Mike Cohn: SPIDR",
+      },
+    ],
   },
   {
     id: "spt-006",
@@ -256,9 +271,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "The first slice carries the entire infrastructure cost; the rest are nearly free once the pipeline is live. The team estimates Mastercard accurately by the time it lands, because they have learned what the pipeline actually requires.",
     explanationWrong:
       "Splitting into abstraction, adapters, UI, and receipts is layer-by-layer work. No customer pays anything until all four ship, and the team has built the abstraction without ever feeling the shape of one real payment going through.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-007",
@@ -290,9 +308,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "When the scope keeps growing, capture the simple core as the first story and pull each 'yeah, but also' into its own candidate. Product prioritizes them after; the original story can ship.",
     explanationWrong:
       "Keeping all of it in one story is the cure for productivity. The 13 will not finish in the sprint, and product loses the chance to defer the things they would have deferred anyway if asked.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-008",
@@ -324,9 +345,12 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "Ship correct, then ship fast. The optimization story can be sized accurately once you see where the real time is going. Premature optimization wastes estimates and often optimizes the wrong path.",
     explanationWrong:
       "Building the cache before the report ships locks in assumptions about hot paths the team has not measured. Half the optimization work is for usage patterns that never materialize.",
-    sourceUrl:
-      "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
-    sourceLabel: "Humanizing Work: Splitting User Stories",
+    sources: [
+      {
+        url: "https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories/",
+        label: "Humanizing Work: Splitting User Stories",
+      },
+    ],
   },
   {
     id: "spt-009",
@@ -356,8 +380,11 @@ export const splittingPatternsChallenges: BaseChallenge[] = [
       "Spike is the explicit last resort in the Humanizing Work guide. Most stories can be split by workflow, data, rules, or interface before research is needed. Defaulting to a spike costs the team a sprint of value while the eight other patterns sit unused.",
     explanationWrong:
       "Spiking by reflex is procrastination dressed as research. Most 'big' stories are not unknowable; they are unsplit. Try the patterns first; spike only when the patterns honestly do not apply.",
-    sourceUrl:
-      "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
-    sourceLabel: "Mike Cohn: SPIDR",
+    sources: [
+      {
+        url: "https://www.mountaingoatsoftware.com/blog/five-simple-but-powerful-ways-to-split-user-stories",
+        label: "Mike Cohn: SPIDR",
+      },
+    ],
   },
 ];

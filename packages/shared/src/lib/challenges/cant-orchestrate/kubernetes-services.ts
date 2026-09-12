@@ -44,9 +44,12 @@ spec:
       "`ClusterIP` makes the service reachable only within the cluster. Internal services like backends, databases, and caches should never be exposed externally. Other pods reach it via `backend:8080` or `backend.namespace.svc.cluster.local`.",
     explanationWrong:
       "`NodePort` exposes the service on a high port on every node in the cluster. An internal backend API becomes accessible from outside the cluster, increasing the attack surface. NodePort should only be used when you explicitly need external access.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip",
-    sourceLabel: "Kubernetes docs: ClusterIP",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip",
+        label: "Kubernetes docs: ClusterIP",
+      },
+    ],
   },
   {
     id: "ks-002",
@@ -115,9 +118,12 @@ spec:
       "An Ingress resource routes traffic from a single load balancer to multiple services based on hostname or path. This is cheaper (one LB instead of many), supports TLS termination, and centralizes routing rules in a declarative configuration.",
     explanationWrong:
       "Each `LoadBalancer` service provisions a separate cloud load balancer, which costs money and adds complexity. With many services, you end up with dozens of external IPs to manage, separate TLS certificates, and no centralized routing.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/services-networking/ingress/",
-    sourceLabel: "Kubernetes docs: Ingress",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/services-networking/ingress/",
+        label: "Kubernetes docs: Ingress",
+      },
+    ],
   },
   {
     id: "ks-003",
@@ -159,9 +165,12 @@ spec:
       "Using multiple labels in the selector ensures the Service only routes traffic to the exact Pods you intend. Labels like `component` and `version` prevent accidental routing to backend Pods or old versions that happen to share the `app: web` label.",
     explanationWrong:
       "A single label selector like `app: web` might match Pods from different components, canary deployments, or batch jobs that share the same label. Traffic gets routed to unexpected destinations, causing errors or security issues.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/",
-    sourceLabel: "Kubernetes docs: Labels and selectors",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/",
+        label: "Kubernetes docs: Labels and selectors",
+      },
+    ],
   },
   {
     id: "ks-004",
@@ -219,8 +228,11 @@ spec:
       "A headless service (`clusterIP: None`) gives each StatefulSet Pod a stable DNS name like `db-0.db.namespace.svc.cluster.local`. This is essential for stateful workloads (databases, message brokers) where clients need to connect to specific instances.",
     explanationWrong:
       "A regular ClusterIP service load-balances across all Pods randomly. For databases, this means reads and writes hit different replicas unpredictably. You can't target the primary for writes or a specific replica for read queries.",
-    sourceUrl:
-      "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
-    sourceLabel: "Kubernetes docs: Headless services",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
+        label: "Kubernetes docs: Headless services",
+      },
+    ],
   },
 ];

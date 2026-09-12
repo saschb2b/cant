@@ -32,9 +32,12 @@ val.toFixed(2); // OK, checked by compiler`,
       "A generic type parameter `T` preserves the relationship between input and output. TypeScript infers `T` as `number` from the argument, so the return type is `number` with full type safety. You get autocomplete and compile-time error checking.",
     explanationWrong:
       "Using `any` throws away all type information. The return value is `any`, which means TypeScript cannot catch mistakes like calling string methods on a number. Generics give you flexibility without losing safety.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#hello-world-of-generics",
-    sourceLabel: "TypeScript Handbook: Generics",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#hello-world-of-generics",
+        label: "TypeScript Handbook: Generics",
+      },
+    ],
   },
   {
     id: "ge-002",
@@ -67,9 +70,12 @@ const num = identity(42); // number`,
       'TypeScript infers generic type parameters from the arguments you pass. Writing `identity("hello")` automatically infers `T` as `string`. Specifying the type explicitly is redundant noise when inference works correctly. Save explicit type arguments for cases where inference fails or gives the wrong result.',
     explanationWrong:
       "Explicitly specifying `<string>` and `<number>` when TypeScript already infers them correctly adds clutter without benefit. It also creates a maintenance burden: if the argument type changes, you need to update the type parameter too.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#working-with-generic-type-variables",
-    sourceLabel: "TypeScript Handbook: Generic type variables",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#working-with-generic-type-variables",
+        label: "TypeScript Handbook: Generic type variables",
+      },
+    ],
   },
   {
     id: "ge-003",
@@ -102,9 +108,12 @@ getLength(42);           // Error: number has no length`,
       "Adding `extends { length: number }` constrains `T` to types that have a `length` property. TypeScript knows `.length` is safe inside the function, and rejects arguments that lack it. Constraints let you use specific properties while keeping the function generic.",
     explanationWrong:
       "An unconstrained `T` could be anything, including types without a `.length` property. TypeScript correctly rejects the access because it cannot guarantee the property exists. The fix is a constraint, not a type assertion.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
-    sourceLabel: "TypeScript Handbook: Generic constraints",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
+        label: "TypeScript Handbook: Generic constraints",
+      },
+    ],
   },
   {
     id: "ge-004",
@@ -144,9 +153,12 @@ res.data.name; // string, autocomplete works`,
       "Making `ApiResponse` generic with `<T>` lets you specify the shape of `data` at each usage site. When you write `ApiResponse<User>`, the `data` field is typed as `User` with full autocompletion. One interface works for every endpoint.",
     explanationWrong:
       "Using `any` for the `data` field means every consumer of the response loses type information. You cannot get autocomplete on `res.data`, and typos like `res.data.nmae` will not be caught. Generic interfaces solve this cleanly.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-types",
-    sourceLabel: "TypeScript Handbook: Generic types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-types",
+        label: "TypeScript Handbook: Generic types",
+      },
+    ],
   },
   {
     id: "ge-005",
@@ -181,9 +193,12 @@ getProperty(user, "naem");  // Error: not in keyof`,
       'Using `K extends keyof T` constrains the key to actual properties of the object. TypeScript catches typos at compile time and infers the correct return type via `T[K]`. For `"name"`, the return type is `string`. For `"age"`, it is `number`.',
     explanationWrong:
       'With `any` and `string`, TypeScript has no idea which keys are valid or what the return type should be. Typos like `"naem"` compile without errors and return `undefined` at runtime. The `keyof` constraint catches these mistakes statically.',
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#using-type-parameters-in-generic-constraints",
-    sourceLabel: "TypeScript Handbook: Type parameters in constraints",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#using-type-parameters-in-generic-constraints",
+        label: "TypeScript Handbook: Type parameters in constraints",
+      },
+    ],
   },
   {
     id: "ge-006",
@@ -231,9 +246,12 @@ const meta: PaginatedList = {
       "Default type parameters (like `T = unknown`) let callers omit the type argument when they do not need a specific type. This is useful for utility interfaces where some consumers care about the item type and others just need the pagination metadata.",
     explanationWrong:
       "Without a default, every usage of `PaginatedList` must specify a type argument. This is cumbersome when the consumer does not use the `items` array or when the items are heterogeneous. Default parameters make generics more ergonomic.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-parameter-defaults",
-    sourceLabel: "TypeScript Handbook: Generic parameter defaults",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-parameter-defaults",
+        label: "TypeScript Handbook: Generic parameter defaults",
+      },
+    ],
   },
   {
     id: "ge-007",
@@ -275,8 +293,12 @@ createFSM({
       '`NoInfer<T>` (TypeScript 5.4) marks a position as not an inference site. TypeScript infers `S` only from `states`, then checks `initial` against that inferred type. This gives you a "driver" parameter that defines the set and a "consumer" parameter that must pick from it.',
     explanationWrong:
       "Without `NoInfer`, TypeScript infers the generic from all positions. Any value you pass to `initial` is included in the inferred union, so there is no way to restrict it to the values in `states`. Invalid values silently widen the type instead of causing an error.",
-    sourceUrl: "https://www.totaltypescript.com/noinfer",
-    sourceLabel: "Total TypeScript: NoInfer",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/noinfer",
+        label: "Total TypeScript: NoInfer",
+      },
+    ],
   },
   {
     id: "ge-008",
@@ -319,8 +341,11 @@ const r = routes({
       "Adding `const` to a type parameter (TypeScript 5.0) tells the compiler to infer the narrowest possible type from the argument. String and number literals are preserved instead of widened, and arrays become readonly tuples. Before this feature, callers had to write `as const` at every call site.",
     explanationWrong:
       "Without `const`, TypeScript applies its default widening rules: string literals become `string`, number literals become `number`, and arrays become mutable arrays. The caller loses the specific values they passed in, which defeats the purpose of inferring from the argument.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters",
-    sourceLabel: "TypeScript 5.0: const type parameters",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters",
+        label: "TypeScript 5.0: const type parameters",
+      },
+    ],
   },
 ];

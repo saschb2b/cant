@@ -165,8 +165,14 @@ export interface BaseChallenge<Category extends string = string> {
   explanationCorrect: string;
   /** Explanation shown when the user picks incorrectly. */
   explanationWrong: string;
-  sourceUrl: string;
-  sourceLabel: string;
+  /** Authoritative references backing the explanation. At least one. */
+  sources: ChallengeSource[];
+}
+
+/** A link to documentation that backs a challenge's explanation. */
+export interface ChallengeSource {
+  url: string;
+  label: string;
 }
 
 /** Snapshot of the current game state. */

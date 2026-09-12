@@ -61,8 +61,12 @@ test("returns formatted user", async () => {
       "mockResolvedValue provides just the data the test needs without re-implementing any logic. The test stays focused on verifying the output of getUser, not on simulating the internals of the database module. When the dependency changes, you only update the return value.",
     explanationWrong:
       "mockImplementation duplicates logic that belongs to the real module. The test now contains branching, error throwing, and parameter checking that mirrors the actual implementation. If the real module changes its signature, the mock implementation must be updated in lockstep, making tests brittle.",
-    sourceUrl: "https://vitest.dev/api/mock.html#mockreturnvalue",
-    sourceLabel: "Vitest: Mock Return Value",
+    sources: [
+      {
+        url: "https://vitest.dev/api/mock.html#mockreturnvalue",
+        label: "Vitest: Mock Return Value",
+      },
+    ],
   },
   {
     id: "mock-002",
@@ -114,8 +118,12 @@ test("sends confirmation email", async () => {
       "Using toHaveBeenCalledWith checks both that the function was called and that it received the correct arguments. Combining it with toHaveBeenCalledTimes ensures no extra calls happen. The spy captures all invocation details automatically, so no manual tracking is needed.",
     explanationWrong:
       "Tracking calls with a boolean flag only proves the function ran. It says nothing about the arguments passed. If processOrder accidentally calls sendEmail with the wrong address or a malformed subject, this test still passes. Manual flags also risk leaking state between tests when declared outside the test block.",
-    sourceUrl: "https://vitest.dev/api/expect.html#tohavebeencalledwith",
-    sourceLabel: "Vitest: toHaveBeenCalledWith",
+    sources: [
+      {
+        url: "https://vitest.dev/api/expect.html#tohavebeencalledwith",
+        label: "Vitest: toHaveBeenCalledWith",
+      },
+    ],
   },
   {
     id: "mock-003",
@@ -176,8 +184,12 @@ test("maps API response to profile", async () => {
       "MSW (Mock Service Worker) intercepts requests at the network level, so your test exercises the real fetch call, headers, URL construction, and response parsing. If your code switches from fetch to axios, the test still works. Network-level mocking also catches issues like incorrect URLs or missing headers that stubbing fetch would miss.",
     explanationWrong:
       "Replacing globalThis.fetch with a mock skips URL routing, header handling, and the actual Response API. The mock returns a plain object that looks like a Response but is not one. If the code under test calls response.headers.get() or checks response.status, the mock must be extended manually for each case.",
-    sourceUrl: "https://mswjs.io/docs/getting-started",
-    sourceLabel: "MSW: Getting Started",
+    sources: [
+      {
+        url: "https://mswjs.io/docs/getting-started",
+        label: "MSW: Getting Started",
+      },
+    ],
   },
   {
     id: "mock-004",
@@ -242,8 +254,12 @@ test("sends push and logs event", async () => {
       "Passing dependencies as a parameter makes the function pure and testable without any module-level mocking. Tests create lightweight fakes inline, there is no hidden global state, and the function signature documents exactly what it needs. This pattern also makes it straightforward to swap implementations in production (logging, push providers).",
     explanationWrong:
       "vi.mock() hoists to the top of the file and replaces the entire module for every test in the file. This couples the test to the import paths of the implementation. If the code refactors push-client into a different module, the test breaks even though behavior is unchanged. Module mocking also makes it harder to test different dependency configurations in the same file.",
-    sourceUrl: "https://vitest.dev/guide/mocking.html#modules",
-    sourceLabel: "Vitest: Mocking Modules",
+    sources: [
+      {
+        url: "https://vitest.dev/guide/mocking.html#modules",
+        label: "Vitest: Mocking Modules",
+      },
+    ],
   },
   {
     id: "mock-005",
@@ -314,8 +330,12 @@ test("writes to cache on miss", async () => {
       "Creating spies in beforeEach and restoring them in afterEach guarantees each test starts with a clean slate. No mock return values or call counts leak between tests, so tests can run in any order and still pass. vi.restoreAllMocks() reverts every spy to its original implementation.",
     explanationWrong:
       "Module-level spies persist across all tests in the file. If a previous test sets a mock return value and the next test forgets to override it, the stale value leaks through. This causes tests that pass individually but fail when run together, one of the hardest bugs to track down in a test suite.",
-    sourceUrl: "https://vitest.dev/api/vi.html#vi-restoreallmocks",
-    sourceLabel: "Vitest: restoreAllMocks",
+    sources: [
+      {
+        url: "https://vitest.dev/api/vi.html#vi-restoreallmocks",
+        label: "Vitest: restoreAllMocks",
+      },
+    ],
   },
   {
     id: "mock-006",
@@ -367,8 +387,12 @@ test("logs progress for each item", async () => {
       "vi.spyOn selectively wraps individual methods while keeping the rest of the object intact. There is no need to re-import the module or spread original exports. Spies are easy to restore with mockRestore(), and they preserve the object reference so any code holding a reference to logger sees the same spy.",
     explanationWrong:
       "vi.mock with importOriginal works, but it replaces the entire module export and forces you to manually spread all original members. If the module adds new exports later, the spread still works, but the factory runs once at load time, which makes per-test customization harder. It also requires the vi.mock call to be hoisted above the import, which can cause confusion when reading the file top to bottom.",
-    sourceUrl: "https://vitest.dev/api/vi.html#vi-spyon",
-    sourceLabel: "Vitest: vi.spyOn",
+    sources: [
+      {
+        url: "https://vitest.dev/api/vi.html#vi-spyon",
+        label: "Vitest: vi.spyOn",
+      },
+    ],
   },
   {
     id: "mock-007",
@@ -440,8 +464,12 @@ test("detects valid token", () => {
       "Fake timers pin Date.now() to a deterministic value, so the test always evaluates the same comparison. This eliminates flakiness from timing differences between test setup and assertion. It also lets you test edge cases like exact boundary times or midnight rollovers by setting the system time precisely.",
     explanationWrong:
       "Computing expiry relative to Date.now() seems convenient, but the real clock keeps ticking between the moment you construct the date and the moment the assertion runs. On slow CI machines or when debugging, that gap can cause intermittent failures. You also cannot test exact boundary conditions because the reference time shifts with each run.",
-    sourceUrl: "https://vitest.dev/api/vi.html#vi-usefaketimers",
-    sourceLabel: "Vitest: Fake Timers",
+    sources: [
+      {
+        url: "https://vitest.dev/api/vi.html#vi-usefaketimers",
+        label: "Vitest: Fake Timers",
+      },
+    ],
   },
   {
     id: "mock-008",
@@ -506,7 +534,11 @@ test("calculates total with discount and tax", async () => {
       "Mocking only at the boundary (the payment gateway) lets the real cart, pricing, and tax logic run together. This catches integration bugs like incorrect discount stacking or tax rounding errors that unit mocks would hide. The test verifies the actual calculation pipeline end to end while still avoiding real charges.",
     explanationWrong:
       "When every dependency is mocked, the test only proves that checkout calls four functions in sequence. If applyDiscount changes its return format or calculateTax expects a different input shape, the mocks mask the breakage. The test passes while the real code is broken, giving false confidence.",
-    sourceUrl: "https://kentcdodds.com/blog/write-tests",
-    sourceLabel: "Kent C. Dodds: Write Tests",
+    sources: [
+      {
+        url: "https://kentcdodds.com/blog/write-tests",
+        label: "Kent C. Dodds: Write Tests",
+      },
+    ],
   },
 ];

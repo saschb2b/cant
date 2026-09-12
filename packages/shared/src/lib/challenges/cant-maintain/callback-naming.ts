@@ -26,8 +26,12 @@ export const callbackNamingChallenges: BaseChallenge[] = [
       'Child components don\'t "set" state. They signal that something changed. The `on` prefix followed by what happened (`ValueChange`) is the React convention. This mirrors native DOM events like `onChange` and `onClick`.',
     explanationWrong:
       '`setValue` implies the child owns and mutates state directly. In React, data flows down and events flow up. Use `onValueChange` to signal "this value changed"; the parent decides what to do with it.',
-    sourceUrl: "https://react.dev/learn/responding-to-events",
-    sourceLabel: "React Docs: Responding to Events",
+    sources: [
+      {
+        url: "https://react.dev/learn/responding-to-events",
+        label: "React Docs: Responding to Events",
+      },
+    ],
   },
   {
     id: "cb-002",
@@ -54,9 +58,12 @@ export const callbackNamingChallenges: BaseChallenge[] = [
       "`onDelete` clearly communicates this is an event callback. The component requests deletion, and the parent performs it.",
     explanationWrong:
       '`delete` is a reserved word in JavaScript and reads as an imperative command. Using `onDelete` follows the event handler convention and clearly signals "call me when delete is requested."',
-    sourceUrl:
-      "https://react.dev/learn/responding-to-events#naming-event-handler-props",
-    sourceLabel: "React Docs: Naming event handler props",
+    sources: [
+      {
+        url: "https://react.dev/learn/responding-to-events#naming-event-handler-props",
+        label: "React Docs: Naming event handler props",
+      },
+    ],
   },
   {
     id: "cb-003",
@@ -83,8 +90,12 @@ export const callbackNamingChallenges: BaseChallenge[] = [
       '`onSearch` is an event callback that says "the user triggered a search." The parent handles the actual search logic.',
     explanationWrong:
       "`search` reads like the component performs the search itself. With `onSearch`, it's clear the component only notifies the parent that a search was requested. Also note: the parameter is named `query` instead of the cryptic `q`.",
-    sourceUrl: "https://react.dev/learn/responding-to-events",
-    sourceLabel: "React Docs: Responding to Events",
+    sources: [
+      {
+        url: "https://react.dev/learn/responding-to-events",
+        label: "React Docs: Responding to Events",
+      },
+    ],
   },
   {
     id: "cb-004",
@@ -111,9 +122,12 @@ export const callbackNamingChallenges: BaseChallenge[] = [
       "`onItemSelect` tells you exactly what happened: the user selected an item. `onChange` is reserved for native `<input>` and `<select>` elements where it has established meaning.\n\nFor custom components, specific names like `onItemSelect`, `onTabChange`, or `onColorPick` describe the actual user action, which is invaluable when a component has multiple things that can change.",
     explanationWrong:
       "`onChange` is the right name for native form elements, but a Dropdown isn't an `<input>`. When a parent uses `<Dropdown onChange={...} />` alongside `<TextField onChange={...} />`, both callbacks look identical but mean different things. `onItemSelect` makes the Dropdown's event self-documenting, especially in components with multiple callbacks.",
-    sourceUrl:
-      "https://react.dev/learn/responding-to-events#naming-event-handler-props",
-    sourceLabel: "React Docs: Naming event handler props",
+    sources: [
+      {
+        url: "https://react.dev/learn/responding-to-events#naming-event-handler-props",
+        label: "React Docs: Naming event handler props",
+      },
+    ],
   },
   {
     id: "cb-006",
@@ -154,8 +168,12 @@ interface DialogProps {
       "Passing the `reason` as a callback parameter lets the parent decide **how** to respond to each close trigger in real time. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape.\n\nMUI's Dialog uses exactly this pattern. A separate prop is reactive (updates after closing) instead of actionable (decides during closing).",
     explanationWrong:
       "Separating the reason into its own prop means the parent can't act on it **during** the close event. `lastCloseReason` updates after `onClose` fires, which is too late to prevent closing on a backdrop click. The `reason` belongs as a parameter of `onClose` so the parent can inspect it synchronously and decide whether to actually close.",
-    sourceUrl: "https://mui.com/material-ui/api/dialog/",
-    sourceLabel: "MUI: Dialog API",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/api/dialog/",
+        label: "MUI: Dialog API",
+      },
+    ],
   },
   {
     id: "cb-007",
@@ -196,8 +214,12 @@ interface DialogProps {
       "Some interactions have two meaningful moments: the live update and the final commit. Two callbacks let the parent do different things at each moment: `onChange` for UI preview, `onChangeCommitted` for saving to the server.\n\nMUI's Slider uses exactly this pattern. A `changeDebounceMs` config forces a trade-off between responsiveness and efficiency.",
     explanationWrong:
       "Debouncing collapses two distinct events into one. With `changeDebounceMs: 300`, you either get delayed UI updates or set it to `0` and still have no way to know when the user **finished** dragging.\n\nTwo callbacks (`onChange` for live preview, `onChangeCommitted` for persistence) let the parent respond to each moment appropriately.",
-    sourceUrl: "https://mui.com/material-ui/api/slider/",
-    sourceLabel: "MUI: Slider API",
+    sources: [
+      {
+        url: "https://mui.com/material-ui/api/slider/",
+        label: "MUI: Slider API",
+      },
+    ],
   },
   {
     id: "cb-005",
@@ -228,8 +250,12 @@ interface DialogProps {
       "All three callbacks use the `on` prefix and descriptive parameter names (`position` vs `pos`, `targetId` vs `target`). Consistent naming across related events is key.",
     explanationWrong:
       "Without `on` prefixes, these look like imperative methods. `pos` and `target` are ambiguous shorthand, while `position` and `targetId` are self-documenting.",
-    sourceUrl: "https://react.dev/learn/responding-to-events",
-    sourceLabel: "React Docs: Responding to Events",
+    sources: [
+      {
+        url: "https://react.dev/learn/responding-to-events",
+        label: "React Docs: Responding to Events",
+      },
+    ],
   },
   {
     id: "cb-008",
@@ -273,9 +299,12 @@ interface DialogProps {
       "Processes with duration deserve callback **pairs**: `onTransitionStart` / `onTransitionEnd`. This lets the parent disable interactions during animation and clean up afterward. A single `onAnimationDone` only covers the end. What if you need to lock scrolling during the transition?\n\nThe `on` + noun + lifecycle suffix pattern (`onTransitionStart`) is self-documenting.",
     explanationWrong:
       "A single `onAnimationDone` callback covers only half the lifecycle. What happens at the start of the animation? The parent might need to disable buttons, lock scroll, or trigger another animation in sync.\n\n**Lifecycle callback pairs** (`onTransitionStart`/`onTransitionEnd`, `onDragStart`/`onDragEnd`) let consumers respond to both moments. The naming convention makes the temporal relationship obvious.",
-    sourceUrl:
-      "https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event",
-    sourceLabel: "MDN: transitionend event",
+    sources: [
+      {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event",
+        label: "MDN: transitionend event",
+      },
+    ],
   },
   {
     id: "cb-009",
@@ -317,7 +346,11 @@ interface DialogProps {
       "A Promise-returning callback lets the component derive loading and error states from the Promise lifecycle, so no manual `isLoading` or `errorMessage` props are needed.\n\nNaming it `onAction` (not `onClick`) signals it's async and the component will manage pending state. This is the pattern behind React 19's `useActionState` and `useTransition`.",
     explanationWrong:
       "Manually passing `isLoading` and `errorMessage` means the parent must track three pieces of state (`loading`, `error`, `idle`) and keep them in sync. Forgetting to reset `isLoading` after an error leaves the button stuck.\n\nA Promise-returning `onAction` lets the component derive these states automatically: pending while the Promise is unsettled, error if it rejects, idle on resolve.",
-    sourceUrl: "https://react.dev/reference/react/useTransition",
-    sourceLabel: "React Docs: useTransition",
+    sources: [
+      {
+        url: "https://react.dev/reference/react/useTransition",
+        label: "React Docs: useTransition",
+      },
+    ],
   },
 ];

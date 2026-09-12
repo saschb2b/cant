@@ -49,8 +49,12 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Each criterion is observable. A reader who has not seen the code can open the page and confirm. The before/after is binary, which means QA, design, and the PM can all sign off independently.",
     explanationWrong:
       "'Implemented properly' and 'the UX is good' are not acceptance criteria, they are reassurance. Two engineers will reasonably disagree on whether the bar is met, and the disagreement will surface in review.",
-    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
-    sourceLabel: "Dan North: Introducing BDD",
+    sources: [
+      {
+        url: "https://dannorth.net/blog/introducing-bdd/",
+        label: "Dan North: Introducing BDD",
+      },
+    ],
   },
   {
     id: "ac-002",
@@ -100,8 +104,12 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Given/When/Then forces the writer to name the precondition, the action, and the outcome. There is no ambiguity for QA, no implementation language, and the negative case (valid session) is named explicitly.",
     explanationWrong:
       "The left list is implementation steps. They might be correct, but they describe how the engineer will write the code, not what behavior the user will observe. QA cannot test 'check the session in the middleware'.",
-    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
-    sourceLabel: "Dan North: Introducing BDD",
+    sources: [
+      {
+        url: "https://dannorth.net/blog/introducing-bdd/",
+        label: "Dan North: Introducing BDD",
+      },
+    ],
   },
   {
     id: "ac-003",
@@ -157,8 +165,12 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Real systems fail. Naming the expired-card and provider-down paths in advance gives engineering a real spec and gives QA a real test plan. The cart preservation rule comes out of the conversation, not the bug report.",
     explanationWrong:
       "Happy-path-only acceptance criteria leave the failure modes to be discovered. They will be discovered by users, then filed as bugs, then patched, then re-broken on the next change.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
   {
     id: "ac-004",
@@ -208,8 +220,12 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Acceptance criteria describe what the user observes. Implementation choices (WebSocket channel, ring buffer, animation reuse) are subtask material. Keep them separate so the story can be reviewed by people who do not know the codebase.",
     explanationWrong:
       "A bullet list of implementation hints is a tech-design doc, not acceptance criteria. The team will probably do those things, but the story is now unverifiable by QA and the implementation is locked in before refinement.",
-    sourceUrl: "https://www.agilealliance.org/glossary/user-story-template/",
-    sourceLabel: "Agile Alliance: User Story Template",
+    sources: [
+      {
+        url: "https://www.agilealliance.org/glossary/user-story-template/",
+        label: "Agile Alliance: User Story Template",
+      },
+    ],
   },
   {
     id: "ac-005",
@@ -255,9 +271,12 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Naming what is out is as important as naming what is in. During refinement someone will ask 'what about PDFs?' and the story already answers. The team does not get pulled into scope creep mid-sprint.",
     explanationWrong:
       "Without an out-of-scope clause, every reviewer assumes a different boundary. PDF and email exports will be raised in standup, the work will balloon, and the story will not finish in the sprint.",
-    sourceUrl:
-      "https://www.atlassian.com/agile/project-management/user-stories",
-    sourceLabel: "Atlassian Team Playbook: User Stories",
+    sources: [
+      {
+        url: "https://www.atlassian.com/agile/project-management/user-stories",
+        label: "Atlassian Team Playbook: User Stories",
+      },
+    ],
   },
   {
     id: "ac-006",
@@ -317,8 +336,12 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Format matters less than the property. For a simple list of constraints, three bullets are cleaner than three identical Given/When/Then blocks. Use Given/When/Then when state and timing matter; use bullets when they don't.",
     explanationWrong:
       "Given/When/Then is a forcing function for unambiguous state, action, and outcome. For 'three visual variants on a static page' it adds line count without information. The bullets read faster.",
-    sourceUrl: "https://dannorth.net/blog/introducing-bdd/",
-    sourceLabel: "Dan North: Introducing BDD",
+    sources: [
+      {
+        url: "https://dannorth.net/blog/introducing-bdd/",
+        label: "Dan North: Introducing BDD",
+      },
+    ],
   },
   {
     id: "ac-007",
@@ -370,7 +393,11 @@ export const acceptanceCriteriaChallenges: BaseChallenge[] = [
       "Numbers anchor performance work. The defined connection profile, percentile thresholds, and regression test mean future changes either preserve the bar or fail visibly. Without those, performance work decays back to where it started within two sprints.",
     explanationWrong:
       "'Feels fast' is unverifiable and unprotectable. The next refactor will land, the response time will drift, and nobody will notice until users start complaining again.",
-    sourceUrl: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
-    sourceLabel: "Bill Wake: INVEST in Good Stories",
+    sources: [
+      {
+        url: "https://xp123.com/invest-in-good-stories-and-smart-tasks/",
+        label: "Bill Wake: INVEST in Good Stories",
+      },
+    ],
   },
 ];

@@ -36,8 +36,7 @@ export const metadata: Metadata = {
       "While some platforms fall back to the `<title>` tag, explicitly setting `og:title` gives you control over how the link appears when shared. You can use a shorter, cleaner title without the brand suffix that the title template adds.",
     explanationWrong:
       "Without explicit Open Graph tags, platforms like Facebook, LinkedIn, and Slack must guess what to display. They may use the full `<title>` (including the brand suffix) or pull random text from the page body, resulting in an unappealing share card.",
-    sourceUrl: "https://ogp.me/",
-    sourceLabel: "The Open Graph protocol",
+    sources: [{ url: "https://ogp.me/", label: "The Open Graph protocol" }],
   },
   {
     id: "og-002",
@@ -85,9 +84,12 @@ export const metadata: Metadata = {
       "The recommended OG image size is 1200x630 pixels (1.91:1 aspect ratio). This works well across Facebook, LinkedIn, Twitter, Slack, and Discord. Including the `alt` attribute improves accessibility for screen readers and provides fallback text when the image fails to load.",
     explanationWrong:
       "A 400x400 square image gets cropped awkwardly on most platforms because they expect a landscape format. Facebook and LinkedIn will either stretch it, add padding, or crop the sides, making the share card look unprofessional.",
-    sourceUrl:
-      "https://developers.facebook.com/docs/sharing/best-practices/#images",
-    sourceLabel: "Facebook: Sharing best practices",
+    sources: [
+      {
+        url: "https://developers.facebook.com/docs/sharing/best-practices/#images",
+        label: "Facebook: Sharing best practices",
+      },
+    ],
   },
   {
     id: "og-003",
@@ -138,8 +140,12 @@ export async function generateMetadata({
       "Blog posts should use `type: 'article'` with `publishedTime` and `authors`. This tells social platforms and search engines that the content is a dated article, not a generic webpage. Some platforms display the publish date and author in the share card.",
     explanationWrong:
       "Using `type: 'website'` for a blog post misrepresents the content. It hides useful information like the publish date and author that platforms can display. The `article` type also helps search engines understand your content structure.",
-    sourceUrl: "https://ogp.me/#type_article",
-    sourceLabel: "Open Graph: Article type",
+    sources: [
+      {
+        url: "https://ogp.me/#type_article",
+        label: "Open Graph: Article type",
+      },
+    ],
   },
   {
     id: "og-004",
@@ -188,9 +194,12 @@ export async function generateMetadata({
       "Both `og:url` and the canonical URL should be absolute URLs pointing to the same location. Using `metadataBase` in the root layout can resolve relative paths, but explicit absolute URLs are clearer and ensure consistency. The og:url tells platforms which URL to associate with shares and likes.",
     explanationWrong:
       "Relative URLs in `og:url` may not resolve correctly on all platforms. Facebook's crawler, for instance, needs an absolute URL to properly aggregate share counts. Mismatched og:url and canonical values can also split social engagement metrics across different URLs.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase",
-    sourceLabel: "Next.js: metadataBase",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase",
+        label: "Next.js: metadataBase",
+      },
+    ],
   },
   {
     id: "og-005",
@@ -230,8 +239,9 @@ export const metadata: Metadata = {
       "The `siteName` property adds an `og:site_name` meta tag that tells platforms the name of the overall website. This is shown separately from the page title in share cards. Facebook, for example, displays the site name in small text above or below the title.",
     explanationWrong:
       "Without `og:site_name`, platforms cannot distinguish between the page title and the website name. On Facebook, the site name appears as a subtle label that helps users identify the source. Missing it makes your share cards look less polished.",
-    sourceUrl: "https://ogp.me/#metadata",
-    sourceLabel: "Open Graph: Basic metadata",
+    sources: [
+      { url: "https://ogp.me/#metadata", label: "Open Graph: Basic metadata" },
+    ],
   },
   {
     id: "og-006",
@@ -265,8 +275,12 @@ export const metadata: Metadata = {
       "The `og:locale` tag uses the `language_TERRITORY` format (e.g., `en_US`, not just `en`). Including `alternateLocale` tells platforms that this content is available in other languages, which helps with content discovery and prevents duplicate content issues across locales.",
     explanationWrong:
       "Using just `en` without a territory code does not follow the Open Graph specification, which expects the `language_TERRITORY` format. Without `alternateLocale`, platforms have no way to know your site offers content in other languages.",
-    sourceUrl: "https://ogp.me/#optional",
-    sourceLabel: "Open Graph: Optional metadata",
+    sources: [
+      {
+        url: "https://ogp.me/#optional",
+        label: "Open Graph: Optional metadata",
+      },
+    ],
   },
   {
     id: "og-007",
@@ -327,9 +341,12 @@ export default async function OGImage({
       "The `opengraph-image.tsx` file convention generates a unique OG image for each dynamic route. Next.js automatically sets the correct `og:image` meta tags. Each blog post gets its own branded image with the post title, which looks far more engaging in share cards.",
     explanationWrong:
       "Using the same static image for every blog post means all shared links look identical. Users scrolling through social feeds cannot distinguish between posts. Dynamic OG images significantly improve click-through rates by showing relevant, unique content.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image",
-    sourceLabel: "Next.js: opengraph-image",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+        label: "Next.js: opengraph-image",
+      },
+    ],
   },
   {
     id: "og-008",
@@ -402,8 +419,11 @@ export default async function ProductPage({
       "Next.js automatically deduplicates `fetch` calls with the same URL and options. By extracting the fetch into a shared function, both `generateMetadata` and the page component call it, but only one network request is made. This keeps the code DRY and the data consistent.",
     explanationWrong:
       "Duplicating the fetch call with different cache options (`no-store` in one, default in the other) prevents Next.js from deduplicating the requests. This means two separate network calls for the same data, and the different caching strategies can cause the metadata and page content to show different information.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/building-your-application/data-fetching/caching-and-revalidating",
-    sourceLabel: "Next.js: Data fetching and caching",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/building-your-application/data-fetching/caching-and-revalidating",
+        label: "Next.js: Data fetching and caching",
+      },
+    ],
   },
 ];

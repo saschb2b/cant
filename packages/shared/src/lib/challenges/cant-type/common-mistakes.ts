@@ -41,9 +41,12 @@ function processData(data: DataRecord[]) {
       "Defining a proper interface for your data gives you autocomplete, catches typos, and validates operations at compile time. If you receive untyped data (from an API, for example), validate it at the boundary and type it once. Everything downstream benefits from the types.",
     explanationWrong:
       "Using any is viral: any value derived from an any expression is also any. A single any at the top of a data pipeline disables type checking for everything that touches that data. Typos, wrong method calls, and missing properties all compile without errors.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
-    sourceLabel: "TypeScript: Types from Types",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
+        label: "TypeScript: Types from Types",
+      },
+    ],
   },
   {
     id: "cm-002",
@@ -95,9 +98,12 @@ if (isUser(parsed)) {
       "Type assertions (as) tell TypeScript to trust you, but they perform no runtime checks. Using instanceof narrows the type safely because it actually checks the value at runtime. For parsed JSON, a type guard validates the shape before trusting the data.",
     explanationWrong:
       "Type assertions override the compiler without any runtime verification. If the element is null or not an HTMLInputElement, the assertion still compiles. The crash happens at runtime when you access .value on null. Assertions should be a last resort, not the default approach.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions",
-    sourceLabel: "TypeScript: Type Assertions",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions",
+        label: "TypeScript: Type Assertions",
+      },
+    ],
   },
   {
     id: "cm-003",
@@ -140,9 +146,12 @@ if (isUser(parsed)) {
       "The object type means 'any non-primitive' but has no index signature, so you cannot use bracket notation. Record<string, number> creates an index signature that allows string keys with number values. For dynamic key-value collections, Map<K, V> is another good option.",
     explanationWrong:
       "The object type is almost never what you want for dictionaries. It prevents indexing with brackets and provides no information about the value types. Most uses of object should be replaced with Record, a specific interface, or unknown (if you truly don't know the shape).",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type",
-    sourceLabel: "TypeScript: Record<K, T>",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type",
+        label: "TypeScript: Record<K, T>",
+      },
+    ],
   },
   {
     id: "cm-004",
@@ -191,9 +200,12 @@ function processConfig(value: Config) {
       "The {} type in TypeScript means 'any value that is not null or undefined.' It accepts strings, numbers, booleans, and objects. For an actual empty object, use Record<string, never>. For 'any non-nullish value', use NonNullable<unknown> which is more explicit about the intent.",
     explanationWrong:
       "Using {} when you mean 'empty object' is misleading because it accepts all non-nullish values. This is a common source of confusion. TypeScript's structural type system means {} is satisfied by anything with zero or more properties, which includes all primitives except null and undefined.",
-    sourceUrl:
-      "https://www.totaltypescript.com/the-empty-object-type-in-typescript",
-    sourceLabel: "Total TypeScript: The Empty Object Type",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/the-empty-object-type-in-typescript",
+        label: "Total TypeScript: The Empty Object Type",
+      },
+    ],
   },
   {
     id: "cm-005",
@@ -248,9 +260,12 @@ export function createUser(name: string): User {
       "Explicit return types on exported functions create a stable public contract. If you accidentally change the return shape, the error appears at the function definition, not in every consuming file. For private/local functions, inference is fine because both the definition and usage are nearby.",
     explanationWrong:
       "Relying on inference for exported functions means the public API type changes silently when internals change. Removing a property, changing a type, or renaming a field causes errors in every file that imports the function, making it hard to trace the root cause.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#return-type-annotations",
-    sourceLabel: "TypeScript: Return Type Annotations",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#return-type-annotations",
+        label: "TypeScript: Return Type Annotations",
+      },
+    ],
   },
   {
     id: "cm-006",
@@ -310,9 +325,12 @@ function applyPatch(
       "Optional properties (?) and properties that accept undefined have different semantics. A missing property means 'not specified,' while an explicit undefined means 'intentionally cleared.' This distinction matters for PATCH APIs, form handling, and serialization. The exactOptionalPropertyTypes flag enforces this difference.",
     explanationWrong:
       "Treating optional and undefined as equivalent hides a real semantic difference. In a PATCH request, omitting a field means 'keep the current value,' while sending undefined means 'clear this field.' Without distinguishing the two, you cannot express 'do not change' at the type level.",
-    sourceUrl:
-      "https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes",
-    sourceLabel: "TypeScript: exactOptionalPropertyTypes",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes",
+        label: "TypeScript: exactOptionalPropertyTypes",
+      },
+    ],
   },
   {
     id: "cm-007",
@@ -348,9 +366,12 @@ objectKeys(config).forEach((key) => {
       "A generic `objectKeys` wrapper returns `(keyof T)[]` instead of `string[]`. This gives you literal key types when iterating, so `config[key]` is type-safe. The `as` assertion is safe here because `Object.keys` does return the object's own keys at runtime.",
     explanationWrong:
       "`Object.keys` returns `string[]` by design because TypeScript's type system is structural: an object can have more keys at runtime than its type declares. While this is technically correct, it makes key iteration painful. A typed wrapper trades that theoretical safety for practical usability.",
-    sourceUrl:
-      "https://www.totaltypescript.com/tips/create-your-own-objectkeys-function-using-generics-and-the-keyof-operator",
-    sourceLabel: "Total TypeScript: Type-safe Object.keys",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/tips/create-your-own-objectkeys-function-using-generics-and-the-keyof-operator",
+        label: "Total TypeScript: Type-safe Object.keys",
+      },
+    ],
   },
   {
     id: "cm-008",
@@ -383,8 +404,11 @@ const port: number = "3000";
       "`@ts-expect-error` requires the next line to have an error. If the error disappears (because someone fixed the code), TypeScript flags the unused directive. This makes it self-cleaning: you never end up with stale suppressions hiding real issues.",
     explanationWrong:
       "`@ts-ignore` silently suppresses any error on the next line, forever. If the original issue is fixed but a new, different error appears on the same line, `@ts-ignore` hides it. Over time, codebases accumulate `@ts-ignore` comments that mask real bugs.",
-    sourceUrl:
-      "https://www.totaltypescript.com/concepts/how-to-use-ts-expect-error",
-    sourceLabel: "Total TypeScript: @ts-expect-error",
+    sources: [
+      {
+        url: "https://www.totaltypescript.com/concepts/how-to-use-ts-expect-error",
+        label: "Total TypeScript: @ts-expect-error",
+      },
+    ],
   },
 ];

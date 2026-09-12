@@ -44,9 +44,12 @@ it("creates a user", async () => {
       "Cleaning up before each test guarantees a known starting state regardless of whether a previous test crashed, timed out, or was skipped. Using beforeEach with ordered deletions (respecting foreign key constraints) means every test begins with an empty database, making failures reproducible.",
     explanationWrong:
       "Relying on afterEach for cleanup is fragile. If a test fails or the process exits unexpectedly, the cleanup never runs and leftover data leaks into subsequent tests. This creates flaky, order-dependent test suites that pass individually but fail when run together.",
-    sourceUrl:
-      "https://www.prisma.io/docs/orm/prisma-client/testing/integration-testing",
-    sourceLabel: "Prisma Docs: Integration Testing",
+    sources: [
+      {
+        url: "https://www.prisma.io/docs/orm/prisma-client/testing/integration-testing",
+        label: "Prisma Docs: Integration Testing",
+      },
+    ],
   },
   {
     id: "int-002",
@@ -105,8 +108,12 @@ it("lists orders for user", async () => {
       "Creating fresh, unique data for every test case eliminates hidden coupling between tests. Each test sets up exactly what it needs and can assert precise expectations. A factory function keeps the setup concise while generating distinct records.",
     explanationWrong:
       "Sharing a single user across tests introduces order dependency. The second test assumes the first test already created an order, so reordering or running tests in isolation causes failures. Shared mutable state is one of the most common sources of flaky integration tests.",
-    sourceUrl: "https://martinfowler.com/articles/nonDeterminism.html",
-    sourceLabel: "Martin Fowler: Eradicating Non-Determinism in Tests",
+    sources: [
+      {
+        url: "https://martinfowler.com/articles/nonDeterminism.html",
+        label: "Martin Fowler: Eradicating Non-Determinism in Tests",
+      },
+    ],
   },
   {
     id: "int-003",
@@ -158,8 +165,12 @@ it("creates and retrieves a product", async () => {
       "Using supertest to make HTTP requests against the Express app exercises the full middleware stack: routing, body parsing, validation, error handling, and serialization. This catches integration issues that calling service functions directly would miss, such as incorrect status codes, missing headers, or middleware ordering bugs.",
     explanationWrong:
       "Calling service functions directly only tests the business logic layer. It skips HTTP routing, middleware, request validation, and response serialization. A test that passes at the service level can still fail in production because a route was misconfigured or middleware rejected the request.",
-    sourceUrl: "https://github.com/ladjs/supertest#readme",
-    sourceLabel: "Supertest: HTTP assertions for Node.js",
+    sources: [
+      {
+        url: "https://github.com/ladjs/supertest#readme",
+        label: "Supertest: HTTP assertions for Node.js",
+      },
+    ],
   },
   {
     id: "int-004",
@@ -219,8 +230,12 @@ export function createProduct(
       "Factory functions let each test create only the data it needs with sensible defaults. Tests stay independent, readable, and easy to debug. When a test fails, you can see its entire data setup inline rather than searching through a shared seed file.",
     explanationWrong:
       "A shared seed script loads a fixed dataset that every test depends on. Adding a product or changing a category name can break unrelated tests. Over time the seed file grows to accommodate every test scenario, becoming brittle and hard to maintain. Tests also become order-dependent if they mutate the shared data.",
-    sourceUrl: "https://thoughtbot.com/blog/factory-bot-for-beginners",
-    sourceLabel: "Thoughtbot: Why Factories Over Fixtures",
+    sources: [
+      {
+        url: "https://thoughtbot.com/blog/factory-bot-for-beginners",
+        label: "Thoughtbot: Why Factories Over Fixtures",
+      },
+    ],
   },
   {
     id: "int-005",
@@ -273,8 +288,9 @@ it("processes a payment", async () => {
       "For integration tests at service boundaries, using the real client against a sandbox or test environment verifies that your code works with the actual API contract. Stripe provides test-mode API keys and tokens (like tok_visa) specifically for this purpose. This catches serialization issues, API version mismatches, and incorrect parameter names.",
     explanationWrong:
       "Mocking the entire Stripe client turns this into a unit test that only verifies your code calls the mock with expected arguments. It cannot detect breaking changes in the API, incorrect field names, or serialization bugs. Integration tests should exercise real service boundaries to catch issues that mocks hide.",
-    sourceUrl: "https://docs.stripe.com/testing",
-    sourceLabel: "Stripe Docs: Testing",
+    sources: [
+      { url: "https://docs.stripe.com/testing", label: "Stripe Docs: Testing" },
+    ],
   },
   {
     id: "int-006",
@@ -333,8 +349,12 @@ export { prisma };`,
       "Wrapping each test in a transaction with a savepoint and rolling back afterward is extremely fast because no data is ever committed to disk. It handles arbitrarily complex data relationships without needing to know the table structure or deletion order. This pattern scales well as the schema grows.",
     explanationWrong:
       "Truncating every table before each test is slow, especially as the database grows. The CASCADE option can trigger unexpected side effects, and querying pg_tables adds overhead. For large schemas this becomes a significant bottleneck. Transaction rollback achieves the same isolation with near-zero cost.",
-    sourceUrl: "https://www.postgresql.org/docs/current/sql-savepoint.html",
-    sourceLabel: "PostgreSQL Docs: SAVEPOINT",
+    sources: [
+      {
+        url: "https://www.postgresql.org/docs/current/sql-savepoint.html",
+        label: "PostgreSQL Docs: SAVEPOINT",
+      },
+    ],
   },
   {
     id: "int-007",
@@ -419,9 +439,12 @@ it("inserts a user", async () => {
       "Testcontainers spins up a real PostgreSQL instance in Docker for each test suite. Every run gets a fresh, isolated database with no leftover state. There is no dependency on a pre-configured local database, and CI pipelines work without extra setup steps. The container is torn down automatically after the tests complete.",
     explanationWrong:
       "Connecting to a shared local database assumes the database exists, has the correct schema, and is not being used by another test run. This breaks in CI without additional provisioning scripts and can cause conflicts when developers run tests concurrently. Hardcoded credentials also make the setup rigid and environment-specific.",
-    sourceUrl:
-      "https://testcontainers.com/guides/getting-started-with-testcontainers-for-nodejs/",
-    sourceLabel: "Testcontainers: Getting Started with Node.js",
+    sources: [
+      {
+        url: "https://testcontainers.com/guides/getting-started-with-testcontainers-for-nodejs/",
+        label: "Testcontainers: Getting Started with Node.js",
+      },
+    ],
   },
   {
     id: "int-008",
@@ -493,7 +516,11 @@ it("retrieves order details", async () => {
       "A single test that walks through the full checkout flow (add to cart, place order, verify order) catches integration issues between steps. It verifies that the authentication token, cart ID, and order ID flow correctly across multiple API calls. This mirrors how a real user interacts with the system.",
     explanationWrong:
       "Splitting the workflow into isolated tests with pre-seeded data skips the connections between steps. The second test never proves that an order can actually be created from a cart built by the first endpoint. Pre-seeded IDs also hide data-flow bugs. When testing a user workflow, the value lies in verifying the entire chain works together.",
-    sourceUrl: "https://martinfowler.com/bliki/BroadStackTest.html",
-    sourceLabel: "Martin Fowler: Broad Stack Tests",
+    sources: [
+      {
+        url: "https://martinfowler.com/bliki/BroadStackTest.html",
+        label: "Martin Fowler: Broad Stack Tests",
+      },
+    ],
   },
 ];

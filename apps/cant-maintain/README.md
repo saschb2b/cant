@@ -80,8 +80,9 @@ Find the relevant category file in `lib/game/challenges/` (e.g. `callback-naming
   correctSide: "right",           // Ignored at runtime (randomized)
   explanationCorrect: "...",       // Shown when user picks correctly
   explanationWrong: "...",         // Shown when user picks incorrectly
-  sourceUrl: "https://...",        // Authoritative learning link
-  sourceLabel: "React Docs: ...",  // Display text for the link
+  sources: [                       // Authoritative learning links, at least one
+    { url: "https://...", label: "React Docs: ..." },
+  ],
 }
 ```
 

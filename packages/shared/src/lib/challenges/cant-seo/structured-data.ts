@@ -53,9 +53,12 @@ export default function Home() {
       "The recommended way to add JSON-LD in Next.js is via a `<script type='application/ld+json'>` tag in the page component. This approach is explicit, easy to read, and works with both static and dynamic data. Google's own documentation recommends JSON-LD over other structured data formats.",
     explanationWrong:
       "Putting JSON-LD in the `other` field of the metadata export is not the intended use of that API. The metadata export is designed for standard meta tags, not arbitrary script blocks. This approach is fragile and may not render correctly in all cases.",
-    sourceUrl:
-      "https://nextjs.org/docs/app/building-your-application/optimizing/metadata#json-ld",
-    sourceLabel: "Next.js: JSON-LD",
+    sources: [
+      {
+        url: "https://nextjs.org/docs/app/building-your-application/optimizing/metadata#json-ld",
+        label: "Next.js: JSON-LD",
+      },
+    ],
   },
   {
     id: "sd-002",
@@ -144,9 +147,12 @@ export default async function BlogPost({
       "A complete Article schema includes the headline, dates, author, image, and publisher. Google uses these fields to display rich results like article carousels with author photos and publish dates. The more fields you provide, the more likely your content qualifies for enhanced search features.",
     explanationWrong:
       "An Article schema with only a headline provides almost no value. Google requires at minimum the headline, author, datePublished, and image to consider the page for article-related rich results. A bare-bones schema is effectively the same as having none.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/appearance/structured-data/article",
-    sourceLabel: "Google: Article structured data",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/appearance/structured-data/article",
+        label: "Google: Article structured data",
+      },
+    ],
   },
   {
     id: "sd-003",
@@ -221,9 +227,12 @@ export default function FAQPage() {
       "FAQ schema markup can trigger rich results that show expandable question-and-answer pairs directly in Google search. This takes up more visual space on the results page, increasing your visibility. The data-driven approach also keeps the schema and rendered content in sync.",
     explanationWrong:
       "Without FAQ schema, Google has no structured way to identify the questions and answers on your page. It may still show the content in regular search results, but you miss the opportunity for the expandable FAQ rich result that can dramatically increase your click-through rate.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/appearance/structured-data/faqpage",
-    sourceLabel: "Google: FAQ structured data",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/appearance/structured-data/faqpage",
+        label: "Google: FAQ structured data",
+      },
+    ],
   },
   {
     id: "sd-004",
@@ -297,9 +306,12 @@ export function Breadcrumbs({
       "BreadcrumbList schema tells Google how to display the page's position in the site hierarchy directly in search results. Instead of showing the raw URL, Google shows clickable breadcrumb links like 'Home > Products > Widgets'. This improves navigation and click-through rates.",
     explanationWrong:
       "Without BreadcrumbList schema, Google may still infer breadcrumbs from your URL structure, but the result is less reliable and often shows the raw URL path instead of human-readable labels. Explicit schema markup gives you control over what appears in search results.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
-    sourceLabel: "Google: Breadcrumb structured data",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
+        label: "Google: Breadcrumb structured data",
+      },
+    ],
   },
   {
     id: "sd-005",
@@ -376,9 +388,12 @@ export default function RootLayout({
       "Placing Organization schema in the root layout makes it available on every page. It tells Google your company name, logo, and social profiles, which can appear in the Knowledge Panel on the right side of search results. The `sameAs` array links to your verified social accounts.",
     explanationWrong:
       "Without Organization schema, Google must infer your brand information from scattered signals across the web. You miss the opportunity to directly tell Google your official name, logo, and social media profiles, which reduces your chances of getting a Knowledge Panel.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/appearance/structured-data/organization",
-    sourceLabel: "Google: Organization structured data",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/appearance/structured-data/organization",
+        label: "Google: Organization structured data",
+      },
+    ],
   },
   {
     id: "sd-006",
@@ -434,9 +449,12 @@ const breadcrumbJsonLd = {
       "Each schema type should be in its own `<script type='application/ld+json'>` tag. This is cleaner and avoids nesting unrelated schemas. Google recommends keeping schemas separate unless they have a natural parent-child relationship. It also makes validation easier.",
     explanationWrong:
       "Nesting BreadcrumbList inside Article as a `breadcrumb` property is not semantically correct according to schema.org. While Google might still parse it, the relationship is artificial. It also makes the schema harder to validate and maintain as you add more types.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
-    sourceLabel: "Google: Intro to structured data",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
+        label: "Google: Intro to structured data",
+      },
+    ],
   },
   {
     id: "sd-007",
@@ -481,8 +499,12 @@ const jsonLd = {
       "Product schema requires specific fields like `offers` and `image` to qualify for rich results. Always validate your schema using Google's Rich Results Test before deploying. This tool shows exactly which fields are missing or incorrect, saving you from waiting weeks to discover the schema was invalid.",
     explanationWrong:
       "Deploying incomplete Product schema without validation is wasteful. Google silently ignores schemas that are missing required fields. You could wait months wondering why your products never show star ratings or pricing in search results, only to discover the schema was never valid.",
-    sourceUrl: "https://search.google.com/test/rich-results",
-    sourceLabel: "Google: Rich Results Test",
+    sources: [
+      {
+        url: "https://search.google.com/test/rich-results",
+        label: "Google: Rich Results Test",
+      },
+    ],
   },
   {
     id: "sd-008",
@@ -558,8 +580,11 @@ export default async function EventPage({
       "Building JSON-LD from fetched data ensures each event page has accurate, unique structured data. Google can display event rich results with the date, venue, and organizer directly in search. This is especially valuable for event pages because users often search for events by date or location.",
     explanationWrong:
       "Event pages without structured data miss out on Google's event rich results, which show the date, time, and venue in a visually distinct format. Users searching for events in a specific area will never see your events in the dedicated events section of search results.",
-    sourceUrl:
-      "https://developers.google.com/search/docs/appearance/structured-data/event",
-    sourceLabel: "Google: Event structured data",
+    sources: [
+      {
+        url: "https://developers.google.com/search/docs/appearance/structured-data/event",
+        label: "Google: Event structured data",
+      },
+    ],
   },
 ];

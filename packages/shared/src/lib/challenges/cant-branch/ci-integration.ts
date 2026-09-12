@@ -53,9 +53,12 @@ jobs:
       "Running CI on `pull_request` events catches problems before they reach the main branch. If tests only run on `push` to main, broken code is already merged by the time you discover it, and the fix requires another commit.\n\nThe `pull_request` trigger runs against the PR branch, giving reviewers confidence that the code passes all checks before they approve.",
     explanationWrong:
       "CI that only runs on main is a safety net with holes. By the time tests fail, the broken code is already in the main branch and potentially deployed. Running checks on pull requests shifts failure detection left, where it is cheaper and less disruptive to fix.",
-    sourceUrl:
-      "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request",
-    sourceLabel: "GitHub Docs: Workflow Triggers",
+    sources: [
+      {
+        url: "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request",
+        label: "GitHub Docs: Workflow Triggers",
+      },
+    ],
   },
   {
     id: "ci-002",
@@ -100,9 +103,12 @@ git push origin main
       "Branch protection rules prevent direct pushes to main, require CI checks to pass, and enforce code review through approval requirements. This means no code reaches main without being tested and reviewed.\n\nDismissing stale reviews ensures that if new commits are pushed after an approval, the PR must be re-reviewed. Disabling force push prevents history rewriting on the shared branch.",
     explanationWrong:
       "An unprotected main branch is one bad push away from a broken deployment. Without required status checks, untested code can be merged. Without required reviews, a single developer can ship changes without a second pair of eyes. Branch protection is the foundation of a safe delivery pipeline.",
-    sourceUrl:
-      "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-a-branch-protection-rule/about-branch-protection-rules",
-    sourceLabel: "GitHub Docs: Branch Protection Rules",
+    sources: [
+      {
+        url: "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-a-branch-protection-rule/about-branch-protection-rules",
+        label: "GitHub Docs: Branch Protection Rules",
+      },
+    ],
   },
   {
     id: "ci-003",
@@ -164,9 +170,12 @@ jobs:
       "Parallel jobs run lint, typecheck, and tests simultaneously, giving you all failures at once instead of one at a time. If lint fails in 10 seconds, you see that immediately while tests are still running.\n\nSeparate jobs also make branch protection more granular. You can require all three checks individually, and the PR status shows exactly which check failed.",
     explanationWrong:
       "A single sequential job means each step must pass before the next one runs. If lint fails at step 3, you never learn whether tests also fail until you fix the lint error and push again. Parallel jobs reveal all problems in a single CI run, reducing the number of fix-and-push cycles.",
-    sourceUrl:
-      "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/using-jobs-in-a-workflow",
-    sourceLabel: "GitHub Docs: Using Jobs in a Workflow",
+    sources: [
+      {
+        url: "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/using-jobs-in-a-workflow",
+        label: "GitHub Docs: Using Jobs in a Workflow",
+      },
+    ],
   },
   {
     id: "ci-004",
@@ -218,8 +227,12 @@ jobs:
       "Deploy previews let reviewers interact with the actual running application instead of just reading code. Visual bugs, broken links, and UX issues are often invisible in a diff but obvious in a live preview.\n\nAutomatic preview URLs also make it easy for designers, product managers, and QA to review changes without setting up a local development environment.",
     explanationWrong:
       "Code review by reading diffs alone misses an entire class of bugs: visual regressions, responsive layout issues, broken user flows, and performance problems. A deploy preview provides a live, shareable URL where anyone on the team can verify the changes work as intended.",
-    sourceUrl: "https://vercel.com/docs/deployments/preview-deployments",
-    sourceLabel: "Vercel Docs: Preview Deployments",
+    sources: [
+      {
+        url: "https://vercel.com/docs/deployments/preview-deployments",
+        label: "Vercel Docs: Preview Deployments",
+      },
+    ],
   },
   {
     id: "ci-005",
@@ -261,9 +274,12 @@ jobs:
       "GitHub's auto-merge feature merges a PR automatically once all required status checks pass and the required number of approvals is met. This eliminates the idle time between approval and merge, where PRs often sit for hours waiting for someone to click the button.\n\nAuto-merge respects all branch protection rules, so it is just as safe as manual merging.",
     explanationWrong:
       "Manual merging creates an unnecessary bottleneck. After a PR is approved and all checks pass, there is no reason to wait for a human to click merge. That delay can cause merge conflicts with other PRs, slow down the team, and leave approved code unmerged over weekends. Auto-merge solves this without sacrificing safety.",
-    sourceUrl:
-      "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request",
-    sourceLabel: "GitHub Docs: Automatically Merging a PR",
+    sources: [
+      {
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request",
+        label: "GitHub Docs: Automatically Merging a PR",
+      },
+    ],
   },
   {
     id: "ci-006",
@@ -333,9 +349,12 @@ on:
       "Path filters prevent CI from running when changes are irrelevant. A README update should not trigger a full test suite. In a monorepo, path filters can limit each job to its own directory, saving compute time and reducing queue wait times.\n\nThis is especially impactful for large repositories where a full CI run takes many minutes and consumes billable runner time.",
     explanationWrong:
       "Running every CI job on every change wastes compute resources and developer time. If your test suite takes 15 minutes and someone pushes a typo fix to a markdown file, that is 15 minutes of unnecessary waiting. Path filters let you skip irrelevant checks and focus CI on the code that actually changed.",
-    sourceUrl:
-      "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request",
-    sourceLabel: "GitHub Docs: Workflow Triggers",
+    sources: [
+      {
+        url: "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request",
+        label: "GitHub Docs: Workflow Triggers",
+      },
+    ],
   },
   {
     id: "ci-007",
@@ -353,8 +372,11 @@ on:
       "Branch protection rules enforce that all CI checks pass and at least one reviewer approves before code can be merged. This creates a consistent quality gate that prevents broken or unreviewed code from reaching the main branch, regardless of who pushes the change.",
     explanationWrong:
       "Without branch protection, any developer can push directly to main or merge a failing PR. A single bad commit can break the build for the entire team, trigger a broken deployment, or introduce a security vulnerability. Branch protection is one of the simplest and most effective safeguards available.",
-    sourceUrl:
-      "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-a-branch-protection-rule/about-branch-protection-rules",
-    sourceLabel: "GitHub Docs: Branch Protection Rules",
+    sources: [
+      {
+        url: "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-a-branch-protection-rule/about-branch-protection-rules",
+        label: "GitHub Docs: Branch Protection Rules",
+      },
+    ],
   },
 ];

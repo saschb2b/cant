@@ -38,8 +38,12 @@ if (user) {
       "With strictNullChecks enabled, TypeScript knows that Array.find() returns T | undefined. The compiler forces you to handle the undefined case before accessing properties, catching potential runtime crashes at compile time.",
     explanationWrong:
       "Without strictNullChecks, TypeScript assumes every value is non-null. This means find() appears to return T instead of T | undefined, so the compiler lets you access .name on a potentially undefined value. The bug only appears at runtime.",
-    sourceUrl: "https://www.typescriptlang.org/tsconfig/#strictNullChecks",
-    sourceLabel: "TypeScript: strictNullChecks",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#strictNullChecks",
+        label: "TypeScript: strictNullChecks",
+      },
+    ],
   },
   {
     id: "sm-002",
@@ -74,9 +78,12 @@ if (third !== undefined) {
       "With noUncheckedIndexedAccess enabled, accessing an array element by index returns T | undefined instead of just T. This forces you to handle the case where the index is out of bounds, preventing runtime errors from accessing properties on undefined.",
     explanationWrong:
       "Without noUncheckedIndexedAccess, TypeScript trusts that every array index access returns a valid element. Accessing an out-of-bounds index returns undefined at runtime, but TypeScript claims it is a string. This mismatch leads to unhandled runtime crashes.",
-    sourceUrl:
-      "https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess",
-    sourceLabel: "TypeScript: noUncheckedIndexedAccess",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess",
+        label: "TypeScript: noUncheckedIndexedAccess",
+      },
+    ],
   },
   {
     id: "sm-003",
@@ -126,9 +133,12 @@ if (third !== undefined) {
       "With strictPropertyInitialization enabled (part of strict mode), TypeScript requires that class properties declared without a type that includes undefined must be initialized in the constructor. This catches the common pattern of forgetting to call an init method before using the class.",
     explanationWrong:
       "Deferring initialization to an async init() method means any code that calls getUser() before init() will crash. The compiler cannot guarantee the method call order at runtime. Either initialize in the constructor or mark the properties as possibly undefined.",
-    sourceUrl:
-      "https://www.typescriptlang.org/tsconfig/#strictPropertyInitialization",
-    sourceLabel: "TypeScript: strictPropertyInitialization",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#strictPropertyInitialization",
+        label: "TypeScript: strictPropertyInitialization",
+      },
+    ],
   },
   {
     id: "sm-004",
@@ -173,9 +183,12 @@ settings.theme = undefined;
       "With exactOptionalPropertyTypes, the ? modifier means the property can be missing, not that it can be explicitly set to undefined. This distinction matters for serialization: JSON.stringify omits missing keys but includes keys with undefined values differently across environments.",
     explanationWrong:
       "Without this flag, TypeScript treats optional properties and properties that accept undefined as equivalent. This hides a real semantic difference: a missing property and a property set to undefined behave differently with the `in` operator, Object.keys(), and serialization.",
-    sourceUrl:
-      "https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes",
-    sourceLabel: "TypeScript: exactOptionalPropertyTypes",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes",
+        label: "TypeScript: exactOptionalPropertyTypes",
+      },
+    ],
   },
   {
     id: "sm-005",
@@ -215,9 +228,12 @@ try {
       "With useUnknownInCatchVariables (part of strict since TypeScript 4.4), catch clause variables are typed as unknown instead of any. This forces you to narrow the type before accessing properties, which is correct because JavaScript allows throwing any value, not just Error objects.",
     explanationWrong:
       "When catch variables are typed as any, TypeScript lets you access .message without checking the type. But JavaScript allows `throw 'oops'` or `throw 42`, so the caught value might not be an Error at all. Accessing .message on a string causes a silent undefined, not the error message.",
-    sourceUrl:
-      "https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables",
-    sourceLabel: "TypeScript: useUnknownInCatchVariables",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables",
+        label: "TypeScript: useUnknownInCatchVariables",
+      },
+    ],
   },
   {
     id: "sm-006",
@@ -260,8 +276,12 @@ try {
       "The strict flag is a shorthand that enables multiple sub-flags at once. In a large codebase, enabling all of them simultaneously creates an overwhelming number of errors. Enabling them one at a time lets you fix each category of issue incrementally, building toward full strict mode without blocking development.",
     explanationWrong:
       "Enabling strict mode all at once in a large project creates hundreds or thousands of errors across the codebase. Teams often revert it entirely because the task feels impossible. The incremental approach achieves the same end result while keeping the project buildable at every step.",
-    sourceUrl: "https://www.typescriptlang.org/tsconfig/#strict",
-    sourceLabel: "TypeScript: strict",
+    sources: [
+      {
+        url: "https://www.typescriptlang.org/tsconfig/#strict",
+        label: "TypeScript: strict",
+      },
+    ],
   },
   {
     id: "sm-007",
@@ -303,8 +323,11 @@ try {
       "TypeScript 6.0 enables strict mode by default and sets modern defaults for target (es2025) and module (esnext). New projects get full type safety out of the box. You only need to configure what you actually want to change, like moduleResolution for your bundler.",
     explanationWrong:
       "Explicitly disabling strict in TypeScript 6.0 opts out of the safe defaults the team now recommends for all projects. Using deprecated options like `target: es5` and `moduleResolution: node` ties your project to legacy patterns that will be removed in TypeScript 7.0.",
-    sourceUrl:
-      "https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/",
-    sourceLabel: "TypeScript 6.0 Announcement",
+    sources: [
+      {
+        url: "https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/",
+        label: "TypeScript 6.0 Announcement",
+      },
+    ],
   },
 ];

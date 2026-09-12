@@ -38,8 +38,12 @@ CMD ["node", "server.js"]`,
       "Running as a non-root user limits what an attacker can do if they exploit a vulnerability. The `appuser` cannot install packages, modify system files, or access other users' data. This is a fundamental container security practice.",
     explanationWrong:
       "Containers run as root by default. If an attacker gains code execution, they have root access inside the container. Combined with misconfigurations (privileged mode, host mounts), this can lead to container escape and host compromise.",
-    sourceUrl: "https://docs.docker.com/reference/dockerfile/#user",
-    sourceLabel: "Docker docs: USER",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/dockerfile/#user",
+        label: "Docker docs: USER",
+      },
+    ],
   },
   {
     id: "sc-002",
@@ -79,8 +83,12 @@ CMD ["node", "server.js"]`,
       "Secrets should be injected at runtime via environment variables, Docker secrets, or Kubernetes Secrets. This keeps credentials out of image layers, version control, and container registries. Anyone with access to the image can extract baked-in secrets.",
     explanationWrong:
       "`ENV` instructions are stored in the image layer history. Running `docker history` or `docker inspect` reveals every `ENV` value. Pushing this image to a registry exposes your credentials to anyone with pull access.",
-    sourceUrl: "https://docs.docker.com/build/building/secrets/",
-    sourceLabel: "Docker docs: Build secrets",
+    sources: [
+      {
+        url: "https://docs.docker.com/build/building/secrets/",
+        label: "Docker docs: Build secrets",
+      },
+    ],
   },
   {
     id: "sc-003",
@@ -113,9 +121,12 @@ CMD ["node", "server.js"]`,
       "A read-only root filesystem prevents attackers from writing scripts, downloading tools, or modifying application code inside the container. `tmpfs` mounts provide writable directories for legitimate temporary files without persisting anything to disk.",
     explanationWrong:
       "A writable filesystem lets an attacker write and execute malicious binaries, modify application code, or install backdoors. Even without root access, writing to `/tmp` or the app directory can enable further exploitation.",
-    sourceUrl:
-      "https://docs.docker.com/reference/compose-file/services/#read_only",
-    sourceLabel: "Docker docs: read_only",
+    sources: [
+      {
+        url: "https://docs.docker.com/reference/compose-file/services/#read_only",
+        label: "Docker docs: read_only",
+      },
+    ],
   },
   {
     id: "sc-004",
@@ -163,8 +174,12 @@ spec:
       "Using `secretKeyRef` reads the value from a Kubernetes Secret object. The secret is stored encrypted (at rest), access is controlled by RBAC, and the plain text value doesn't appear in the pod spec or `kubectl describe` output.",
     explanationWrong:
       "Hardcoding secrets in pod specs means they appear in plain text in `kubectl get pod -o yaml`, etcd backups, audit logs, and version control. Anyone with read access to the namespace can see the credentials.",
-    sourceUrl: "https://kubernetes.io/docs/concepts/configuration/secret/",
-    sourceLabel: "Kubernetes docs: Secrets",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/concepts/configuration/secret/",
+        label: "Kubernetes docs: Secrets",
+      },
+    ],
   },
   {
     id: "sc-005",
@@ -210,8 +225,11 @@ spec:
       "Dropping all Linux capabilities removes permissions the container doesn't need, like raw network access (`NET_RAW`), filesystem mounting (`SYS_ADMIN`), and process tracing (`SYS_PTRACE`). Combined with `runAsNonRoot` and read-only filesystem, this creates a hardened container.",
     explanationWrong:
       "Default container capabilities include `NET_RAW` (ARP spoofing, network sniffing), `MKNOD` (device file creation), and others. An attacker who compromises the container can leverage these capabilities for lateral movement and privilege escalation.",
-    sourceUrl:
-      "https://kubernetes.io/docs/tasks/configure-pod-container/security-context/",
-    sourceLabel: "Kubernetes docs: Security context",
+    sources: [
+      {
+        url: "https://kubernetes.io/docs/tasks/configure-pod-container/security-context/",
+        label: "Kubernetes docs: Security context",
+      },
+    ],
   },
 ];
